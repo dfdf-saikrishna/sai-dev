@@ -16,7 +16,7 @@
         </ol>
         <ol class="form-fields two-col">
                             <li>
-                    <label for="txtCompname">Company Name <span class="required">*</span></label><input value="{{ data.COM_Name }}" name="company[txtCompname]" id="txtCompname" type="text"></li>
+                    <label for="txtCompname">Company Name <span class="required">*</span></label><input value="" name="company[txtCompname]" id="txtCompname" type="text"></li>
                         <li>
                 <label for="txtEmpCodePrefx">Employee Username Prefix <span class="required">*</span></label><input value="" name="company[txtEmpCodePrefx]" id="erp-hr-user-email"  type="text"></li>
 

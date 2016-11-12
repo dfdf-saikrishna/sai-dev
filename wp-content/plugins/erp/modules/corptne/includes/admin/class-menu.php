@@ -20,34 +20,6 @@ class Admin_Menu {
      * @return void
      */
     public function admin_menu() {
-
-        /** HR Management **/
-//        add_menu_page( __( 'Human Resource', 'erp' ), __( 'HR Management', 'erp' ), 'erp_list_employee', 'erp-hr', array( $this, 'dashboard_page' ), 'dashicons-groups', null );
-//
-//        $overview = add_submenu_page( 'erp-hr', __( 'Overview', 'erp' ), __( 'Overview', 'erp' ), 'erp_list_employee', 'erp-hr', array( $this, 'dashboard_page' ) );
-//        add_submenu_page( 'erp-hr', __( 'Employees', 'erp' ), __( 'Employees', 'erp' ), 'erp_list_employee', 'erp-hr-employee', array( $this, 'employee_page' ) );
-//
-//        if ( current_user_can( 'employee' ) ) {
-//            add_submenu_page( 'erp-hr', __( 'My Profile', 'erp' ), __( 'My Profile', 'erp' ), 'erp_list_employee', 'erp-hr-my-profile', array( $this, 'employee_my_profile_page' ) );
-//        }
-//
-//        add_submenu_page( 'erp-hr', __( 'Departments', 'erp' ), __( 'Departments', 'erp' ), 'erp_manage_department', 'erp-hr-depts', array( $this, 'department_page' ) );
-//        add_submenu_page( 'erp-hr', __( 'Designations', 'erp' ), __( 'Designations', 'erp' ), 'erp_manage_designation', 'erp-hr-designation', array( $this, 'designation_page' ) );
-//        add_submenu_page( 'erp-hr', __( 'Announcement', 'erp' ), __( 'Announcement', 'erp' ), 'erp_manage_announcement', 'edit.php?post_type=erp_hr_announcement' );
-//        add_submenu_page( 'erp-hr', __( 'Reporting', 'erp' ), __( 'Reporting', 'erp' ), 'erp_hr_manager', 'erp-hr-reporting', array( $this, 'reporting_page' ) );
-
-        /** Leave Management **/
-//        add_menu_page( __( 'Leave Management', 'erp' ), __( 'Leave', 'erp' ), 'erp_leave_manage', 'erp-leave', array( $this, 'empty_page' ), 'dashicons-arrow-right-alt', null );
-//
-//        $leave_request = add_submenu_page( 'erp-leave', __( 'Requests', 'erp' ), __( 'Requests', 'erp' ), 'erp_leave_manage', 'erp-leave', array( $this, 'leave_requests' ) );
-//        add_submenu_page( 'erp-leave', __( 'Leave Entitlements', 'erp' ), __( 'Leave Entitlements', 'erp' ), 'erp_leave_manage', 'erp-leave-assign', array( $this, 'leave_entitilements' ) );
-//        add_submenu_page( 'erp-leave', __( 'Holidays', 'erp' ), __( 'Holidays', 'erp' ), 'erp_leave_manage', 'erp-holiday-assign', array( $this, 'holiday_page' ) );
-//        add_submenu_page( 'erp-leave', __( 'Policies', 'erp' ), __( 'Policies', 'erp' ), 'erp_leave_manage', 'erp-leave-policies', array( $this, 'leave_policy_page' ) );
-//        $calendar = add_submenu_page( 'erp-leave', __( 'Calendar', 'erp' ), __( 'Calendar', 'erp' ), 'erp_leave_manage', 'erp-leave-calendar', array( $this, 'leave_calendar_page' ) );
-//        // add_submenu_page( 'erp-leave', __( 'Leave Calendar', 'erp' ), __( 'Leave Calendar', 'erp' ), 'manage_options', 'erp-leave-calendar', array( $this, 'empty_page' ) );
-//
-//        add_action( 'admin_print_styles-' . $overview, array( $this, 'hr_calendar_script' ) );
-//        add_action( 'admin_print_styles-' . $calendar, array( $this, 'hr_calendar_script' ) );
         
         /* *********************************
         * Super Admin Dashboard
@@ -69,7 +41,7 @@ class Admin_Menu {
            add_submenu_page( 'travelagentsmenu', 'View / Edit / Delete Travel Agents ', 'View / Edit / Delete Travel Agents ', 'superadmin', 'superadmintravelagentsview', 'superadmintravelagentsview');
            add_submenu_page( 'travelagentsmenu', 'Travel Desk Logs', 'Travel Desk Logs', 'superadmin', 'superadmintravelagentslogs', 'superadmintravelagentslogs');
 
-           add_menu_page( 'workflow Menu', 'Workflow', 'superadmin', 'workflowsmenu', 'workflowsmenu_init','dashicons-products' );
+           add_menu_page(__( 'WorkFlow', 'superadmin' ), __( 'WorkFlow', 'superadmin' ),  'superadmin', 'workflowsmenu', array( $this, 'workflow'),'dashicons-products' );
            add_submenu_page( 'workflowsmenu', 'Add / Edit / Delete Workflow', 'Add / Edit / Delete Workflow', 'superadmin', 'mastercompaniesworkflow', 'mastercompaniesworkflow');
 
            add_menu_page( 'reportscharts Menu', 'Reports & Charts', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init','dashicons-chart-bar');
@@ -189,7 +161,10 @@ class Admin_Menu {
     public function companies_list() {
         include WPERP_CORPTNE_VIEWS . '/superadmin/companies_list.php';
     }
-    
+    public function workflow(){
+        
+        include WPERP_CORPTNE_VIEWS . '/superadmin/workflow.php';
+    }
     
     /**
      * Handles the companyDashboard page

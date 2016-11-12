@@ -370,6 +370,7 @@ return array(
     'WeDevs\\ERP\\HRM\\Employee_List_Table' => $baseDir . '/modules/hrm/includes/class-employee-list-table.php',
 	'WeDevs\\ERP\\Corptne\\Superadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-superadmin-list-table.php',
     'WeDevs\\ERP\\Corptne\\Companies_List_Table' => $baseDir . '/modules/corptne/includes/class-company-list-table.php',
+    
     'WeDevs\\ERP\\HRM\\Entitlement_List_Table' => $baseDir . '/modules/hrm/includes/class-entitlements-list-table.php',
     'WeDevs\\ERP\\HRM\\Form_Handler' => $baseDir . '/modules/hrm/includes/class-form-handler.php',
     'WeDevs\\ERP\\HRM\\Hr_Log' => $baseDir . '/modules/hrm/includes/class-hr-log.php',
@@ -414,4 +415,6 @@ return array(
     'WeDevs\\ORM\\WP\\PostMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/PostMeta.php',
     'WeDevs\\ORM\\WP\\User' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/User.php',
     'WeDevs\\ORM\\WP\\UserMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/UserMeta.php',
+    
+    'WeDevs\\ERP\\Corptne\\Workflow_List_Table' => $baseDir . '/modules/corptne/includes/class-workflow-table.php',
 );
