@@ -191,7 +191,7 @@ class Corptne {
         ) );
 
         // if its an employee page
-        if ( 'hr-management_page_erp-hr-employee' == $hook ) {
+        if ( 'toplevel_page_companiesmenu' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $employee                          = new Employee();

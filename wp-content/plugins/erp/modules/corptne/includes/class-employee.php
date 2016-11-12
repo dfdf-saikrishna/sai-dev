@@ -102,84 +102,110 @@ class Employee {
      * @return array
      */
     public function to_array() {
-        $fields = array(
-            'id'              => 0,
-            'employee_id'     => '',
-            'name'            => array(
-                'first_name'      => '',
-                'middle_name'     => '',
-                'last_name'       => ''
-            ),
-            'avatar'          => array(
-                'id'  => 0,
-                'url' => ''
-            ),
-            'user_email'      => '',
-            'work'            => array(
-                'designation'   => 0,
-                'department'    => 0,
-                'location'      => '',
-                'hiring_source' => '',
-                'hiring_date'   => '',
-                'date_of_birth' => '',
-                'reporting_to'  => 0,
-                'pay_rate'      => '',
-                'pay_type'      => '',
-                'type'          => '',
-                'status'        => '',
-            ),
-            'personal'        => array(
-                'other_email'     => '',
-                'phone'           => '',
-                'work_phone'      => '',
-                'mobile'          => '',
-                'address'         => '',
-                'gender'          => '',
-                'marital_status'  => '',
-                'nationality'     => '',
-                'driving_license' => '',
-                'hobbies'         => '',
-                'user_url'        => '',
-                'description'     => '',
-                'street_1'        => '',
-                'street_2'        => '',
-                'city'            => '',
-                'country'         => '',
-                'state'           => '',
-                'postal_code'     => '',
-            )
-        );
-
-        if ( $this->id ) {
-            $fields['id']          = $this->id;
-            $fields['employee_id'] = $this->employee_id;
-            $fields['user_email']  = $this->user->user_email;
-
-            $fields['name'] = array(
-                'first_name'  => $this->first_name,
-                'last_name'   => $this->last_name,
-                'middle_name' => $this->middle_name,
-                'full_name'   => $this->get_full_name()
-            );
-
-            $avatar_id                 = (int) $this->user->photo_id;
-            $fields['avatar']['id']    = $avatar_id;
-            $fields['avatar']['image'] = $this->get_avatar();
-
-            if ( $avatar_id ) {
-                $fields['avatar']['url'] = $this->get_avatar_url( $avatar_id );
-            }
-
-            foreach ($fields['work'] as $key => $value) {
-                $fields['work'][ $key ] = $this->$key;
-            }
-
-            foreach ($fields['personal'] as $key => $value) {
-                $fields['personal'][ $key ] = $this->user->$key;
-            }
-        }
-
-        return apply_filters( 'erp_hr_get_employee_fields', $fields, $this->id, $this->user );
+//        $fields = array(
+//            'id'              => 0,
+//            'employee_id'     => '',
+//            'name'            => array(
+//                'first_name'      => '',
+//                'middle_name'     => '',
+//                'last_name'       => ''
+//            ),
+//            'avatar'          => array(
+//                'id'  => 0,
+//                'url' => ''
+//            ),
+//            'user_email'      => '',
+//            'work'            => array(
+//                'designation'   => 0,
+//                'department'    => 0,
+//                'location'      => '',
+//                'hiring_source' => '',
+//                'hiring_date'   => '',
+//                'date_of_birth' => '',
+//                'reporting_to'  => 0,
+//                'pay_rate'      => '',
+//                'pay_type'      => '',
+//                'type'          => '',
+//                'status'        => '',
+//            ),
+//            'personal'        => array(
+//                'other_email'     => '',
+//                'phone'           => '',
+//                'work_phone'      => '',
+//                'mobile'          => '',
+//                'address'         => '',
+//                'gender'          => '',
+//                'marital_status'  => '',
+//                'nationality'     => '',
+//                'driving_license' => '',
+//                'hobbies'         => '',
+//                'user_url'        => '',
+//                'description'     => '',
+//                'street_1'        => '',
+//                'street_2'        => '',
+//                'city'            => '',
+//                'country'         => '',
+//                'state'           => '',
+//                'postal_code'     => '',
+//            )
+//        );
+//
+//        if ( $this->id ) {
+//            $fields['id']          = $this->id;
+//            $fields['employee_id'] = $this->employee_id;
+//            $fields['user_email']  = $this->user->user_email;
+//
+//            $fields['name'] = array(
+//                'first_name'  => $this->first_name,
+//                'last_name'   => $this->last_name,
+//                'middle_name' => $this->middle_name,
+//                'full_name'   => $this->get_full_name()
+//            );
+//
+//            $avatar_id                 = (int) $this->user->photo_id;
+//            $fields['avatar']['id']    = $avatar_id;
+//            $fields['avatar']['image'] = $this->get_avatar();
+//
+//            if ( $avatar_id ) {
+//                $fields['avatar']['url'] = $this->get_avatar_url( $avatar_id );
+//            }
+//
+//            foreach ($fields['work'] as $key => $value) {
+//                $fields['work'][ $key ] = $this->$key;
+//            }
+//
+//            foreach ($fields['personal'] as $key => $value) {
+//                $fields['personal'][ $key ] = $this->user->$key;
+//            }
+//        }
+	$defaults = array(
+            'COM_Logo'        => 0,
+            'user_id'         => 0,
+            'COM_Address'     => '',
+            'COM_Bus'      => '0',
+            'COM_City'     => '',
+            'COM_ComidOld'       => '0',
+            'COM_Cp1email'     => '',
+            'COM_Cp1mobile'           => '',
+            'COM_Cp1username'      => '',
+            'COM_Cp2email'          => '',
+            'COM_Cp2mobile'         => '',
+            'COM_Cp2username'          => '',
+            'COM_Descdeal'  => '',
+            'COM_Email'     => '',
+            'COM_Flight' => '',
+            'COM_Hotel'         => '',
+            'COM_Id'        => '',
+            'COM_Landline'     => '',
+            'COM_Location'        => '',
+            'COM_Name'        => '',
+            'txtSalespersname'            => '',
+            'txtSalesperemail'         => '',
+            'txtSalespercontno'           => '',
+            'txtadescdeal'     => '',
+    );
+        return apply_filters( 'erp_hr_get_employee_fields', $defaults, $this->id, $this->user );
+        //return $defaults;
     }
 
     /**
