@@ -50,9 +50,9 @@ class Admin_Menu {
            add_submenu_page( 'reportschartsmenu', 'Chart 3', 'Chart 3', 'superadmin', '', '');
            add_submenu_page( 'reportschartsmenu', 'Chart 4', 'Chart 4', 'superadmin', '', '');
 
-           add_menu_page( 'Expense Category Menu', 'Expense Category', 'superadmin', 'expensecategorymenu', 'expensecategorymenu_init' );
-           add_submenu_page( 'expensecategorymenu', 'Default Expense Category', 'Default Expense Category', 'superadmin', 'masterexpensecategory', 'masterexpensecategory');
-           add_submenu_page( 'expensecategorymenu', 'Company Expense Category', 'Company Expense Category', 'superadmin', 'mastercompanyexpcat', 'mastercompanyexpcat'); 
+           add_menu_page( 'Expense Category Menu', 'Expense Category', 'superadmin', 'expensecategorymenu', array( $this, 'expensecategory_list'));
+           add_submenu_page( 'expensecategorymenu', 'Default Expense Category', 'Default Expense Category', 'superadmin', 'masterexpensecategory', array( $this, 'expensecategory_list'));
+           add_submenu_page( 'expensecategorymenu', 'Company Expense Category', 'Company Expense Category', 'superadmin', 'mastercompanyexpcat',  array( $this, 'companyexpensecategory_list')); 
 
            add_menu_page( 'Help Docs Menu', 'Help Docs', 'superadmin', 'helpdocsmenu', 'helpdocsmenu_init' );
            add_submenu_page( 'helpdocsmenu', 'Create Topic', 'Create Topic', 'superadmin', '', '');
@@ -161,11 +161,30 @@ class Admin_Menu {
     public function companies_list() {
         include WPERP_CORPTNE_VIEWS . '/superadmin/companies_list.php';
     }
+
     public function workflow(){
         
         include WPERP_CORPTNE_VIEWS . '/superadmin/workflow.php';
+	}
+    
+	 /**
+     * Handles the expense category list page
+     *
+     * @return void
+     */
+    public function expensecategory_list() {
+        include WPERP_CORPTNE_VIEWS . '/superadmin/expensecategory_list.php';
     }
     
+	/**
+     * Handles the company expense category list page
+     *
+     * @return void
+     */
+    public function companyexpensecategory_list() {
+        include WPERP_CORPTNE_VIEWS . '/superadmin/companyexpensecategory_list.php';
+    }
+	
     /**
      * Handles the companyDashboard page
      *

@@ -370,8 +370,9 @@ return array(
     'WeDevs\\ERP\\HRM\\Employee_List_Table' => $baseDir . '/modules/hrm/includes/class-employee-list-table.php',
 	'WeDevs\\ERP\\Corptne\\Superadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-superadmin-list-table.php',
     'WeDevs\\ERP\\Corptne\\Companies_List_Table' => $baseDir . '/modules/corptne/includes/class-company-list-table.php',
-    
-    'WeDevs\\ERP\\HRM\\Entitlement_List_Table' => $baseDir . '/modules/hrm/includes/class-entitlements-list-table.php',
+	'WeDevs\\ERP\\HRM\\Entitlement_List_Table' => $baseDir . '/modules/hrm/includes/class-entitlements-list-table.php',
+    'WeDevs\\ERP\\Corptne\\Expensecategory_List_Table' => $baseDir . '/modules/corptne/includes/class-expensecategory-list-table.php',
+	'WeDevs\\ERP\\Corptne\\Companyexpensecategory_List_Table' => $baseDir . '/modules/corptne/includes/class-companyexpensecategory-list-table.php',
     'WeDevs\\ERP\\HRM\\Form_Handler' => $baseDir . '/modules/hrm/includes/class-form-handler.php',
     'WeDevs\\ERP\\HRM\\Hr_Log' => $baseDir . '/modules/hrm/includes/class-hr-log.php',
     'WeDevs\\ERP\\HRM\\Human_Resource' => $baseDir . '/modules/hrm/hrm.php',
