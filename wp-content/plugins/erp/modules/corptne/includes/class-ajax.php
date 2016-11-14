@@ -462,7 +462,7 @@ class Ajax_Handler {
      * @return void
      */
     public function companyadmin_create() {
-        $this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
         $data = "sai";
         $this->send_success( $data );
     }

@@ -132,5 +132,5 @@
             </ol>
         </fieldset>
         <?php wp_nonce_field( 'wp-erp-hr-employee-nonce' ); ?>
-        <input type="hidden" name="action" id="erp-employee-action" value="erp-hr-employee-new">
+        <input type="hidden" name="action" id="companyadmin_create" value="companyadmin_create">
 </div>
