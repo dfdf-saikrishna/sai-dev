@@ -38,6 +38,9 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp-hr-update-desig', 'designation_create' );
         $this->action( 'wp_ajax_erp-hr-del-desig', 'designation_delete' );
 
+        // Company Admin
+        $this->action( 'wp_ajax_companyadmin_create', 'companyadmin_create' );
+        
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
@@ -451,6 +454,17 @@ class Ajax_Handler {
         }
 
         $this->send_error( __( 'Something went wrong!', 'erp' ) );
+    }
+    
+    /**
+     * Create/update an employee
+     *
+     * @return void
+     */
+    public function companyadmin_create() {
+        $this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        $data = "sai";
+        $this->send_success( $data );
     }
 
     /**

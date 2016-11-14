@@ -27,7 +27,10 @@
             $( 'body' ).on( 'click', 'a#erp-new-designation', this.designation.create );
             $( '.erp-hr-designation' ).on( 'click', 'a.submitdelete', this.designation.remove );
             $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
-
+            
+            // Company Admin
+            $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
+            
             // employee
             $( 'body' ).on( 'click', 'a#erp-company-new', this.employee.create );
             $( '.erp-hr-employees' ).on( 'click', 'a#erp-employee-new', this.employee.create );
@@ -342,7 +345,79 @@
             },
 
         },
+        
+        companyAdmin: {
+            
+            reload: function() {
+                $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+            },
+            
+            /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+            create: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    //e.preventDefault();
+                }
 
+                if ( typeof wpErpHr.employee_empty === 'undefined' ) {
+                    //return;
+                }
+		        alert("create");
+                $.erpPopup({
+                    title: wpErpHr.popup.company_title,
+                    button: wpErpHr.popup.employee_create,
+                    id: "erp-new-employee-popup",
+                    content: wperp.template('erp-new-employee')( wpErpHr.employee_empty ).trim(),
+					//content: '<h1>sss</h1>',
+		
+                    onReady: function() {
+                        WeDevs_ERP_HR.initDateField();
+                        $('.select2').select2();
+                        WeDevs_ERP_HR.employee.select2Action('erp-hrm-select2');
+                        WeDevs_ERP_HR.employee.select2AddMoreContent();
+
+                        $( '#user_notification').on('click', function() {
+                            if ( $(this).is(':checked') ) {
+                                $('.show-if-notification').show();
+                            } else {
+                                $('.show-if-notification').hide();
+                            }
+                        });
+                    },
+
+                    /**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                    onSubmit: function(modal) {
+                        $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
+                        alert("submit companyadmin");
+                        wp.ajax.send( 'companyadmin_create', {
+                            data: this.serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_HR.employee.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+				$('.erp-modal-backdrop, .erp-modal' ).find( '.erp-loader' ).addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+
+            
+            
+        },
         designation: {
 
             /**
