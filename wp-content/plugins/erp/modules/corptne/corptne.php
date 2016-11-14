@@ -227,6 +227,11 @@ class Corptne {
          var_dump( $current_screen->base );
 		//var_dump(WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
         switch ($current_screen->base) {
+            
+            case 'companies_page_companies-admin':
+                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/companyadmin-create.php', 'erp-new-employee' );
+                break;
+            
             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;

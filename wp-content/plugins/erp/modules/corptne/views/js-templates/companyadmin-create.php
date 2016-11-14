@@ -2,21 +2,9 @@
 
     
     <fieldset class="no-border">
-        <ol class="form-fields">
-            <li>
-                <label for="full-name">Employee Photo</label>
-                <div class="photo-container">
-                    <input name="company[photo_id]" id="emp-photo-id" value="0" type="hidden">
-
-                    
-                        <a href="#" id="erp-set-emp-photo" class="button button-small">Upload Employee Photo</a>
-                    
-                </div>
-            </li>
-        </ol>
         <ol class="form-fields two-col">
                             <li>
-                    <label for="txtCompname">Company Name <span class="required">*</span></label><input value="{{data.COM_Name}}" name="company[txtCompname]" id="txtCompname" type="text"></li>
+                    <label for="txtCompname">Company Name <span class="required">*</span></label><input value="" name="company[txtCompname]" id="txtCompname" type="text"></li>
                         <li>
                 <label for="txtEmpCodePrefx">Employee Username Prefix <span class="required">*</span></label><input value="" name="company[txtEmpCodePrefx]" id="erp-hr-user-email"  type="text"></li>
 

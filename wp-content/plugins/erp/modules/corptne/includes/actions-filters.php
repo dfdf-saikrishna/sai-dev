@@ -1,7 +1,7 @@
 <?php
 
 // Actions *****************************************************************/
-add_action('wp_login', 'custom_login');
+//add_action('wp_login', 'custom_login');
 add_action( 'admin_menu', 'custom_menu_page_removing' );
 add_action('login_head', 'my_loginlogo');
 add_action('admin_head','favicon');

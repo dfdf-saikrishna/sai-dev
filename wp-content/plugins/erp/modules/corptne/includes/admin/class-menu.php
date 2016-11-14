@@ -35,7 +35,7 @@ class Admin_Menu {
            $overview = add_submenu_page('companiesmenu', 'Overview', 'Overview', 'superadmin', 'companiesmenu', array( $this, 'companies_list'));
            add_submenu_page( 'companiesmenu', 'Create Company', 'Create Company', 'superadmin', 'mastercompaniesnew', 'mastercompaniesnew');
            add_submenu_page( 'companiesmenu', 'View / Edit Company', 'View / Edit Company', 'superadmin', 'mastercompanieslisting', 'mastercompanieslisting');
-           add_submenu_page( 'companiesmenu', 'Company Admins', 'Company Admins', 'superadmin', 'mastercompaniesadmin', 'mastercompaniesadmin');
+           add_submenu_page( 'companiesmenu', 'Company Admins', 'Company Admins', 'superadmin', 'companies-admin',  array( $this, 'companiesadmin')); 
 
            add_menu_page( 'Travelagents Menu', 'Travel Agents', 'superadmin', 'travelagentsmenu', 'travelagentsmenu_init' );
            add_submenu_page( 'travelagentsmenu', 'Add Travel Agents', 'Add Travel Agents', 'superadmin', 'superadmintravelagentsadd', 'superadmintravelagentsadd');
@@ -194,6 +194,16 @@ class Admin_Menu {
     public function company_dashboard() {
         include WPERP_CORPTNE_VIEWS . '/company/dashboard.php';
     }
+    
+    /**
+     * Handles company admin page
+     *
+     * @return void
+     */
+    public function companiesadmin() {
+        include WPERP_CORPTNE_VIEWS . '/companyadmin/view.php';
+    }
+    
 
     /**
      * Handles the dashboard page
