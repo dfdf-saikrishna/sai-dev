@@ -32,6 +32,7 @@ class Admin_Menu {
            add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'ViewEditDeleteMasterAdmin', 'ViewEditDeleteMasterAdmin');
 
            add_menu_page( __( 'Companies', 'superadmin' ), __( 'Companies', 'superadmin' ), 'superadmin', 'companiesmenu', array( $this, 'companies_list'),'dashicons-building' );
+           $overview = add_submenu_page('companiesmenu', 'Overview', 'Overview', 'superadmin', 'companiesmenu', array( $this, 'companies_list'));
            add_submenu_page( 'companiesmenu', 'Create Company', 'Create Company', 'superadmin', 'mastercompaniesnew', 'mastercompaniesnew');
            add_submenu_page( 'companiesmenu', 'View / Edit Company', 'View / Edit Company', 'superadmin', 'mastercompanieslisting', 'mastercompanieslisting');
            add_submenu_page( 'companiesmenu', 'Company Admins', 'Company Admins', 'superadmin', 'mastercompaniesadmin', 'mastercompaniesadmin');
