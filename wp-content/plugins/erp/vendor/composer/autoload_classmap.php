@@ -366,6 +366,7 @@ return array(
     'WeDevs\\ERP\\HRM\\Emails\\Rejected_Leave_Request' => $baseDir . '/modules/hrm/includes/emails/class-email-rejected-leave-request.php',
     'WeDevs\\ERP\\HRM\\Employee' => $baseDir . '/modules/hrm/includes/class-employee.php',
     //test
+	'WeDevs\\ERP\\Corptne\\Companyview' => $baseDir . '/modules/corptne/includes/class-companyview.php',
     'WeDevs\\ERP\\Corptne\\Employee' => $baseDir . '/modules/corptne/includes/class-employee.php',
     'WeDevs\\ERP\\HRM\\Employee_List_Table' => $baseDir . '/modules/hrm/includes/class-employee-list-table.php',
 	'WeDevs\\ERP\\Corptne\\Superadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-superadmin-list-table.php',
@@ -377,6 +378,7 @@ return array(
     'WeDevs\\ERP\\HRM\\Hr_Log' => $baseDir . '/modules/hrm/includes/class-hr-log.php',
     'WeDevs\\ERP\\HRM\\Human_Resource' => $baseDir . '/modules/hrm/hrm.php',
 	'WeDevs\\ERP\\Corptne\\Corptne' => $baseDir . '/modules/corptne/corptne.php',
+	'WeDevs\\ERP\\Corptne\\Models\\Companyview' => $baseDir . '/modules/corptne/includes/models/companyview.php',
     'WeDevs\\ERP\\HRM\\Leave_Requests_List_Table' => $baseDir . '/modules/hrm/includes/class-leave-request-list-table.php',
     'WeDevs\\ERP\\HRM\\Models\\Announcement' => $baseDir . '/modules/hrm/includes/models/announcement.php',
     'WeDevs\\ERP\\HRM\\Models\\Department' => $baseDir . '/modules/hrm/includes/models/Department.php',

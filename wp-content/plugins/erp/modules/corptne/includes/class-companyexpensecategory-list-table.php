@@ -47,10 +47,10 @@ class Companyexpensecategory_List_Table extends \WP_List_Table
         return '<em>' . $item['COM_Id'] . '</em>';
     }
     
-    function column_company($item){   
-        $category = sprintf('<a href="?page=viewcompany" data-id=%s>%s</a>', $item['COM_Id'], __($item['COM_Name'], 'companyexpensecategory_table_list'));
-      // $category = $item['COM_Name'];
-		return $category;
+    function column_company($item){
+		
+	 return sprintf( '%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s',$item['COM_Name'], '', erp_company_url_single_companyview( $item['COM_Id']),'');
+   
     }
     
 	function column_categorymodes($item){

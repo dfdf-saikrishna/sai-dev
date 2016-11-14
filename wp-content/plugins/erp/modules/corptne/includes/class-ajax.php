@@ -41,6 +41,7 @@ class Ajax_Handler {
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
+		 $this->action( 'wp_ajax_erp-hr-companyview-get', 'companyview_get' );
         $this->action( 'wp_ajax_erp-hr-emp-delete', 'employee_remove' );
         $this->action( 'wp_ajax_erp-hr-emp-restore', 'employee_restore' );
         $this->action( 'wp_ajax_erp-hr-emp-update-status', 'employee_update_employment' );
