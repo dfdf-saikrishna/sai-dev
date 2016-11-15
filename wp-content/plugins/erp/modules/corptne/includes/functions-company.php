@@ -111,7 +111,7 @@ function company_create( $args = array() ) {
         return $user_id;
     }
     $company_data = array(
-        'user_id'   => $user_id,
+        //'user_id'   => $user_id,
         'COM_Name'   => $data['company']['txtCompname'],
         'COM_Prefix'  => $data['company']['txtCompname'],
         'COM_Email'   => $data['company']['txtCompemail'],
@@ -140,11 +140,13 @@ function company_create( $args = array() ) {
     );
     if($update){
         $tablename = "company";
+        $company_data['user_id'] = $user_id;
         $wpdb->update( $tablename,$company_data,array( 'user_id' => $user_id ));    
     }
     else{
     $user_id  = wp_insert_user( $userdata );
     $tablename = "company";
+    $company_data['user_id'] = $user_id;
     $wpdb->insert( $tablename, $company_data);
     return $user_id;
     }
