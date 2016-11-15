@@ -64,6 +64,7 @@ class Corptne {
         require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
         require_once WPERP_CORPTNE_PATH . '/includes/actions-filters.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
+		require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-capabilities.php';
@@ -234,6 +235,9 @@ class Corptne {
             
             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+                break;
+			case 'companies_page_mastercompaniesview':
+				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
             
             case 'toplevel_page_superadmin-dashboard':

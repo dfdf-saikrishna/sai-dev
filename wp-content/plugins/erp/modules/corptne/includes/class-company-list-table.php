@@ -146,9 +146,14 @@ class Companies_List_Table extends \WP_List_Table
         else{
             $image = '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" height="32" width="32">';
         }
-        return sprintf('%s %s %s',
+        /* return sprintf('%s %s %s',
             $image,
             '<a href="#"><strong>' . $item['COM_Name'] . '</strong></a>',
+            $this->row_actions($actions)
+        ); */
+		return sprintf('%s %s %s',
+            $image,
+            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',
             $this->row_actions($actions)
         );
     }

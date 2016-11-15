@@ -752,7 +752,7 @@
                                 _wpnonce: wpErpHr.nonce
                             },
                             success: function(response) {
-                                console.log("test");
+                                //console.log("test");
                                 console.log(response);
                                 var html = wp.template('erp-new-employee')( response );
                                 $( '.content', modal ).html( html );
