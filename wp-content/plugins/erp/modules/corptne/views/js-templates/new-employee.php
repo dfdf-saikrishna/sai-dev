@@ -6,9 +6,15 @@
             <li>
                 <label for="full-name">Upload Company Logo</label>
                 <div class="photo-container">
-                    <input name="company[photo_id]" id="emp-photo-id" value="0" type="hidden">
-                    
-                        <a href="#" id="erp-set-emp-photo" class="button button-small">Select File</a>
+                    <input name="company[photo_id]" id="emp-photo-id" value="{{data.COM_PhotoId}}" type="hidden">
+                    <input type="hidden" name="company[user_id]" value="{{data.user_id}}">
+                        <!--a href="#" id="erp-set-emp-photo" class="button button-small">Select File</a-->
+                        <# if ( data.COM_Logo ) { #>
+                        <img src="{{ data.COM_Logo }}" alt="" />
+                        <a href="#" class="erp-remove-photo">&times;</a>
+                        <# } else { #>
+                            <a href="#" id="erp-set-emp-photo" class="button button-small">Select File</a>
+                        <# } #>
                     
                 </div>
             </li>
@@ -37,7 +43,7 @@
 
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="work[department]"><span class="required">*</span>Address</label>
-                    <textarea name="company[txtaCompaddr]" required value="{{data.COM_Address}}"></textarea>
+                    <textarea name="company[txtaCompaddr]" required>{{data.COM_Address}}</textarea>
                 </li>
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="work[department]">Location</label>
@@ -137,7 +143,7 @@
                 </li>
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="work[department]">Description about this deal</label>
-                    <textarea name="company[txtadescdeal]" value="{{data.COM_Descdeal}}"></textarea>
+                    <textarea name="company[txtadescdeal]">{{data.COM_Descdeal}}</textarea>
                 </li>
                 <li>
             </ol>

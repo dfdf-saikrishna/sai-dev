@@ -91,7 +91,7 @@ function company_create( $args = array() ) {
     );
 
     // if user id exists, do an update
-    $user_id = isset( $posted['user_id'] ) ? intval( $posted['user_id'] ) : 0;
+    $user_id = isset( $data['company']['user_id'] ) ? intval( $data['company']['user_id'] ) : 0;
     $update  = false;
 
     if ( $user_id ) {
@@ -105,7 +105,7 @@ function company_create( $args = array() ) {
     }
 
     //$userdata = apply_filters( 'erp_hr_employee_args', $userdata );
-    $user_id  = wp_insert_user( $userdata );
+    
     $avatar_url = wp_get_attachment_url( $data['company']['photo_id'] );
     if ( is_wp_error( $user_id ) ) {
         return $user_id;
@@ -113,7 +113,7 @@ function company_create( $args = array() ) {
     $company_data = array(
         'user_id'   => $user_id,
         'COM_Name'   => $data['company']['txtCompname'],
-       'COM_Prefix'  => $data['company']['txtCompname'],
+        'COM_Prefix'  => $data['company']['txtCompname'],
         'COM_Email'   => $data['company']['txtCompemail'],
         'COM_Mobile'    => $data['company']['txtCompmob'],
         'COM_Landline'     => $data['company']['txtComplandline'],
@@ -127,6 +127,7 @@ function company_create( $args = array() ) {
         'COM_Cp2username'=>$data['company']['txtCompcntp2name'],
         'COM_Cp2email'=>$data['company']['txtCompcntp2email'],
         'COM_Cp2mobile'=>$data['company']['txtCompcntp2mob'],
+        'COM_PhotoId'=>$data['company']['photo_id'],
         'COM_Logo' => $avatar_url, 
        // 'CT_Name'=>$data['company']['selCT'],
         'COM_Flight'=>$data['company']['cbFlight'],
@@ -137,9 +138,18 @@ function company_create( $args = array() ) {
         'COM_Spcontactno'=>$data['company']['txtSalespercontno'],
         'COM_Descdeal'=>$data['company']['txtadescdeal'],
     );
+    if($update){
+        $tablename = "company";
+        $wpdb->update( $tablename,$company_data,array( 'user_id' => $user_id ));    
+    }
+    else{
+    $user_id  = wp_insert_user( $userdata );
     $tablename = "company";
     $wpdb->insert( $tablename, $company_data);
     return $user_id;
+    }
+    //return $user_id;
+    
 }
 
 /**

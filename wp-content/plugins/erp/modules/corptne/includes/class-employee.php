@@ -179,7 +179,8 @@ class Employee {
 //            }
 //        }
 	$defaults = array(
-            'COM_Logo'        => 0,
+            'COM_Logo'        => '',
+            'COM_PhotoId'   =>'0',
             'user_id'         => 0,
             'COM_Address'     => '',
             'COM_Bus'      => '0',
