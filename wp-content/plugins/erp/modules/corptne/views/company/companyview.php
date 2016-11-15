@@ -72,7 +72,7 @@
                                 if ( current_user_can( 'superadmin', $companyview->id )) {
                                     ?>
                                     <span class="edit">
-									<a class="button button-primary" href="?page=companiesmenu/<?php echo $companyview->id ?>" data-single="true"  data-id="<?php echo $companyview->id ?>"><?php _e( 'Edit', 'companies_table_list' ); ?></a></span>
+									<a class="button button-primary" href="?page=companiesmenu" data-single="true"  data-id="<?php echo $companyview->id ?>"><?php _e( 'Edit', 'companies_table_list' ); ?></a></span>
 									<?php	
                                 }
                                 ?>

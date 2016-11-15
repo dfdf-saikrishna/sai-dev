@@ -225,11 +225,14 @@ class Corptne {
     public function admin_js_templates() {
         global $current_screen;
 
-         //var_dump( $current_screen->base );
+         var_dump( $current_screen->base );
 		//var_dump(WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
         switch ($current_screen->base) {
             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+                break;
+			case 'companies_page_mastercompaniesview':
+				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
             
             case 'toplevel_page_superadmin-dashboard':
