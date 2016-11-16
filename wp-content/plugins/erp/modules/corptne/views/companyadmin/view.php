@@ -1,6 +1,3 @@
-<?php 
-
-?>
 <div class="wrap erp-hr-employees" id="wp-erp">
     <h2><?php _e( 'Company Admins', 'superadmin' ); ?><a href="#" id="companyadmin-new" class="add-new-h2"><?php _e( 'Add New', 'superadmin' ); ?></a></h2>
         <?php
@@ -8,7 +5,7 @@
 
             global $wpdb;
 
-            $table = new WeDevs\ERP\Corptne\Companies_List_Table();
+            $table = new WeDevs\ERP\Corptne\Companiesadmin_List_Table();
             $table->prepare_items();
 
             $message = '';

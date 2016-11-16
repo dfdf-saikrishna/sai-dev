@@ -418,6 +418,6 @@ return array(
     'WeDevs\\ORM\\WP\\PostMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/PostMeta.php',
     'WeDevs\\ORM\\WP\\User' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/User.php',
     'WeDevs\\ORM\\WP\\UserMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/UserMeta.php',
-    
     'WeDevs\\ERP\\Corptne\\Workflow_List_Table' => $baseDir . '/modules/corptne/includes/class-workflow-table.php',
+    'WeDevs\\ERP\\Corptne\\Companiesadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-companyadmin-list-table.php',
 );

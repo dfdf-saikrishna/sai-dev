@@ -64,7 +64,8 @@ class Corptne {
         require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
         require_once WPERP_CORPTNE_PATH . '/includes/actions-filters.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
-		require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
+        require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
+        require_once WPERP_CORPTNE_PATH . '/includes/functions-companyadmin.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-capabilities.php';
@@ -139,7 +140,7 @@ class Corptne {
             wp_enqueue_script( 'erp-sweetalert' );
         }
 
-        wp_enqueue_script( 'wp-erp-hr', WPERP_CORPTNE_ASSETS . "/js/hrm$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-erp-hr', WPERP_CORPTNE_ASSETS . "/js/corptne$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
         wp_enqueue_script( 'wp-erp-hr-leave', WPERP_CORPTNE_ASSETS . "/js/leave$suffix.js", array(
             'erp-script',
             'wp-color-picker'
@@ -198,7 +199,13 @@ class Corptne {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->to_array();
         }
+        //if its an companyadmin page
+        if ( 'companies_page_companies-admin' == $hook ) {
+            wp_enqueue_script( 'post' );
 
+            $employee                          = new Employee();
+            $localize_script['employee_empty'] = $employee->companyadmin_array();
+        }
         wp_localize_script( 'wp-erp-hr', 'wpErpHr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
@@ -230,7 +237,7 @@ class Corptne {
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/companyadmin-create.php', 'erp-new-employee' );
+                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );
                 break;
             
             case 'toplevel_page_companiesmenu':

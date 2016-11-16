@@ -40,6 +40,8 @@ class Ajax_Handler {
 
         // Company Admin
         $this->action( 'wp_ajax_companyadmin_create', 'companyadmin_create' );
+        $this->action( 'wp_ajax_companyadmin_get', 'companyadmin_get' );
+        $this->action( 'wp_ajax_companyadmin-delete', 'companyadmin_remove' );
         
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
@@ -463,9 +465,69 @@ class Ajax_Handler {
      * @return void
      */
     public function companyadmin_create() {
-        //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
-        $data = "sai";
+         //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        //$data = "sai";
+        //$this->send_success( $data );
+		//$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+
+        unset( $_POST['_wp_http_referer'] );
+        unset( $_POST['_wpnonce'] );
+        unset( $_POST['action'] );
+
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+//        $posted['type']       = 'customer';
+
+        // Check permission for editing and adding new employee
+//        if ( isset( $posted['user_id'] ) && $posted['user_id'] ) {
+//            if ( ! current_user_can( 'erp_edit_employee', $posted['user_id'] ) ) {
+//                $this->send_error( __( 'You do not have sufficient permissions to do this action', 'erp' ) );
+//            }
+//        } else {
+//            if ( ! current_user_can( 'erp_create_employee' ) ) {
+//                $this->send_error( __( 'You do not have sufficient permissions to do this action', 'erp' ) );
+//            }
+//        }
+
+        $employee_id  = companyadmin_create( $posted );
+
+//        if ( is_wp_error( $employee_id ) ) {
+//            $this->send_error( $employee_id->get_error_message() );
+//        }
+
+        $employee               = new Employee( $employee_id );
+        $data                   = $employee->to_array();
+        $data['work']['joined'] = $employee->get_joined_date();
+        $data['work']['type']   = $employee->get_type();
+        $data['url']            = $employee->get_details_url();
+
+        // user notification email
+        //if ( isset( $posted['user_notification'] ) && $posted['user_notification'] == 'on' ) {
+            $emailer    = wperp()->emailer->get_email( 'New_Employee_Welcome' );
+            $send_login = isset( $posted['login_info'] ) ? true : false;
+
+            if ( is_a( $emailer, '\WeDevs\ERP\Email') ) {
+                $emailer->trigger( $employee_id, $send_login );
+            }
+        //}
+        $data = $posted;
         $this->send_success( $data );
+    }
+    
+    public function companyadmin_get() {
+        global $wpdb;
+ //       $this->verify_nonce( 'wp-erp-hr-nonce' );
+
+        $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+ //    $user        = get_user_by( 'id', $employee_id );
+
+ //     if ( ! $user ) {
+ //          $this->send_error( __( 'Employee does not exists.', 'erp' ) );
+ //     }
+
+//       $employee = new Employee( $user );
+//        $this->send_success( $employee->to_array() );
+        $response = $wpdb->get_row("SELECT * FROM admin WHERE ADM_Id = $id");
+        $this->send_success($response);
     }
 
     /**

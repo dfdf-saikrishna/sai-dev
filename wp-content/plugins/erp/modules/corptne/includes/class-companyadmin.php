@@ -8,7 +8,7 @@ use WeDevs\ERP\HRM\Models\Work_Experience;
 /**
  * Employee Class
  */
-class Employee {
+class Companyadmin {
 
     /**
      * array for lazy loading data from ERP table
@@ -103,51 +103,16 @@ class Employee {
      */
     public function to_array() {
 	$defaults = array(
-            'COM_Logo'        => '',
-            'COM_PhotoId'   =>'0',
-            'user_id'         => 0,
-            'COM_Address'     => '',
-            'COM_Bus'      => '0',
-            'COM_City'     => '',
-            'COM_ComidOld'       => '0',
-            'COM_Cp1email'     => '',
-            'COM_Cp1mobile'           => '',
-            'COM_Cp1username'      => '',
-            'COM_Cp2email'          => '',
-            'COM_Cp2mobile'         => '',
-            'COM_Cp2username'          => '',
-            'COM_Descdeal'  => '',
-            'COM_Email'     => '',
-            'COM_Flight' => '',
-            'COM_Hotel'         => '',
             'COM_Id'        => '',
-            'COM_Landline'     => '',
-            'COM_Location'        => '',
-            'COM_Name'        => '',
-            'txtSalespersname'            => '',
-            'txtSalesperemail'         => '',
-            'txtSalespercontno'           => '',
-            'txtadescdeal'     => '',
+            'ADM_Name'     => '',
+            'ADM_Email'        => '',
+            'ADM_Cont'        => '',
+            'ADM_Username'            => '',
+            'ADM_Pwd'         => '',
+           // 'comget' => get_company(),
+            
+            
     );
-        return apply_filters( 'erp_hr_get_employee_fields', $defaults, $this->id, $this->user );
-        //return $defaults;
-    }
-    
-    public function companyadmin_array() {
-		global $wpdb;
-
-	$defaults = array(
-            'COM_Id'        => '',
-            'ADM_Name'         => '',
-            'ADM_Email'     => '',
-            'ADM_Cont'      => '',
-            'ADM_Username'     => '',
-    );
-	
-	$companylist=$wpdb->get_results( "SELECT COM_Id, COM_Name FROM company WHERE COM_Status=0 ORDER BY COM_Name ASC");
-	$defaults['companylist']=$companylist;
-	
-
         return apply_filters( 'erp_hr_get_employee_fields', $defaults, $this->id, $this->user );
         //return $defaults;
     }

@@ -7,7 +7,7 @@
  *
  * @return void
  */
-function company_on_delete( $user_id, $hard = 0 ) {
+function companyadmin_on_delete( $user_id, $hard = 0 ) {
     global $wpdb;
 
     $user = get_user_by( 'id', $user_id );
@@ -23,12 +23,6 @@ function company_on_delete( $user_id, $hard = 0 ) {
     }
 }
 
-function get_company_list(){
-	global $wpdb;
-	$companylist = $wpdb->get_results( "SELECT COM_Id, COM_Name FROM company WHERE COM_Status=0 ORDER BY COM_Name ASC");
-	return $companylist;
-}
-
 /**
  * Create a new employee
  *
@@ -36,68 +30,31 @@ function get_company_list(){
  *
  * @return int  employee id
  */
-function company_create( $args = array() ) {
+function companyadmin_create( $args = array() ) {
     global $wpdb;
     $defaults = array(
         //'user_email'      => '',
-        'company'        => array(
-            'photo_id'        => 0,
-            'user_id'         => 0,
-            'txtCompname'     => '',
-            'txtCompmob'      => '',
-            'txtCompemail'     => '',
-            'txtComplandline'       => '',
-            'txtaCompaddr'     => '',
-            'txtCompoloc'           => '',
-            'txtCompcity'      => '',
-            'txtCompstate'          => '',
-            'txtCompcntp1name'         => '',
-            'txtCompcntp1email'          => '',
-            'txtCompcntp1mob'  => '',
-            'txtCompcntp2name'     => '',
-            'txtCompcntp2email' => '',
-            'txtCompcntp2mob'         => '',
-            'selCT'        => '',
-            'cbFlight'     => '',
-            'cbBus'        => '',
-            'cbHotel'        => '',
-            'txtSalespersname'            => '',
-            'txtSalesperemail'         => '',
-            'txtSalespercontno'           => '',
-            'txtadescdeal'     => '',
+        'admin'        => array(
+            'compnyadminname'          => '',
+            'comadminname'             => '',
+            'comadminemail'            => '',
+            'comadmincontact'          => '',
+            'comadminusername'         => '',
         )
     );
 
     $posted = array_map( 'strip_tags_deep', $args );
     $posted = array_map( 'trim_deep', $posted );
     $data   = erp_parse_args_recursive( $posted, $defaults );
-
-    // some basic validation
-//    if ( empty( $data['personal']['first_name'] ) ) {
-//        return new WP_Error( 'empty-first-name', __( 'Please provide the first name.', 'erp' ) );
-//    }
-//
-//    if ( empty( $data['personal']['last_name'] ) ) {
-//        return new WP_Error( 'empty-last-name', __( 'Please provide the last name.', 'erp' ) );
-//    }
-//
-//    if ( ! is_email( $data['user_email'] ) ) {
-//        return new WP_Error( 'invalid-email', __( 'Please provide a valid email address.', 'erp' ) );
-//    }
-
-    // attempt to create the user
     $userdata = array(
-        'user_login'   => $data['company']['txtCompemail'],
-        'user_email'   => $data['company']['txtCompemail'],
-        'first_name'   => $data['company']['txtCompname'],
-        'last_name'    => $data['company']['txtCompname'],
-        'user_url'     => $data['company']['user_url'],
-        'display_name' => $data['company']['txtCompname'],
-        //'display_name' => $data['company']['txtCompname'] . ' ' . $data['personal']['middle_name'] . ' ' . $data['personal']['last_name'],
+        'user_login'   => $data['admin']['comadminusername'],
+        'user_email'   => $data['admin']['comadminemail'],
+        'first_name'   => $data['admin']['comadminname'],
+        'display_name' => $data['admin']['comadminemail'],     
     );
 
     // if user id exists, do an update
-    $user_id = isset( $data['company']['user_id'] ) ? intval( $data['company']['user_id'] ) : 0;
+    $user_id = isset( $data['admin']['user_id'] ) ? intval( $data['admin']['user_id'] ) : 0;
     $update  = false;
 
     if ( $user_id ) {
@@ -111,53 +68,31 @@ function company_create( $args = array() ) {
     }
 
     //$userdata = apply_filters( 'erp_hr_employee_args', $userdata );
-    
-    $avatar_url = wp_get_attachment_url( $data['company']['photo_id'] );
+      //$user_id  = wp_insert_user( $userdata );
+    //$avatar_url = wp_get_attachment_url( $data['company']['photo_id'] );
     if ( is_wp_error( $user_id ) ) {
         return $user_id;
-    }
+    } 
     $company_data = array(
-        //'user_id'   => $user_id,
-        'COM_Name'   => $data['company']['txtCompname'],
-        'COM_Prefix'  => $data['company']['txtCompname'],
-        'COM_Email'   => $data['company']['txtCompemail'],
-        'COM_Mobile'    => $data['company']['txtCompmob'],
-        'COM_Landline'     => $data['company']['txtComplandline'],
-        'COM_Address' => $data['company']['txtaCompaddr'],
-        'COM_Location' => $data['company']['txtCompoloc'],
-        'COM_City' => $data['company']['txtCompcity'],
-        'COM_State'=>$data['company']['txtCompstate'],
-        'COM_Cp1username'=>$data['company']['txtCompcntp1name'],
-        'COM_Cp1email'=>$data['company']['txtCompcntp1email'],
-        'COM_Cp1mobile'=>$data['company']['txtCompcntp1mob'],
-        'COM_Cp2username'=>$data['company']['txtCompcntp2name'],
-        'COM_Cp2email'=>$data['company']['txtCompcntp2email'],
-        'COM_Cp2mobile'=>$data['company']['txtCompcntp2mob'],
-        'COM_PhotoId'=>$data['company']['photo_id'],
-        'COM_Logo' => $avatar_url, 
-       // 'CT_Name'=>$data['company']['selCT'],
-        'COM_Flight'=>$data['company']['cbFlight'],
-        'COM_Bus'=>$data['company']['cbBus'],
-        'COM_Hotel'=>$data['company']['cbHotel'],
-        'COM_Spname'=>$data['company']['txtSalespersname'],
-        'COM_Spemail'=>$data['company']['txtSalesperemail'],
-        'COM_Spcontactno'=>$data['company']['txtSalespercontno'],
-        'COM_Descdeal'=>$data['company']['txtadescdeal'],
+	    //'user_id'  => $user_id,
+            'COM_Id'   => $data['admin']['compnyadminname'],
+            'ADM_Name'   => $data['admin']['comadminname'],
+            'ADM_Email'   => $data['admin']['comadminemail'],
+            'ADM_Cont'   => $data['admin']['comadmincontact'],
+            'ADM_Username'   => $data['admin']['comadminusername'],
     );
     if($update){
-        $tablename = "company";
+        $tablename = "admin";
         $company_data['user_id'] = $user_id;
         $wpdb->update( $tablename,$company_data,array( 'user_id' => $user_id ));    
     }
     else{
+    $tablename = "admin";
     $user_id  = wp_insert_user( $userdata );
-    $tablename = "company";
     $company_data['user_id'] = $user_id;
     $wpdb->insert( $tablename, $company_data);
     return $user_id;
     }
-    //return $user_id;
-    
 }
 
 /**
@@ -169,7 +104,7 @@ function company_create( $args = array() ) {
  *
  * @return array  the employees
  */
-function company_get( $args = array() ) {
+function companyadmin_get( $args = array() ) {
     global $wpdb;
 
     $defaults = array(
@@ -269,7 +204,7 @@ function company_get( $args = array() ) {
  *
  * @return array  the employees
  */
-function count_companies() {
+function count_companiesadmin() {
 
     $where = array();
 
@@ -308,7 +243,7 @@ function count_companies() {
  *
  * @return array
  */
-function erp_hr_company_get_status_count() {
+function erp_hr_companyadmin_get_status_count() {
     global $wpdb;
 
     $statuses = array( 'all' => __( 'All', 'erp' ) ) + erp_hr_get_employee_statuses();
@@ -352,7 +287,7 @@ function erp_hr_company_get_status_count() {
  *
  * @return int [no of trash employee]
  */
-function erp_company_count_trashed_employees() {
+function erp_companyadmin_count_trashed_employees() {
     $employee = new \WeDevs\ERP\HRM\Models\Employee();
 
     return $employee->onlyTrashed()->count();
@@ -367,7 +302,7 @@ function erp_company_count_trashed_employees() {
  *
  * @return void
  */
-function erp_company_restore( $employee_ids ) {
+function erp_companyadmin_restore( $employee_ids ) {
     if ( empty( $employee_ids ) ) {
         return;
     }
@@ -390,7 +325,7 @@ function erp_company_restore( $employee_ids ) {
  *
  * @return void
  */
-function company_delete( $employee_ids, $hard = false ) {
+function companyadmin_delete( $employee_ids, $hard = false ) {
 
     if ( empty( $employee_ids ) ) {
         return;
@@ -440,7 +375,7 @@ function company_delete( $employee_ids, $hard = false ) {
  *
  * @return object [collection of user_id]
  */
-function erp_company_get_todays_birthday() {
+function erp_companyadmin_get_todays_birthday() {
 
     $db = new \WeDevs\ORM\Eloquent\Database();
 
@@ -457,7 +392,7 @@ function erp_company_get_todays_birthday() {
  *
  * @return object [user_id, date_of_birth]
  */
-function erp_company_get_next_seven_days_birthday() {
+function erp_companyadmin_get_next_seven_days_birthday() {
 
     $db = new \WeDevs\ORM\Eloquent\Database();
 
@@ -475,7 +410,7 @@ function erp_company_get_next_seven_days_birthday() {
  *
  * @return array  the key-value paired employees
  */
-function erp_company_get_employees_dropdown_raw( $exclude = null ) {
+function erp_companyadmin_get_employees_dropdown_raw( $exclude = null ) {
     $employees = erp_hr_get_employees( [ 'number' => -1 , 'no_object' => true ] );
     $dropdown  = array( 0 => __( '- Select Employee -', 'erp' ) );
 
@@ -500,7 +435,7 @@ function erp_company_get_employees_dropdown_raw( $exclude = null ) {
  *
  * @return string  the dropdown
  */
-function erp_company_get_employees_dropdown( $selected = '' ) {
+function erp_companyadmin_get_employees_dropdown( $selected = '' ) {
     $employees = erp_hr_get_employees_dropdown_raw();
     $dropdown  = '';
 
@@ -518,7 +453,7 @@ function erp_company_get_employees_dropdown( $selected = '' ) {
  *
  * @return array the employee statuses
  */
-function erp_company_get_employee_statuses() {
+function erp_companyadmin_get_employee_statuses() {
     $statuses = array(
         'active'     => __( 'Active', 'erp' ),
         'terminated' => __( 'Terminated', 'erp' ),
@@ -534,7 +469,7 @@ function erp_company_get_employee_statuses() {
  *
  * @return array the employee statuses
  */
-function erp_company_get_employee_statuses_icons( $selected = NULL ) {
+function erp_companyadmin_get_employee_statuses_icons( $selected = NULL ) {
     $statuses = apply_filters( 'erp_hr_employee_statuses_icons', array(
         'active'     => sprintf( '<span class="erp-tips dashicons dashicons-yes" title="%s"></span>', __( 'Active', 'erp' ) ),
         'terminated' => sprintf( '<span class="erp-tips dashicons dashicons-dismiss" title="%s"></span>', __( 'Terminated', 'erp' ) ),
@@ -555,7 +490,7 @@ function erp_company_get_employee_statuses_icons( $selected = NULL ) {
  *
  * @return array the employee statuses
  */
-function erp_company_get_employee_types() {
+function erp_companyadmin_get_employee_types() {
     $types = array(
         'permanent' => __( 'Full Time', 'erp' ),
         'parttime'  => __( 'Part Time', 'erp' ),
@@ -572,7 +507,7 @@ function erp_company_get_employee_types() {
  *
  * @return array the employee hire sources
  */
-function erp_company_get_employee_sources() {
+function erp_companyadmin_get_employee_sources() {
     $sources = array(
         'direct'        => __( 'Direct', 'erp' ),
         'referral'      => __( 'Referral', 'erp' ),
@@ -591,7 +526,7 @@ function erp_company_get_employee_sources() {
  *
  * @return array all the statuses
  */
-function erp_company_get_marital_statuses( $select_text = null ) {
+function erp_companyadmin_get_marital_statuses( $select_text = null ) {
 
     if ( $select_text ) {
         $statuses = array(
@@ -616,7 +551,7 @@ function erp_company_get_marital_statuses( $select_text = null ) {
  *
  * @return array all the type
  */
-function erp_company_get_terminate_type( $selected = NULL ) {
+function erp_companyadmin_get_terminate_type( $selected = NULL ) {
     $type = apply_filters( 'erp_hr_terminate_type', [
         'voluntary'   => __( 'Voluntary', 'erp' ),
         'involuntary' => __( 'Involuntary', 'erp' )
@@ -634,7 +569,7 @@ function erp_company_get_terminate_type( $selected = NULL ) {
  *
  * @return array all the reason
  */
-function erp_company_get_terminate_reason( $selected = NULL ) {
+function erp_companyadmin_get_terminate_reason( $selected = NULL ) {
     $reason = apply_filters( 'erp_hr_terminate_reason', [
         'attendance'            => __( 'Attendance', 'erp' ),
         'better_employment'     => __( 'Better Employment Conditions', 'erp' ),
@@ -662,7 +597,7 @@ function erp_company_get_terminate_reason( $selected = NULL ) {
  *
  * @return array all the reason
  */
-function erp_company_get_terminate_rehire_options( $selected = NULL ) {
+function erp_companyadmin_get_terminate_rehire_options( $selected = NULL ) {
     $reason = apply_filters( 'erp_hr_terminate_rehire_option', array(
         'yes'         => __( 'Yes', 'erp' ),
         'no'          => __( 'No', 'erp' ),
@@ -685,7 +620,7 @@ function erp_company_get_terminate_rehire_options( $selected = NULL ) {
  *
  * @return void | WP_Error
  */
-function erp_company_employee_terminate( $data ) {
+function erp_companyadmin_employee_terminate( $data ) {
 
     if ( ! $data['terminate_date'] ) {
         return new WP_Error( 'no-date', 'Termination date is required' );
@@ -733,7 +668,7 @@ function erp_company_employee_terminate( $data ) {
  *
  * @return array all the statuses
  */
-function erp_company_get_genders( $select_text = null ) {
+function erp_companyadmin_get_genders( $select_text = null ) {
 
     if ( $select_text ) {
         $genders = array(
@@ -758,7 +693,7 @@ function erp_company_get_genders( $select_text = null ) {
  *
  * @return array all the statuses
  */
-function erp_company_get_pay_type() {
+function erp_companyadmin_get_pay_type() {
     $types = array(
         'hourly'   => __( 'Hourly', 'erp' ),
         'daily'    => __( 'Daily', 'erp' ),
@@ -776,7 +711,7 @@ function erp_company_get_pay_type() {
  *
  * @return array all the statuses
  */
-function erp_company_get_pay_change_reasons() {
+function erp_companyadmin_get_pay_change_reasons() {
     $reasons = array(
         'promotion'   => __( 'Promotion', 'erp' ),
         'performance' => __( 'Performance', 'erp' ),
@@ -793,7 +728,7 @@ function erp_company_get_pay_change_reasons() {
  *
  * @return void
  */
-function erp_company_employee_add_history( $args = array() ) {
+function erp_companyadmin_employee_add_history( $args = array() ) {
     global $wpdb;
 
     $defaults = array(
@@ -827,7 +762,7 @@ function erp_company_employee_add_history( $args = array() ) {
  *
  * @return bool
  */
-function erp_company_employee_remove_history( $history_id ) {
+function erp_companyadmin_employee_remove_history( $history_id ) {
     global $wpdb;
 
     return $wpdb->delete( $wpdb->prefix . 'erp_hr_employee_history', array( 'id' => $history_id ) );
@@ -840,7 +775,7 @@ function erp_company_employee_remove_history( $history_id ) {
  *
  * @return string  url of the employee details page
  */
-function erp_company_url_single_employee( $employee_id, $tab = null ) {
+function erp_companyadmin_url_single_employee( $employee_id, $tab = null ) {
     if ( $tab ) {
         $tab = '&tab=' . $tab;
     }
@@ -859,7 +794,7 @@ function erp_company_url_single_employee( $employee_id, $tab = null ) {
  *
  * @return array
  */
-function erp_company_employee_dashboard_announcement( $user_id ) {
+function erp_companyadmin_employee_dashboard_announcement( $user_id ) {
     global $wpdb;
 
     return erp_array_to_object( \WeDevs\ERP\HRM\Models\Announcement::join( $wpdb->posts, 'post_id', '=', $wpdb->posts . '.ID' )
@@ -875,7 +810,7 @@ function erp_company_employee_dashboard_announcement( $user_id ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_general( $employee ) {
+function erp_companyadmin_employee_single_tab_general( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-general.php';
 }
 
@@ -884,7 +819,7 @@ function erp_company_employee_single_tab_general( $employee ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_job( $employee ) {
+function erp_companyadmin_employee_single_tab_job( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-job.php';
 }
 
@@ -893,7 +828,7 @@ function erp_company_employee_single_tab_job( $employee ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_leave( $employee ) {
+function erp_companyadmin_employee_single_tab_leave( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-leave.php';
 }
 
@@ -902,7 +837,7 @@ function erp_company_employee_single_tab_leave( $employee ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_notes( $employee ) {
+function erp_companyadmin_employee_single_tab_notes( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-notes.php';
 }
 
@@ -911,7 +846,7 @@ function erp_company_employee_single_tab_notes( $employee ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_performance( $employee ) {
+function erp_companyadmin_employee_single_tab_performance( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-performance.php';
 }
 
@@ -920,7 +855,7 @@ function erp_company_employee_single_tab_performance( $employee ) {
  *
  * @return void
  */
-function erp_company_employee_single_tab_permission( $employee ) {
+function erp_companyadmin_employee_single_tab_permission( $employee ) {
     include WPERP_HRM_VIEWS . '/employee/tab-permission.php';
 }
 
