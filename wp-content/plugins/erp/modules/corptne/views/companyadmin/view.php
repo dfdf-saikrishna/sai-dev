@@ -1,4 +1,4 @@
-<div class="wrap erp-hr-employees" id="wp-erp">
+<div class="wrap erp-hr-companyadmin" id="wp-erp">
     <h2><?php _e( 'Company Admins', 'superadmin' ); ?><a href="#" id="companyadmin-new" class="add-new-h2"><?php _e( 'Add New', 'superadmin' ); ?></a></h2>
         <?php
         //require '/../includes/class_table_view.php';

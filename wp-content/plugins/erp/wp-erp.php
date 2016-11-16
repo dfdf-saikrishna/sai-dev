@@ -207,6 +207,7 @@ final class WeDevs_ERP {
         require_once WPERP_INCLUDES . '/functions-company.php';
         require_once WPERP_INCLUDES . '/functions-people.php';
         require_once WPERP_INCLUDES . '/lib/class-wedevs-insights.php';
+        require_once WPERP_INCLUDES . '/layout-functions.php';
 
         if ( is_admin() ) {
             require_once WPERP_INCLUDES . '/admin/functions.php';

@@ -30,7 +30,7 @@
             
             // Company Admin
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
-            $( '.erp-hr-employees' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
+            $( '.erp-hr-companyadmin' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.delete a', this.companyAdmin.remove );
             
             // employee
@@ -835,7 +835,7 @@
                                 _wpnonce: wpErpHr.nonce
                             },
                             success: function(response) {
-                                //console.log("test");
+                                console.log("test");
                                 console.log(response);
                                 var html = wp.template('erp-new-employee')( response );
                                 $( '.content', modal ).html( html );

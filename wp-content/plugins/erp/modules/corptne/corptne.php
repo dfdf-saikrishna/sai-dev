@@ -61,11 +61,11 @@ class Corptne {
     private function includes() {
 
         require_once WPERP_CORPTNE_PATH . '/includes/functions-database.php';
-        require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
         require_once WPERP_CORPTNE_PATH . '/includes/actions-filters.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyadmin.php';
+//        require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-capabilities.php';
@@ -232,8 +232,7 @@ class Corptne {
     public function admin_js_templates() {
         global $current_screen;
 
-         var_dump( $current_screen->base );
-		//var_dump(WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+        //var_dump( $current_screen->base );
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
