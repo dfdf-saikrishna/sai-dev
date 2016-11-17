@@ -62,19 +62,19 @@ class Modules {
                 'callback'    => '\WeDevs\ERP\Corptne\Corptne',
                 'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
             ],
-			'CompanyAdmin' => [
+            'CompanyAdmin' => [
                 'title'       => __( 'CompanyAdmin', 'erp' ),
                 'slug'        => 'erp-accounting',
                 'description' => __( 'Company Admin Functionalities', 'erp' ),
-                'callback'    => '\WeDevs\ERP\Comanyadmin\Companyadmin',
-                'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
+                'callback'    => '\WeDevs\ERP\Company\Company',
+                'modules'     => apply_filters( 'erp_companyadmin_modules', [ ] )
             ],
-			'Employee' => [
+            'Employee' => [
                 'title'       => __( 'Employee', 'erp' ),
                 'slug'        => 'erp-accounting',
                 'description' => __( 'Employee Functionalities', 'erp' ),
                 'callback'    => '\WeDevs\ERP\Employee\Employee',
-                'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
+                'modules'     => apply_filters( 'erp_employee_modules', [ ] )
             ]
         ];
     }

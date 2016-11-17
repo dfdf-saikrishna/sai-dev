@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Corptne;
+namespace WeDevs\ERP\Company;
 
 use WeDevs\ERP\Framework\Traits\Ajax;
 use WeDevs\ERP\Framework\Traits\Hooker;

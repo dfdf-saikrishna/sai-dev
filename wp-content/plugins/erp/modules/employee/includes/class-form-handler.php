@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Corptne;
+namespace WeDevs\ERP\Employee;
 
 /**
  * Handle the form submissions

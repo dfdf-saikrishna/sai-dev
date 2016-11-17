@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\HRM;
+namespace WeDevs\ERP\Corptne;
 
 use WeDevs\ERP\Framework\ERP_Settings_Page;
 
@@ -13,7 +13,7 @@ class Settings extends ERP_Settings_Page {
      */
     public function __construct() {
         $this->id            = 'erp-hr';
-        $this->label         = __( 'HR', 'erp' );
+        $this->label         = __( 'Corptne', 'erp' );
 
         $this->sections      = $this->get_sections();
     }

@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Corptne\Emails;
+namespace WeDevs\ERP\Employee\Emails;
 
 use WeDevs\ERP\Email;
 use WeDevs\ERP\Framework\Traits\Hooker;

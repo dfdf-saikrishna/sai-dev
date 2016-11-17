@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Companyadmin;
+namespace WeDevs\ERP\Company;
 
 use WeDevs\ERP\Framework\Traits\Hooker;
 
@@ -8,7 +8,7 @@ use WeDevs\ERP\Framework\Traits\Hooker;
  *
  * This is loaded in `init` action hook
  */
-class Companyadmin {
+class Company {
 
     use Hooker;
 
@@ -46,11 +46,11 @@ class Companyadmin {
      * @return void
      */
     private function define_constants() {
-        define( 'WPERP_CORPTNE_FILE', __FILE__ );
-        define( 'WPERP_CORPTNE_PATH', dirname( __FILE__ ) );
-        define( 'WPERP_CORPTNE_VIEWS', dirname( __FILE__ ) . '/views' );
-        define( 'WPERP_CORPTNE_JS_TMPL', WPERP_CORPTNE_VIEWS . '/js-templates' );
-        define( 'WPERP_CORPTNE_ASSETS', plugins_url( '/assets', __FILE__ ) );
+        define( 'WPERP_COMPANY_FILE', __FILE__ );
+        define( 'WPERP_COMPANY_PATH', dirname( __FILE__ ) );
+        define( 'WPERP_COMPANY_VIEWS', dirname( __FILE__ ) . '/views' );
+        define( 'WPERP_COMPANY_JS_TMPL', WPERP_COMPANY_VIEWS . '/js-templates' );
+        define( 'WPERP_COMPANY_ASSETS', plugins_url( '/assets', __FILE__ ) );
     }
 
     /**
@@ -60,18 +60,18 @@ class Companyadmin {
      */
     private function includes() {
 
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-database.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/actions-filters.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-companyadmin.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-capabilities.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-dashboard-widgets.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/functions-reporting.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/actions-filters.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-database.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/actions-filters.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-company.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-companyview.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-companyadmin.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-leave.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-capabilities.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-dashboard-widgets.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/functions-reporting.php';
+//        require_once WPERP_COMPANY_PATH . '/includes/actions-filters.php';
     }
 
     /**
@@ -140,8 +140,8 @@ class Companyadmin {
             wp_enqueue_script( 'erp-sweetalert' );
         }
 
-        wp_enqueue_script( 'wp-erp-hr', WPERP_CORPTNE_ASSETS . "/js/companyadmin$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
-        wp_enqueue_script( 'wp-erp-hr-leave', WPERP_CORPTNE_ASSETS . "/js/leave$suffix.js", array(
+        wp_enqueue_script( 'wp-erp-hr', WPERP_COMPANY_ASSETS . "/js/companyadmin$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-erp-hr-leave', WPERP_COMPANY_ASSETS . "/js/leave$suffix.js", array(
             'erp-script',
             'wp-color-picker'
         ), date( 'Ymd' ), true );
@@ -236,63 +236,63 @@ class Companyadmin {
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );
                 break;
             
             case 'toplevel_page_companiesmenu':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
 			case 'companies_page_mastercompaniesview':
-				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+				erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
             
             case 'toplevel_page_superadmin-dashboard':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
 				
             case 'toplevel_page_erp-hr':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-leave-request.php', 'erp-new-leave-req' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/leave-days.php', 'erp-leave-days' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-leave-request.php', 'erp-new-leave-req' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/leave-days.php', 'erp-leave-days' );
                 break;
 
             case 'hr-management_page_erp-hr-depts':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-dept.php', 'erp-new-dept' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/row-dept.php', 'erp-dept-row' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-dept.php', 'erp-new-dept' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/row-dept.php', 'erp-dept-row' );
                 break;
 
             case 'hr-management_page_erp-hr-designation':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-designation.php', 'erp-new-desig' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/row-desig.php', 'erp-desig-row' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-designation.php', 'erp-new-desig' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/row-desig.php', 'erp-desig-row' );
                 break;
 
             case 'hr-management_page_erp-hr-employee':
             case 'hr-management_page_erp-hr-my-profile':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/row-employee.php', 'erp-employee-row' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/employment-status.php', 'erp-employment-status' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/compensation.php', 'erp-employment-compensation' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/job-info.php', 'erp-employment-jobinfo' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/work-experience.php', 'erp-employment-work-experience' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/education-form.php', 'erp-employment-education' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/performance-reviews.php', 'erp-employment-performance-reviews' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/performance-comments.php', 'erp-employment-performance-comments' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/performance-goals.php', 'erp-employment-performance-goals' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/dependents.php', 'erp-employment-dependent' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-dept.php', 'erp-new-dept' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-designation.php', 'erp-new-desig' );
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/employee-terminate.php', 'erp-employment-terminate' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/row-employee.php', 'erp-employee-row' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/employment-status.php', 'erp-employment-status' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/compensation.php', 'erp-employment-compensation' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/job-info.php', 'erp-employment-jobinfo' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/work-experience.php', 'erp-employment-work-experience' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/education-form.php', 'erp-employment-education' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/performance-reviews.php', 'erp-employment-performance-reviews' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/performance-comments.php', 'erp-employment-performance-comments' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/performance-goals.php', 'erp-employment-performance-goals' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/dependents.php', 'erp-employment-dependent' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-dept.php', 'erp-new-dept' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-designation.php', 'erp-new-desig' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/employee-terminate.php', 'erp-employment-terminate' );
                 break;
 
             case 'leave_page_erp-leave-policies':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/leave-policy.php', 'erp-leave-policy' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/leave-policy.php', 'erp-leave-policy' );
                 break;
 
             case 'leave_page_erp-holiday-assign':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/holiday.php', 'erp-hr-holiday-js-tmp' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/holiday.php', 'erp-hr-holiday-js-tmp' );
                 break;
 
             case 'toplevel_page_erp-leave':
-                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/leave-reject.php', 'erp-hr-leave-reject-js-tmp' );
+                erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/leave-reject.php', 'erp-hr-leave-reject-js-tmp' );
                 break;
             default:
                 # code...

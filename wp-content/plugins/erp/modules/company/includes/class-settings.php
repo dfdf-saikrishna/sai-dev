@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\HRM;
+namespace WeDevs\ERP\Company;
 
 use WeDevs\ERP\Framework\ERP_Settings_Page;
 
