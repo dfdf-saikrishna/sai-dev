@@ -34,7 +34,7 @@ class Modules {
      */
     public function init_modules() {
         $this->modules = [
-            'hrm' => [
+            /*'hrm' => [
                 'title'       => __( 'HR Management', 'erp' ),
                 'slug'        => 'erp-hrm',
                 'description' => __( 'Human Resource Management', 'erp' ),
@@ -54,12 +54,26 @@ class Modules {
                 'description' => __( 'Accounting Management', 'erp' ),
                 'callback'    => '\WeDevs\ERP\Accounting\Accounting',
                 'modules'     => apply_filters( 'erp_ac_modules', [ ] )
-            ],
+            ],*/
             'Corptne' => [
                 'title'       => __( 'Superadmin', 'erp' ),
                 'slug'        => 'erp-accounting',
                 'description' => __( 'Super Admin Functionalities', 'erp' ),
                 'callback'    => '\WeDevs\ERP\Corptne\Corptne',
+                'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
+            ],
+			'CompanyAdmin' => [
+                'title'       => __( 'CompanyAdmin', 'erp' ),
+                'slug'        => 'erp-accounting',
+                'description' => __( 'Company Admin Functionalities', 'erp' ),
+                'callback'    => '\WeDevs\ERP\Comanyadmin\Companyadmin',
+                'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
+            ],
+			'Employee' => [
+                'title'       => __( 'Employee', 'erp' ),
+                'slug'        => 'erp-accounting',
+                'description' => __( 'Employee Functionalities', 'erp' ),
+                'callback'    => '\WeDevs\ERP\Employee\Employee',
                 'modules'     => apply_filters( 'erp_corptne_modules', [ ] )
             ]
         ];
