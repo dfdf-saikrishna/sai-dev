@@ -89,4 +89,22 @@
 			return $redirect_to;
 		}
 	}
+        /**
+	 * Store session values for Login user
+	 */
+        function custom_login() {
+            global $wpdb;
+                if ( is_user_logged_in() ) {
+                    $user = wp_get_current_user();
+                    if($result=$wpdb->get_row("SELECT * FROM admin WHERE user_id='$user->ID'")){
+                        $_SESSION['adminid'] = $result->ADM_Id;
+                        $_SESSION['compid'] = $result->COM_Id;
+                        $_SESSION['username'] = $result->ADM_Username;
+                        $_SESSION['adminname'] = $result->ADM_Name;
+                        $_SESSION['sessionid'] = session_id();
+                        //$sessionid=$_SESSION['sessionid'];
+                    }
+                  
+                }
+        }
 ?>
