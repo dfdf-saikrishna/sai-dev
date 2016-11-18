@@ -39,8 +39,6 @@
                         
         </ol>
 		
-
-		
 	
     </fieldset>
         <?php //wp_nonce_field( 'wp-erp-hr-employee-nonce' ); ?>

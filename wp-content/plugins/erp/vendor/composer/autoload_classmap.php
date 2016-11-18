@@ -428,6 +428,8 @@ return array(
 	/*****************************/
     /** CompanyAdmin Module classes **/
     /****************************/
+    'WeDevs\\ERP\\Company\\Finance_List_Table' => $baseDir . '/modules/company/includes/class-finance-table.php',
+    'WeDevs\\ERP\\Company\\FinanceLimits_List_Table' => $baseDir . '/modules/company/includes/class-financelimits-table.php',
     
     'WeDevs\\ERP\\Company\\Admin\\Admin_Menu' => $baseDir . '/modules/company/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Company\\Form_Handler' => $baseDir . '/modules/company/includes/class-form-handler.php',

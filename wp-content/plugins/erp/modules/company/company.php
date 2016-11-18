@@ -149,6 +149,10 @@ class Company {
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-hr-nonce' ),
             'popup'              => array(
+                'finance-title'     =>__( 'Add Approval Limits','erp' ),
+                'finance_create'     =>__( 'Add Approval Limits','erp' ),
+                
+                
                 'dept_title'         => __( 'New Department', 'erp' ),
                 'dept_submit'        => __( 'Create Department', 'erp' ),
                 'location_title'     => __( 'New Location', 'erp' ),

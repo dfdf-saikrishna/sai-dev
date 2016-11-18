@@ -41,9 +41,10 @@ class Admin_Menu {
         add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', 'employee');
         add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation', 'employee');
 
-        add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', 'finance','dashicons-money');
-        add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
-        add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', 'finance');
+        add_menu_page(__('Finance Approvers','companyadmin'), __('Finance Approvers','companyadmin'), 'companyadmin', 'financemenu', array( $this, 'addfinance'),'dashicons-money');
+      
+       // add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
+        add_submenu_page('financemenu', __('finance','companyadmin'), __('Define Approval Limits(set/Edit Limits)'), 'companyadmin','limitsmenu',array( $this, 'financelimits'));
 
         add_menu_page('ExpenseManagment', 'Expense Managment', 'companyadmin', 'Expense', 'expense','dashicons-money');
         add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
@@ -107,46 +108,14 @@ class Admin_Menu {
     public function dashboard_page() {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
     }
-    
-    /**
-     * Handles the dashboard page
-     *
-     * @return void
-     */
-    public function companies_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/companies_list.php';
-    }
-
-    public function workflow(){
-        
-        include WPERP_CORPTNE_VIEWS . '/superadmin/workflow.php';
-	}
-    
-	 /**
-     * Handles the expense category list page
-     *
-     * @return void
-     */
-    public function expensecategory_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/expensecategory_list.php';
-    }
-    
-	/**
-     * Handles the company expense category list page
-     *
-     * @return void
-     */
-    public function companyexpensecategory_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/companyexpensecategory_list.php';
-    }
-	
+  
     /**
      * Handles the companyDashboard page
      *
      * @return void
      */
     public function company_dashboard() {
-        include WPERP_CORPTNE_VIEWS . '/company/dashboard.php';
+        include WPERP_COMPANY_VIEWS . '/company/dashboard.php';
     }
     
     /**
@@ -155,10 +124,17 @@ class Admin_Menu {
      * @return void
      */
     public function companiesadmin() {
-        include WPERP_CORPTNE_VIEWS . '/companyadmin/view.php';
+        include WPERP_COMPANY_VIEWS . '/companyadmin/view.php';
     }
     
+    public function addfinance() {
+          include WPERP_COMPANY_VIEWS . '/company/addfinance.php';
+      }
 
+       public function financelimits() {
+          include WPERP_COMPANY_VIEWS . '/company/financelimits.php';
+      }
+  
     /**
      * Handles the dashboard page
      *

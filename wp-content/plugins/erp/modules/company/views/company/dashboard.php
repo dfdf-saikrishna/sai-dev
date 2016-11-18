@@ -80,9 +80,9 @@ $accgadmins=count_query("superadmin","SUP_Id","WHERE SUP_Status=1 AND SUP_Id = 2
         <div class="wrap">
 
             <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-            <h2><?php _e('Persons', 'custom_table_example')?> <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=persons_form');?>"><?php _e('Add new', 'custom_table_example')?></a>
+            <!--<h2><?php _e('Persons', 'custom_table_example')?> <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=persons_form');?>"><?php _e('Add new', 'custom_table_example')?></a>-->
             </h2>
-			<a href="#" id="erp-employee-new" class="add-new-h2"><?php _e( 'Add New', 'erp' ); ?></a>
+			<!--<a href="#" id="erp-employee-new" class="add-new-h2"><?php _e( 'Add New', 'erp' ); ?></a>-->
             <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />
