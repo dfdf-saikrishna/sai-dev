@@ -31,7 +31,8 @@ class Admin_Menu {
 
         add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu', 'employee','dashicons-admin-users');
 
-        add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'submenu', 'employee');
+        add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
+        add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
         add_submenu_page('menu', 'Individual', 'Add Individual Employees', 'companyadmin', 'individual', 'employee');
         add_submenu_page('menu', 'Action', 'View/Edit/Delete employee', 'companyadmin', 'action', 'employee');
         add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', 'employee');
@@ -394,6 +395,22 @@ class Admin_Menu {
      */
     public function empty_page() {
 
+    }
+    /**
+     * Upload Employees Page
+     *
+     * @return void
+     */
+    public function upload_employees(){
+        include WPERP_COMPANY_VIEWS . '/upload-employees.php';
+    }
+    /**
+     * Export Employees Page
+     *
+     * @return void
+     */
+    public function export_employees(){
+        include WPERP_COMPANY_VIEWS . '/upload-employees.php';
     }
 
 }

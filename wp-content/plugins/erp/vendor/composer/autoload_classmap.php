@@ -429,6 +429,7 @@ return array(
     /** CompanyAdmin Module classes **/
     /****************************/
     
+    //'WeDevs\\ERP\\Company\\PHPExcel' => $baseDir . '/modules/company/includes/class-PHPExcel.php',
     'WeDevs\\ERP\\Company\\Admin\\Admin_Menu' => $baseDir . '/modules/company/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Company\\Form_Handler' => $baseDir . '/modules/company/includes/class-form-handler.php',
     'WeDevs\\ERP\\Company\\Emailer' => $baseDir . '/modules/company/includes/class-emails.php',

@@ -20,6 +20,7 @@ class Company {
      * @param \WeDevs_ERP $plugin
      */
     public function __construct( \WeDevs_ERP $plugin ) {
+        $compid = "38";
         $this->plugin = $plugin;
 
         // Define constants
@@ -51,6 +52,7 @@ class Company {
         define( 'WPERP_COMPANY_VIEWS', dirname( __FILE__ ) . '/views' );
         define( 'WPERP_COMPANY_JS_TMPL', WPERP_COMPANY_VIEWS . '/js-templates' );
         define( 'WPERP_COMPANY_ASSETS', plugins_url( '/assets', __FILE__ ) );
+        define('COMPANY_UPLOADS', WPERP_COMPANY_PATH . '\upload\compid\\');
     }
 
     /**
@@ -59,9 +61,10 @@ class Company {
      * @return void
      */
     private function includes() {
-
-//        require_once WPERP_COMPANY_PATH . '/includes/functions-database.php';
-//        require_once WPERP_COMPANY_PATH . '/includes/actions-filters.php';
+       require_once WPERP_COMPANY_PATH . '/includes/actions-filters.php';
+       require_once WPERP_COMPANY_PATH . '/includes/PHPExcel.php';
+       require_once WPERP_COMPANY_PATH . '/includes/PHPExcel/Writer/Excel2007.php';
+       require_once WPERP_COMPANY_PATH . '/includes/functions-import-export.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-company.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyview.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyadmin.php';
@@ -140,7 +143,7 @@ class Company {
             wp_enqueue_script( 'erp-sweetalert' );
         }
 
-        wp_enqueue_script( 'wp-erp-hr', WPERP_COMPANY_ASSETS . "/js/companyadmin$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-erp-company', WPERP_COMPANY_ASSETS . "/js/companyadmin$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
         wp_enqueue_script( 'wp-erp-hr-leave', WPERP_COMPANY_ASSETS . "/js/leave$suffix.js", array(
             'erp-script',
             'wp-color-picker'
@@ -206,7 +209,7 @@ class Company {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
-        wp_localize_script( 'wp-erp-hr', 'wpErpHr', $localize_script );
+        wp_localize_script( 'wp-erp-company', 'wpErpCompany', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_style( 'erp-select2' );

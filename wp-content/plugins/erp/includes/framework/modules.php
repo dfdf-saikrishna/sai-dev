@@ -34,14 +34,14 @@ class Modules {
      */
     public function init_modules() {
         $this->modules = [
-            /*'hrm' => [
+            'hrm' => [
                 'title'       => __( 'HR Management', 'erp' ),
                 'slug'        => 'erp-hrm',
                 'description' => __( 'Human Resource Management', 'erp' ),
                 'callback'    => '\WeDevs\ERP\HRM\Human_Resource',
                 'modules'     => apply_filters( 'erp_hr_modules', [ ] )
             ],
-            'crm' => [
+            /*'crm' => [
                 'title'       => __( 'CR Management', 'erp' ),
                 'slug'        => 'erp-crm',
                 'description' => __( 'Client Resource Management', 'erp' ),

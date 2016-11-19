@@ -43,6 +43,9 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_companyadmin_get', 'companyadmin_get' );
         $this->action( 'wp_ajax_companyadmin-delete', 'companyadmin_remove' );
         
+        //Upload Employee
+        $this->action( 'wp_ajax_employee-upload', 'employee_upload' );
+        
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
@@ -457,6 +460,12 @@ class Ajax_Handler {
         }
 
         $this->send_error( __( 'Something went wrong!', 'erp' ) );
+    }
+    
+    public function employee_upload() {
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        $this->send_success( $data );
     }
     
     /**
