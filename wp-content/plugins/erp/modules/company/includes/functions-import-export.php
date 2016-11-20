@@ -1,5 +1,6 @@
 <?php
 function crp_process_import_export() {
+    //$this->send_success( __( 'successfully!', 'erp' ) );die;
     if ( isset( $_POST['crp_import_excel'] ) ) {
         //$compid	= $_SESSION['compid'];
         $compid = '38';
@@ -18,7 +19,7 @@ function crp_process_import_export() {
         }
          move_uploaded_file($file, $imdir . $imagePath);
         
-        $fileDirectory = ();
+        //$fileDirectory = ();
         $objPHPExcel = PHPExcel_IOFactory::load($fileDirectory);
         $worksheet = $objPHPExcel->getActiveSheet();
         

@@ -1791,6 +1791,46 @@ table.leaves td.column-status .status-2 {
 table.leaves td.column-status .status-3 {
   background: #ffba00;
 }
+.status-1 {
+  background: #ffba00;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
+.status-2 {
+  background: #7ad03a;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
+.status-3 {
+  background: #999;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
+.status-4 {
+  background: #dd3d36;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
 .erp-hr-leave-request-new .show-days {
   width: 97%;
 }

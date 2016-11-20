@@ -41,7 +41,7 @@ class Modules {
                 'callback'    => '\WeDevs\ERP\HRM\Human_Resource',
                 'modules'     => apply_filters( 'erp_hr_modules', [ ] )
             ],
-            /*'crm' => [
+            'crm' => [
                 'title'       => __( 'CR Management', 'erp' ),
                 'slug'        => 'erp-crm',
                 'description' => __( 'Client Resource Management', 'erp' ),
@@ -54,7 +54,7 @@ class Modules {
                 'description' => __( 'Accounting Management', 'erp' ),
                 'callback'    => '\WeDevs\ERP\Accounting\Accounting',
                 'modules'     => apply_filters( 'erp_ac_modules', [ ] )
-            ],*/
+            ],
             'Corptne' => [
                 'title'       => __( 'Superadmin', 'erp' ),
                 'slug'        => 'erp-accounting',

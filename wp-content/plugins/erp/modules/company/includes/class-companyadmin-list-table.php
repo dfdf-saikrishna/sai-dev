@@ -19,7 +19,7 @@ namespace WeDevs\ERP\Corptne;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Companiesadmin_List_Table extends \WP_List_Table
+class Requests_List extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params

@@ -61,7 +61,7 @@ class Admin_Menu {
         add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', 'TravelDesk');
         add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', 'TravelDesk');
 
-        add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Requests', 'Requests','dashicons-money');
+        add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Requests', array( $this, 'expense_requests'),'dashicons-money');
         add_submenu_page('Requests', 'Pre', 'Pre Travel Expense Requests', 'companyadmin', 'Pre Travel', 'Requests');
         add_submenu_page('Requests', 'post', 'Post Travel Expense Requests', 'companyadmin', 'Post tarvel', 'Requests');
         add_submenu_page('Requests', 'general', 'General Expenses', 'companyadmin', 'GeneralExpenses', 'Requests');
@@ -157,6 +157,15 @@ class Admin_Menu {
      */
     public function companiesadmin() {
         include WPERP_CORPTNE_VIEWS . '/companyadmin/view.php';
+    }
+    
+    /**
+     * Handles Requests page
+     *
+     * @return void
+     */
+    public function expense_requests(){
+        include WPERP_COMPANY_VIEWS . '/expense_requests.php';
     }
     
 

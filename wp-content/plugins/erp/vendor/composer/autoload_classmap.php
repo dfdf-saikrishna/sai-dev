@@ -445,7 +445,7 @@ return array(
     'WeDevs\\ERP\\Company\\Company' => $baseDir . '/modules/company/company.php',
     'WeDevs\\ERP\\Company\\Models\\Companyview' => $baseDir . '/modules/company/includes/models/companyview.php',
     'WeDevs\\ERP\\Company\\Workflow_List_Table' => $baseDir . '/modules/company/includes/class-workflow-table.php',
-    'WeDevs\\ERP\\Company\\Companiesadmin_List_Table' => $baseDir . '/modules/company/includes/class-companyadmin-list-table.php',
+    'WeDevs\\ERP\\Company\\Requests_List' => $baseDir . '/modules/company/includes/class-requests-list-table.php',
 	
 	/*****************************/
     /** Employee Module classes **/
