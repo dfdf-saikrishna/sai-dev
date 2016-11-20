@@ -46,10 +46,13 @@ class Ajax_Handler {
         //Upload Employee
         $this->action( 'wp_ajax_employee-upload', 'employee_upload' );
         
+        // Finance
+        $this->action( 'wp_ajax_get-limit-amount', 'get_limit_amount' );
+        
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
-	$this->action( 'wp_ajax_erp-hr-companyview-get', 'companyview_get' );
+	   $this->action( 'wp_ajax_erp-hr-companyview-get', 'companyview_get' );
         $this->action( 'wp_ajax_erp-hr-emp-delete', 'employee_remove' );
         $this->action( 'wp_ajax_erp-hr-emp-restore', 'employee_restore' );
         $this->action( 'wp_ajax_erp-hr-emp-update-status', 'employee_update_employment' );
@@ -466,6 +469,18 @@ class Ajax_Handler {
         $posted = array_map( 'strip_tags_deep', $_POST );
         $data = $posted;
         $this->send_success( $data );
+    }
+    /**
+     * Function to return Limit Amount
+     *
+     * @return void
+     */
+    public function get_limit_amount(){
+        global $wpdb;
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        $row=$wpdb->get_row("SELECT * FROM approval_limit WHERE EMP_Id='$data[employee_id]' AND APL_Status=1 AND APL_Active=1");
+        $this->send_success($row);
     }
     
     /**

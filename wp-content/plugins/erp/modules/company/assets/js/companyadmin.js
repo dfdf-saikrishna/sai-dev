@@ -29,6 +29,9 @@
             $( '.erp-hr-designation' ).on( 'click', 'a.submitdelete', this.designation.remove );
             $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
             
+            // Finance Approver
+            $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
+            
             // Company Admin
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
@@ -112,6 +115,33 @@
             $( '.erp-area-left' ).load( window.location.href + ' #erp-area-left-inner', function() {
                 $('.select2').select2();
             } );
+        },
+        
+        finance : {
+            
+            setAmount: function(e) {
+            wp.ajax.send( 'get-limit-amount', {
+                    data: {
+                        employee_id : $('#select-finance-approver').val()
+                    },
+                    success: function(resp) {
+                        //console.log( resp );
+                        if(resp){
+                            $('#approvers_limit').show().fadeIn();
+                            $('#limit_amount').val(resp.APL_LimitAmount);
+                        }
+                        else{
+                            $('#approvers_limit').hide().fadeOut();
+                        }
+                        //leavetypewrap.html( resp ).hide().fadeIn();
+                        //leaveWrap.find( 'input[type="text"], textarea').removeAttr('disabled');
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                } );
+            }
         },
 
         dashboard : {

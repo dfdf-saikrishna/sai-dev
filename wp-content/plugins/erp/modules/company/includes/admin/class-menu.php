@@ -44,7 +44,7 @@ class Admin_Menu {
 
         add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', 'finance','dashicons-money');
         add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
-        add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', 'finance');
+        add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
         add_menu_page('ExpenseManagment', 'Expense Managment', 'companyadmin', 'Expense', 'expense','dashicons-money');
         add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
@@ -166,6 +166,15 @@ class Admin_Menu {
      */
     public function expense_requests(){
         include WPERP_COMPANY_VIEWS . '/expense_requests.php';
+    }
+    
+    /**
+     * Handles Approver Limits page
+     *
+     * @return void
+     */
+    public function approver_limits(){
+        include WPERP_COMPANY_VIEWS . '/approver_limits.php';
     }
     
 

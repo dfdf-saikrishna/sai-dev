@@ -476,20 +476,6 @@ class Requests_List extends \WP_List_Table
     }
 
     /**
-     * [REQUIRED] this is how checkbox column renders
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_cb($item)
-    {
-        return sprintf(
-            '<input type="checkbox" name="id[]" value="%s" />',
-            $item['COM_Id']
-        );
-    }
-
-    /**
      * [REQUIRED] This method return columns to display in table
      * you can skip columns that you do not want to show
      * like content, or description
@@ -499,7 +485,6 @@ class Requests_List extends \WP_List_Table
     function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'request_code' => __('Request Code', 'expense_table_list'),
             'total_cost' => __('Total Cost', 'expense_table_list'),
             'rep_manager_code' => __('Reporting Manager Approval', 'expense_table_list'),
@@ -637,7 +622,7 @@ class Requests_List extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-            $total_items = $wpdb->get_var("SELECT COUNT(COM_Id) FROM $table_name");
+            $total_items = $wpdb->get_var("SELECT COUNT(REQ_Code) FROM $table_name".$query);
 			$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re".$query."AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
