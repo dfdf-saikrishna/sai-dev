@@ -428,7 +428,7 @@ class Admin_Menu {
      * @return void
      */
     public function export_employees(){
-        include WPERP_COMPANY_VIEWS . '/upload-employees.php';
+        include WPERP_COMPANY_VIEWS . '/export-employees.php';
     }
 
 }
