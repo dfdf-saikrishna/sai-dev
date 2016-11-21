@@ -10,7 +10,8 @@ add_action( 'admin_footer', 'erp_email_settings_javascript' );
 add_action( 'admin_notices', 'erp_importer_notices' );
 add_action( 'admin_init', 'erp_import_export_download_sample_action' );
 
-add_action('wp_login', 'custom_login');
+add_action('admin_init', 'custom_login');
+add_action('wp_logout', 'custom_logout');
 add_action( 'admin_menu', 'custom_menu_page_removing' );
 add_action('login_head', 'my_loginlogo');
 add_action('admin_head','favicon');

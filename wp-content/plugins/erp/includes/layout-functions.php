@@ -108,4 +108,9 @@
                   
                 }
         }
+        
+        function custom_logout(){
+            // Finally, destroy the session.
+            session_destroy();
+        }
 ?>
