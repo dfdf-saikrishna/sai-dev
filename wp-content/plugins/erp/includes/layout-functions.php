@@ -103,7 +103,7 @@
                         $_SESSION['adminname'] = $result->ADM_Name;
                         $_SESSION['sessionid'] = session_id();
                         //$sessionid=$_SESSION['sessionid'];
-                        $compid=$_SESSION['compid'];
+                        //$compid=$_SESSION['compid'];
                     }
                   
                 }

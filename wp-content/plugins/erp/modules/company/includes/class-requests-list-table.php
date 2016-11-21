@@ -393,7 +393,7 @@ class Requests_List extends \WP_List_Table
     function column_claim_status($item){
         global $wpdb;
         global $claimdata;
-        $claimdata='<span class="label label-primary" title="Claimed on: '.date("d/M/y",strtotime($item["REQ_ClaimDate"])).'">Claimed</span>';
+        $claimdata='<span class="status-2" title="Claimed on: '.date("d/M/y",strtotime($item["REQ_ClaimDate"])).'">Claimed</span>';
 
         // if its group request only finance approval required for claim
 
@@ -406,23 +406,23 @@ class Requests_List extends \WP_List_Table
             if($item['REQ_Type']==4){
 
                 if($item['REQ_PreToPostStatus'])
-                return $this->approvals(1);
+                return $this->tdclaimapprovals(1);
                 else
-                return $this->approvals(5);
+                return $this->tdclaimapprovals(5);
 
             } else {
 
 
                 if($item['REQ_PreToPostStatus']){
                     if($selptc=$wpdb->get_row("SELECT PTC_Status FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'"))
-                    return $this->approvals($selptc->PTC_Status);
+                    return $this->tdclaimapprovals($selptc->PTC_Status);
 
                 }else{
 
                     if($item['REQ_Status']==2)
-                    return $this->approvals(1);
+                    return $this->tdclaimapprovals(1);
                     else
-                    return $this->approvals(5);
+                    return $this->tdclaimapprovals(5);
 
                 }
 
@@ -430,6 +430,32 @@ class Requests_List extends \WP_List_Table
             }
 
         }
+    }
+    
+    function tdclaimapprovals($string){
+
+	switch($string)
+	{
+		
+		case 1:
+		$getapprov='<span class="status-1">Pending</span>';
+		break;
+		
+		case 2:
+		$getapprov='<span class="status-2">Approved</span>';
+		break;
+		
+		case 3:
+		$getapprov='<span class="status-4">Rejected</span>';
+		break;
+		
+		case 4:
+		$getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
+		break;
+	
+	}
+	
+	return $getapprov;
     }
     
     function approvals($string){

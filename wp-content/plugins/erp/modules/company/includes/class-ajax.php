@@ -48,6 +48,7 @@ class Ajax_Handler {
         
         // Finance
         $this->action( 'wp_ajax_get-limit-amount', 'get_limit_amount' );
+        $this->action( 'wp_ajax_set-limit-amount', 'set_limit_amount' );
         
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
@@ -481,6 +482,61 @@ class Ajax_Handler {
         $data = $posted;
         $row=$wpdb->get_row("SELECT * FROM approval_limit WHERE EMP_Id='$data[employee_id]' AND APL_Status=1 AND APL_Active=1");
         $this->send_success($row);
+    }
+    
+    public function set_limit_amount(){
+        global $wpdb;
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        
+        $txtLimitAmount	=	trim($data['limit_amount']);	
+	$empid		=	$data['empid'];
+	$aplid		=	$data['aplId'];
+
+        if($aplid){
+                                
+            $rowaplid	=	$wpdb->get_row("SELECT * FROM approval_limit WHERE APL_Id='$aplid' AND APL_Status=1 AND APL_Active=1");
+
+            if($txtLimitAmount == $rowaplid->APL_LimitAmount){
+
+                //header("location:$filename?msg=1&empid=$empid");
+                $this->send_success("Please choose a different amount to update the approval limits");
+                exit;
+            } else	{
+                if($wpdb->update('approval_limit', array( 'APL_Status' => '2', 'APL_ClosedDate' => 'NOW()' ), array( 'EMP_Id' => $empid, 'APL_Id' => $aplid))){
+                        
+                        if($wpdb->insert('approval_limit', array('EMP_Id' => $empid,'APL_LimitAmount' => $txtLimitAmount,))){
+
+                            
+                                $this->send_success("Previous amount limit was closed and new amount limit added successfully");
+                                exit;
+
+                        } else {
+
+                                $this->send_success("Error!! Please try again");
+                                exit;
+                        }
+                } else {
+
+                        $this->send_success("Error!! Please try again");
+                        exit;
+                }
+            }
+        } else {
+                                
+            if($wpdb->insert('approval_limit', array('EMP_Id' => $empid,'APL_LimitAmount' => $txtLimitAmount,))){
+
+                    $this->send_success("Amount limit added successfully");
+                    exit;
+
+
+            } else {
+
+                    $this->send_success("Error!! Please try again");
+                    exit;
+
+            }
+	}
     }
     
     /**

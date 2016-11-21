@@ -1,5 +1,7 @@
 <div class="wrap erp-hr-companyadmin" id="wp-erp">
     <h2><?php _e( 'Employee Approval Limits', 'company' ); ?></h2>
+    <div style="display: none;" id="success_message" class="updated notice notice-success is-dismissible"></div>
+    <div style="display: none;" id="failure_message" class="notice notice-error is-dismissible"></div>
     <?php
     $compid = $_SESSION['compid'];
     global $wpdb;
@@ -18,8 +20,9 @@
     </div>
     </br>
     <div id="approvers_limit" style="display:none;text-align: center">
+    <input type="hidden" id="aplId">
     <input type="text" value="" id="limit_amount">
-    <input type="submit" class="button button-primary">
+    <input type="submit" class="button button-primary" id="submit_app_limit">
     </div>
         <?php
             global $wpdb;
@@ -34,7 +37,6 @@
             ?>
         <div class="list-table-wrap erp-hr-employees-wrap">
         <div class="list-table-inner erp-hr-employees-wrap-inner">
-            <?php echo $message;?>
             <?php //$table->views(); ?>
 			<form method="post">
 			  <input type="hidden" name="page" value="Requests" />

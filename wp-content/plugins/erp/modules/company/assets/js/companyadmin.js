@@ -31,6 +31,7 @@
             
             // Finance Approver
             $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
+            $( 'body' ).on( 'click', '#submit_app_limit', this.finance.subAmount );
             
             // Company Admin
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
@@ -129,12 +130,34 @@
                         if(resp){
                             $('#approvers_limit').show().fadeIn();
                             $('#limit_amount').val(resp.APL_LimitAmount);
+                            $('#aplId').val(resp.APL_Id);
                         }
                         else{
                             $('#approvers_limit').hide().fadeOut();
                         }
                         //leavetypewrap.html( resp ).hide().fadeIn();
                         //leaveWrap.find( 'input[type="text"], textarea').removeAttr('disabled');
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                } );
+            },
+            subAmount: function(e) {
+                wp.ajax.send( 'set-limit-amount', {
+                    data: {
+                        limit_amount : $('#limit_amount').val(),
+                        aplId : $('#aplId').val(),
+                        empid: $('#select-finance-approver').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                        $('#success_message').html('<p>'+resp+'</p>');
+                        $('#success_message').show();
+                        $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+                        
+                        
                     },
                     error: function(resp) {
                         //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
