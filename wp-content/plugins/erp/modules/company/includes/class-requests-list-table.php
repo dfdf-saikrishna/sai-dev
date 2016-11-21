@@ -433,7 +433,7 @@ class Requests_List extends \WP_List_Table
     }
     
     function tdclaimapprovals($string){
-
+        global $getapprov; 
 	switch($string)
 	{
 		
