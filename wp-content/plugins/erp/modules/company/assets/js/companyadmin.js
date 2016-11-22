@@ -29,6 +29,9 @@
             $( '.erp-hr-designation' ).on( 'click', 'a.submitdelete', this.designation.remove );
             $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
             
+            // Workflow
+            $( 'body' ).on( 'click', '#workflow-update', this.workflow.update );
+            
             // Finance Approver
             $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
             $( 'body' ).on( 'click', '#submit_app_limit', this.finance.subAmount );
@@ -117,6 +120,14 @@
             $( '.erp-area-left' ).load( window.location.href + ' #erp-area-left-inner', function() {
                 $('.select2').select2();
             } );
+        },
+        
+        workflow : {
+            update: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+            }
         },
         
         finance : {

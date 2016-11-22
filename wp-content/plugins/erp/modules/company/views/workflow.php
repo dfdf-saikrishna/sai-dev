@@ -10,7 +10,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
     <div class="inside">
         <h3><?php _e( 'Company Expense Request Workflow', 'crp' ); ?></h3>
 
-        <form method="post" action="#" enctype="multipart/form-data" id="import_form">
+        <form method="post" action="#" enctype="multipart/form-data" id="workflow_update" name="workflow_update">
 
             <table class="form-table">
                 <tbody id="fields_container">
@@ -19,7 +19,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Pre Travel Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select>
+                            <select name="selPreTrvPol">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -35,7 +35,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Post Travel Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select>
+                            <select name="selPostTrvPol">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -51,7 +51,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'General Expense Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select>
+                            <select name="selGenExpReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -67,7 +67,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Mileage Requests', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select>
+                            <select name="selMileageReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -83,7 +83,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Utility Requests', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select>
+                            <select name="selUtilityReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -97,7 +97,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                 </tbody>
             </table>
 
-            <?php submit_button( __( 'Update', 'crp' ), 'primary', 'crp_import_excel' ); ?>
+            <?php submit_button( __( 'Update', 'crp' ), 'primary', 'workflow-update' ); ?>
         </form>
     </div><!-- .inside -->
 </div><!-- .postbox -->
