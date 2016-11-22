@@ -490,8 +490,8 @@ class Ajax_Handler {
         $data = $posted;
         
         $txtLimitAmount	=	trim($data['limit_amount']);	
-	$empid		=	$data['empid'];
-	$aplid		=	$data['aplId'];
+        $empid		=	$data['empid'];
+        $aplid		=	$data['aplId'];
 
         if($aplid){
                                 
@@ -500,39 +500,42 @@ class Ajax_Handler {
             if($txtLimitAmount == $rowaplid->APL_LimitAmount){
 
                 //header("location:$filename?msg=1&empid=$empid");
-                $this->send_success("Please choose a different amount to update the approval limits");
+                $response = array('status'=>'notice','message'=>"Please choose a different amount to update the approval limits");
+                $this->send_success($response);
                 exit;
             } else	{
                 if($wpdb->update('approval_limit', array( 'APL_Status' => '2', 'APL_ClosedDate' => 'NOW()' ), array( 'EMP_Id' => $empid, 'APL_Id' => $aplid))){
                         
                         if($wpdb->insert('approval_limit', array('EMP_Id' => $empid,'APL_LimitAmount' => $txtLimitAmount,))){
 
-                            
-                                $this->send_success("Previous amount limit was closed and new amount limit added successfully");
+                                $response = array('status'=>'info','message'=>"Previous amount limit was closed and new amount limit added successfully");
+                                $this->send_success($response);
                                 exit;
 
                         } else {
-
-                                $this->send_success("Error!! Please try again");
+                                $response = array('status'=>'failure','message'=>"Error!! Please try again");
+                                $this->send_success($response);
                                 exit;
                         }
                 } else {
 
-                        $this->send_success("Error!! Please try again");
+                        $response = array('status'=>'failure','message'=>"Error!! Please try again");
+                        $this->send_success($response);
                         exit;
                 }
             }
         } else {
                                 
             if($wpdb->insert('approval_limit', array('EMP_Id' => $empid,'APL_LimitAmount' => $txtLimitAmount,))){
-
-                    $this->send_success("Amount limit added successfully");
+                    $response = array('status'=>'success','message'=>"Amount limit added successfully");
+                    $this->send_success($response);
                     exit;
 
 
             } else {
-
-                    $this->send_success("Error!! Please try again");
+                    
+                    $response = array('status'=>'failure','message'=>"Error!! Please try again");
+                    $this->send_success($response);
                     exit;
 
             }

@@ -1,7 +1,21 @@
 <div class="wrap erp-hr-companyadmin" id="wp-erp">
     <h2><?php _e( 'Employee Approval Limits', 'company' ); ?></h2>
-    <div style="display: none;" id="success_message" class="updated notice notice-success is-dismissible"></div>
-    <div style="display: none;" id="failure_message" class="notice notice-error is-dismissible"></div>
+    <!-- Messages -->
+    <div style="display:none" id="failure" class="notice notice-error is-dismissible">
+    <p id="p-failure"></p>
+    </div>
+
+    <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
+        <p id="p-notice"></p>
+    </div>
+
+    <div style="display:none" id="success" class="notice notice-success is-dismissible">
+        <p id="p-success"></p>
+    </div>
+
+    <div style="display:none" id="info" class="notice notice-info is-dismissible">
+        <p id="p-info"></p>
+    </div>
     <?php
     $compid = $_SESSION['compid'];
     global $wpdb;

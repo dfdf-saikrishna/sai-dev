@@ -120,10 +120,15 @@
         
         finance : {
             
+            reload: function() {
+                $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+            },
+            
             setAmount: function(e) {
+            var select = $('#select-finance-approver').val();
             wp.ajax.send( 'get-limit-amount', {
                     data: {
-                        employee_id : $('#select-finance-approver').val()
+                        employee_id : select
                     },
                     success: function(resp) {
                         //console.log( resp );
@@ -133,7 +138,14 @@
                             $('#aplId').val(resp.APL_Id);
                         }
                         else{
-                            $('#approvers_limit').hide().fadeOut();
+                            if(select == "0"){
+                                $('#approvers_limit').hide().fadeOut();
+                            }
+                            else{
+                                $('#limit_amount').val('');
+                                $('#approvers_limit').show().fadeIn();
+                            }
+                           
                         }
                         //leavetypewrap.html( resp ).hide().fadeIn();
                         //leaveWrap.find( 'input[type="text"], textarea').removeAttr('disabled');
@@ -153,9 +165,29 @@
                     },
                     success: function(resp) {
                         console.log( resp );
-                        $('#success_message').html('<p>'+resp+'</p>');
-                        $('#success_message').show();
-                        $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+                        WeDevs_ERP_COMPANY.finance.reload();
+                        switch(resp.status){
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                         
                         
                     },
