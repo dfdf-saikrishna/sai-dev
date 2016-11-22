@@ -447,6 +447,7 @@ return array(
     'WeDevs\\ERP\\Company\\Workflow_List_Table' => $baseDir . '/modules/company/includes/class-workflow-table.php',
     'WeDevs\\ERP\\Company\\Requests_List' => $baseDir . '/modules/company/includes/class-requests-list-table.php',
     'WeDevs\\ERP\\Company\\Approval_Limits' => $baseDir . '/modules/company/includes/class-approval-limits.php',
+    'WeDevs\\ERP\\Company\\Finance_Approvers_List' => $baseDir . '/modules/company/includes/class-finance-approver.php',
 	
 	/*****************************/
     /** Employee Module classes **/

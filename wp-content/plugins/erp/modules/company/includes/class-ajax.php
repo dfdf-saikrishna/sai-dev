@@ -49,6 +49,7 @@ class Ajax_Handler {
         // Finance
         $this->action( 'wp_ajax_get-limit-amount', 'get_limit_amount' );
         $this->action( 'wp_ajax_set-limit-amount', 'set_limit_amount' );
+        $this->action( 'wp_ajax_remove-finance-approver', 'remove_finance_approver' );
         
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
@@ -540,6 +541,29 @@ class Ajax_Handler {
 
             }
 	}
+    }
+    
+    public function remove_finance_approver(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        $array = $data['select'];
+            foreach($array as $value)
+            {
+                if($wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")){
+                    $wpdb->update( 'accounts_set_approver', array( 'ASA_Set' => 2, 'ASA_ResetDate' => 'NOW()', 'ASA_ResetBy' => $adminid), array( 'EMP_Id' => $value,'ASA_Set' => 1 ));
+                    $wpdb->update( 'employees', array( 'EMP_AccountsApprover' => 0), array( 'EMP_Id' => $value ));
+                    $response = array('status'=>'success','message'=>"Employee removed as finance approver successfully");
+                    $this->send_success($response);
+                    exit;
+                }
+                else{
+                   $response = array('status'=>'failure','message'=>"Error!! Please try again");
+                   $this->send_success($response);
+                   exit;
+                }
+            }
     }
     
     /**

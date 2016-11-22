@@ -42,7 +42,7 @@ class Admin_Menu {
         add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', 'employee');
         add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation', 'employee');
 
-        add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', 'finance','dashicons-money');
+        add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', array($this, 'finance_approvers'),'dashicons-money');
         add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
         add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
@@ -429,6 +429,14 @@ class Admin_Menu {
      */
     public function export_employees(){
         include WPERP_COMPANY_VIEWS . '/export-employees.php';
+    }
+    /**
+     * Finance Approvers Page
+     *
+     * @return void
+     */
+    public function finance_approvers(){
+        include WPERP_COMPANY_VIEWS . '/finance-approver-listing.php';
     }
 
 }

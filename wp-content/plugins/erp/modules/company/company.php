@@ -65,6 +65,7 @@ class Company {
        require_once WPERP_COMPANY_PATH . '/includes/PHPExcel.php';
        require_once WPERP_COMPANY_PATH . '/includes/PHPExcel/Writer/Excel2007.php';
        require_once WPERP_COMPANY_PATH . '/includes/functions-import-export.php';
+       require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-company.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyview.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyadmin.php';

@@ -32,6 +32,7 @@
             // Finance Approver
             $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
             $( 'body' ).on( 'click', '#submit_app_limit', this.finance.subAmount );
+            $( 'body' ).on( 'click', '#remove_finance', this.finance.removieFinance );
             
             // Company Admin
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
@@ -162,6 +163,49 @@
                         limit_amount : $('#limit_amount').val(),
                         aplId : $('#aplId').val(),
                         empid: $('#select-finance-approver').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                        WeDevs_ERP_COMPANY.finance.reload();
+                        switch(resp.status){
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                        
+                        
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                } );
+            },
+            removieFinance:  function(e) {
+                var values = new Array();
+                $.each($("input[name='id[]']:checked"), function() {
+                  values.push($(this).val());
+                });
+                wp.ajax.send( 'remove-finance-approver', {
+                    data: {
+                        select : values,
                     },
                     success: function(resp) {
                         console.log( resp );
