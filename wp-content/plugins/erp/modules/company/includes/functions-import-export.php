@@ -2,7 +2,9 @@
 function crp_process_import_export() {
     global $empError;
     global $wpdb;
+    if(isset($_SESSION['adminid']))
     $adminid = $_SESSION['adminid'];
+    if(isset($_SESSION['compid']))
     $compid = $_SESSION['compid'];
     //$this->send_success( __( 'successfully!', 'erp' ) );die;
     if ( isset( $_POST['crp_import_excel'] ) ) {
