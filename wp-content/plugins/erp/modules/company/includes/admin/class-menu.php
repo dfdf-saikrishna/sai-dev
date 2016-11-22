@@ -53,7 +53,7 @@ class Admin_Menu {
         add_submenu_page('Expense', 'categeory', 'Expense Category', 'companyadmin', 'categeory', 'Expense');
         add_submenu_page('Expense', 'Mileage', 'Mileage', 'companyadmin', 'Mileage', 'Expense');
 
-        add_menu_page('WorkFlow', 'WorkFlow', 'companyadmin', 'WorkFlow', 'workflow','dashicons-networking');
+        add_menu_page('WorkFlow', 'WorkFlow', 'companyadmin', 'WorkFlow', array($this, 'company_workflow'),'dashicons-networking');
 
         add_menu_page('TravelDesk', 'Travel Desk', 'companyadmin', 'Travel', 'TravelDesk','dashicons-location');
         add_submenu_page('Travel', 'Action', 'View/Edit/Delete Travel Desk', 'companyadmin', 'Action', 'TravelDesk');
@@ -437,6 +437,14 @@ class Admin_Menu {
      */
     public function finance_approvers(){
         include WPERP_COMPANY_VIEWS . '/finance-approver-listing.php';
+    }
+    /**
+     * Workflow Page
+     *
+     * @return void
+     */
+    public function company_workflow(){
+        include WPERP_COMPANY_VIEWS . '/workflow.php';
     }
 
 }
