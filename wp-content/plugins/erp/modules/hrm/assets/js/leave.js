@@ -37,7 +37,7 @@
 
         initDateField: function() {
             $( '.erp-leave-date-field' ).datepicker({
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'dd-mm-yy',
                 changeMonth: true,
                 changeYear: true
             });

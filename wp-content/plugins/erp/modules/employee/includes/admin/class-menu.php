@@ -61,7 +61,7 @@ class Admin_Menu {
         'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
 
         add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'Travel Expense', 'travel_expense','dashicons-tickets');
-            add_submenu_page('Travel Expense', 'Pre Travel', ' Pre Travel', 'employee','Pre Travel'.'/ Pre Travel', 'travel_expense');
+            add_submenu_page('Travel Expense', 'Pre Travel', ' Pre Travel', 'employee','Pre Travel'.'/ Pre Travel', array($this, 'pre_travel_request'));
             add_submenu_page('Travel Expense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
             add_submenu_page('Travel Expense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
             add_submenu_page('Travel Expense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
@@ -93,6 +93,10 @@ class Admin_Menu {
         add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
         }
         
+    }
+    
+    function pre_travel_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request.php';
     }
 
     /**
