@@ -684,7 +684,7 @@ class Ajax_Handler {
                 $msg="General expense request workflow added Successfully";
             }
             
-            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            $wpdb->update( 'company', array( 'COM_Othertrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
             
             $response = array('status'=>'success','message'=>$msg);
             $this->send_success($response);
@@ -725,7 +725,7 @@ class Ajax_Handler {
                 $msg="Mileage request workflow added Successfully";
             }
             
-            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            $wpdb->update( 'company', array( 'COM_Mileage_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
             
             $response = array('status'=>'success','message'=>$msg);
             $this->send_success($response);
@@ -766,7 +766,7 @@ class Ajax_Handler {
                 $msg="Utility request workflow added Successfully";
             }
             
-            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            $wpdb->update( 'company', array( 'COM_Utility_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
             
             $response = array('status'=>'success','message'=>$msg);
             $this->send_success($response);
