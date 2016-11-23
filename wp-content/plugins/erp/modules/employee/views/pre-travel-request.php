@@ -1,3 +1,6 @@
+<style type="text/css">
+#my_centered_buttons { text-align: center; width:100%; margin-top:60px; }
+</style>
 <div class="postbox">
     <div class="inside">
         <div class="wrap pre-travel-request" id="wp-erp">
@@ -19,16 +22,51 @@
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
-            
-            <table class="wp-list-table widefat fixed striped admins" border="1" id="table1">
+            <div style="margin-top:60px;">
+            <table class="wp-list-table widefat fixed striped admins">
+              <tr>
+                <td width="20%">Employee Code</td>
+                <td width="5%">:</td>
+                <td width="25%"></td>
+                <td width="20%">Company Name</td>
+                <td width="5%">:</td>
+                <td width="25%"></td>
+              </tr>
+              <tr>
+                <td width="20%">Employee Name</td>
+                <td width="5%">:</td>
+                <td width="25%"></td>
+                <td width="20%">Reporting Manager Code</td>
+                <td width="5%">:</td>
+                <td width="25%"></td>
+              </tr>
+              <tr>
+                <td>Employee Designation </td>
+                <td>:</td>
+                <td></td>
+                <td>Reporting Manager Name</td>
+                <td>:</td>
+
+                <td></td>
+              </tr>
+              <tr>
+                <td width="20%">Employee Department</td>
+                <td width="5%">:</td>
+                <td width="25%"></td>
+
+              </tr>
+            </table>
+            </div>
+            <div style="margin-top:60px;">
+            <table class="wp-list-table widefat striped admins" border="1" id="table1">
                   <thead class="cf">
                     <tr>
-                      <th>Date</th>
-                      <th >Expense Description</th>
-                      <th colspan="2">Expense Category</th>
-                      <th >Place</th>
-                      <th>Estimated Cost</th>
-                      <th >Get Quote</th>
+                      <th class="column-primary">Date</th>
+                      <th class="column-primary">Expense Description</th>
+                      <th class="column-primary" colspan="2">Expense Category</th>
+                      <th class="column-primary" >Place</th>
+                      <th class="column-primary">Estimated Cost</th>
+                      <th class="column-primary">Get Quote</th>
                     </tr>
                   </thead>
                   <tbody <?php /*?>align="center"<?php */?>>
@@ -59,7 +97,13 @@
                     </tr>
                   </tbody>
                 </table>
-
+            </div>
+            <div id="my_centered_buttons">
+            <button type="button" name="getQuote" id="" class="button button-primary" onclick="">Submit</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" name="getQuote" id="" class="button" onclick="">Reset</button>
+            </div>
         </div>
     </div>
     
