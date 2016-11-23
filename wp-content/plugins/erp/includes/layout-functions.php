@@ -105,6 +105,17 @@
                         //$sessionid=$_SESSION['sessionid'];
                         //$compid=$_SESSION['compid'];
                     }
+                    else if($result=$wpdb->get_row("SELECT * FROM employees WHERE user_id='$user->ID'")){
+                        //session of empuserid
+                        $_SESSION['empuserid']=$result->EMP_Id;
+                        $_SESSION['emp_code']=$result->EMP_Code;
+                        //session of compid
+                        $_SESSION['compid']=$result->COM_Id;
+                        //session of employee name
+                        $_SESSION['username']=$result->EMP_Name;
+                        //session id
+                        $_SESSION['sessionid']=session_id();              
+                    }
                   
                 }
         }
