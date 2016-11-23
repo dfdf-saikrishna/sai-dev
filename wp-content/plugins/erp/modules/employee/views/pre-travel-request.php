@@ -58,7 +58,7 @@
             </table>
             </div>
             <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins" border="1" id="table1">
+            <table class="wp-list-table widefat striped admins" border="0" id="table1">
                   <thead class="cf">
                     <tr>
                       <th class="column-primary">Date</th>
