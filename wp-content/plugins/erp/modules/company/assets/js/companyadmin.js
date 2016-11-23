@@ -30,11 +30,11 @@
             $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
             
             // Workflow
-            $( 'body' ).on( 'click', '#selPreTrvPol-update', this.workflow.PreTrvPol );
-            $( 'body' ).on( 'click', '#selPostTrvPol-update', this.workflow.PostTrvPol );
-            $( 'body' ).on( 'click', '#selGenExpReq-update', this.workflow.GenExpReq );
-            $( 'body' ).on( 'click', '#selMileageReq-update', this.workflow.MileageReq );
-            $( 'body' ).on( 'click', '#selUtilityReq-update', this.workflow.UtilityReq );
+            $( '.workflow-update' ).on( 'click', '#selPreTrvPol-update', this.workflow.PreTrvPol );
+            $( '.workflow-update' ).on( 'click', '#selPostTrvPol-update', this.workflow.PostTrvPol );
+            $( '.workflow-update' ).on( 'click', '#selGenExpReq-update', this.workflow.GenExpReq );
+            $( '.workflow-update' ).on( 'click', '#selMileageReq-update', this.workflow.MileageReq );
+            $( '.workflow-update' ).on( 'click', '#selUtilityReq-update', this.workflow.UtilityReq );
             
             // Finance Approver
             $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
@@ -129,6 +129,84 @@
         workflow : {
             
             PreTrvPol: function() {
+    
+                wp.ajax.send( 'save-PreTrvPol', {
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            },
+            PostTrvPol: function() {
+    
+                wp.ajax.send( 'save-PreTrvPol', {
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                    
+                } );
+            },
+            GenExpReq: function() {
+    
+                wp.ajax.send( 'save-PreTrvPol', {
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                    
+                } );
+            },
+            MileageReq: function() {
+    
+                wp.ajax.send( 'save-PreTrvPol', {
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                    
+                } );
+            },
+            UtilityReq: function() {
     
                 wp.ajax.send( 'save-PreTrvPol', {
                     data: {

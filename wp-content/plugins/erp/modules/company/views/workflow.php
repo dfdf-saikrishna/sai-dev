@@ -9,11 +9,17 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
 <div class="postbox">
     <div class="inside">
         <h2><?php _e( 'Company Expense Request Workflow', 'crp' ); ?></h2>
-
+        <!-- Messages -->
+        <div style="display:none" id="failure" class="notice notice-error is-dismissible">
+            <p id="p-failure"></p>
+        </div>
+        <div style="display:none" id="success" class="notice notice-success is-dismissible">
+            <p id="p-success"></p>
+        </div>
         <form method="post" action="#" enctype="multipart/form-data" id="workflow_update" name="workflow_update">
 
             <table class="form-table">
-                <tbody id="fields_container">
+                <tbody id="fields_container" class="workflow-update">
                     <tr>
                         <th>
                             <label for="type"><?php _e( 'Pre Travel Request', 'crp' ); ?> <span class="required">*</span></label>

@@ -570,9 +570,45 @@ class Ajax_Handler {
     }
     
     public function save_PreTrvPol(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
         $data = $posted;
-        $this->send_success($data);
+        
+        $selPreTrvPol	=	$data['select'];
+	
+        if($selPreTrvPol!=0){
+
+            
+            if($selpol=$wpdb->get_row("SELECT * FROM workflow_period WHERE COM_Id='$compid' AND RT_Id=1 AND WP_Status=1"))
+            {
+                $wpdb->update('workflow_period', array( 'WP_Removed_Admid' => $adminid ), array( 'WP_Status' => 2,'WP_To' => 'NOW()','WP_Id' => $selpol->WP_Id));
+                
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPreTrvPol,'RT_Id' => 1,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                
+                $msg="Pre travel expense request workflow added Successfully";
+
+            }
+            else
+            {
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPreTrvPol,'RT_Id' => 1,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                              
+                $msg="Pre travel expense request workflow updated Successfully";
+            }
+            
+            $wpdb->update( 'company', array( 'COM_Pretrv_POL_Id' => $selPreTrvPol), array( 'COM_Id' => $compid ));
+            
+            $response = array('status'=>'success','message'=>$msg);
+            $this->send_success($response);
+            exit;
+
+        } else {        
+            $response = array('status'=>'failure','message'=>'Please select a workflow to update');
+            $this->send_success($response);
+            exit;
+        }
+        
     }
     
     /**
