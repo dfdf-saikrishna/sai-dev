@@ -8,7 +8,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
 ?>
 <div class="postbox">
     <div class="inside">
-        <h3><?php _e( 'Company Expense Request Workflow', 'crp' ); ?></h3>
+        <h2><?php _e( 'Company Expense Request Workflow', 'crp' ); ?></h2>
 
         <form method="post" action="#" enctype="multipart/form-data" id="workflow_update" name="workflow_update">
 
@@ -19,15 +19,16 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Pre Travel Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select name="selPreTrvPol">
+                            <select name="selPreTrvPol" id="selPreTrvPol">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
-				{?>
+				                {?>
                                 <option value="<?php echo $value->POL_Id?>" <?php echo ($workflow->COM_Pretrv_POL_Id==$value->POL_Id) ? 'selected="selected"' : ''; ?> ><?php echo $value->POL_Type;?></option>
                                  
                                 <?php } ?>
                             </select>
+                            <a href="#" id="selPreTrvPol-update" class="primary button button-primary">Update</a>
                         </td>
                     </tr>
                     <tr>
@@ -39,11 +40,12 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
-				{?>
+				                {?>
                                 <option value="<?php echo $value->POL_Id?>" <?php echo ($workflow->COM_Posttrv_POL_Id==$value->POL_Id) ? 'selected="selected"' : ''; ?> ><?php echo $value->POL_Type;?></option>
                                  
                                 <?php } ?>
                             </select>
+                            <a href="#" id="selPostTrvPol-update" class="primary button button-primary">Update</a>
                         </td>
                     </tr>
                     <tr>
@@ -55,11 +57,12 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
-				{?>
+				                {?>
                                 <option value="<?php echo $value->POL_Id?>" <?php echo ($workflow->COM_Othertrv_POL_Id==$value->POL_Id) ? 'selected="selected"' : ''; ?> ><?php echo $value->POL_Type;?></option>
                                  
                                 <?php } ?>
                             </select>
+                            <a href="#" id="selGenExpReq-update" class="primary button button-primary">Update</a>
                         </td>
                     </tr>
                     <tr>
@@ -71,11 +74,12 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
-				{?>
+				                {?>
                                 <option value="<?php echo $value->POL_Id?>" <?php echo ($workflow->COM_Mileage_POL_Id==$value->POL_Id) ? 'selected="selected"' : ''; ?> ><?php echo $value->POL_Type;?></option>
                                  
                                 <?php } ?>
                             </select>
+                            <a href="#" id="selMileageReq-update" class="primary button button-primary">Update</a>
                         </td>
                     </tr>
                     <tr>
@@ -87,17 +91,16 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
-				{?>
+				                {?>
                                 <option value="<?php echo $value->POL_Id?>" <?php echo ($workflow->COM_Utility_POL_Id==$value->POL_Id) ? 'selected="selected"' : ''; ?> ><?php echo $value->POL_Type;?></option>
                                  
                                 <?php } ?>
                             </select>
+                            <a href="#" id="selUtilityReq-update" class="primary button button-primary">Update</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
-            <?php submit_button( __( 'Update', 'crp' ), 'primary', 'workflow-update' ); ?>
         </form>
     </div><!-- .inside -->
 </div><!-- .postbox -->

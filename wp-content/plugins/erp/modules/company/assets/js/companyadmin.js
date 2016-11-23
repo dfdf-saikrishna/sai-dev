@@ -30,7 +30,11 @@
             $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
             
             // Workflow
-            $( 'body' ).on( 'click', '#workflow-update', this.workflow.update );
+            $( 'body' ).on( 'click', '#selPreTrvPol-update', this.workflow.PreTrvPol );
+            $( 'body' ).on( 'click', '#selPostTrvPol-update', this.workflow.PostTrvPol );
+            $( 'body' ).on( 'click', '#selGenExpReq-update', this.workflow.GenExpReq );
+            $( 'body' ).on( 'click', '#selMileageReq-update', this.workflow.MileageReq );
+            $( 'body' ).on( 'click', '#selUtilityReq-update', this.workflow.UtilityReq );
             
             // Finance Approver
             $( 'body' ).on( 'change', '#select-finance-approver', this.finance.setAmount );
@@ -123,10 +127,22 @@
         },
         
         workflow : {
-            update: function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                
+            
+            PreTrvPol: function() {
+    
+                wp.ajax.send( 'save-PreTrvPol', {
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log( resp );
+                    },
+                    error: function(resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                         console.log( resp );
+                    }
+                    
+                } );
             }
         },
         
