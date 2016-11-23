@@ -27,7 +27,7 @@ class Admin_Menu {
         * 
         *  **********************************/
         if ( current_user_can( 'employee' ) ) {
-        add_menu_page('Employee Dashboard', 'Employee Dashboard', 'employee', 'employee', 'employeeDashboard','dashicons-admin-users');
+        add_menu_page('Employee Dashboard', 'Employee Dashboard', 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
 
         add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
 
@@ -61,7 +61,7 @@ class Admin_Menu {
         'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
 
         add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'Travel Expense', 'travel_expense','dashicons-tickets');
-            add_submenu_page('Travel Expense', 'Pre Travel', ' Pre Travel', 'employee','Pre Travel'.'/ Pre Travel', array($this, 'pre_travel_request'));
+            add_submenu_page('Travel Expense', 'Pre Travel', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
             add_submenu_page('Travel Expense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
             add_submenu_page('Travel Expense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
             add_submenu_page('Travel Expense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
@@ -97,6 +97,10 @@ class Admin_Menu {
     
     function pre_travel_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request.php';
+    }
+    
+    function employee_Dashboard(){
+        include WPERP_EMPLOYEE_VIEWS . '/employee-dashboard.php';
     }
 
     /**

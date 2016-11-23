@@ -1831,6 +1831,42 @@ table.leaves td.column-status .status-3 {
   font-size: 11px;
   font-weight: bold;
 }
+.oval-1{
+background: #ffba00;
+padding: 2px 5px;
+border-radius: 30px;
+display: inline-block;
+color: #fff;
+font-size: 11px;
+font-weight: bold;
+}
+.oval-2{
+background: #008ec2;
+padding: 2px 5px;
+border-radius: 30px;
+display: inline-block;
+color: #fff;
+font-size: 11px;
+font-weight: bold;
+}
+.oval-3{
+background: #2ecc71;
+padding: 2px 5px;
+border-radius: 30px;
+display: inline-block;
+color: #fff;
+font-size: 11px;
+font-weight: bold;
+}
+.oval-4{
+background: #d9534f;
+padding: 2px 5px;
+border-radius: 30px;
+display: inline-block;
+color: #fff;
+font-size: 11px;
+font-weight: bold;
+}
 .erp-hr-leave-request-new .show-days {
   width: 97%;
 }
