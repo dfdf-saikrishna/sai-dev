@@ -48,6 +48,10 @@ class Ajax_Handler {
         
         // Workflow
         $this->action( 'wp_ajax_save-PreTrvPol', 'save_PreTrvPol' );
+        $this->action( 'wp_ajax_save-PostTrvPol', 'save_PostTrvPol' );
+        $this->action( 'wp_ajax_save-GenExpReq', 'save_GenExpReq' );
+        $this->action( 'wp_ajax_save-MileageReq', 'save_MileageReq' );
+        $this->action( 'wp_ajax_save-UtilityReq', 'save_UtilityReq' );
         
         // Finance
         $this->action( 'wp_ajax_get-limit-amount', 'get_limit_amount' );
@@ -587,14 +591,14 @@ class Ajax_Handler {
                 
                 $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPreTrvPol,'RT_Id' => 1,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
                 
-                $msg="Pre travel expense request workflow added Successfully";
+                $msg="Pre travel expense request workflow updated Successfully";
 
             }
             else
             {
                 $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPreTrvPol,'RT_Id' => 1,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
                               
-                $msg="Pre travel expense request workflow updated Successfully";
+                $msg="Pre travel expense request workflow added Successfully";
             }
             
             $wpdb->update( 'company', array( 'COM_Pretrv_POL_Id' => $selPreTrvPol), array( 'COM_Id' => $compid ));
@@ -610,6 +614,171 @@ class Ajax_Handler {
         }
         
     }
+    
+    public function save_PostTrvPol(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        
+        $selPostTrvPol	=	$data['select'];
+	
+        if($selPostTrvPol!=0){
+
+            
+            if($selpol=$wpdb->get_row("SELECT * FROM workflow_period WHERE COM_Id='$compid' AND RT_Id=2 AND WP_Status=1"))
+            {
+                $wpdb->update('workflow_period', array( 'WP_Removed_Admid' => $adminid ), array( 'WP_Status' => 2,'WP_To' => 'NOW()','WP_Id' => $selpol->WP_Id));
+                
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPostTrvPol,'RT_Id' => 2,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                
+                $msg="Post travel expense request workflow updated Successfully";
+
+            }
+            else
+            {
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selPostTrvPol,'RT_Id' => 2,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                              
+                $msg="Post travel expense request workflow added Successfully";
+            }
+            
+            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selPostTrvPol), array( 'COM_Id' => $compid ));
+            
+            $response = array('status'=>'success','message'=>$msg);
+            $this->send_success($response);
+            exit;
+
+        } else {        
+            $response = array('status'=>'failure','message'=>'Please select a workflow to update');
+            $this->send_success($response);
+            exit;
+        }
+    }
+    
+    public function save_GenExpReq(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        
+        $selCompanyPol	=	$data['select'];
+	
+        if($selCompanyPol!=0){
+
+            
+            if($selpol=$wpdb->get_row("SELECT * FROM workflow_period WHERE COM_Id='$compid' AND RT_Id=3 AND WP_Status=1"))
+            {
+                $wpdb->update('workflow_period', array( 'WP_Removed_Admid' => $adminid ), array( 'WP_Status' => 2,'WP_To' => 'NOW()','WP_Id' => $selpol->WP_Id));
+                
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 2,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                
+                $msg="General expense request workflow updated Successfully";
+
+            }
+            else
+            {
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 3,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                              
+                $msg="General expense request workflow added Successfully";
+            }
+            
+            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            
+            $response = array('status'=>'success','message'=>$msg);
+            $this->send_success($response);
+            exit;
+
+        } else {        
+            $response = array('status'=>'failure','message'=>'Please select a workflow to update');
+            $this->send_success($response);
+            exit;
+        }
+    }
+    
+    public function save_MileageReq(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        
+        $selCompanyPol	=	$data['select'];
+	
+        if($selCompanyPol!=0){
+
+            
+            if($selpol=$wpdb->get_row("SELECT * FROM workflow_period WHERE COM_Id='$compid' AND RT_Id=5 AND WP_Status=1"))
+            {
+                $wpdb->update('workflow_period', array( 'WP_Removed_Admid' => $adminid ), array( 'WP_Status' => 2,'WP_To' => 'NOW()','WP_Id' => $selpol->WP_Id));
+                
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 5,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                
+                $msg="Mileage request workflow updated Successfully";
+
+            }
+            else
+            {
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 5,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                              
+                $msg="Mileage request workflow added Successfully";
+            }
+            
+            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            
+            $response = array('status'=>'success','message'=>$msg);
+            $this->send_success($response);
+            exit;
+
+        } else {        
+            $response = array('status'=>'failure','message'=>'Please select a workflow to update');
+            $this->send_success($response);
+            exit;
+        }
+    }
+    
+    public function save_UtilityReq(){
+        global $wpdb;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $data = $posted;
+        
+        $selCompanyPol	=	$data['select'];
+	
+        if($selCompanyPol!=0){
+
+            
+            if($selpol=$wpdb->get_row("SELECT * FROM workflow_period WHERE COM_Id='$compid' AND RT_Id=6 AND WP_Status=1"))
+            {
+                $wpdb->update('workflow_period', array( 'WP_Removed_Admid' => $adminid ), array( 'WP_Status' => 2,'WP_To' => 'NOW()','WP_Id' => $selpol->WP_Id));
+                
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 6,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                
+                $msg="Utility request workflow updated Successfully";
+
+            }
+            else
+            {
+                $wpdb->insert('workflow_period', array('COM_Id' => $compid,'POL_Id' => $selCompanyPol,'RT_Id' => 6,'WP_Added_Admid' => $adminid,'WP_From' => 'NOW()'));
+                              
+                $msg="Utility request workflow added Successfully";
+            }
+            
+            $wpdb->update( 'company', array( 'COM_Posttrv_POL_Id' => $selCompanyPol), array( 'COM_Id' => $compid ));
+            
+            $response = array('status'=>'success','message'=>$msg);
+            $this->send_success($response);
+            exit;
+
+        } else {        
+            $response = array('status'=>'failure','message'=>'Please select a workflow to update');
+            $this->send_success($response);
+            exit;
+        }
+    }
+        
     
     /**
      * Create/update an employee

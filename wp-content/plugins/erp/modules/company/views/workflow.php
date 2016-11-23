@@ -42,7 +42,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Post Travel Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select name="selPostTrvPol">
+                            <select name="selPostTrvPol" id="selPostTrvPol">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -59,7 +59,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'General Expense Request', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select name="selGenExpReq">
+                            <select name="selGenExpReq" id="selGenExpReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -76,7 +76,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Mileage Requests', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select name="selMileageReq">
+                            <select name="selMileageReq" id="selMileageReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)
@@ -93,7 +93,7 @@ $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Ot
                             <label for="type"><?php _e( 'Utility Requests', 'crp' ); ?> <span class="required">*</span></label>
                         </th>
                         <td>
-                            <select name="selUtilityReq">
+                            <select name="selUtilityReq" id="selUtilityReq">
                                 <option value="volvo">-Select-</option>
                                 <?php
                                 foreach($rowpol as $value)

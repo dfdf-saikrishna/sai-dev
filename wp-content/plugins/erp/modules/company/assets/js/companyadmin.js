@@ -160,64 +160,120 @@
             },
             PostTrvPol: function() {
     
-                wp.ajax.send( 'save-PreTrvPol', {
+                wp.ajax.send( 'save-PostTrvPol', {
                     data: {
-                        select : $('#selPreTrvPol').val()
+                        select : $('#selPostTrvPol').val()
                     },
                     success: function(resp) {
-                        console.log( resp );
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                     },
                     error: function(resp) {
-                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
-                         console.log( resp );
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
                     }
                     
                 } );
             },
             GenExpReq: function() {
     
-                wp.ajax.send( 'save-PreTrvPol', {
+                wp.ajax.send( 'save-GenExpReq', {
                     data: {
-                        select : $('#selPreTrvPol').val()
+                        select : $('#selGenExpReq').val()
                     },
                     success: function(resp) {
-                        console.log( resp );
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                     },
                     error: function(resp) {
-                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
-                         console.log( resp );
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
                     }
                     
                 } );
             },
             MileageReq: function() {
     
-                wp.ajax.send( 'save-PreTrvPol', {
+                wp.ajax.send( 'save-MileageReq', {
                     data: {
-                        select : $('#selPreTrvPol').val()
+                        select : $('#selMileageReq').val()
                     },
                     success: function(resp) {
-                        console.log( resp );
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                     },
                     error: function(resp) {
-                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
-                         console.log( resp );
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
                     }
                     
                 } );
             },
             UtilityReq: function() {
     
-                wp.ajax.send( 'save-PreTrvPol', {
+                wp.ajax.send( 'save-UtilityReq', {
                     data: {
-                        select : $('#selPreTrvPol').val()
+                        select : $('#selUtilityReq').val()
                     },
                     success: function(resp) {
-                        console.log( resp );
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                     },
                     error: function(resp) {
-                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
-                         console.log( resp );
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
                     }
                     
                 } );
