@@ -113,6 +113,7 @@ class Ajax_Handler {
     }
     
     function send_pre_travel_request(){
+        ob_end_clean();
         $this->send_success("request");
     }
 

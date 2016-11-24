@@ -17,7 +17,7 @@
             //Travel Requests
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
             $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
-            
+            $( 'body').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
