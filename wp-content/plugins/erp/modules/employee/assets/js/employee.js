@@ -15,8 +15,8 @@
         initialize: function() {
      
             //Travel Requests
-            $( 'body' ).on( 'click', '#reset', this.travelRequest.reset );
-            
+            $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
+            $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
             
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
@@ -124,6 +124,10 @@
                 console.log("test");
                 $('#request_form')[0].reset();
             },
+            create: function() {
+                console.log("test");
+                
+           },
             
         },
 
