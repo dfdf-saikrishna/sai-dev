@@ -172,7 +172,3 @@ function indianRupeeFormat(x){
 }
     
 </script>
-
-<?php
-ob_end_flush();
-?>
