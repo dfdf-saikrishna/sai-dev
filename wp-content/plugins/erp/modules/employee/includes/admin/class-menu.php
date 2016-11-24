@@ -42,11 +42,11 @@ class Admin_Menu {
         *  **********************************/
         if ( current_user_can( 'employee' ) ) {
            
-        add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employeeMenu', array($this,'employee_Dashboard'),'dashicons-admin-users');
+        add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
         
         if(current_user_can( 'finance' )){
              
-        add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financeMenu', array($this,'account_Dashboard'),'dashicons-admin-users');
+        add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'finance', array($this,'account_Dashboard'),'dashicons-admin-users');
         //add_menu_page('financedashboard', 'Finance Dashboard', 'finance', 'finance-dashboard', 'financeDashboard','dashicons-admin-users');
         add_submenu_page('financeMenu','pre', 'PreTravel Expense Request', 'finance', 'PreT', 'PreTravelRequest','dashicons-money');
         add_submenu_page('financeMenu','PostTravel', 'Post Travel Expense Request', 'finance', 'PostTravel', 'PostTravelRequest','dashicons-money');
