@@ -454,7 +454,7 @@ return array(
     /****************************/
     
     
-    'WeDevs\\ERP\\Employee\\Workflow_List_Table' => $baseDir . '/modules/employee/includes/class-workflow-table.php',
+    'WeDevs\\ERP\\Employee\\My_Pre_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-pre-travel-expenses.php',
     'WeDevs\\ERP\\Employee\\Admin\\Admin_Menu' => $baseDir . '/modules/employee/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Employee\\Form_Handler' => $baseDir . '/modules/employee/includes/class-form-handler.php',
     'WeDevs\\ERP\\Employee\\Emailer' => $baseDir . '/modules/employee/includes/class-emails.php',
