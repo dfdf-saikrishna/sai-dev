@@ -461,7 +461,6 @@ return array(
     'WeDevs\\ERP\\Employee\\Ajax_Handler' => $baseDir . '/modules/employee/includes/class-ajax.php',
     'WeDevs\\ERP\\Employee\\Announcement' => $baseDir . '/modules/employee/includes/class-announcement.php',
     'WeDevs\\ERP\\Employee\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/employee/includes/emails/class-email-new-employee-welcome.php',
-    'WeDevs\\ERP\\Employee\\Companyview' => $baseDir . '/modules/employee/includes/class-companyview.php',
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/includes/class-employee.php',
     'WeDevs\\ERP\\Employee\\Superadmin_List_Table' => $baseDir . '/modules/employee/includes/class-superadmin-list-table.php',
     'WeDevs\\ERP\\Employee\\Companies_List_Table' => $baseDir . '/modules/employee/includes/class-company-list-table.php',	
