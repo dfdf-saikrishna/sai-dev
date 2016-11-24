@@ -140,59 +140,59 @@ function gradeLimits(){
         
 }
 function tdclaimapprovals($string){
-        global $getapprov; 
+	global $getapprov; 
+switch($string)
+{
+	
+	case 1:
+	$getapprov='<span class="status-1">Pending</span>';
+	break;
+	
+	case 2:
+	$getapprov='<span class="status-2">Approved</span>';
+	break;
+	
+	case 3:
+	$getapprov='<span class="status-4">Rejected</span>';
+	break;
+	
+	case 4:
+	$getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
+	break;
+
+}
+
+return $getapprov;
+}
+
+function approvals($string){
+	global $getapprov;
 	switch($string)
 	{
-		
 		case 1:
 		$getapprov='<span class="status-1">Pending</span>';
 		break;
-		
+
 		case 2:
-		$getapprov='<span class="status-2">Approved</span>';
+		$getapprov='<span class="status-2">Settled</span>';
 		break;
 		
-		case 3:
-		$getapprov='<span class="status-4">Rejected</span>';
-		break;
-		
-		case 4:
+		case 5:
 		$getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
 		break;
-	
+			
+		case 4:
+		$getapprov='<span class="status-4">Rejected</span>';
+		break;
+			
+		case 9:
+		$getapprov='<span class="status-4">Rejected</span>';
+		break;
 	}
-	
+
 	return $getapprov;
-    }
-    
-    function approvals($string){
-        global $getapprov;
-        switch($string)
-        {
-            case 1:
-            $getapprov='<span class="status-1">Pending</span>';
-            break;
-
-            case 2:
-            $getapprov='<span class="status-2">Settled</span>';
-            break;
-            
-            case 5:
-            $getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
-            break;
-                
-            case 4:
-            $getapprov='<span class="status-4">Rejected</span>';
-            break;
-                
-            case 9:
-            $getapprov='<span class="status-4">Rejected</span>';
-            break;
-        }
-
-        return $getapprov;
 
 
-    }
+}
 
 

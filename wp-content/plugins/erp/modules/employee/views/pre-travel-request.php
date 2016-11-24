@@ -85,7 +85,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                       <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="" onchange="javascript:getMotPreTravel(this.value,1)">
+                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selexpcat as $rowexpcat)
@@ -96,7 +96,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                          
                         </select></td>
                       <td data-title="Category"><span id="modeoftr1acontent">
-                        <select name="selModeofTransp[]"  id="selModeofTransp1" class="" onchange="setFromTo(this.value, 1);">
+                        <select name="selModeofTransp[]"  id="selModeofTransp1" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selmode as $rowsql)
@@ -110,20 +110,23 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input  name="from[]" id="from1" type="text" placeholder="From" class="">
                         <input  name="to[]" id="to1" type="text" placeholder="To" class="">
                         </span></td>
-                      <td data-title="Estimated Cost"> <span id="cost1container">
+                        <td data-title="Estimated Cost"><span id="cost1container">
                         <input type="text" class="" name="txtCost[]" id="txtCost1" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
+                        </br><span class="red" id="show-exceed"></span>
+                        <input type="hidden" value="0" id="budget_limit">
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                     </tr>
                   </tbody>
                 </table>
+                <span id="totaltable"> </span>
                 </form>
             </div>
             <div id="my_centered_buttons">
-            <button type="button" name="getQuote" id="" class="button button-primary" onclick="">Submit</button>
+            <button type="button" name="submit" id="submit-pre-travel-request" class="button button-primary">Submit</button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" name="getQuote" id="reset" class="button">Reset</button>
+            <button type="button" name="reset" id="reset" class="button">Reset</button>
             </div>
         </div>
         

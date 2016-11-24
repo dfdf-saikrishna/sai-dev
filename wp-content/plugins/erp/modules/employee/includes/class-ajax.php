@@ -25,7 +25,10 @@ class Ajax_Handler {
      * @return void
      */
     public function __construct() {
-
+        
+        // TravelRequest
+        $this->action( 'wp_ajax_send_pre_travel_request', 'send_pre_travel_request' );
+        
         // Department
         $this->action( 'wp_ajax_erp-hr-new-dept', 'department_create' );
         $this->action( 'wp_ajax_erp-hr-del-dept', 'department_delete' );
@@ -107,6 +110,10 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp_hr_script_reload', 'employee_template_refresh' );
         $this->action( 'wp_ajax_erp_hr_new_dept_tmp_reload', 'new_dept_tmp_reload' );
         $this->action( 'wp_ajax_erp-hr-holiday-delete', 'holiday_remove' );
+    }
+    
+    function send_pre_travel_request(){
+        $this->send_success("request");
     }
 
     function leave_reject() {
