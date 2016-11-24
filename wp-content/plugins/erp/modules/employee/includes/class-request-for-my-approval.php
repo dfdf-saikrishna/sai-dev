@@ -1,6 +1,6 @@
 <?php
 namespace WeDevs\ERP\Employee;
-$mydetails=myEmpDetails();
+$mydetails=myDetails();
 $compid = $_SESSION['compid'];
 /**
  * PART 2. Defining Custom Table List
@@ -341,7 +341,7 @@ class Request_Travel_Expenses extends \WP_List_Table
         global $wpdb;
         
         $compid = $_SESSION['compid'];
-        $mydetails=myEmpDetails();
+        $mydetails=myDetails();
         
        // $table_name = 'requests'; // do not forget about tables prefix
 
@@ -356,7 +356,7 @@ class Request_Travel_Expenses extends \WP_List_Table
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
-         $empid=$mydetails['0']->EMP_Id;
+         $empid=$mydetails->EMP_Id;
         // will be used in pagination settings
         $total_items = count($wpdb->get_results("SELECT * FROM requests req, request_employee re WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id !='$empid' AND req.REQ_Active !=9 AND re.RE_Status=1"));
 

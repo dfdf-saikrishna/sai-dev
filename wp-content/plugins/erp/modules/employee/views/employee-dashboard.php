@@ -7,7 +7,7 @@ global $wpdb;
     $empID = $_SESSION['empuserid'];
     $emp_code=$_SESSION['emp_code'];  
     // Retrieving my details
-    $mydetails=myEmpDetails();
+    $mydetails=myDetails();
 
     $approver='0';
     // checking approver(y/n)
@@ -39,8 +39,8 @@ global $wpdb;
     if($approver){
 	//checking that whether i'm the approver of my requests
 	$myselfApprvr=0;
-        $empcode=$mydetails['0']->EMP_Code;
-        $rprmgr=$mydetails['0']->EMP_Reprtnmngrcode;
+        $empcode=$mydetails->EMP_Code;
+        $rprmgr=$mydetails->EMP_Reprtnmngrcode;
         
 	if($empcode==$rprmgr){
 		$myselfApprvr=1;

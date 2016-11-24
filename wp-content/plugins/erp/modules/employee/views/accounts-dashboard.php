@@ -13,7 +13,7 @@ $mydetails=myDetails();
 //	if(!$_SESSION['accs-menu'])
 //	$_SESSION['accs-menu']=time();
 //}
-    $empid=$mydetails['0']->EMP_Id;
+    $empid=$mydetails->EMP_Id;
         //Eployee Travel Request
         $count_total=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Active != 9 AND re.RE_Status=1");
 	

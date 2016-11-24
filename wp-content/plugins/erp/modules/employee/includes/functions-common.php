@@ -22,22 +22,6 @@ function ihvdelegated($n){
 	return $seldeleg;
 	
 }
-
-function myEmpDetails($empid=NULL)
-{
-    $empuserid = $_SESSION['empuserid'];
-    $compid = $_SESSION['compid'];
-	
-	if(!$empid)
-	$empid=$empuserid;
-	
-	 global $wpdb;
-	
-	$mydetails=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
-	
-	return $mydetails;
-}
-
 //EMPLOYEE DETAILS
 
 function isApprover()
@@ -47,8 +31,10 @@ function isApprover()
     $empuserid = $_SESSION['empuserid'];
     $compid = $_SESSION['compid'];
 	
-	$mydetails	=	myEmpDetails();
-        $rcode=$mydetails['0']->EMP_Code;
+	$mydetails	= myDetails();
+        //print_r( $mydetails);die;
+        $rcode=$mydetails->EMP_Code;
+       // print_r($rcode);die;
 	$selrow=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' AND EMP_Status=1");
         //print_r( $selrow);die;
 	return $selrow;
@@ -64,7 +50,7 @@ function myDetails($empid=NULL)
 	if(!$empid)
 	$empid=$empuserid;
 	
-	$mydetails=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
+	$mydetails=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
 	
 	return $mydetails;
 }
@@ -88,55 +74,53 @@ function gradeLimits(){
     
         global $wpdb;
         $mydetails = myDetails();
-        $selgrdLim=$wpdb->get_row("SELECT * FROM grade_limits WHERE EG_Id='$mydetails->EG_Id' AND GL_Status=1");
-        //$selgrdLim=select_query("grade_limits", "*", "EG_Id='$mydetails[EG_Id]' AND GL_Status=1", $filename, 0);
-        
-        $selgrdLim = json_decode(json_encode($selgrdLim), True);
-        //print_r($selgrdLim);
-	    $selgrdLim=array_values($selgrdLim);
-        //print_r($selgrdLim);
+        if($selgrdLim=$wpdb->get_row("SELECT * FROM grade_limits WHERE EG_Id='$mydetails->EG_Id' AND GL_Status=1")){
+			$selgrdLim = json_decode(json_encode($selgrdLim), True);
+			//print_r($selgrdLim);
+			$selgrdLim=array_values($selgrdLim);
+			//print_r($selgrdLim);
 
-    
-        echo '<table id="expenseLimitId" class="wp-list-table widefat fixed striped admins">';
-        echo '<tr>';
+		
+			echo '<table id="expenseLimitId" class="wp-list-table widefat fixed striped admins">';
+			echo '<tr>';
 
 
-            echo '<h4>Expense limits:</h4>';
+				echo '<h4>Expense limits:</h4>';
 
-             
-            $i=0;
+				 
+				$i=0;
 
-            $selmod=$wpdb->get_results("SELECT MOD_Name FROM mode WHERE COM_Id = 0");
+				$selmod=$wpdb->get_results("SELECT MOD_Name FROM mode WHERE COM_Id = 0");
 
-            $i = $gradelimitm = $totalLimitAmnt = 0;
+				$i = $gradelimitm = $totalLimitAmnt = 0;
 
-            foreach($selmod as $rowmod){
+				foreach($selmod as $rowmod){
 
-                    $k=$i+4;
+						$k=$i+4;
 
-                    if($selgrdLim[$k]){
+						if($selgrdLim[$k]){
 
-        
-              echo '<td>';
-                  echo $rowmod->MOD_Name . "Expense Limit - <span class='oval-1'>";
-                  echo $selgrdLim[$k] ? IND_money_format($selgrdLim[$k]).".00" : "No Limit</span>";
-                 
-                        $gradelimitm++;
-                        $totalLimitAmnt += $selgrdLim[$k]; 
+			
+				  echo '<td>';
+					  echo $rowmod->MOD_Name . "Expense Limit - <span class='oval-1'>";
+					  echo $selgrdLim[$k] ? IND_money_format($selgrdLim[$k]).".00" : "No Limit</span>";
+					 
+							$gradelimitm++;
+							$totalLimitAmnt += $selgrdLim[$k]; 
 
-                    }	
+						}	
 
-                    if($gradelimitm%3==0)
-                    echo '<tr>';
+						if($gradelimitm%3==0)
+						echo '<tr>';
 
-                    $i++; 	
-            } 
-                
-                    echo '</td>';
+						$i++; 	
+				} 
+					
+						echo '</td>';
 
-            
-            if($totalLimitAmnt < 1) echo '<script>$("#expenseLimitId").css("display", "none");</script>';
-
+				
+				if($totalLimitAmnt < 1) echo '<script>$("#expenseLimitId").css("display", "none");</script>';
+		}
         
 }
 function tdclaimapprovals($string){
