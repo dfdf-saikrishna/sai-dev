@@ -5,17 +5,66 @@
  * @return void
  */
 //EMPLOYEE DETAILS
+function ihvdelegated($n){
 
-function myDetails($empid=NULL)
+        $empuserid = $_SESSION['empuserid'];
+	$curdate=date('Y-m-d');
+        global $wpdb;
+        
+	if($n==1){
+            
+		$seldeleg=$wpdb->get_results("SELECT * FROM delegate WHERE DLG_FromEmpid='$empuserid' AND DLG_ToDate > '$curdate' AND DLG_Status=1 AND DLG_Active=1");
+	
+	} else if($n==2) {
+			
+		$seldeleg=$wpdb->get_results("SELECT * FROM delegate delg, employees emp WHERE delg.DLG_ToEmpid='$empuserid' AND delg.DLG_FromEmpid = emp.EMP_Id AND DLG_ToDate > '$curdate' AND DLG_Status=1 AND DLG_Active=1");
+	}
+	return $seldeleg;
+	
+}
+
+function myEmpDetails($empid=NULL)
 {
-    global $wpdb;
-	$empuserid = $_SESSION['empuserid'];
+    $empuserid = $_SESSION['empuserid'];
     $compid = $_SESSION['compid'];
 	
 	if(!$empid)
 	$empid=$empuserid;
 	
-	$mydetails=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
+	 global $wpdb;
+	
+	$mydetails=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
+	
+	return $mydetails;
+}
+
+//EMPLOYEE DETAILS
+
+function isApprover()
+{
+    
+    global $wpdb;
+    $empuserid = $_SESSION['empuserid'];
+    $compid = $_SESSION['compid'];
+	
+	$mydetails	=	myEmpDetails();
+        $rcode=$mydetails['0']->EMP_Code;
+	$selrow=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' AND EMP_Status=1");
+        //print_r( $selrow);die;
+	return $selrow;
+
+}
+
+function myDetails($empid=NULL)
+{
+    global $wpdb;
+    $empuserid = $_SESSION['empuserid'];
+    $compid = $_SESSION['compid'];
+	
+	if(!$empid)
+	$empid=$empuserid;
+	
+	$mydetails=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
 	
 	return $mydetails;
 }
@@ -90,5 +139,60 @@ function gradeLimits(){
 
         
 }
+function tdclaimapprovals($string){
+        global $getapprov; 
+	switch($string)
+	{
+		
+		case 1:
+		$getapprov='<span class="status-1">Pending</span>';
+		break;
+		
+		case 2:
+		$getapprov='<span class="status-2">Approved</span>';
+		break;
+		
+		case 3:
+		$getapprov='<span class="status-4">Rejected</span>';
+		break;
+		
+		case 4:
+		$getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
+		break;
+	
+	}
+	
+	return $getapprov;
+    }
+    
+    function approvals($string){
+        global $getapprov;
+        switch($string)
+        {
+            case 1:
+            $getapprov='<span class="status-1">Pending</span>';
+            break;
+
+            case 2:
+            $getapprov='<span class="status-2">Settled</span>';
+            break;
+            
+            case 5:
+            $getapprov='<span class="status-3">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</span>';
+            break;
+                
+            case 4:
+            $getapprov='<span class="status-4">Rejected</span>';
+            break;
+                
+            case 9:
+            $getapprov='<span class="status-4">Rejected</span>';
+            break;
+        }
+
+        return $getapprov;
+
+
+    }
 
 

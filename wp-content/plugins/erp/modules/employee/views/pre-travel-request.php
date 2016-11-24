@@ -3,8 +3,9 @@ global $wpdb;
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
 $empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
-$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");
-					
+$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
+$selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
+$selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
 ?>
 <style type="text/css">
 #my_centered_buttons { text-align: center; width:100%; margin-top:60px; }
@@ -86,12 +87,23 @@ $repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$em
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
                       <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="" onchange="javascript:getMotPreTravel(this.value,1)">
                           <option value="">Select</option>
+                          <?php
+                          foreach($selexpcat as $rowexpcat)
+				  {
+				  ?>
+                          <option value="<?php echo $rowexpcat->EC_Id?>" ><?php echo $rowexpcat->EC_Name; ?></option>
+                          <?php } ?>
                          
                         </select></td>
                       <td data-title="Category"><span id="modeoftr1acontent">
                         <select name="selModeofTransp[]"  id="selModeofTransp1" class="" onchange="setFromTo(this.value, 1);">
                           <option value="">Select</option>
-                          
+                          <?php
+                          foreach($selmode as $rowsql)
+					  {
+					  ?>
+                          <option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option>
+                          <?php } ?>
                         </select>
                         </span></td>
                       <td data-title="Place"><span id="city1container">

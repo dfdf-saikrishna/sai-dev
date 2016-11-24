@@ -12,8 +12,22 @@ class Admin_Menu {
      */
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+//       register_nav_menus(
+//        array(
+//            'employee_Dashboard' => __( 'Employee Dashboard' ), 
+//    	'account_Dashboard' => __( 'Finance Dashboard' )
+//                )
+//        );
     }
-
+//function register_my_menus() {
+//  register_nav_menus(
+//    array(  
+//    	'employee_Dashboard' => __( 'Employee Dashboard'), 
+//    	'account_Dashboard' => __( 'Expanded Footer' )
+//    )
+//  );
+//} 
+//add_action( 'init', 'register_my_menus' );
     /**
      * Add menu items
      *
@@ -27,8 +41,25 @@ class Admin_Menu {
         * 
         *  **********************************/
         if ( current_user_can( 'employee' ) ) {
-        add_menu_page('Employee Dashboard', 'Employee Dashboard', 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
-
+           
+        add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employeeMenu', array($this,'employee_Dashboard'),'dashicons-admin-users');
+        
+        if(current_user_can( 'finance' )){
+             
+        add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financeMenu', array($this,'account_Dashboard'),'dashicons-admin-users');
+        //add_menu_page('financedashboard', 'Finance Dashboard', 'finance', 'finance-dashboard', 'financeDashboard','dashicons-admin-users');
+        add_submenu_page('financeMenu','pre', 'PreTravel Expense Request', 'finance', 'PreT', 'PreTravelRequest','dashicons-money');
+        add_submenu_page('financeMenu','PostTravel', 'Post Travel Expense Request', 'finance', 'PostTravel', 'PostTravelRequest','dashicons-money');
+        add_submenu_page('financeMenu','General', 'General Expense Request', 'finance', 'General', 'GeneralExpenseRequest','dashicons-money');
+        add_submenu_page('financeMenu','MileageExpense', 'Mileage Expense Request', 'finance', 'MileageExpense', 'MileageExpenseRequest','dashicons-money');
+        add_submenu_page('financeMenu','UtilityExpense', 'Utility Expense Request', 'finance', 'UtilityExpense', 'UtilityExpenseRequest','dashicons-money');
+        add_submenu_page('financeMenu','claims', 'TravelDesk Claims', 'finance', 'TDClaims', 'TravelDeskClaims','dashicons-location');
+        add_menu_page('FinanceExpense', 'Expense', 'finance', 'FinanceExpense', 'FinanceExpense','dashicons-money');
+                add_submenu_page('FinanceExpense', 'create', 'Create Expense', 'finance', 'create', 'FinanceExpense');
+                add_submenu_page('FinanceExpense', 'view', 'View Expense', 'finance', 'view', 'FinanceExpense');
+                add_submenu_page('FinanceExpense', 'General', 'View General Expense', 'finance', 'General', 'FinanceExpense');
+                add_submenu_page('FinanceExpense', 'utility', 'View Utility Expense', 'finance', 'Utility', 'FinanceExpense');
+        }
         add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
 
         add_submenu_page('employee-profile', ' Employement Details', ' Employement Details', 'employee',' Employement Details'.'/ Employement Details', 'employement_details');
@@ -91,7 +122,8 @@ class Admin_Menu {
             add_submenu_page('Delegate', 'Set Delegate', 'Set Delegate', 'employee','Set Delegate'.'/Set Delegate', 'delegate');
             add_submenu_page('Delegate', 'View / Edit / Remove Delegate', 'View / Edit / Remove Delegate', 'employee','View / Edit / Remove Delegate'.'/View / Edit / Remove Delegate', 'delegate');
         add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
-        }
+       //}
+    }
         
     }
     
@@ -101,6 +133,9 @@ class Admin_Menu {
     
     function employee_Dashboard(){
         include WPERP_EMPLOYEE_VIEWS . '/employee-dashboard.php';
+    }
+     function account_Dashboard(){
+        include WPERP_EMPLOYEE_VIEWS . '/accounts-dashboard.php';
     }
 
     /**

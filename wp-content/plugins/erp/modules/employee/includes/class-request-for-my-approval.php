@@ -1,5 +1,7 @@
 <?php
 namespace WeDevs\ERP\Employee;
+$mydetails=myEmpDetails();
+$compid = $_SESSION['compid'];
 /**
  * PART 2. Defining Custom Table List
  * ============================================================================
@@ -19,7 +21,7 @@ namespace WeDevs\ERP\Employee;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class My_Pre_Travel_Expenses extends \WP_List_Table
+class Request_Travel_Expenses extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -43,38 +45,55 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
      */
     function column_default($item, $column_name)
     {
-//        switch ( $column_name ) {
-//        case 'Contact':
-//            return $item['COM_Spcontactno'];
-//            break;
-//        case 'Tot_Admins':
-//            return $item['COM_Spcontactno'];
-//            break;
-//        case 'Tot_Employees':
-//            return $item['COM_Spcontactno'];
-//            break;
-//        case 'Tot_Request':
-//            return $item['COM_Spcontactno'];
-//            break;
-//        case 'Created_Date':
-//            return $item['COM_Spcontactno'];
-//            break;
-//        }
-        //return $item['COM_Name'];
+
     }
-    
-    /*function column_your_image_column_name($item)
-    {
-        return sprintf(
-            '<img src="%s" />',
-            $item['your_image_column_name']
-        );
-    }*/
-    
+
     function column_estimated_cost($item){
         global $wpdb;
-        $totalcost = $wpdb->get_row("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id=$item[REQ_Id] AND RD_Status='1'");
-        return IND_money_format($totalcost->total).".00";
+        //$totalcost = $wpdb->get_row("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id=$item[REQ_Id] AND RD_Status='1'");
+        $cls = NULL;
+
+        if ($item['REQ_PreToPostStatus']) {
+
+            if ($item['REQ_Type'] == 4) {
+
+                $totalcost = $wpdb->get_row("SELECT SUM(RD_Cost) AS total  FROM request_details WHERE REQ_Id='$item[REQ_Id]'");
+                
+                print_r($totalcost);die;
+            } else {
+
+                $totalcost = $wpdb->get_row("SELECT SUM(ptac.PTAC_Cost)  AS total  FROM requests req, pre_travel_claim ptc, pre_travel_actual_cost ptac WHERE req.REQ_Id=$item[REQ_Id] AND req.REQ_Id=ptc.REQ_Id AND ptc.PTC_Id=ptac.PTC_Id AND ptac.PTAC_Status=1");
+                $selptc = $wpdb->get_results("SELECT * FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'");
+                $status1=$selptc['0']->PTC_RepMngrStatus;
+                $status=$selptc['0']->PTC_FinanceStatus;
+                // emp --> rep mangr --> finance
+                if (($status1 == 2) && ($status == 1))
+                    $cls = 'class="boldfont"';
+            }
+        } else {
+
+            switch ($item['POL_Id']) {
+                // emp --> rep mangr --> finance
+                case 1:
+                    if ($sel_apprv_actn =$wpdb->get_row("SELECT REQ_Status FROM  request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_EmpType=1 AND REQ_Status=2 AND RS_Status=1")) {
+                        if (!$acc_apprv_actn = $wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_EmpType=2 AND RS_Status=1"))
+                            $cls = 'class="boldfont"';
+                    }
+                    break;
+
+                case 2:// emp --> finance --> rep mangr
+                case 4:// emp --> finance 
+
+                    if (!$acc_apprv_actn =$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_EmpType=2 AND RS_Status=1"))
+                        $cls = 'class="boldfont"';
+
+                    break;
+            }
+
+            $totalcost = $wpdb->get_row("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id=$item[REQ_Id] AND RD_Status=1");
+        }
+
+        return IND_money_format($totalcost->total ).".00";
     }
     
     function column_reporting_manager_approval($item){
@@ -144,10 +163,51 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
         return $approvals;
     }
     
+    function column_status($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        $claimdata='<span class="status-2 title="Claimed on: '.date("d/M/y",strtotime($item['REQ_ClaimDate'])).'">Claimed</span>';
+        //echo $claimdata;die;
+        if ($item['REQ_Type'] == 4) {
+
+            if ($item['REQ_Claim']) {
+
+                return $claimdata;
+            } else {
+
+                if ($item['REQ_PreToPostStatus'])
+                    return approvals(1);
+                else
+                    return approvals(5);
+            }
+        } else {
+
+            if ($item['REQ_Claim']) {
+
+                return $claimdata;
+            } else {
+
+                if ($item['REQ_PreToPostStatus']) {
+
+                    if ($selptc =$wpdb->get_row("SELECT PTC_Status FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'"))
+                        return approvals($selptc->PTC_Status);
+                }else {
+
+                    if ($item['REQ_Status'] == 2)
+                        return approvals(1);
+                    else
+                        return approvals(5);
+                }
+            }
+        }
+        return $approvals;
+    }
     function column_request_date($item){
         return date('d-M-y',strtotime($item['REQ_Date']));
     }
-
+    
     /**
      * [OPTIONAL] this is example, how to render column with actions,
      * when you hover row "Edit | Delete" links showed
@@ -157,14 +217,58 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
      */
     function column_request_code($item)
     {
-        if($item['REQ_Type']==1){
+        $href="";
+        if ($item['REQ_Type'] == 4) {
+            $href = "#";
+        } else {
+            if ($item['REQ_Type'] > 1) {
+                switch ($item['REQ_Type']) {
+                    case 2:
+                        $href = "#";
+                        break;
 
-                $href="employee-pre-travel-request-details.php?reqid=".$item['REQ_Id'];
+                    case 3: case 4:
+                        $href = "#";
+                        break;
+                }
+            } else {
+
+                if ($item['REQ_PreToPostStatus']) {
+
+                    $href = "#";
+                } else {
+
+                    switch ($item['RT_Id']) {
+                        case 1:
+                            $href = "#";
+                            break;
+
+                        case 2:
+                            $href = "#";
+                            break;
+
+                        case 3:
+                            $href = "#";
+                            break;
+
+                        case 5:
+                            $href = "#";
+                            break;
+
+                        case 6:
+                            $href = "#";
+                            break;
+                    }
+                }
+            }
+        }
+
+        if($item['REQ_Type']==4){
+            $cls='class="boldfont"';
+                $href="#=".$item['REQ_Id'];
 
         } else {
-
-                $href="employee-request-traveldesk-raised-details.php?reqid=".$item['REQ_Id'];
-
+                $href="#".$item['REQ_Id'];
         }
 
         $type=NULL;
@@ -191,36 +295,17 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
           return "<a href='<?php echo $href; ?>' >".$item['REQ_Code']."</a>".$type;
     }
 
-    /**
-     * [REQUIRED] this is how checkbox column renders
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-//    function column_cb($item)
-//    {
-//        return sprintf(
-//             '<input type="checkbox" name="id[]" value="%s" />',
-//            $item['COM_Id']
-//        );
-//    }
-
-    /**
-     * [REQUIRED] This method return columns to display in table
-     * you can skip columns that you do not want to show
-     * like content, or description
-     *
-     * @return array
-     */
     function get_columns()
     {
         $columns = array(
             //'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'request_code' => __('Request Code', 'companiesadmin_table_list'),
-            'estimated_cost' => __('Estimated Cost', 'companiesadmin_table_list'),
+            'estimated_cost' => __('Total Cost', 'companiesadmin_table_list'),
             'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
             'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
             'request_date' => __('Request Date', 'companiesadmin_table_list'),
+            'status' => __('Claim Status', 'companiesadmin_table_list'),
+            
         );
         return $columns;
     }
@@ -236,48 +321,14 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
     {
         $sortable_columns = array(
             'request_code' => array('Request Code', true),
-            'estimated_cost' => array('Estimated Cost', false),
+            'estimated_cost' => array('Total Cost', true),
             'reporting_manager_approval' => array('Reporting Manager Approval', false),
             'finance_approval' => array('Finance Approval', false),
             'request_date' => array('Request Date', false),
+            'status'=>array('Claim Status', false),
         );
         return $sortable_columns;
     }
-
-    /**
-     * [OPTIONAL] Return array of bult actions if has any
-     *
-     * @return array
-     */
-//    function get_bulk_actions()
-//    {
-//        $actions = array(
-//            'delete' => 'Delete'
-//        );
-//        return $actions;
-//    }
-
-    /**
-     * [OPTIONAL] This method processes bulk actions
-     * it can be outside of class
-     * it can not use wp_redirect coz there is output already
-     * in this example we are processing delete action
-     * message about successful deletion will be shown on page in next part
-     */
-//    function process_bulk_action()
-//    {
-//        global $wpdb;
-//        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-//        $table_name = "admin";
-//        if ('delete' === $this->current_action()) {
-//            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-//            if (is_array($ids)) $ids = implode(',', $ids);
-//
-//            if (!empty($ids)) {
-//                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
-//            }
-//        }
-//    }
 
     /**
      * [REQUIRED] This is the most important method
@@ -288,7 +339,11 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
     {
         $empuserid = $_SESSION['empuserid'];
         global $wpdb;
-        $table_name = 'admin'; // do not forget about tables prefix
+        
+        $compid = $_SESSION['compid'];
+        $mydetails=myEmpDetails();
+        
+       // $table_name = 'requests'; // do not forget about tables prefix
 
         $per_page = 5; // constant, how much records will be shown per page
 
@@ -301,9 +356,9 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
-
+         $empid=$mydetails['0']->EMP_Id;
         // will be used in pagination settings
-        $total_items = count($wpdb->get_results("SELECT * FROM employees emp, requests req, policy pol, request_employee re WHERE RT_Id=1 AND emp.EMP_Id ='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim)"));
+        $total_items = count($wpdb->get_results("SELECT * FROM requests req, request_employee re WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id !='$empid' AND req.REQ_Active !=9 AND re.RE_Status=1"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
@@ -328,10 +383,12 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-		}
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, request_employee re" .$query. " AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND req.REQ_Active !=9 AND re.RE_Status=1  ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                        //print_r($test);die;
+                        
+                                }
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM  requests req, request_employee re WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND req.REQ_Active !=9 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
@@ -384,3 +441,4 @@ function custom_table_example_languages()
 }
 
 add_action('init', 'custom_table_example_languages');
+

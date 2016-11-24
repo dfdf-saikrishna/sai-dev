@@ -1,13 +1,80 @@
 <?php
-//require(plugin_dir_path( __FILE__ ) . "function.php");
-//$rowdep=count_query("employees", "*", "WHERE EMP_Status=1 AND COM_Id='$compid'", $filename);
 
-//print_r($rowdep);
-//echo "test";
-//echo $_SESSION['comid'];
-//global $wpdb;
-//$results = count($wpdb->get_results( 'SELECT * FROM employees WHERE EMP_Status = 1', OBJECT ));
-//print_r($results);
+global $wpdb;
+    $filename="";
+    $compid = $_SESSION['compid'];
+    //echo $compid;die;
+    $empID = $_SESSION['empuserid'];
+    $emp_code=$_SESSION['emp_code'];  
+    // Retrieving my details
+    $mydetails=myEmpDetails();
+
+    $approver='0';
+    // checking approver(y/n)
+    if($selrow=isApprover()){
+        //print_r($selrow);die;
+    $approver=1;
+
+    $delegate=0;
+
+    if($cnt=ihvdelegated(1)){
+            $delegate=1;
+    }
+    $_SESSION['delegate']=NULL;
+
+    if($cnt=ihvdelegated(2)){
+
+            if(!$_SESSION['delegate'])
+            $_SESSION['delegate']=time();
+
+
+            foreach($cnt as  $value){
+
+                    $empcodes.="'".$value['EMP_Code']."'".",";
+            }
+
+            $empcodes=rtrim($empcodes,",");		
+
+    }}
+    if($approver){
+	//checking that whether i'm the approver of my requests
+	$myselfApprvr=0;
+        $empcode=$mydetails['0']->EMP_Code;
+        $rprmgr=$mydetails['0']->EMP_Reprtnmngrcode;
+        
+	if($empcode==$rprmgr){
+		$myselfApprvr=1;
+	}
+    }
+        $count_total = count_query("requests req, request_employee re", "DISTINCT (req.REQ_Id)", "WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empID' AND RE_Status=1 AND  REQ_Active != 9 AND REQ_Type != 5", $filename, 0);
+        $count_approved = count_query("requests req, request_employee re", "DISTINCT (req.REQ_Id)", "WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empID' AND RE_Status=1 AND REQ_Status=2 AND REQ_Active != 9 AND REQ_Type != 5",$filename);
+        $count_pending = count_query("requests req, request_employee re", "DISTINCT (req.REQ_Id)", "WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empID' AND RE_Status=1 AND REQ_Status=1 AND REQ_Active != 9 AND REQ_Type != 5",$filename,$filename);
+        $count_rejected = count_query("requests req, request_employee re", "DISTINCT (req.REQ_Id)", "WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empID' AND RE_Status=1 AND REQ_Status=3 AND REQ_Active != 9 AND REQ_Type != 5",$filename);
+        
+        $approver_total=0;
+        $approver_approved=0;
+        $approver_pending=0;
+        $approver_rejected=0;
+          if($approver && !$delegate)
+	  {
+                if($_SESSION['delegate'])
+                {
+                        $approver_total=count_query("employees emp, requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE emp.EMP_Reprtnmngrcode IN ($empcodes) AND emp.EMP_Id != '$empuserid' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Active != 9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);
+
+                        $approver_approved=count_query("employees emp, requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE emp.EMP_Reprtnmngrcode IN ($empcodes) AND emp.EMP_Id != '$empuserid' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id  AND req.REQ_Status=2 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename); 
+
+                        $approver_pending=count_query("employees emp, requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE emp.EMP_Reprtnmngrcode IN ($empcodes) AND emp.EMP_Id != '$empuserid' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=1 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
+
+                        $approver_rejected=count_query("employees emp, requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE emp.EMP_Reprtnmngrcode IN ($empcodes) AND emp.EMP_Id != '$empuserid' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=3 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
+                }
+            $rprcode=$selrow['0']->EMP_Reprtnmngrcode;
+            $approver_total+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename,0);
+            $approver_approved+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=2 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename); 
+            $approver_pending+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=1 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
+            $approver_rejected+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=3 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
+         }              
+    
+     
 ?>
 <div class="wrap erp hrm-dashboard">
 
@@ -25,21 +92,22 @@
                                 </tr>
                                 <tr>
                                 <td width="90%">Pending Requests</td>
-                                <td width="10%"><span class="oval-1">20</span></td>
+                                <td width="10%"><span class="oval-1"><?php echo $count_pending?></span></td>
                                 </tr>
                                 <tr>
                                 <td width="90%">Approved Requests</td>
-                                <td width="10%"><span class="oval-3">1</span></td>
+                                <td width="20%"><span class="oval-3"><?php echo $count_approved?></span></td>
                                 </tr>
                                 <tr>
                                 <td width="90%">Rejected Requests</td>
-                                <td width="10%"><span class="oval-4">0</span></td>
+                                <td width="10%"><span class="oval-4"><?php echo $count_rejected ?></span></td>
                                 </tr>
                                 <tr>
                                 <td width="90%">Total Requests</td>
-                                <td width="10%"><span class="oval-2">21</span></td>
+                                <td width="10%"><span class="oval-2"><?php echo $count_total ?></span></td>
                                 </tr>
                             </table>
+<!--                               <label class="progress-bar"><?php echo $appRate; ?>% approval rate</label>-->
                             </div><!-- .badge-wrap -->
 
                             <div class="badge-wrap badge-aqua">
@@ -49,19 +117,19 @@
                                     </tr>
                                     <tr>
                                     <td width="90%">Pending Requests</td>
-                                    <td width="10%"><span class="oval-1">20</span></td>
+                                    <td width="10%"><span class="oval-1"><?php echo $approver_pending?></span></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Approved Requests</td>
-                                    <td width="10%"><span class="oval-3">1</span></td>
+                                    <td width="10%"><span class="oval-3"><?php echo $approver_approved ?></span></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Rejected Requests</td>
-                                    <td width="10%"><span class="oval-4">0</span></td>
+                                    <td width="10%"><span class="oval-4"><?php echo $approver_rejected?></span></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Total Requests</td>
-                                    <td width="10%"><span class="oval-2">21</span></td>
+                                    <td width="10%"><span class="oval-2"><?php echo $approver_total ?></span></td>
                                     </tr>
                                 </table>
                             </div><!-- .badge-wrap -->
