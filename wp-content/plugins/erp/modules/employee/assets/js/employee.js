@@ -125,7 +125,19 @@
                 $('#request_form')[0].reset();
             },
             create: function() {
-                console.log("test");
+                alert("test");
+                wp.ajax.send( 'send_pre_travel_request', {
+                    data: {
+                        //id : self.data( 'row_id' ),
+                        
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                });
                 
            },
             

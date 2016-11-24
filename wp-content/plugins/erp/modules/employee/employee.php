@@ -59,8 +59,8 @@ class Employee {
      * @return void
      */
     private function includes() {
-          require_once WPERP_EMPLOYEE_PATH . '/includes/functions-common.php';
-          require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
+        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-common.php';
+        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
     }
 
     /**
