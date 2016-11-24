@@ -119,7 +119,7 @@ $email =  $item['ADM_Email'];
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_name($item)
+    function column_request_code($item)
     {
         // links going to /admin.php?page=[your_plugin_page][&other_params]
         // notice how we used $_REQUEST['page'], so action will be done on curren page
@@ -148,13 +148,13 @@ $email =  $item['ADM_Email'];
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_cb($item)
-    {
-        return sprintf(
-            '<input type="checkbox" name="id[]" value="%s" />',
-            $item['COM_Id']
-        );
-    }
+//    function column_cb($item)
+//    {
+//        return sprintf(
+//             '<input type="checkbox" name="id[]" value="%s" />',
+//            $item['COM_Id']
+//        );
+//    }
 
     /**
      * [REQUIRED] This method return columns to display in table
@@ -166,12 +166,13 @@ $email =  $item['ADM_Email'];
     function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('Admin Name', 'companiesadmin_table_list'),
-            'Username' => __('Username', 'companiesadmin_table_list'),
-            'Email' => __('Email', 'companiesadmin_table_list'),
-            'Contact' => __('Contact', 'companiesadmin_table_list'),
-            'Created_Date' => __('Date', 'companiesadmin_table_list'),
+            //'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
+            'request_code' => __('Request Code', 'companiesadmin_table_list'),
+            'employee_name' => __('Employee Name', 'companiesadmin_table_list'),
+            'estimated_cost' => __('Estimated Cost', 'companiesadmin_table_list'),
+            'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
+            'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
+            'request_date' => __('Request Date', 'companiesadmin_table_list'),
         );
         return $columns;
     }
@@ -202,13 +203,13 @@ $email =  $item['ADM_Email'];
      *
      * @return array
      */
-    function get_bulk_actions()
-    {
-        $actions = array(
-            'delete' => 'Delete'
-        );
-        return $actions;
-    }
+//    function get_bulk_actions()
+//    {
+//        $actions = array(
+//            'delete' => 'Delete'
+//        );
+//        return $actions;
+//    }
 
     /**
      * [OPTIONAL] This method processes bulk actions
@@ -217,20 +218,20 @@ $email =  $item['ADM_Email'];
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
      */
-    function process_bulk_action()
-    {
-        global $wpdb;
-        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-        $table_name = "admin";
-        if ('delete' === $this->current_action()) {
-            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
-
-            if (!empty($ids)) {
-                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
-            }
-        }
-    }
+//    function process_bulk_action()
+//    {
+//        global $wpdb;
+//        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+//        $table_name = "admin";
+//        if ('delete' === $this->current_action()) {
+//            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+//            if (is_array($ids)) $ids = implode(',', $ids);
+//
+//            if (!empty($ids)) {
+//                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
+//            }
+//        }
+//    }
 
     /**
      * [REQUIRED] This is the most important method
@@ -239,10 +240,11 @@ $email =  $item['ADM_Email'];
      */
     function prepare_items()
     {
+        $empuserid = $_SESSION['empuserid'];
         global $wpdb;
         $table_name = 'admin'; // do not forget about tables prefix
 
-        $per_page = 5; // constant, how much records will be shown per page
+        $per_page = 10; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -255,11 +257,11 @@ $email =  $item['ADM_Email'];
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(COM_Id) FROM $table_name");
+        $total_items = count($wpdb->get_results("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim)"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'COM_Id';
+        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'req.REQ_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
 
         // [REQUIRED] define $items array
@@ -284,7 +286,7 @@ $email =  $item['ADM_Email'];
 			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
