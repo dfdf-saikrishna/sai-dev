@@ -119,7 +119,7 @@ function gradeLimits(){
 						echo '</td>';
 
 				
-				if($totalLimitAmnt < 1) echo '<script>$("#expenseLimitId").css("display", "none");</script>';
+				if($totalLimitAmnt < 1) echo '<script>document.getElementById("expenseLimitId").style.display = "none";</script>';
 		}
         
 }

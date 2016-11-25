@@ -125,7 +125,7 @@
                 $('#request_form')[0].reset();
             },
             create: function() {
-                alert("test");
+                //alert("test");
                 wp.ajax.send( 'send_pre_travel_request', {
                     data: {
                         txtCost : $('#txtCost').val(),
@@ -138,10 +138,33 @@
                         txtStartDate : $('#txtStartDate1').val(),
                         txtEndDate : $('#txtEndDate1').val(),
                         ectype: $('#ectype').val(),
-                        expenseLimit: $('#expenseLimit').val()
+                        expenseLimit: $('#expenseLimit').val(),
+                        from: $('#from1').val(),
+                        to: $('#to1').val()
                     },
-                    success: function(res) {
-                        console.log(res);
+                    success: function(resp) {
+                        switch(resp.status){
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
                     },
                     error: function(error) {
                         console.log( error );

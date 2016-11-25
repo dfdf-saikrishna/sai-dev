@@ -141,10 +141,6 @@ class Corptne {
         }
 
         wp_enqueue_script( 'wp-erp-hr', WPERP_CORPTNE_ASSETS . "/js/corptne$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
-        wp_enqueue_script( 'wp-erp-hr-leave', WPERP_CORPTNE_ASSETS . "/js/leave$suffix.js", array(
-            'erp-script',
-            'wp-color-picker'
-        ), date( 'Ymd' ), true );
 
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-hr-nonce' ),

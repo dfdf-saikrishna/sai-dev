@@ -114,6 +114,9 @@ class Ajax_Handler {
     
     function send_pre_travel_request(){
         ob_end_clean();
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $empuserid = $_SESSION['empuserid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
         //$this->send_success($posted);
         
@@ -137,7 +140,7 @@ class Ajax_Handler {
 	
 	$from					=	$posted['from'];
 	
-	$to						=	$posted['to'];
+	$to					=	$posted['to'];
 	
 	//$selStayDur				=	$posted['selStayDur'];
 	
@@ -154,9 +157,10 @@ class Ajax_Handler {
 	
 	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
 	
-	$selProjectCode			=	$posted['selProjectCode'];
-	
-	$selCostCenter			=	$posted['selCostCenter'];
+	//$selProjectCode			=	$posted['selProjectCode'];
+        $selProjectCode                         =	"0";
+	$selCostCenter                          =	"0";
+	//$selCostCenter			=	$posted['selCostCenter'];
 	
 	$textBillNo				=	$posted['textBillNo'];
 	
@@ -175,7 +179,7 @@ class Ajax_Handler {
 		for($i=0;$i<$count;$i++){
 						
 			if($date[$i]=="" || $txtaExpdesc[$i]=="" || $selExpcat[$i]=="" || $selModeofTransp[$i]=="" || $txtdist[$i]=="" || $textBillNo[$i]=="" || $txtCost[$i]=="" || $txtStartDate[$i]=="" || $txtEndDate[$i]==""){
-		
+                                
 				$checked=true;
 				break;
 			
@@ -184,10 +188,9 @@ class Ajax_Handler {
 		
 		}
                 if($checked){
-                        $response = array('status'=>'failure','message'=>"Some fields went missing");
+                        $response = array('status'=>'notice','message'=>"Some fields went missing");
                         $this->send_success($response);
-			//header("location:$filename?msg=2");exit;
-                        //$this->send_success($checked);
+			exit;
 		}
                 
         }
@@ -259,7 +262,7 @@ class Ajax_Handler {
         {
                 //-------- employee -->  rep mngr  -->  finance
                 case 1:
-                    
+                   
                 if($expenseLimit > 0){
                    //-------- employee -->  2nd level manager  -->  finance
                    if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
@@ -279,9 +282,8 @@ class Ajax_Handler {
                     }
                 }
                 else{
-                    if($mydetails['EMP_Code']==$mydetails['EMP_Reprtnmngrcode'])
+                    if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
                     {
-                            
                             // insert into request
                             $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
                             $reqid=$wpdb->insert_id;
@@ -292,11 +294,11 @@ class Ajax_Handler {
                     else
                     {
                             $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
-                            $reqid=$wpdb->insert_id;
+                            $reqid=$wpdb->insert_id; 
                     }	
                 }
                 break;
-
+                
 
 
 
@@ -390,7 +392,7 @@ class Ajax_Handler {
 			
         // insert into request_employee
         $wpdb->insert('request_employee', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid));    
-
+        //$this->send_success("success");
         } else {
 
                  $response = array('status'=>'failure','message'=>"Some fields went missing");
@@ -480,7 +482,7 @@ class Ajax_Handler {
 
                         //$rate ? $rate="'".$rate."'" : $rate="NULL";	
 
-                        $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
+                        $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost));
                         $rdid=$wpdb->insert_id;
                         
 

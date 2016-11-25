@@ -36,11 +36,11 @@
         },
 
         initDateField: function() {
-//            $( '.erp-leave-date-field' ).datepicker({
-//                dateFormat: 'dd-mm-yyyy',
-//                changeMonth: true,
-//                changeYear: true
-//            });
+            $( '.erp-leave-date-field' ).datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                changeYear: true
+            });
 
             $( ".erp-leave-date-picker-from" ).datepicker({
                 dateFormat: 'yy-mm-dd',

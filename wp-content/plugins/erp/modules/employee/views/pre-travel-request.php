@@ -66,6 +66,22 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
               </tr>
             </table>
             </div>
+            <!-- Messages -->
+            <div style="display:none" id="failure" class="notice notice-error is-dismissible">
+            <p id="p-failure"></p>
+            </div>
+
+            <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
+                <p id="p-notice"></p>
+            </div>
+
+            <div style="display:none" id="success" class="notice notice-success is-dismissible">
+                <p id="p-success"></p>
+            </div>
+
+            <div style="display:none" id="info" class="notice notice-info is-dismissible">
+                <p id="p-info"></p>
+            </div>
             <div style="margin-top:60px;">
             <form id="request_form" name="input" action="#" method="post">
             <table class="wp-list-table widefat striped admins" border="0" id="table1">

@@ -147,10 +147,6 @@ class Company {
         }
 
         wp_enqueue_script( 'wp-erp-company', WPERP_COMPANY_ASSETS . "/js/companyadmin$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
-        wp_enqueue_script( 'wp-erp-hr-leave', WPERP_COMPANY_ASSETS . "/js/leave$suffix.js", array(
-            'erp-script',
-            'wp-color-picker'
-        ), date( 'Ymd' ), true );
 
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-hr-nonce' ),

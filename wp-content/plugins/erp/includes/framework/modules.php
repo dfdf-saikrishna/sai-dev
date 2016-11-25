@@ -34,27 +34,27 @@ class Modules {
      */
     public function init_modules() {
         $this->modules = [
-            'hrm' => [
-                'title'       => __( 'HR Management', 'erp' ),
-                'slug'        => 'erp-hrm',
-                'description' => __( 'Human Resource Management', 'erp' ),
-                'callback'    => '\WeDevs\ERP\HRM\Human_Resource',
-                'modules'     => apply_filters( 'erp_hr_modules', [ ] )
-            ],
-            'crm' => [
-                'title'       => __( 'CR Management', 'erp' ),
-                'slug'        => 'erp-crm',
-                'description' => __( 'Client Resource Management', 'erp' ),
-                'callback'    => '\WeDevs\ERP\CRM\Customer_Relationship',
-                'modules'     => apply_filters( 'erp_crm_modules', [ ] )
-            ],
-            'accounting' => [
-                'title'       => __( 'Accounting', 'erp' ),
-                'slug'        => 'erp-accounting',
-                'description' => __( 'Accounting Management', 'erp' ),
-                'callback'    => '\WeDevs\ERP\Accounting\Accounting',
-                'modules'     => apply_filters( 'erp_ac_modules', [ ] )
-            ],
+//            'hrm' => [
+//                'title'       => __( 'HR Management', 'erp' ),
+//                'slug'        => 'erp-hrm',
+//                'description' => __( 'Human Resource Management', 'erp' ),
+//                'callback'    => '\WeDevs\ERP\HRM\Human_Resource',
+//                'modules'     => apply_filters( 'erp_hr_modules', [ ] )
+//            ],
+//            'crm' => [
+//                'title'       => __( 'CR Management', 'erp' ),
+//                'slug'        => 'erp-crm',
+//                'description' => __( 'Client Resource Management', 'erp' ),
+//                'callback'    => '\WeDevs\ERP\CRM\Customer_Relationship',
+//                'modules'     => apply_filters( 'erp_crm_modules', [ ] )
+//            ],
+//            'accounting' => [
+//                'title'       => __( 'Accounting', 'erp' ),
+//                'slug'        => 'erp-accounting',
+//                'description' => __( 'Accounting Management', 'erp' ),
+//                'callback'    => '\WeDevs\ERP\Accounting\Accounting',
+//                'modules'     => apply_filters( 'erp_ac_modules', [ ] )
+//            ],
             'Corptne' => [
                 'title'       => __( 'Superadmin', 'erp' ),
                 'slug'        => 'erp-accounting',

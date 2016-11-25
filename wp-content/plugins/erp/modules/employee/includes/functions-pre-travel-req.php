@@ -46,7 +46,7 @@ ob_start();
 					
 					var stayDur		=	document.getElementsByName('selStayDur[]');
 					
-					var stayDurNos	=	parseInt(stayDur[i].value);
+					var stayDurNos          =	parseInt(stayDur[i].value);
 				
 					costcont		=	parseInt(chks[i].value)/stayDurNos;
 					
