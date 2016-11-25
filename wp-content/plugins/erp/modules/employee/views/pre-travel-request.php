@@ -114,7 +114,8 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <td data-title="Estimated Cost"><span id="cost1container">
                         <input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
                         </br><span class="red" id="show-exceed"></span>
-                        <input type="hidden" value="0" id="budget_limit">
+                        <input type="hidden" value="1" name="ectype" id="ectype"/>
+                        <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                     </tr>

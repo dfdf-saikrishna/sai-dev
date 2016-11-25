@@ -179,4 +179,107 @@ function approvals($string){
 
 }
 
+/*////////////////////////////////////
+		 GENERATE REQUEST IDS 
+///////////////////////////////////*/
+
+function genExpreqcode($n, $f=false){
+        global $wpdb;
+	$compid = $_SESSION['compid'];
+	
+	switch ($n){
+		
+		case 1:
+		$tnetype="PRE";
+		break;
+		
+		case 2:
+		$tnetype="POS";
+		break;
+		
+		case 3:
+		$tnetype="GEN";
+		break;
+		
+		case 4:
+		$tnetype="TRA";
+		break;
+		
+		case 5:
+		$tnetype="MIL";
+		break;
+		
+		case 6:
+		$tnetype="UTL";
+		break;		
+	
+	}
+	
+	if($f)
+	$tnetype="F".$tnetype;
+	
+
+	$m=date('m');
+	$y=date('y');
+	
+	$code=$wpdb->get_row("SELECT * FROM CODE WHERE NULL");
+	
+	
+	if($tnetype)	
+	$requestcode=$tnetype.$compid.$m.$y.$code[code];
+	else
+	$requestcode=$compid.$m.$y.$code[code];
+	$wpdb->query("UPDATE code SET code=code+1 WHERE NULL");
+	//update_query("code", "code=code+1", NULL, $filename, 0);
+	
+	return $requestcode;
+
+}
+
+/////////////////////////////////////////////
+//          Grade Limit amount 
+/////////////////////////////////////////////
+
+function getGradeLimit($modeid, $empuserid, $filename)
+{
+        $empuserid = $_SESSION['empuserid'];                
+	if($selgrmlimit=$wpdb->get_row("SELECT gl.* FROM employees emp, grade_limits gl WHERE emp.EMP_Id='$empuserid' AND emp.EG_Id=gl.EG_Id AND gl.GL_Status=1 ORDER BY gl.GL_Id ASC"))
+	{
+			
+		$selgrdLim=array_values($selgrmlimit);
+		
+		if($modeid)
+		{
+                        
+			$selall=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE COM_Id = 0 and MOD_Status=1 ORDER BY MOD_Id ASC");
+			
+			$i=0;
+		
+			foreach($selall as $row):
+			
+				$k=$i+4;
+				
+				if ($modeid==$row['MOD_Id']){
+					$mode=$row['MOD_Name'];
+					$ModLimitVal=$selgrdLim[$k] ? $selgrdLim[$k] : 0;
+				}
+			
+			
+			endforeach;
+			
+		}
+		
+	}
+	
+	$returnval=$ModLimitVal."###".$mode;
+		
+		return $returnval;
+
+}
+function workflow(){
+global $wpdb;
+$compid = $_SESSION['compid'];
+$workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");
+return $workflow;
+}
 

@@ -437,7 +437,8 @@ return array(
     'WeDevs\\ERP\\Company\\Announcement' => $baseDir . '/modules/company/includes/class-announcement.php',
     'WeDevs\\ERP\\Company\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/company/includes/emails/class-email-new-employee-welcome.php',
     'WeDevs\\ERP\\Company\\Companyview' => $baseDir . '/modules/company/includes/class-companyview.php',
-    'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employee.php',
+    //'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employee.php',
+	'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employeelist.php',
     'WeDevs\\ERP\\Company\\Superadmin_List_Table' => $baseDir . '/modules/company/includes/class-superadmin-list-table.php',
     'WeDevs\\ERP\\Company\\Companies_List_Table' => $baseDir . '/modules/company/includes/class-company-list-table.php',	
     'WeDevs\\ERP\\Company\\Expensecategory_List_Table' => $baseDir . '/modules/company/includes/class-expensecategory-list-table.php',
@@ -448,6 +449,16 @@ return array(
     'WeDevs\\ERP\\Company\\Requests_List' => $baseDir . '/modules/company/includes/class-requests-list-table.php',
     'WeDevs\\ERP\\Company\\Approval_Limits' => $baseDir . '/modules/company/includes/class-approval-limits.php',
     'WeDevs\\ERP\\Company\\Finance_Approvers_List' => $baseDir . '/modules/company/includes/class-finance-approver.php',
+	 'WeDevs\\ERP\\Company\\Employee_List_Table' => $baseDir . '/modules/company/includes/class-employee-list-table.php',
+	'WeDevs\\ERP\\Company\\Models\\Employeelist' => $baseDir . '/modules/company/includes/models/employeelist.php',
+	'WeDevs\\ERP\\Company\\Employeelist' => $baseDir . '/modules/company/includes/class-employeelist.php',
+	'WeDevs\\ERP\\Company\\Emails\\New_CompanyEmployee_Welcome' => $baseDir . '/modules/company/includes/emails/class-email-new-companyemployee-welcome.php',
+    'WeDevs\\ERP\\Company\\Employeeview' => $baseDir . '/modules/company/includes/class-employeeview.php',
+    'WeDevs\\ERP\\Company\\Models\\Employeeview' => $baseDir . '/modules/company/includes/models/employeeview.php',
+	'WeDevs\\ERP\\Company\\Employeelogs_List_Table' => $baseDir . '/modules/company/includes/class-employeelogs-list-table.php',
+	'WeDevs\\ERP\\Company\\Empdelegates_List_Table' => $baseDir . '/modules/company/includes/class-empdelegates-list-table.php',
+	
+	
 	
 	/*****************************/
     /** Employee Module classes **/

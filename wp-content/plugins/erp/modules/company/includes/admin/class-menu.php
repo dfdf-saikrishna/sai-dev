@@ -1,7 +1,7 @@
 <?php
 namespace WeDevs\ERP\Company\Admin;
 use WeDevs\ERP\Company\Companyview;
-
+use WeDevs\ERP\Company\Employeeview;
 /**
  * Admin Menu
  */
@@ -29,18 +29,19 @@ class Admin_Menu {
        if ( current_user_can( 'companyadmin' ) ) {
         add_menu_page(__( 'Dashboard', 'companyadmin' ), __( 'Dashboard', 'companyadmin' ), 'companyadmin','company-dashboard', array( $this, 'company_dashboard'),'dashicons-dashboard');
 
-        add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu', 'employee','dashicons-admin-users');
+       // add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu', 'employee','dashicons-admin-users');
 
-        add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
-        add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
-        add_submenu_page('menu', 'Individual', 'Add Individual Employees', 'companyadmin', 'individual', 'employee');
-        add_submenu_page('menu', 'Action', 'View/Edit/Delete employee', 'companyadmin', 'action', 'employee');
-        add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', 'employee');
-        add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', 'employee');
+        
+        add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu',array( $this, 'employee_list'),'dashicons-admin-users');
+		
+		$overview = add_submenu_page( 'menu', 'Overview', 'Overview', 'companyadmin', 'menu', array( $this, 'employee_list'));
+		add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
+        add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile',  array( $this, 'employeeview_page' ));
+        add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array( $this, 'employeelogs_list' ));
         add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', 'employee');
         add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', 'employee');
         add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', 'employee');
-        add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation', 'employee');
+        add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation',  array( $this, 'empdelegates_list'));
 
         add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', array($this, 'finance_approvers'),'dashicons-money');
         add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
@@ -414,6 +415,33 @@ class Admin_Menu {
     public function empty_page() {
 
     }
+	
+		/**
+     * Handles the Employe list Page
+     *
+     * @return void
+     */
+    public function employee_list() {
+        include WPERP_COMPANY_VIEWS . '/company/employee_list.php';
+    }
+	
+	/**
+     * Handles the Employe Log list Page
+     *
+     * @return void
+     */
+    public function employeelogs_list() {
+        include WPERP_COMPANY_VIEWS . '/company/employeelogs_list.php';
+    }
+	
+	/**
+     * Handles the Employe Delegates list Page
+     *
+     * @return void
+     */
+    public function empdelegates_list() {
+        include WPERP_COMPANY_VIEWS . '/company/empdelegates_list.php';
+    }
     /**
      * Upload Employees Page
      *
@@ -437,6 +465,36 @@ class Admin_Menu {
      */
     public function finance_approvers(){
         include WPERP_COMPANY_VIEWS . '/finance-approver-listing.php';
+    }
+	
+	/**
+     * Handles the employeeview page
+     *
+     * @return void
+     */
+    public function employeeview_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+       // $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+		echo $id     = isset($_POST['employee_id'] );
+        switch ($action) {
+            case 'view':
+                $employeeview = new Employeeview( $id );
+                /* if ( !$id ) {
+                    wp_die( __( 'Employee not found!', 'erp' ) );
+                } */  
+                $template = WPERP_COMPANY_VIEWS . '/company/employeeview.php';
+                break;
+
+            default:
+            $template = WPERP_COMPANY_VIEWS . '/employeeview.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_hr_company_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
     /**
      * Workflow Page
