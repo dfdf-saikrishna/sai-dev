@@ -425,7 +425,7 @@ return array(
     'WeDevs\\ERP\\Corptne\\Workflow_List_Table' => $baseDir . '/modules/corptne/includes/class-workflow-table.php',
     'WeDevs\\ERP\\Corptne\\Companiesadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-companyadmin-list-table.php',
 	
-	/*****************************/
+    /*****************************/
     /** CompanyAdmin Module classes **/
     /****************************/
     
@@ -457,6 +457,7 @@ return array(
     'WeDevs\\ERP\\Company\\Models\\Employeeview' => $baseDir . '/modules/company/includes/models/employeeview.php',
 	'WeDevs\\ERP\\Company\\Employeelogs_List_Table' => $baseDir . '/modules/company/includes/class-employeelogs-list-table.php',
 	'WeDevs\\ERP\\Company\\Empdelegates_List_Table' => $baseDir . '/modules/company/includes/class-empdelegates-list-table.php',
+    'WeDevs\\ERP\\Company\\Companydashboard_List_Table' => $baseDir . '/modules/company/includes/class-company-dashboard-table.php',
 	
 	
 	

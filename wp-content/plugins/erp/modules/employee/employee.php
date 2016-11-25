@@ -182,19 +182,19 @@ class Employee {
         ) );
 
         // if its an employee page
-        if ( 'toplevel_page_companiesmenu' == $hook ) {
+        /* if ( 'toplevel_page_companiesmenu' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->to_array();
-        }
+        } */
         //if its an companyadmin page
-        if ( 'companies_page_companies-admin' == $hook ) {
+        /* if ( 'companies_page_companies-admin' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
-        }
+        } */
         wp_localize_script( 'wp-crp-emp', 'wpErpHr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );

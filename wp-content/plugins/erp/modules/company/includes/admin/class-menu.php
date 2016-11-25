@@ -34,9 +34,9 @@ class Admin_Menu {
         
         add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu',array( $this, 'employee_list'),'dashicons-admin-users');
 		
-		$overview = add_submenu_page( 'menu', 'Overview', 'Overview', 'companyadmin', 'menu', array( $this, 'employee_list'));
-		add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
-		add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
+        $overview = add_submenu_page( 'menu', 'Overview', 'Overview', 'companyadmin', 'menu', array( $this, 'employee_list'));
+        add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
+        add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
         add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile',  array( $this, 'employeeview_page' ));
         add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array( $this, 'employeelogs_list' ));
         add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', 'employee');
@@ -45,7 +45,8 @@ class Admin_Menu {
         add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation',  array( $this, 'empdelegates_list'));
 
         add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', array($this, 'finance_approvers'),'dashicons-money');
-        add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
+        add_submenu_page('finance', 'action', 'Overview', 'companyadmin', 'finance', array($this, 'finance_approvers'));
+        //add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
         add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
         add_menu_page('ExpenseManagment', 'Expense Managment', 'companyadmin', 'Expense', 'expense','dashicons-money');
@@ -144,7 +145,7 @@ class Admin_Menu {
      * @return void
      */
     public function company_dashboard() {
-        include WPERP_CORPTNE_VIEWS . '/company/dashboard.php';
+        include WPERP_COMPANY_VIEWS . '/dashboard.php';
     }
     
     /**

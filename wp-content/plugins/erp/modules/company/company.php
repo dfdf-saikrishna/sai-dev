@@ -66,7 +66,7 @@ class Company {
        require_once WPERP_COMPANY_PATH . '/includes/PHPExcel/Writer/Excel2007.php';
        require_once WPERP_COMPANY_PATH . '/includes/functions-import-export.php';
        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
-	   require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
+       require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
 	  // require_once WPERP_COMPANY_PATH . '/includes/functions-employeeview.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-company.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyview.php';
@@ -201,19 +201,19 @@ class Company {
         ) );
 
         // if its an employee page
-        if ( 'toplevel_page_companiesmenu' == $hook ) {
+        /* if ( 'toplevel_page_companiesmenu' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->to_array();
-        }
+        } */
         //if its an companyadmin page
-        if ( 'companies_page_companies-admin' == $hook ) {
+        /* if ( 'companies_page_companies-admin' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
-        }
+        } */
 		  // if its an employee page
         if ( 'toplevel_page_menu' == $hook ) {
             wp_enqueue_script( 'post' );

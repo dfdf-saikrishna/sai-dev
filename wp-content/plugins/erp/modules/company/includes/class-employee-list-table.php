@@ -105,15 +105,15 @@ class Employee_List_Table extends \WP_List_Table
     }
 
 	function column_requests($item){
-		 global $wpdb;
+		global $wpdb;
 		$compid = $_SESSION['compid'];
 		//$compid ='56';
 		$count_total=0;$count_approved=0;$count_pending=0;$count_rejected=0;$filename="";
-		$count_total=count_query("requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5",$filename);
-		$count_approved=count_query("requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."'  AND req.REQ_Id=re.REQ_Id  AND COM_Id='$compid' AND REQ_Status=2 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5",$filename); 
-		$count_pending=count_query("requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."'  AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5",$filename); 
-		$count_rejected=count_query("requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5",$filename);
 		
+		$count_total=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
+		$count_approved=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND req.REQ_Id=re.REQ_Id  AND COM_Id='$compid' AND REQ_Status=2 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
+		$count_pending=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
+		$count_rejected=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='".$item['EMP_Id']."' AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
 
 	$count_total = sprintf('%s %s %s','',
             '<a href="'.erp_company_url_single_reqview($item['EMP_Id']).'"><strong>' . $count_total . '</strong></a>',''

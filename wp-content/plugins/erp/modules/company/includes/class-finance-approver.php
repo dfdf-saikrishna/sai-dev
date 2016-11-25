@@ -192,7 +192,9 @@ class Finance_Approvers_List extends \WP_List_Table
             $repMngCode		=	$selrepmng->EMP_Code;
 
             $found=1;
-        }
+        }else
+            $found=0;
+
         if($found) 
             return "<a href='admin-employees-display.php?empid=$repMngid'>$repMngName</a><br>".$repMngCode;
         else
@@ -209,9 +211,8 @@ class Finance_Approvers_List extends \WP_List_Table
         $count_pending=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1"));
         $count_rejected=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1"));
         
-        if($count_total)
-            return "<a href='#'>".$count_total."</a>" . "/" . "<a href='#'>".$count_approved."</a>" . "/" . "<a href='#'>".$count_pending."</a>" . "/" . "<a href='#'>".$count_rejected."</a>";
-        }
+        return "<a href='#'>".$count_total."</a>" . "/" . "<a href='#'>".$count_approved."</a>" . "/" . "<a href='#'>".$count_pending."</a>" . "/" . "<a href='#'>".$count_rejected."</a>";
+    }
         
     /**
      * [REQUIRED] this is how checkbox column renders
