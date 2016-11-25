@@ -79,7 +79,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                       <th class="column-primary">Get Quote</th>
                     </tr>
                   </thead>
-                  <tbody <?php /*?>align="center"<?php */?>>
+                  <tbody>
                     <tr>
                       <td data-title="Date" class=""><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
                       <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
@@ -112,7 +112,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input  name="to[]" id="to1" type="text" placeholder="To" class="">
                         </span></td>
                         <td data-title="Estimated Cost"><span id="cost1container">
-                        <input type="text" class="" name="txtCost[]" id="txtCost1" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
+                        <input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
                         </br><span class="red" id="show-exceed"></span>
                         <input type="hidden" value="0" id="budget_limit">
                         </span></td>

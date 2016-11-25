@@ -128,8 +128,13 @@
                 alert("test");
                 wp.ajax.send( 'send_pre_travel_request', {
                     data: {
-                        //id : self.data( 'row_id' ),
-                        
+                        txtCost : $('#txtCost').val(),
+                        txtDate : $('#txtDate').val(),
+                        txtaExpdesc : $('#txtaExpdesc').val(),
+                        selExpcat : $('#selExpcat').val(),
+                        selModeofTransp : $('#selModeofTransp').val(),
+                        txtdist : $('#txtdist').val(),
+                        textBillNo : $('#textBillNo').val(),
                     },
                     success: function(res) {
                         console.log(res);
