@@ -17,7 +17,7 @@
             //Travel Requests
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
             $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
-            $( 'body').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
+     
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
@@ -129,12 +129,16 @@
                 wp.ajax.send( 'send_pre_travel_request', {
                     data: {
                         txtCost : $('#txtCost').val(),
-                        txtDate : $('#txtDate').val(),
-                        txtaExpdesc : $('#txtaExpdesc').val(),
-                        selExpcat : $('#selExpcat').val(),
-                        selModeofTransp : $('#selModeofTransp').val(),
-                        txtdist : $('#txtdist').val(),
-                        textBillNo : $('#textBillNo').val(),
+                        txtDate : $('#txtDate1').val(),
+                        txtaExpdesc : $('#txtaExpdesc1').val(),
+                        selExpcat : $('#selExpcat1').val(),
+                        selModeofTransp : $('#selModeofTransp1').val(),
+                        txtdist : $('#txtdist1').val(),
+                        textBillNo : $('#textBillNo1').val(),
+                        txtStartDate : $('#txtStartDate1').val(),
+                        txtEndDate : $('#txtEndDate1').val(),
+                        ectype: $('#ectype').val(),
+                        expenseLimit: $('#expenseLimit').val()
                     },
                     success: function(res) {
                         console.log(res);
