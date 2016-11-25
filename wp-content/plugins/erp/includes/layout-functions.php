@@ -59,7 +59,7 @@
 				return $redirect_to;
 			}
 					else if ( in_array( 'finance', $user->roles ) ) {
-				return "/wp-admin/admin.php?page=finance-dashboard";
+				return "/wp-admin/admin.php?page=financemenu";
 			}
 					else if ( in_array( 'employee', $user->roles ) ) {
 				return "/wp-admin/admin.php?page=employee";

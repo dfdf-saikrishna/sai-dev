@@ -48,7 +48,7 @@ class Admin_Menu {
              
         add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
         		   
-        $overview = add_submenu_page( 'financemenu', 'Finance', 'Overview', 'finance', 'financemenu', 'financemenu_init');
+        $overview = add_submenu_page( 'financemenu', 'Finance', 'Overview', 'finance', 'financemenu',array($this,'account_Dashboard'), 'financemenu_init');
 
         //add_menu_page('financedashboard', 'Finance Dashboard', 'finance', 'finance-dashboard', 'financeDashboard','dashicons-admin-users');
         add_submenu_page('financemenu','pre', 'Travel Expense Requests', 'finance', 'travel',  array($this,'Travel_Requests'),'dashicons-money');

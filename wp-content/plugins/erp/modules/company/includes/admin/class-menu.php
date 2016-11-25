@@ -36,6 +36,7 @@ class Admin_Menu {
 		
 		$overview = add_submenu_page( 'menu', 'Overview', 'Overview', 'companyadmin', 'menu', array( $this, 'employee_list'));
 		add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array( $this, 'upload_employees'));
+		add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
         add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile',  array( $this, 'employeeview_page' ));
         add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array( $this, 'employeelogs_list' ));
         add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', 'employee');
@@ -62,13 +63,8 @@ class Admin_Menu {
         add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', 'TravelDesk');
         add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', 'TravelDesk');
 
-        add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Requests', array( $this, 'expense_requests'),'dashicons-money');
-        add_submenu_page('Requests', 'Pre', 'Pre Travel Expense Requests', 'companyadmin', 'Pre Travel', 'Requests');
-        add_submenu_page('Requests', 'post', 'Post Travel Expense Requests', 'companyadmin', 'Post tarvel', 'Requests');
-        add_submenu_page('Requests', 'general', 'General Expenses', 'companyadmin', 'GeneralExpenses', 'Requests');
-        add_submenu_page('Requests', 'mileage', 'Mileage Requests', 'companyadmin', 'mileage', 'Requests');
-        add_submenu_page('Requests', 'utility', 'Utility Expense Requests', 'companyadmin', 'utility', 'Requests');
-
+        add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Expense-Requests', array( $this, 'expense_requests'),'dashicons-money');
+        
         add_menu_page('BudgetController', 'Budget Control', 'companyadmin', 'Budget', 'BudgetController','dashicons-portfolio');
         add_submenu_page('Budget', 'Project', 'Project Code', 'companyadmin', 'Project', 'BudgetController');
         add_submenu_page('Budget', 'Center', 'Cost Center', 'companyadmin', 'Center', 'BudgetController');
