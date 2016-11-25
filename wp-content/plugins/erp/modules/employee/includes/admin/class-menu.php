@@ -46,87 +46,95 @@ class Admin_Menu {
         
         if(current_user_can( 'finance' )){
              
-        add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'finance', array($this,'account_Dashboard'),'dashicons-admin-users');
+        add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
+        		   
+        $overview = add_submenu_page( 'financemenu', 'Finance', 'Overview', 'finance', 'financemenu', 'financemenu_init');
+
         //add_menu_page('financedashboard', 'Finance Dashboard', 'finance', 'finance-dashboard', 'financeDashboard','dashicons-admin-users');
-        add_submenu_page('financeMenu','pre', 'PreTravel Expense Request', 'finance', 'PreT', 'PreTravelRequest','dashicons-money');
-        add_submenu_page('financeMenu','PostTravel', 'Post Travel Expense Request', 'finance', 'PostTravel', 'PostTravelRequest','dashicons-money');
-        add_submenu_page('financeMenu','General', 'General Expense Request', 'finance', 'General', 'GeneralExpenseRequest','dashicons-money');
-        add_submenu_page('financeMenu','MileageExpense', 'Mileage Expense Request', 'finance', 'MileageExpense', 'MileageExpenseRequest','dashicons-money');
-        add_submenu_page('financeMenu','UtilityExpense', 'Utility Expense Request', 'finance', 'UtilityExpense', 'UtilityExpenseRequest','dashicons-money');
-        add_submenu_page('financeMenu','claims', 'TravelDesk Claims', 'finance', 'TDClaims', 'TravelDeskClaims','dashicons-location');
-        add_menu_page('FinanceExpense', 'Expense', 'finance', 'FinanceExpense', 'FinanceExpense','dashicons-money');
-                add_submenu_page('FinanceExpense', 'create', 'Create Expense', 'finance', 'create', 'FinanceExpense');
-                add_submenu_page('FinanceExpense', 'view', 'View Expense', 'finance', 'view', 'FinanceExpense');
-                add_submenu_page('FinanceExpense', 'General', 'View General Expense', 'finance', 'General', 'FinanceExpense');
-                add_submenu_page('FinanceExpense', 'utility', 'View Utility Expense', 'finance', 'Utility', 'FinanceExpense');
+        add_submenu_page('financemenu','pre', 'Travel Expense Requests', 'finance', 'travel',  array($this,'Travel_Requests'),'dashicons-money');
+       
+        add_menu_page('FinanceExpense', 'Expense', 'finance', 'FinanceExpense', array($this,'All_Expense_Request'),'dashicons-money');
+            $overview = add_submenu_page( 'FinanceExpense', 'All Expense Requests', 'Overview', 'finance', 'FinanceExpense',array($this,'All_Expense_Request'), 'FinanceExpense_init');
+               
+            //add_submenu_page('FinanceExpense', 'view', 'View Travel & General &Utility Expense', 'finance', 'view', array($this,'Travel_Request'));
+                //add_submenu_page('FinanceExpense', 'General', 'View General Expense', 'finance', 'General', array($this,'General_Request'));
+                //add_submenu_page('FinanceExpense', 'utility', 'View Utility Expense', 'finance', 'Utility', array($this,'Utility_Request'));
         }
         add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
 
-        add_submenu_page('employee-profile', ' Employement Details', ' Employement Details', 'employee',' Employement Details'.'/ Employement Details', 'employement_details');
-        add_submenu_page('employee-profile', 'View / Edit emp Profile', ' View / Edit Profile', 'employee','View / Edit Profile'.'/ View / Edit Profile', 'employement_details');
-        add_submenu_page('employee-profile', 'Personal Details', ' Personal Details', 'employee',' Personal Details'.'/ Personal Details', 'employement_details');
-        add_submenu_page('employee-profile', 'View / Edit personalProfile', 'View / Edit personalProfile', 'employee',' View / Edit personalProfile'.'/ View / Edit personalProfile', 'employement_details');
-        add_submenu_page('employee-profile', 'Medical Information ', ' Medical Information ', 'employee',' Medical Information '.'/  Medical Information ', 'employement_details');
+//        add_submenu_page('employee-profile', ' Employement Details', ' Employement Details', 'employee',' Employement Details'.'/ Employement Details', 'employement_details');
+//        add_submenu_page('employee-profile', 'View / Edit emp Profile', ' View / Edit Profile', 'employee','View / Edit Profile'.'/ View / Edit Profile', 'employement_details');
+//        add_submenu_page('employee-profile', 'Personal Details', ' Personal Details', 'employee',' Personal Details'.'/ Personal Details', 'employement_details');
+//        add_submenu_page('employee-profile', 'View / Edit personalProfile', 'View / Edit personalProfile', 'employee',' View / Edit personalProfile'.'/ View / Edit personalProfile', 'employement_details');
+//        add_submenu_page('employee-profile', 'Medical Information ', ' Medical Information ', 'employee',' Medical Information '.'/  Medical Information ', 'employement_details');
+//
+//        add_submenu_page('employee-profile', ' Add / View / Edit Family Members ', ' Add / View / Edit Family Members ', 'employee','  Add / View / Edit Family Members '.'/  Add / View / Edit Family Members ', 'employement_details');
+//
+//        add_submenu_page('employee-profile', ' Bank Details ', 'Bank Details', 
+//        'employee',' Bank Details'.'/  Bank Details ', 'employement_details','dashicons-groups');
+//
+//        add_submenu_page('employee-profile', ' Bank Account Details ', ' Bank Account Details ', 
+//        'employee',' Bank Account Details '.'/  Bank Account Details  ', 'employement_details','dashicons-groups');
+//
+//        add_submenu_page('employee-profile', 'Travel Documents', ' Travel Documents ', 
+//        'employee',' Travel Documents'.'/ Travel Documents', 'employement_details','dashicons-analytics');
+//
+//        add_submenu_page('employee-profile', ' Passport Details ', ' Passport Details ', 
+//        'employee',' Passport Details '.'/ Passport Details ', 'employement_details','dashicons-id-alt');
+//
+//        add_submenu_page('employee-profile', ' Visa Details ', ' Visa Details ', 
+//        'employee',' Visa Details  '.'/  Visa Details  ', 'employement_details','dashicons-id');
+//
+//        add_submenu_page('employee-profile', '  Frequent Flyers  ', ' Frequent Flyers ', 
+//        'employee',' Frequent Flyers  '.'/  Frequent Flyers  ', 'employement_details');
+//
+//        add_submenu_page('employee-profile', '  Driving License  ', '  Driving License ', 
+//        'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
 
-        add_submenu_page('employee-profile', ' Add / View / Edit Family Members ', ' Add / View / Edit Family Members ', 'employee','  Add / View / Edit Family Members '.'/  Add / View / Edit Family Members ', 'employement_details');
+        add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'TravelExpense', 'travel_expense','dashicons-tickets');
+        $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', 'TravelExpense_init');
+        
+            add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
+            add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
+            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
+            add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
+            add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
+            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
 
-        add_submenu_page('employee-profile', ' Bank Details ', 'Bank Details', 
-        'employee',' Bank Details'.'/  Bank Details ', 'employement_details','dashicons-groups');
+        add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'Others_Request'),'dashicons-migrate');
+            $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'Others_Request'),'GeneralExpense_init');
+            add_submenu_page('GeneralExpense', ' Mileage ', 'View / Edit / Delete Mileage', 'employee','Mileage'.'/Mileage', array($this,'Mileage_Request'));
+            add_submenu_page('GeneralExpense', 'Utilities', 'View / Edit / Delete Utilities', 'employee','Utilities'.'/Utilities',array($this,'Utility_Request'));
+            add_submenu_page('GeneralExpense', 'others', 'View / Edit / Delete others', 'employee','others'.'/others', array($this,'Others_Request'));
 
-        add_submenu_page('employee-profile', ' Bank Account Details ', ' Bank Account Details ', 
-        'employee',' Bank Account Details '.'/  Bank Account Details  ', 'employement_details','dashicons-groups');
+        //add_menu_page(' Reports', ' Reports', 'employee', ' Reports', 'reports','dashicons-media-spreadsheet');
 
-        add_submenu_page('employee-profile', 'Travel Documents', ' Travel Documents ', 
-        'employee',' Travel Documents'.'/ Travel Documents', 'employement_details','dashicons-analytics');
+//        add_menu_page('My Team', 'My Team', 'employee', 'My Team', 'myteam','dashicons-groups');
+//            add_submenu_page('My Team', 'Approved Requests', 'Approved Requests', 'employee','Approved Requests'.'/Approved Requests', 'myteam');
+//            add_submenu_page('My Team', 'Pending Requests', 'Pending Requests', 'employee','Pending Requests'.'/Pending Requests', 'myteam');
+//            add_submenu_page('My Team', 'Rejected Requests', 'Rejected Requests', 'employee','Rejected Requests'.'/Rejected Requests', 'myteam');
+//            add_submenu_page('My Team', 'View My Team', 'View My Team', 'employee','View My Team'.'/View My Team', 'myteam');
 
-        add_submenu_page('employee-profile', ' Passport Details ', ' Passport Details ', 
-        'employee',' Passport Details '.'/ Passport Details ', 'employement_details','dashicons-id-alt');
-
-        add_submenu_page('employee-profile', ' Visa Details ', ' Visa Details ', 
-        'employee',' Visa Details  '.'/  Visa Details  ', 'employement_details','dashicons-id');
-
-        add_submenu_page('employee-profile', '  Frequent Flyers  ', ' Frequent Flyers ', 
-        'employee',' Frequent Flyers  '.'/  Frequent Flyers  ', 'employement_details');
-
-        add_submenu_page('employee-profile', '  Driving License  ', '  Driving License ', 
-        'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
-
-        add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'Travel Expense', 'travel_expense','dashicons-tickets');
-            add_submenu_page('Travel Expense', 'Pre Travel', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
-            add_submenu_page('Travel Expense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
-            add_submenu_page('Travel Expense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
-            add_submenu_page('Travel Expense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
-            add_submenu_page('Travel Expense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
-            add_submenu_page('Travel Expense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
-
-        add_menu_page('General Expense', 'General Expense', 'employee', 'General Expense', 'general_expense','dashicons-migrate');
-            add_submenu_page('General Expense', ' Mileage ', 'Mileage', 'employee','Mileage'.'/Mileage', 'general_expense');
-            add_submenu_page('General Expense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'general_expense');
-            add_submenu_page('General Expense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'general_expense');
-            add_submenu_page('General Expense', 'Utilities', 'Utilities', 'employee','Utilities'.'/Utilities', 'general_expense');
-            add_submenu_page('General Expense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'general_expense');
-            add_submenu_page('General Expense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'general_expense');
-            add_submenu_page('General Expense', 'others', 'others', 'employee','others'.'/others', 'general_expense');
-            add_submenu_page('General Expense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'general_expense');
-            add_submenu_page('General Expense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'general_expense');
-
-        add_menu_page(' Reports', ' Reports', 'employee', ' Reports', 'reports','dashicons-media-spreadsheet');
-
-        add_menu_page('My Team', 'My Team', 'employee', 'My Team', 'myteam','dashicons-groups');
-            add_submenu_page('My Team', 'Approved Requests', 'Approved Requests', 'employee','Approved Requests'.'/Approved Requests', 'myteam');
-            add_submenu_page('My Team', 'Pending Requests', 'Pending Requests', 'employee','Pending Requests'.'/Pending Requests', 'myteam');
-            add_submenu_page('My Team', 'Rejected Requests', 'Rejected Requests', 'employee','Rejected Requests'.'/Rejected Requests', 'myteam');
-            add_submenu_page('My Team', 'View My Team', 'View My Team', 'employee','View My Team'.'/View My Team', 'myteam');
-
-        add_menu_page('Delegate', 'Delegate', 'employee', 'Delegate', 'delegate','dashicons-image-filter');
-            add_submenu_page('Delegate', 'Set Delegate', 'Set Delegate', 'employee','Set Delegate'.'/Set Delegate', 'delegate');
-            add_submenu_page('Delegate', 'View / Edit / Remove Delegate', 'View / Edit / Remove Delegate', 'employee','View / Edit / Remove Delegate'.'/View / Edit / Remove Delegate', 'delegate');
+        //add_menu_page('Delegate', 'Delegate', 'employee', 'Delegate', 'delegate','dashicons-image-filter');
+            //add_submenu_page('Delegate', 'Set Delegate', 'Set Delegate', 'employee','Set Delegate'.'/Set Delegate', 'delegate');
+            //add_submenu_page('Delegate', 'View / Edit / Remove Delegate', 'View / Edit / Remove Delegate', 'employee','View / Edit / Remove Delegate'.'/View / Edit / Remove Delegate', 'delegate');
         add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
        //}
     }
         
     }
-    
+    function All_Expense_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/All_Expense_Request.php';
+    }
+    function Others_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Others_Request.php';
+    }
+    function Utility_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Utility-Request.php';
+    }
+    function Mileage_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Mileage_Request.php';
+    }
     function pre_travel_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request.php';
     }
@@ -138,6 +146,9 @@ class Admin_Menu {
         include WPERP_EMPLOYEE_VIEWS . '/accounts-dashboard.php';
     }
 
+     function Travel_Requests(){
+        include WPERP_EMPLOYEE_VIEWS . '/Travel_Requests.php';
+    }
     /**
      * Handles HR calendar script
      *

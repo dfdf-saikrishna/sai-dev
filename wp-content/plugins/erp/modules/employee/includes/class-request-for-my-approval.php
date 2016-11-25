@@ -167,8 +167,8 @@ class Request_Travel_Expenses extends \WP_List_Table
 
         global $wpdb;
         global $approvals;
-        
-        $claimdata='<span class="status-2 title="Claimed on: '.date("d/M/y",strtotime($item['REQ_ClaimDate'])).'">Claimed</span>';
+
+        $claimdata = '<span class="status-2 title="Claimed on: ' . date("d/M/y", strtotime($item['REQ_ClaimDate'])) . '">Claimed</span>';
         //echo $claimdata;die;
         if ($item['REQ_Type'] == 4) {
 
@@ -191,7 +191,7 @@ class Request_Travel_Expenses extends \WP_List_Table
 
                 if ($item['REQ_PreToPostStatus']) {
 
-                    if ($selptc =$wpdb->get_row("SELECT PTC_Status FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'"))
+                    if ($selptc = $wpdb->get_row("SELECT PTC_Status FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'"))
                         return approvals($selptc->PTC_Status);
                 }else {
 
@@ -204,6 +204,7 @@ class Request_Travel_Expenses extends \WP_List_Table
         }
         return $approvals;
     }
+
     function column_request_date($item){
         return date('d-M-y',strtotime($item['REQ_Date']));
     }

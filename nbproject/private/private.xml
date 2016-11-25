@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/includes/functions.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/includes/admin/class-menu.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/vendor/composer/autoload_classmap.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/corptne.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/hrm/hrm.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/wp-erp.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/includes/framework/modules.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

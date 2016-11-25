@@ -455,6 +455,12 @@ return array(
     
     'WeDevs\\ERP\\Employee\\Request_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-request-for-my-approval.php',
     'WeDevs\\ERP\\Employee\\My_Pre_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-pre-travel-expenses.php',
+    'WeDevs\\ERP\\Employee\\Travel_Requests_List' => $baseDir . '/modules/employee/includes/class-travel-expense-request-table.php',
+    'WeDevs\\ERP\\Employee\\Mileage_Requests_List' => $baseDir . '/modules/employee/includes/class-mileage-request-table.php',
+    'WeDevs\\ERP\\Employee\\Others_Requests_List' => $baseDir . '/modules/employee/includes/class-others-request-table.php',
+    'WeDevs\\ERP\\Employee\\Utility_Requests_List' => $baseDir . '/modules/employee/includes/class-utility-request-table.php',
+    'WeDevs\\ERP\\Employee\\All_Expense_Requests_List' => $baseDir . '/modules/employee/includes/class-all-expense-request-table.php',
+
     
     'WeDevs\\ERP\\Employee\\Admin\\Admin_Menu' => $baseDir . '/modules/employee/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Employee\\Form_Handler' => $baseDir . '/modules/employee/includes/class-form-handler.php',
