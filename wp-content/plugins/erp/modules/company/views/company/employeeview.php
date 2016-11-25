@@ -11,7 +11,7 @@
                   $count = count($getEmployees);
                   ?>
           <h3>Company Employees </h3><select id="selectEmployee" required name="employee_id" value="<?php echo $employeeview->EMP_Id; ?>" class="" tabindex="-1" aria-hidden="true">
-           <option value="">-SELECT Employee-</option>
+           <option value="0">-SELECT Employee-</option>
                <?php for($i=0; $i<$count; $i++){?>
                <option value="<?php echo $getEmployees[$i]->EMP_Id; ?>"><?php echo $getEmployees[$i]->EMP_Code ." (".$getEmployees[$i]->EMP_Name .")" ; ?></option>
                <?php } ?>

@@ -1116,7 +1116,11 @@
                             success: function(response) {
                                 console.log(response);
 								//var html = wp.template('companyemployee-view')( response );
+								if(selectEmployee=='0'){
+									$('#employeeview').hide();
+								}else{
 								$('#employeeview').show();
+								}
 								if(response.EMP_Photo==""){
 								$('#EMP_Photo').html('<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-150 photo" height="150" width="150">');
 								}
