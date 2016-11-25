@@ -62,7 +62,7 @@ ob_start();
 					alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis.");
 					else{
                                         document.getElementById('show-exceed').innerHTML="Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0;
-                                        document.getElementById("budget_limit").value = "1";
+                                        document.getElementById("expenseLimit").value = "1";
 					//alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0);
                                         }
 					//$('#expenseLimit').val("1");
@@ -75,7 +75,7 @@ ob_start();
 				}else{
 					//alert('ok');
                                         document.getElementById('show-exceed').innerHTML='';
-                                        document.getElementById("budget_limit").value = "0";
+                                        document.getElementById("expenseLimit").value = "0";
 					getTotal();
 				}
 			

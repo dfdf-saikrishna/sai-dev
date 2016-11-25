@@ -164,7 +164,8 @@ class Ajax_Handler {
 	$count=count($txtCost);
 
         if($etype=="" || $expreqcode==""){
-		//header("location:$filename?msg=2");exit;
+		$response = array('status'=>'failure','message'=>"Some fields went missing");
+                $this->send_success($response);
                 exit;
 	
 	} else {
@@ -183,6 +184,8 @@ class Ajax_Handler {
 		
 		}
                 if($checked){
+                        $response = array('status'=>'failure','message'=>"Some fields went missing");
+                        $this->send_success($response);
 			//header("location:$filename?msg=2");exit;
                         //$this->send_success($checked);
 		}
@@ -390,7 +393,8 @@ class Ajax_Handler {
 
         } else {
 
-                //header("location:$filename?msg=2");exit;
+                 $response = array('status'=>'failure','message'=>"Some fields went missing");
+                 $this->send_success($response);
         }
         if($reqid){			
                 $rdid=0; $explodeVal=0; $countExpldVal=0;
@@ -462,10 +466,10 @@ class Ajax_Handler {
                         // select mileage rate
 
                         if($etype==5){
+                                
+                                $selmilrate=$wpdb->get_row("SELECT MIL_Amount FROM mileage WHERE COM_Id='$compid' and MOD_Id='$selModeofTransp[$i]' and MIL_Status='1' and MIL_Active=1");	
 
-                                $selmilrate=select_query("mileage", "MIL_Amount", "COM_Id='$compid' and MOD_Id='$selModeofTransp[$i]' and MIL_Status='1' and MIL_Active=1", $filename, $show=false);	
-
-                                $rate=$selmilrate[MIL_Amount];
+                                $rate=$selmilrate->MIL_Amount;
 
                                 if($rate && $txtdist[$i])					
                                 $txtCost[$i]=$rate * trim($txtdist[$i], "'");
@@ -556,12 +560,14 @@ class Ajax_Handler {
             }
             else{
 		
-                    header("location:$filename?msg=7");exit;
+                     $response = array('status'=>'failure','message'=>"Request Couldn\'t be added. Please try again");
+                     $this->send_success($response);
 		
 		}
 		
 			
-                    header("location:$filename?msg=1&reqid=$expreqcode");exit;
+                    $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: '.$reqid.' <br> Please wait for approval..  ");
+                    $this->send_success($response);
         
     }
 
