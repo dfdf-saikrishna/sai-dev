@@ -66,6 +66,8 @@ class Company {
        require_once WPERP_COMPANY_PATH . '/includes/PHPExcel/Writer/Excel2007.php';
        require_once WPERP_COMPANY_PATH . '/includes/functions-import-export.php';
        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
+	   require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
+	  // require_once WPERP_COMPANY_PATH . '/includes/functions-employeeview.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-company.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyview.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-companyadmin.php';
@@ -153,6 +155,8 @@ class Company {
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-hr-nonce' ),
             'popup'              => array(
+				'companyemployee_title' => __( 'New Employee', 'erp' ),
+				'companyemployee_update'    => __( 'Update Employee', 'erp' ),
                 'dept_title'         => __( 'New Department', 'erp' ),
                 'dept_submit'        => __( 'Create Department', 'erp' ),
                 'location_title'     => __( 'New Location', 'erp' ),
@@ -210,6 +214,13 @@ class Company {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
+		  // if its an employee page
+        if ( 'toplevel_page_menu' == $hook ) {
+            wp_enqueue_script( 'post' );
+
+            $employeelist                          = new Employeelist();
+            $localize_script['companyemployee_empty'] = $employeelist->to_array();
+        }
         wp_localize_script( 'wp-erp-company', 'wpErpCompany', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
@@ -236,13 +247,19 @@ class Company {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump( $current_screen->base );
+        var_dump( $current_screen->base );
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
                 erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );
                 break;
-            
+            case 'toplevel_page_menu':
+				erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/companyemployee-create.php', 'companyemployee-create' );
+                break;
+			case 'management_page_Profile':
+				//erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/companyemployee-view.php', 'companyemployee-view' );
+                break;	
+				
             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_COMPANY_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;

@@ -1,5 +1,7 @@
-<?php do_action( 'erp-hr-employee-single-top', $employee ); ?>
 
+
+
+<?php do_action( 'erp-hr-employee-single-top', $employee ); ?>
 <div class="postbox leads-actions">
     <div class="handlediv" title="<?php _e( 'Click to toggle', 'erp' ); ?>"><br></div>
     <h3 class="hndle"><span><?php _e( 'Basic Info', 'erp' ); ?></span></h3>

@@ -38,6 +38,14 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp-hr-update-desig', 'designation_create' );
         $this->action( 'wp_ajax_erp-hr-del-desig', 'designation_delete' );
 
+		
+		
+		// Company Employee Create
+        $this->action( 'wp_ajax_companyemployee_create', 'companyemployee_create' );
+		$this->action( 'wp_ajax_companyemployee_get', 'companyemployee_get' );
+        $this->action( 'wp_ajax_companyemployee-delete', 'companyemployee_remove' );
+		$this->action( 'wp_ajax_companyemployee_view', 'companyemployee_view' );
+		
         // Company Admin
         $this->action( 'wp_ajax_companyadmin_create', 'companyadmin_create' );
         $this->action( 'wp_ajax_companyadmin_get', 'companyadmin_get' );
@@ -61,6 +69,7 @@ class Ajax_Handler {
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
+		$this->action( 'wp_ajax_erp-hr-employeeview-get', 'employeeview_get' );
         $this->action( 'wp_ajax_erp-hr-companyview-get', 'companyview_get' );
         $this->action( 'wp_ajax_erp-hr-emp-delete', 'employee_remove' );
         $this->action( 'wp_ajax_erp-hr-emp-restore', 'employee_restore' );
@@ -2131,4 +2140,58 @@ class Ajax_Handler {
 
         $this->send_success( $content );
     }
+	    /**
+     * Create/update an employee
+     *
+     * @return void
+     */
+    public function companyemployee_create() {
+        unset( $_POST['_wp_http_referer'] );
+        unset( $_POST['_wpnonce'] );
+        unset( $_POST['action'] );
+//alert($posted);
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $companyemployee_id  = companyemployee_create( $posted );
+        // user notification email
+            $emailer    = wperp()->emailer->get_email( 'New_Employee_Welcome' );
+            $send_login = isset( $posted['login_info'] ) ? true : false;
+
+            if ( is_a( $emailer, '\WeDevs\ERP\Email') ) {
+                $emailer->trigger( $companyemployee_id, $send_login );
+            }
+
+        $data = $posted;
+        $this->send_success( $data );
+    }
+	
+	public function companyemployee_get() {
+        global $wpdb;
+        $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+        $response = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Id = $id");
+        $this->send_success( $response );
+    }
+	
+	    /**
+     * Gets the leave dates
+     *
+     * Returns the date list between the start and end date of the
+     * two dates
+     *
+     * @since 0.1
+     *
+     * @return void
+     */
+    public function companyemployee_view() {
+		//$this->send_success( "teststsfd" );
+		global $wpdb;
+       // $this->verify_nonce( 'wp-erp-hr-nonce' );
+	   $posted = array_map( 'strip_tags_deep', $_POST );
+	   $data = $posted;
+      
+		$response = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Id = '$data[id]'");
+		
+        $this->send_success( $response );
+        //$this->send_success( array( 'id' => $id));
+    }
+
 }
