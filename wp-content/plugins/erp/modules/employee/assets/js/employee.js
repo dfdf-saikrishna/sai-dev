@@ -691,6 +691,6 @@
     };
 
     $(function() {
-        //WeDevs_CRP_EMP.initialize();
+        WeDevs_CRP_EMP.initialize();
     });
 })(jQuery);
