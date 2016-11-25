@@ -1,5 +1,5 @@
 /* jshint devel:true */
-/* global wpErpHr */
+/* global wpErpCr */
 /* global wp */
 
 ;(function($) {
@@ -125,7 +125,7 @@
                 wp.ajax.send( 'erp_hr_announcement_mark_read', {
                     data: {
                         id : self.data( 'row_id' ),
-                        _wpnonce: wpErpHr.nonce
+                        _wpnonce: wpErpCr.nonce
                     },
                     success: function(res) {
                         self.closest( 'li' ).removeClass( 'unread' );
@@ -143,7 +143,7 @@
                 wp.ajax.send( 'erp_hr_announcement_view', {
                     data: {
                         id : self.data( 'row_id' ),
-                        _wpnonce: wpErpHr.nonce
+                        _wpnonce: wpErpCr.nonce
                     },
                     success: function(res) {
                         $.erpPopup({
@@ -169,7 +169,7 @@
                 wp.ajax.send( 'erp_hr_announcement_view', {
                     data: {
                         id : self.data( 'row_id' ),
-                        _wpnonce: wpErpHr.nonce
+                        _wpnonce: wpErpCr.nonce
                     },
                     success: function(res) {
                         $.erpPopup({
@@ -232,8 +232,8 @@
                     is_single = self.data('single');
 
                 $.erpPopup({
-                    title: wpErpHr.popup.dept_title,
-                    button: wpErpHr.popup.dept_submit,
+                    title: wpErpCr.popup.dept_title,
+                    button: wpErpCr.popup.dept_submit,
                     id: 'erp-hr-new-department',
                     content: wperp.template('erp-new-dept')().trim(),
                     extraClass: 'smaller',
@@ -270,8 +270,8 @@
                 var self = $(this);
 
                 $.erpPopup({
-                    title: wpErpHr.popup.dept_update,
-                    button: wpErpHr.popup.dept_update,
+                    title: wpErpCr.popup.dept_update,
+                    button: wpErpCr.popup.dept_update,
                     id: 'erp-hr-new-department',
                     content: wp.template('erp-new-dept')().trim(),
                     extraClass: 'smaller',
@@ -283,7 +283,7 @@
                         wp.ajax.send( 'erp-hr-get-dept', {
                             data: {
                                 id: self.data('id'),
-                                _wpnonce: wpErpHr.nonce
+                                _wpnonce: wpErpCr.nonce
                             },
                             success: function(response) {
                                 $( '.loader', modal).remove();
@@ -327,10 +327,10 @@
 
                 var self = $(this);
 
-                if ( confirm( wpErpHr.delConfirmDept ) ) {
+                if ( confirm( wpErpCr.delConfirmDept ) ) {
                     wp.ajax.send( 'erp-hr-del-dept', {
                         data: {
-                            '_wpnonce': wpErpHr.nonce,
+                            '_wpnonce': wpErpCr.nonce,
                             id: self.data( 'id' )
                         },
                         success: function() {
@@ -364,14 +364,14 @@
                     //e.preventDefault();
                 }
 
-                if ( typeof wpErpHr.employee_empty === 'undefined' ) {
+                if ( typeof wpErpCr.employee_empty === 'undefined' ) {
                     //return;
                 }
                 $.erpPopup({
-                    title: wpErpHr.popup.company_title,
-                    button: wpErpHr.popup.employee_create,
+                    title: wpErpCr.popup.company_title,
+                    button: wpErpCr.popup.employee_create,
                     id: "erp-new-companyadmin-popup",
-                   content: wperp.template('companyadmin-create')( wpErpHr.employee_empty ).trim(),
+                   content: wperp.template('companyadmin-create')( wpErpCr.employee_empty ).trim(),
 					//content: '<h1>sss</h1>',
                     onReady: function() {
                         WeDevs_ERP_HR.initDateField();
@@ -418,8 +418,8 @@
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
-                    title: wpErpHr.popup.employee_update,
-                    button: wpErpHr.popup.employee_update,
+                    title: wpErpCr.popup.employee_update,
+                    button: wpErpCr.popup.employee_update,
                     id: 'erp-employee-edit',
                     onReady: function() {
                         var modal = this;
@@ -429,7 +429,7 @@
                         wp.ajax.send( 'companyadmin_get', {
                             data: {
                                 id: self.data('id'),
-                                _wpnonce: wpErpHr.nonce
+                                _wpnonce: wpErpCr.nonce
                             },
                             success: function(response) {
                                 console.log(response);
@@ -476,11 +476,11 @@
                  
                 var self = $(this);
 
-                if ( confirm( wpErpHr.delConfirmEmployee ) ) {
+                if ( confirm( wpErpCr.delConfirmEmployee ) ) {
                     wp.ajax.send( 'companyadmin-delete', {
 						
                         data: {
-                            _wpnonce: wpErpHr.nonce,
+                            _wpnonce: wpErpCr.nonce,
                             id: self.data( 'id' ),
                             hard: self.data( 'hard' )
 							
@@ -537,8 +537,8 @@
                 e.preventDefault();
                 var is_single = $(this).data('single');
                 $.erpPopup({
-                    title: wpErpHr.popup.desig_title,
-                    button: wpErpHr.popup.desig_submit,
+                    title: wpErpCr.popup.desig_title,
+                    button: wpErpCr.popup.desig_submit,
                     id: 'erp-hr-new-designation',
                     content: wp.template( 'erp-new-desig' )().trim(),
                     extraClass: 'smaller',
@@ -571,8 +571,8 @@
                 var self = $(this);
 
                 $.erpPopup({
-                    title: wpErpHr.popup.desig_update,
-                    button: wpErpHr.popup.desig_update,
+                    title: wpErpCr.popup.desig_update,
+                    button: wpErpCr.popup.desig_update,
                     content: wp.template( 'erp-new-desig' )().trim(),
                     id: 'erp-hr-new-designation',
                     extraClass: 'smaller',
@@ -584,7 +584,7 @@
                         wp.ajax.send( 'erp-hr-get-desig', {
                             data: {
                                 id: self.data('id'),
-                                _wpnonce: wpErpHr.nonce
+                                _wpnonce: wpErpCr.nonce
                             },
                             success: function(response) {
                                 $( '.loader', modal).remove();
@@ -622,10 +622,10 @@
 
                 var self = $(this);
 
-                if ( confirm( wpErpHr.delConfirmDept ) ) {
+                if ( confirm( wpErpCr.delConfirmDept ) ) {
                     wp.ajax.send( 'erp-hr-del-desig', {
                         data: {
-                            '_wpnonce': wpErpHr.nonce,
+                            '_wpnonce': wpErpCr.nonce,
                             id: self.data( 'id' )
                         },
                         success: function() {
@@ -668,8 +668,8 @@
                 }
 
                 frame = wp.media({
-                    title: wpErpHr.emp_upload_photo,
-                    button: { text: wpErpHr.emp_set_photo }
+                    title: wpErpCr.emp_upload_photo,
+                    button: { text: wpErpCr.emp_set_photo }
                 });
 
                 frame.on('select', function() {
@@ -697,7 +697,7 @@
             removePhoto: function(e) {
                 e.preventDefault();
 
-                var html = '<a href="#" id="erp-set-emp-photo" class="button button-small">' + wpErpHr.emp_upload_photo + '</a>';
+                var html = '<a href="#" id="erp-set-emp-photo" class="button button-small">' + wpErpCr.emp_upload_photo + '</a>';
                     html += '<input type="hidden" name="personal[photo_id]" id="emp-photo-id" value="0">';
 
                 $( '.photo-container', '.erp-employee-form' ).html( html );
@@ -713,15 +713,15 @@
                     //e.preventDefault();
                 }
 
-                if ( typeof wpErpHr.employee_empty === 'undefined' ) {
+                if ( typeof wpErpCr.employee_empty === 'undefined' ) {
                     //return;
                 }
 		//alert("create");
                 $.erpPopup({
-                    title: wpErpHr.popup.company_title,
-                    button: wpErpHr.popup.employee_create,
+                    title: wpErpCr.popup.company_title,
+                    button: wpErpCr.popup.employee_create,
                     id: "erp-new-employee-popup",
-                    content: wperp.template('erp-new-employee')( wpErpHr.employee_empty ).trim(),
+                    content: wperp.template('erp-new-employee')( wpErpCr.employee_empty ).trim(),
 					//content: '<h1>sss</h1>',
 		
                     onReady: function() {
@@ -821,8 +821,8 @@
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
-                    title: wpErpHr.popup.employee_update,
-                    button: wpErpHr.popup.employee_update,
+                    title: wpErpCr.popup.employee_update,
+                    button: wpErpCr.popup.employee_update,
                     id: 'erp-employee-edit',
                     onReady: function() {
                         var modal = this;
@@ -832,7 +832,7 @@
                         wp.ajax.send( 'erp-hr-emp-get', {
                             data: {
                                 id: self.data('id'),
-                                _wpnonce: wpErpHr.nonce
+                                _wpnonce: wpErpCr.nonce
                             },
                             success: function(response) {
                                 console.log("test");
@@ -886,10 +886,10 @@
 
                 var self = $(this);
 
-                if ( confirm( wpErpHr.delConfirmEmployee ) ) {
+                if ( confirm( wpErpCr.delConfirmEmployee ) ) {
                     wp.ajax.send( 'erp-hr-emp-delete', {
                         data: {
-                            _wpnonce: wpErpHr.nonce,
+                            _wpnonce: wpErpCr.nonce,
                             id: self.data( 'id' ),
                             hard: self.data( 'hard' )
                         },
@@ -911,10 +911,10 @@
 
                 var self = $(this);
 
-                if ( confirm( wpErpHr.restoreConfirmEmployee ) ) {
+                if ( confirm( wpErpCr.restoreConfirmEmployee ) ) {
                     wp.ajax.send( 'erp-hr-emp-restore', {
                         data: {
-                            _wpnonce: wpErpHr.nonce,
+                            _wpnonce: wpErpCr.nonce,
                             id: self.data( 'id' ),
                         },
                         success: function() {
@@ -970,12 +970,12 @@
 
                     var self = $(this);
 
-                    if ( confirm( wpErpHr.confirm ) ) {
+                    if ( confirm( wpErpCr.confirm ) ) {
                         wp.ajax.send( self.data('action'), {
                             data: {
                                 id: self.data('id'),
                                 employee_id: self.data('employee_id'),
-                                _wpnonce: wpErpHr.nonce
+                                _wpnonce: wpErpCr.nonce
                             },
                             success: function() {
                                 WeDevs_ERP_HR.reloadPage();
@@ -997,7 +997,7 @@
 
                 $.erpPopup({
                     title: self.data('title'),
-                    button: wpErpHr.popup.update_status,
+                    button: wpErpCr.popup.update_status,
                     id: 'erp-hr-update-job-status',
                     content: '',
                     extraClass: 'smaller',
@@ -1034,11 +1034,11 @@
             removeHistory: function(e) {
                 e.preventDefault();
 
-                if ( confirm( wpErpHr.confirm ) ) {
+                if ( confirm( wpErpCr.confirm ) ) {
                     wp.ajax.send( 'erp-hr-emp-delete-history', {
                         data: {
                             id: $(this).data('id'),
-                            _wpnonce: wpErpHr.nonce
+                            _wpnonce: wpErpCr.nonce
                         },
                         success: function() {
                             WeDevs_ERP_HR.reloadPage();
@@ -1070,7 +1070,7 @@
                 wp.ajax.send( 'erp_hr_check_user_exist', {
                     data: {
                         email: val,
-                        _wpnonce: wpErpHr.nonce
+                        _wpnonce: wpErpCr.nonce
                     },
                     success: function() {
                         var form = self.closest('form');
@@ -1085,12 +1085,12 @@
 
                         if ( response.type == 'employee' ) {
                             form.find('.modal-suggession').remove();
-                            form.find('header.modal-header').append('<div class="modal-suggession">' + wpErpHr.employee_exit + '</div>');
+                            form.find('header.modal-header').append('<div class="modal-suggession">' + wpErpCr.employee_exit + '</div>');
                         }
 
                         if ( response.type == 'wp_user' ) {
                             form.find('.modal-suggession').remove();
-                            form.find('header.modal-header').append('<div class="modal-suggession">'+ wpErpHr.make_employee_text +' <a href="#" id="erp-hr-create-wp-user-to-employee" data-user_id="'+ response.data.ID +'">' + wpErpHr.create_employee_text + '</a></div>' );
+                            form.find('header.modal-header').append('<div class="modal-suggession">'+ wpErpCr.make_employee_text +' <a href="#" id="erp-hr-create-wp-user-to-employee" data-user_id="'+ response.data.ID +'">' + wpErpCr.create_employee_text + '</a></div>' );
                         }
 
                         $('.modal-suggession').hide().slideDown( function() {
@@ -1110,7 +1110,7 @@
                 wp.ajax.send( 'erp-hr-convert-wp-to-employee', {
                     data: {
                         user_id: user_id,
-                        _wpnonce: wpErpHr.nonce
+                        _wpnonce: wpErpCr.nonce
                     },
                     success: function() {
                         self.closest('.modal-suggession').find('.erp-loader').remove();
@@ -1119,8 +1119,8 @@
                         WeDevs_ERP_HR.employee.reload();
 
                         $.erpPopup({
-                            title: wpErpHr.popup.employee_update,
-                            button: wpErpHr.popup.employee_update,
+                            title: wpErpCr.popup.employee_update,
+                            button: wpErpCr.popup.employee_update,
                             id: 'erp-employee-edit',
                             onReady: function() {
                                 var modal = this;
@@ -1130,7 +1130,7 @@
                                 wp.ajax.send( 'erp-hr-emp-get', {
                                     data: {
                                         id: user_id,
-                                        _wpnonce: wpErpHr.nonce
+                                        _wpnonce: wpErpCr.nonce
                                     },
                                     success: function(response) {
                                         var html = wp.template('erp-new-employee')( response );
@@ -1259,13 +1259,13 @@
             deleteNote: function(e) {
                 e.preventDefault();
 
-                if ( confirm( wpErpHr.delConfirmEmployeeNote ) ) {
+                if ( confirm( wpErpCr.delConfirmEmployeeNote ) ) {
 
                     var self = $(this),
                         data = {
                             action: 'erp-delete-employee-note',
                             note_id: self.data('note_id'),
-                            _wpnonce : wpErpHr.nonce
+                            _wpnonce : wpErpCr.nonce
                         };
 
                     wp.ajax.send({
@@ -1293,7 +1293,7 @@
 
                 $.erpPopup({
                     title: self.data('title'),
-                    button: wpErpHr.popup.update_status,
+                    button: wpErpCr.popup.update_status,
                     id: 'erp-hr-update-performance',
                     content: '',
                     extraClass: 'smaller',
@@ -1331,12 +1331,12 @@
             removePerformance: function(e) {
                 e.preventDefault();
 
-                if ( confirm( wpErpHr.confirm ) ) {
+                if ( confirm( wpErpCr.confirm ) ) {
                     wp.ajax.send({
                         data: {
                             action: 'erp-hr-emp-delete-performance',
                             id: $(this).data('id'),
-                            _wpnonce: wpErpHr.nonce
+                            _wpnonce: wpErpCr.nonce
                         },
                         success: function() {
                             WeDevs_ERP_HR.reloadPage();
@@ -1361,7 +1361,7 @@
 
                 $.erpPopup({
                     title: self.data('title'),
-                    button: wpErpHr.popup.terminate,
+                    button: wpErpCr.popup.terminate,
                     id: 'erp-hr-employee-terminate',
                     content: '',
                     extraClass: 'smaller',
@@ -1401,12 +1401,12 @@
             activateEmployee: function(e) {
                 e.preventDefault();
 
-                if ( confirm( wpErpHr.confirm ) ) {
+                if ( confirm( wpErpCr.confirm ) ) {
                     wp.ajax.send({
                         data: {
                             action: 'erp-hr-emp-activate',
                             id: $(this).data('id'),
-                            _wpnonce: wpErpHr.nonce
+                            _wpnonce: wpErpCr.nonce
                         },
                         success: function() {
                             WeDevs_ERP_HR.reloadPage();
@@ -1429,7 +1429,7 @@
                     if ( optionVal != selected ) {
                         $.erpPopup({
                             title: self.data('title'),
-                            button: wpErpHr.popup.terminate,
+                            button: wpErpCr.popup.terminate,
                             id: 'erp-hr-employee-terminate',
                             content: '',
                             extraClass: 'smaller',
@@ -1455,14 +1455,14 @@
                             }
                         });
                     } else {
-                        alert( wpErpHr.popup.already_terminate );
+                        alert( wpErpCr.popup.already_terminate );
                     }
                 } else if ( 'active' == optionVal ) {
                     if ( optionVal != selected ) {
                         var self = $(this);
                         $.erpPopup({
-                            title: wpErpHr.popup.employment_status,
-                            button: wpErpHr.popup.update_status,
+                            title: wpErpCr.popup.employment_status,
+                            button: wpErpCr.popup.update_status,
                             id: 'erp-hr-update-job-status',
                             content: '',
                             extraClass: 'smaller',
@@ -1486,7 +1486,7 @@
                             }
                         });
                     } else {
-                        alert( wpErpHr.popup.already_active );
+                        alert( wpErpCr.popup.already_active );
                     }
 
                 } else {

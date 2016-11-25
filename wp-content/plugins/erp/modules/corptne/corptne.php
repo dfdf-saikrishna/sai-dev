@@ -140,10 +140,10 @@ class Corptne {
             wp_enqueue_script( 'erp-sweetalert' );
         }
 
-        wp_enqueue_script( 'wp-erp-hr', WPERP_CORPTNE_ASSETS . "/js/corptne$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-erp-cr', WPERP_CORPTNE_ASSETS . "/js/corptne$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
 
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
-            'nonce'              => wp_create_nonce( 'wp-erp-hr-nonce' ),
+            'nonce'              => wp_create_nonce( 'wp-erp-cr-nonce' ),
             'popup'              => array(
                 'dept_title'         => __( 'New Department', 'erp' ),
                 'dept_submit'        => __( 'Create Department', 'erp' ),
@@ -202,7 +202,7 @@ class Corptne {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
-        wp_localize_script( 'wp-erp-hr', 'wpErpHr', $localize_script );
+        wp_localize_script( 'wp-erp-cr', 'wpErpCr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_style( 'erp-select2' );
