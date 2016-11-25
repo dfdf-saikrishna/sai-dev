@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Corptne;
+namespace WeDevs\ERP\Employee;
 /**
  * PART 2. Defining Custom Table List
  * ============================================================================
@@ -19,7 +19,7 @@ namespace WeDevs\ERP\Corptne;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Companiesadmin_List_Table extends \WP_List_Table
+class My_Pre_Travel_Expenses extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -70,47 +70,83 @@ class Companiesadmin_List_Table extends \WP_List_Table
             $item['your_image_column_name']
         );
     }*/
+    
+    function column_estimated_cost($item){
+        global $wpdb;
+        $totalcost = $wpdb->get_row("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id=$item[REQ_Id] AND RD_Status='1'");
+        return IND_money_format($totalcost->total).".00";
+    }
+    
+    function column_reporting_manager_approval($item){
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+            
+            $approvals=approvals(5);
 
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_age($item)
-    {
-        return '<em>' . $item['user_nicename'] . '</em>';
-    }
-    
-    function column_Username($item){
-        $username =  $item['ADM_Username']; 
-        return $username;
-    }
-    
-    function column_Email($item){
-$email =  $item['ADM_Email']; 
-        return $email;
-    }
-    
-    function column_Contact($item){
-        $contact =  $item['ADM_Cont']; 
-        return $contact;
-    }
-    
-    function column_Created_Date($item){
+        } else {
 
-        return date('d/M/Y', strtotime($item['ADM_Regdate'])) . date('h:i a', strtotime($item['ADM_Regdate']));
+            // reporting manager status
+            
+            if($item['POL_Id'] !=4){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=1"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
     }
     
-    // function column_Tot_Requests($item){
-        // global $wpdb;
-        // $table_name = "requests";
-        // $comId = $item['COM_Id'];
-        // $req_count = $wpdb->get_var("SELECT COUNT(REQ_Id) FROM $table_name WHERE COM_Id=$comId");
-        // return $req_count;
-    // }
+    function column_finance_approval($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // reporting manager status
+            
+            if($item['POL_Id'] !=3){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=2"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
+    }
+    
+    function column_request_date($item){
+        return date('d-M-y',strtotime($item['REQ_Date']));
+    }
 
     /**
      * [OPTIONAL] this is example, how to render column with actions,
@@ -119,27 +155,40 @@ $email =  $item['ADM_Email'];
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_name($item)
+    function column_request_code($item)
     {
-        // links going to /admin.php?page=[your_plugin_page][&other_params]
-        // notice how we used $_REQUEST['page'], so action will be done on curren page
-        // also notice how we use $this->_args['singular'] so in this example it will
-        // be something like &person=2
-        $actions = array(
-            'edit' => sprintf('<a href="?page=companies-admin" data-id=%s>%s</a>', $item['ADM_Id'], __('Edit', 'companiesadmin_table_list')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['ADM_Id'], __('Delete', 'companiesadmin_table_list')),
-        );
-        // if($item['ADM_Name']){
-            // $image = '<img src=' . $item['ADM_Name'] . ' alt="" class="avatar avatar-32 photo" height="auto" width="32">';  
-        // }
-        // else{
-            // $image = '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" height="32" width="32">';
-        // }
-        return sprintf('%s %s',
-           // $image,
-            '<a href="#"><strong>' . $item['ADM_Name'] . '</strong></a>',
-            $this->row_actions($actions)
-        );
+        if($item['REQ_Type']==1){
+
+                $href="employee-pre-travel-request-details.php?reqid=".$item['REQ_Id'];
+
+        } else {
+
+                $href="employee-request-traveldesk-raised-details.php?reqid=".$item['REQ_Id'];
+
+        }
+
+        $type=NULL;
+
+        $title=NULL;
+
+        switch ($item['REQ_Type']){
+                case 2:
+                $type='<span style="font-size:10px;">[W/A]</span>';
+                $title="Without Approval";
+                break;
+
+                case 3:
+                $type='<span style="font-size:10px;">[AR]</span>';
+                $title="Approval Required";
+                break;
+
+                case 4:
+                $type='<span style="font-size:10px;">[G]</span>';
+                $title="Group Request Without Approval";
+                break;
+
+          }
+          return "<a href='<?php echo $href; ?>' >".$item['REQ_Code']."</a>".$type;
     }
 
     /**
@@ -148,13 +197,13 @@ $email =  $item['ADM_Email'];
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_cb($item)
-    {
-        return sprintf(
-            '<input type="checkbox" name="id[]" value="%s" />',
-            $item['COM_Id']
-        );
-    }
+//    function column_cb($item)
+//    {
+//        return sprintf(
+//             '<input type="checkbox" name="id[]" value="%s" />',
+//            $item['COM_Id']
+//        );
+//    }
 
     /**
      * [REQUIRED] This method return columns to display in table
@@ -166,12 +215,12 @@ $email =  $item['ADM_Email'];
     function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('Admin Name', 'companiesadmin_table_list'),
-            'Username' => __('Username', 'companiesadmin_table_list'),
-            'Email' => __('Email', 'companiesadmin_table_list'),
-            'Contact' => __('Contact', 'companiesadmin_table_list'),
-            'Created_Date' => __('Date', 'companiesadmin_table_list'),
+            //'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
+            'request_code' => __('Request Code', 'companiesadmin_table_list'),
+            'estimated_cost' => __('Estimated Cost', 'companiesadmin_table_list'),
+            'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
+            'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
+            'request_date' => __('Request Date', 'companiesadmin_table_list'),
         );
         return $columns;
     }
@@ -186,13 +235,11 @@ $email =  $item['ADM_Email'];
     function get_sortable_columns()
     {
         $sortable_columns = array(
-            'Company Name' => array('company_name', true),
-            'Company Logo' => array('company_logo', false),
-            'Contact' => array('contact', false),
-            'Tot. Admins' => array('admins', false),
-            'Tot. Employees' => array('employees', false),
-            'Tot. Requests' => array('requests', false),
-            'Created Date' => array('date', false),
+            'request_code' => array('Request Code', true),
+            'estimated_cost' => array('Estimated Cost', false),
+            'reporting_manager_approval' => array('Reporting Manager Approval', false),
+            'finance_approval' => array('Finance Approval', false),
+            'request_date' => array('Request Date', false),
         );
         return $sortable_columns;
     }
@@ -202,13 +249,13 @@ $email =  $item['ADM_Email'];
      *
      * @return array
      */
-    function get_bulk_actions()
-    {
-        $actions = array(
-            'delete' => 'Delete'
-        );
-        return $actions;
-    }
+//    function get_bulk_actions()
+//    {
+//        $actions = array(
+//            'delete' => 'Delete'
+//        );
+//        return $actions;
+//    }
 
     /**
      * [OPTIONAL] This method processes bulk actions
@@ -217,20 +264,20 @@ $email =  $item['ADM_Email'];
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
      */
-    function process_bulk_action()
-    {
-        global $wpdb;
-        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-        $table_name = "admin";
-        if ('delete' === $this->current_action()) {
-            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
-
-            if (!empty($ids)) {
-                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
-            }
-        }
-    }
+//    function process_bulk_action()
+//    {
+//        global $wpdb;
+//        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+//        $table_name = "admin";
+//        if ('delete' === $this->current_action()) {
+//            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+//            if (is_array($ids)) $ids = implode(',', $ids);
+//
+//            if (!empty($ids)) {
+//                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
+//            }
+//        }
+//    }
 
     /**
      * [REQUIRED] This is the most important method
@@ -239,6 +286,7 @@ $email =  $item['ADM_Email'];
      */
     function prepare_items()
     {
+        $empuserid = $_SESSION['empuserid'];
         global $wpdb;
         $table_name = 'admin'; // do not forget about tables prefix
 
@@ -255,21 +303,20 @@ $email =  $item['ADM_Email'];
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(COM_Id) FROM $table_name");
+        $total_items = count($wpdb->get_results("SELECT * FROM employees emp, requests req, policy pol, request_employee re WHERE RT_Id=1 AND emp.EMP_Id ='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim)"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'COM_Id';
+        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'req.REQ_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
 
         // [REQUIRED] define $items array
         // notice that last argument is ARRAY_A, so we will retrieve array
-		if(!empty($_POST["s"])) {
-            $search = $_POST["s"];
+            if(!empty($_POST["s"])) {
+                        $search = $_POST["s"];
 			$query="";
 			$searchcol= array(
-			'user_login',
-			'user_email'
+			'REQ_Code'
 			);
 			$i =0;
 			foreach( $searchcol as $col) {
@@ -281,10 +328,10 @@ $email =  $item['ADM_Email'];
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(

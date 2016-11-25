@@ -114,7 +114,8 @@
                         //session of employee name
                         $_SESSION['username']=$result->EMP_Name;
                         //session id
-                        $_SESSION['sessionid']=session_id();              
+                        $_SESSION['sessionid']=session_id();  
+                        $_SESSION['delegate']=NULL;
                     }
                   
                 }

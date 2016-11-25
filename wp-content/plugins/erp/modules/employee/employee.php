@@ -59,19 +59,8 @@ class Employee {
      * @return void
      */
     private function includes() {
-
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-database.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/actions-filters.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-company.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-companyview.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-companyadmin.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/layout-functions.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-employee.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-leave.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-capabilities.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-dashboard-widgets.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-reporting.php';
-//        require_once WPERP_EMPLOYEE_PATH . '/includes/actions-filters.php';
+        require_once WPERP_EMPLOYEE_PATH . '/includes/functions-common.php';
+        
     }
 
     /**
@@ -140,7 +129,7 @@ class Employee {
             wp_enqueue_script( 'erp-sweetalert' );
         }
 
-        wp_enqueue_script( 'wp-erp-hr', WPERP_EMPLOYEE_ASSETS . "/js/employee$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-crp-emp', WPERP_EMPLOYEE_ASSETS . "/js/employee$suffix.js", array( 'erp-script' ), date( 'Ymd' ), true );
         wp_enqueue_script( 'wp-erp-hr-leave', WPERP_EMPLOYEE_ASSETS . "/js/leave$suffix.js", array(
             'erp-script',
             'wp-color-picker'
@@ -206,7 +195,7 @@ class Employee {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
-        wp_localize_script( 'wp-erp-hr', 'wpErpHr', $localize_script );
+        wp_localize_script( 'wp-crp-emp', 'wpErpHr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_style( 'erp-select2' );

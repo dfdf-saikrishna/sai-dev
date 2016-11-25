@@ -464,20 +464,21 @@ return array(
     /** Employee Module classes **/
     /****************************/
     
+    'WeDevs\\ERP\\Employee\\Request_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-request-for-my-approval.php',
+    'WeDevs\\ERP\\Employee\\My_Pre_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-pre-travel-expenses.php',
+    
     'WeDevs\\ERP\\Employee\\Admin\\Admin_Menu' => $baseDir . '/modules/employee/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Employee\\Form_Handler' => $baseDir . '/modules/employee/includes/class-form-handler.php',
     'WeDevs\\ERP\\Employee\\Emailer' => $baseDir . '/modules/employee/includes/class-emails.php',
     'WeDevs\\ERP\\Employee\\Ajax_Handler' => $baseDir . '/modules/employee/includes/class-ajax.php',
     'WeDevs\\ERP\\Employee\\Announcement' => $baseDir . '/modules/employee/includes/class-announcement.php',
     'WeDevs\\ERP\\Employee\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/employee/includes/emails/class-email-new-employee-welcome.php',
-    'WeDevs\\ERP\\Employee\\Companyview' => $baseDir . '/modules/employee/includes/class-companyview.php',
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/includes/class-employee.php',
     'WeDevs\\ERP\\Employee\\Superadmin_List_Table' => $baseDir . '/modules/employee/includes/class-superadmin-list-table.php',
     'WeDevs\\ERP\\Employee\\Companies_List_Table' => $baseDir . '/modules/employee/includes/class-company-list-table.php',	
     'WeDevs\\ERP\\Employee\\Expensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-expensecategory-list-table.php',
-    'WeDevs\\ERP\\Employee\\Companyexpensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-companyexpensecategory-list-table.php',    
+    'WeDevs\\ERP\\Employee\\Companyexpensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-  companyexpensecategory-list-table.php',    
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/employee.php',
     'WeDevs\\ERP\\Employee\\Models\\Companyview' => $baseDir . '/modules/employee/includes/models/companyview.php',
-    'WeDevs\\ERP\\Employee\\Workflow_List_Table' => $baseDir . '/modules/employee/includes/class-workflow-table.php',
-    'WeDevs\\ERP\\Employee\\Companiesadmin_List_Table' => $baseDir . '/modules/employee/includes/class-companyadmin-list-table.php',
+
 );
