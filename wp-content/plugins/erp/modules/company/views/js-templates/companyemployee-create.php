@@ -4,7 +4,7 @@
             <li>
                 <label for="full-name">Upload EMP Photo</label>
                 <div class="photo-container">
-                    <input name="companyemployee[photo_id]" id="emp-photo-id" value="{{data.EMP_PhotoId}}" type="hidden">
+                    <input name="companyemployee[photo_id]" id="emp-photo-id" value="{{data.Emp_photoId}}" type="hidden">
                     <input type="hidden" name="companyemployee[user_id]" value="{{data.user_id}}">
                         <# if ( data.EMP_Photo ) { #>
                         <img src="{{ data.EMP_Photo }}" alt="" />
@@ -75,7 +75,7 @@
 			<li><label for="txtemplandline">Landline No.</label><input required name="companyemployee[txtemplandline]" value="{{data.EMP_Phonenumber2}}" id="txtemplandline" type="number"></li>
         </ol>
 	<ol class="form-fields two-col">
-         <li class="erp-hr-js-department" data-selected={{data.EMP_Code}}>
+         <li class="erp-hr-js-department" data-selected={{data.EMP_Reprtnmngrcode}}>
             <?php $getrepm = get_repm_list(); 
                   $count = count($getrepm);
                   ?>
@@ -88,7 +88,7 @@
                <?php } ?>
            </select>
           </li>
-		  <li class="erp-hr-js-department" data-selected={{data.EMP_Code}}>
+		  <li class="erp-hr-js-department" data-selected={{data.EMP_Funcrepmngrcode}}>
             <?php $getfrepm = get_frepm_list(); 
                   $count = count($getfrepm);
                   ?>
