@@ -237,7 +237,7 @@ class Empdelegates_List_Table extends \WP_List_Table
 		$companyid = $_SESSION['compid'];
 		//$companyid ='56';
         // will be used in pagination settings
-	$total1_items = $wpdb->get_results("SELECT * FROM delegate WHERE COM_Id='56' ORDER BY DLG_Id DESC");
+	$total1_items = $wpdb->get_results("SELECT * FROM delegate WHERE COM_Id='$companyid' ORDER BY DLG_Id DESC");
 	$total_items = count($total1_items);		
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;

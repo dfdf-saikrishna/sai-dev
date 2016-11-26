@@ -197,10 +197,9 @@ class Employeelogs_List_Table extends \WP_List_Table
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
 		
-		//$companyid = $_SESSION['compid'];
-		$companyid ='56';
+		$companyid = $_SESSION['compid'];
         // will be used in pagination settings
-	$empid = $wpdb->get_results("SELECT DISTINCT(EMP_Id) AS empid FROM employee_logs WHERE COM_Id='56' ORDER BY EL_Id DESC");
+	$empid = $wpdb->get_results("SELECT DISTINCT(EMP_Id) AS empid FROM employee_logs WHERE COM_Id='$companyid' ORDER BY EL_Id DESC");
     $emploid = $empid[0]->empid;
 	$total1_items = $wpdb->get_results("SELECT * FROM employees emp, department dep, designation des WHERE emp.EMP_Id=".$emploid." AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EMP_Status=1");
 	$total_items = count($total1_items);		
