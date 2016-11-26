@@ -156,14 +156,14 @@ function crp_process_import_export() {
                                 $count++;
 
                         }              
-                        else if($selemail=$wpdb->get_row("SELECT EMP_Code FROM employees WHERE EMP_Code='$empcode' AND EMP_Status=1")){
-                                //$empcode.=" - Employee Code Aready Exists";
-                                $empError.=$empcode.", "; 
-                                $array = array($empcode=>'Employee Code Aready Exists');
-                                //array_push($empnotadded, $array);
-                                $count++;
-
-                        }
+//                        else if($selemail=$wpdb->get_row("SELECT EMP_Code FROM employees WHERE EMP_Code='$empcode' AND EMP_Status=1")){
+//                                //$empcode.=" - Employee Code Aready Exists";
+//                                $empError.=$empcode.", "; 
+//                                $array = array($empcode=>'Employee Code Aready Exists');
+//                                //array_push($empnotadded, $array);
+//                                $count++;
+//
+//                        }
                         else {
                             
                                 $userdata = array(

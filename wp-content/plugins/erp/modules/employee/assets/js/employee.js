@@ -37,40 +37,6 @@
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.delete a', this.companyAdmin.remove );           
-          
-            // Single Employee
-            $( '.erp-employee-single' ).on( 'click', 'a#erp-employee-terminate', this.employee.terminateEmployee );
-            // $( '.erp-employee-single' ).on( 'click', 'a#erp-employee-activate', this.employee.activateEmployee ); // @TODO: Needs to modify it later. :p
-            $( '.erp-employee-single' ).on( 'click', 'input#erp-hr-employee-status-update', this.employee.changeEmployeeStatus );
-
-            // Performance
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-reviews', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-comments', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-goals', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', '.performance-tab-wrap td.action a.performance-remove', this.employee.removePerformance );
-            // work experience
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-exp', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.work-experience-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.work-experience-delete', this.employee.general.remove );
-
-            // education
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-education', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.education-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.education-delete', this.employee.general.remove );
-
-            // dependent
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-dependent', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.dependent-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.dependent-delete', this.employee.general.remove );
-
-            // notes
-            $( '.erp-hr-employees' ).on( 'submit', '.note-tab-wrap form', this.employee.addNote );
-            $( '.erp-hr-employees' ).on( 'click', '.note-tab-wrap input#erp-load-notes', this.employee.loadNotes );
-            $( '.erp-hr-employees' ).on( 'click', '.note-tab-wrap a.delete_note', this.employee.deleteNote );
-
-            // photos
-            $( 'body' ).on( 'click', 'a#erp-set-emp-photo', this.employee.setPhoto );
-            $( 'body' ).on( 'click', 'a.erp-remove-photo', this.employee.removePhoto );
 
             // Trigger
             $('body').on( 'erp-hr-after-new-dept', this.department.afterNew );

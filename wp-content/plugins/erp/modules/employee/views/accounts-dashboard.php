@@ -41,7 +41,7 @@ $mydetails=myDetails();
 
                             <table class="wp-list-table widefat striped admins">
                                 <tr>
-                                <td colspan="2"><h1 style="text-align:center;">&nbsp <b>Employee's Employee's Travel &amp; Expense Request</b></h1></td>
+                                <td colspan="2"><h1 style="text-align:center;">&nbsp <b>Employee's Travel &amp; Expense Request</b></h1></td>
                                 </tr>
                                 <tr>
                                 <td width="90%">Pending Requests</td>
