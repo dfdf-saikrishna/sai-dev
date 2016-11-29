@@ -204,7 +204,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     </div>
                     <?php //if( current_user_can( 'manage_options' ) OR (wp_get_current_user()->ID == $note->comment_by ) ) { ?>
                         <div class="row-action">
-<!--                            <span class="delete"><a href="#" class="delete_note" data-note_id=""><?php //_e( 'Delete', 'erp' ); ?></a></span>-->
+                        <!--<span class="delete"><a href="#" class="delete_note" data-note_id=""><?php //_e( 'Delete', 'erp' ); ?></a></span>-->
                         </div>
                     <?php //} ?>
                 </div>
@@ -221,13 +221,6 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
     </div>
 
 </div>
-        
-        
-        
-        
-        
-        
-        
     </div>
     
 </div>

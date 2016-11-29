@@ -458,10 +458,216 @@ function requestDetails($et){
     
     
   echo '</tr>';
+  /*------SECOND ROW ------*/
   echo '<tr>';
      echo  '<td width="20%">Request Date</td>';
      echo '<td width="5%">:</td>';
      echo '<td width="25%">'.date("d-M-y (h:i a)",strtotime($row->REQ_Date)).'</td>';
+     
+     $repmngr_block='<td width="20%">Reporting Manager Approval</td>
+                    <td width="5%">:</td>
+                    <td width="25%">';
+		
+		
+    $fin_block='<td width="20%">Finance Approval</td>
+                <td width="5%">:</td>
+                <td width="25%">';
+
+    $fin_block_second='<td width="20%">Finance Approval</td>
+                        <td width="5%">:</td>
+                        <td width="25%">';
+
+    $second_level_block_second='<td width="20%">2nd Level Manager Approval</td>
+                                <td width="5%">:</td>
+                                <td width="25%">';
+
+
+    if($row->REQ_Type==2 || $row->REQ_Type==4){
+
+            echo $null_block;
+
+    } else {
+
+            if($finRow && $selFinance->REQ_Status==2)
+            {
+
+                    if($repMngrRow)
+                    {
+
+                            $approvals=approvals($selMngrStatus->REQ_Status);
+
+                            $repmngr_block.=$approvals;
+
+
+                            $rsdate=" on ".date('d-M, y',strtotime($selMngrStatus->RS_Date));
+
+                            $repmngr_block.=$rsdate;
+
+                    }
+                    else
+                    {
+
+
+                            $approvals=approvals(1);
+
+                            $repmngr_block.=$approvals;
+                    }
+            }
+            else
+            {
+
+                    $approvals=approvals(5);
+
+                    $repmngr_block.=$approvals;
+            }
+
+
+            $repmngr_block.='</td>';
+                            
+            $secMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=5 AND RS_Status=1");
+            if($finRow && $selFinance->REQ_Status==2)
+            {
+
+                    if($secMngrRow)
+                    {
+
+                            $approvals=approvals($secMngrStatus->REQ_Status);
+
+                            $second_level_block_second.=$approvals;
+
+
+                            $rsdate=" on ".date('d-M, y',strtotime($secMngrStatus->RS_Date));
+
+                            $second_level_block_second.=$rsdate;
+
+                    }
+                    else
+                    {
+
+
+                            $approvals=approvals(1);
+
+                            $second_level_block_second.=$approvals;
+                    }
+            }
+            else
+            {
+
+                    $approvals=approvals(5);
+
+                    $second_level_block_second.=$approvals;
+            }
+
+
+            $second_level_block_second.='</td>';			
+
+            if($repMngrRow && $selMngrStatus->REQ_Status==2)
+            {
+                    if($finRow)
+                    {
+                            $approvals=approvals($selFinance->REQ_Status);
+
+                            $fin_block.=$approvals;
+
+                            $rsdate=" on ".date('d-M, y',strtotime($selFinance->RS_Date));
+
+                            $fin_block.=$rsdate;
+
+                    }
+                    else
+                    {
+                            $approvals=approvals(1);
+
+                            $fin_block.=$approvals;
+                    }
+            }
+            else
+            {
+                    $approvals=approvals(5);
+
+                    $fin_block.=$approvals;
+            }
+
+            $fin_block.='</td>';
+
+                            
+            $secMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=5 AND RS_Status=1");
+
+            if($secMngrRow && $secMngrStatus->REQ_Status==2)
+            {
+                    if($finRow)
+                    {
+                            $approvals=approvals($selFinance->REQ_Status);
+
+                            $fin_block_second.=$approvals;
+
+                            $rsdate=" on ".date('d-M, y',strtotime($selFinance->RS_Date));
+
+                            $fin_block_second.=$rsdate;
+
+                    }
+                    else
+                    {
+                            $approvals=approvals(1);
+
+                            $fin_block_second.=$approvals;
+                    }
+            }
+            else
+            {
+                    switch ($expPol){
+                        case 1:
+                            $approvals=approvals(1);
+                    }
+                    //$approvals=approvals(5);
+
+                    $fin_block_second.=$approvals;
+            }
+
+            $fin_block_second.='</td>';
+
+            switch ($expPol){
+
+                    // e --> r --> f
+                    case 1:
+                    if($row->POL_Id==5){
+                    echo $fin_block_second;
+                    }
+                    else{
+                    echo $fin_block;
+                    }
+                    break;
+
+                    // e --> f --> r
+                    case 2:
+                    if($row->POL_Id==5){
+                    echo $second_level_block_second;
+                    $polId = $row->POL_Id;
+                    }
+                    else{
+                    echo $repmngr_block;
+                    }
+                    break;
+
+                    // e --> r   
+                    case 3: 
+                    echo $null_block;
+                    break;
+
+                    // e --> f
+                    case 4:
+                    if($row->POL_Id==5){
+                    echo $fin_block_second;
+                    }
+                    else{
+                    echo $null_block;
+                    }
+                    break;
+
+            }
+
+    }
+     
   echo '</tr>';
 echo '</table>';
 }
