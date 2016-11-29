@@ -43,7 +43,7 @@ class Admin_Menu {
         if ( current_user_can( 'employee' ) ) {
            
         add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
-        
+        add_submenu_page('', 'Upload', 'View Request', 'employee', 'View-Request', array( $this, 'view_request'));
         if(current_user_can( 'finance' )){
              
         add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
@@ -137,6 +137,9 @@ class Admin_Menu {
     }
     function pre_travel_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request.php';
+    }
+     public function view_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-details.php';
     }
     
     function employee_Dashboard(){

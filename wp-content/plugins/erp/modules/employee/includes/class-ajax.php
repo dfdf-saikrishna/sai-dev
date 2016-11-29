@@ -265,21 +265,21 @@ class Ajax_Handler {
                    
                 if($expenseLimit > 0){
                    //-------- employee -->  2nd level manager  -->  finance
-                   if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
-                    {
-                            
-                            // insert into request
+//                   if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+//                    {
+//                            
+//                            // insert into request
+//                            $wpdb->insert('requests', array('POL_Id' => 8,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+//                            $reqid=$wpdb->insert_id;
+//                            // insert into request_status
+//                            $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
+//
+//                    }
+//                    else
+//                    {       
                             $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
                             $reqid=$wpdb->insert_id;
-                            // insert into request_status
-                            $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
-
-                    }
-                    else
-                    {       
-                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
-                            $reqid=$wpdb->insert_id;
-                    }
+//                    }
                 }
                 else{
                     if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
@@ -568,7 +568,7 @@ class Ajax_Handler {
 		}
 		
 			
-                    $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: '.$reqid.' <br> Please wait for approval..  ");
+                    $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
                     $this->send_success($response);
         
     }

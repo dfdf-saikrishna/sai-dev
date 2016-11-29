@@ -81,7 +81,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
         global $wpdb;
         global $approvals;
         
-        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['POL_Id'] ==5){
             
             $approvals=approvals(5);
 
@@ -121,7 +121,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
 
         } else {
 
-            // reporting manager status
+            // finance approver status
             
             if($item['POL_Id'] !=3){
                 
@@ -144,6 +144,40 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
         return $approvals;
     }
     
+    function column_skiplevel_manager_approval($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['REQ_Type']==3){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // skiplevel manager status
+            //var_dump($item['POL_Id']);
+            if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
+                {
+                    $approvalss=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvalss=approvals(1);
+                }
+
+            } else {
+
+                $approvalss=approvals(5);
+
+            }
+
+        }
+        return $approvalss;
+    }
+    
     function column_request_date($item){
         return date('d-M-y',strtotime($item['REQ_Date']));
     }
@@ -159,11 +193,11 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
     {
         if($item['REQ_Type']==1){
 
-                $href="employee-pre-travel-request-details.php?reqid=".$item['REQ_Id'];
+                $href="/wp-admin/admin.php?page=View-Request&reqid=".$item['REQ_Id'];
 
         } else {
 
-                $href="employee-request-traveldesk-raised-details.php?reqid=".$item['REQ_Id'];
+                $href="/wp-admin/admin.php?page=View-Request&reqid=".$item['REQ_Id'];
 
         }
 
@@ -188,7 +222,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
                 break;
 
           }
-          return "<a href='<?php echo $href; ?>' >".$item['REQ_Code']."</a>".$type;
+          return "<a href='$href' >".$item['REQ_Code']."</a>".$type;
     }
 
     /**
@@ -219,6 +253,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
             'request_code' => __('Request Code', 'companiesadmin_table_list'),
             'estimated_cost' => __('Estimated Cost', 'companiesadmin_table_list'),
             'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
+            'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'companiesadmin_table_list'),
             'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
             'request_date' => __('Request Date', 'companiesadmin_table_list'),
         );

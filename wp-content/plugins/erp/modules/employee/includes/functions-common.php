@@ -222,16 +222,14 @@ function genExpreqcode($n, $f=false){
 	$m=date('m');
 	$y=date('y');
 	
-	$code=$wpdb->get_row("SELECT * FROM CODE WHERE NULL");
+	$code=$wpdb->get_row("SELECT * FROM CODE");
 	
 	
 	if($tnetype)	
-	$requestcode=$tnetype.$compid.$m.$y.$code[code];
+	$requestcode=$tnetype.$compid.$m.$y.$code->code;
 	else
-	$requestcode=$compid.$m.$y.$code[code];
-	$wpdb->query("UPDATE code SET code=code+1 WHERE NULL");
-	//update_query("code", "code=code+1", NULL, $filename, 0);
-	
+	$requestcode=$compid.$m.$y.$code->code;
+	$wpdb->query("UPDATE code SET code=$code->code+1");
 	return $requestcode;
 
 }
@@ -277,9 +275,29 @@ function getGradeLimit($modeid, $empuserid, $filename)
 
 }
 function workflow(){
-global $wpdb;
-$compid = $_SESSION['compid'];
-$workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");
-return $workflow;
+    global $wpdb;
+    $compid = $_SESSION['compid'];
+    $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");
+    return $workflow;
+}
+function requestDetails(){
+    global $wpdb;
+    $reqid  =   $_GET['reqid'];
+    $compid = $_SESSION['compid'];
+    $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+    echo '<table class="wp-list-table widefat striped admins">';
+    echo '<tr>';
+    echo '<td width="20%">Request Id</td>';
+    echo '<td width="5%">:</td>';
+    echo '<td width="25%">'.$row->REQ_Code.'</td>';
+    echo '<td width="20%">Reporting Manager Approval</td>';
+    echo '<td width="5%">:</td>';
+    echo '<td width="25%"><?php echo stripslashes(); ?></td>';
+  echo '</tr>';
+  echo '<tr>';
+     echo  '<td width="20%">Request Date</td>';
+      echo '<td width="5%">:</td>';
+  echo '</tr>';
+echo '</table>';
 }
 
