@@ -407,6 +407,10 @@ return array(
     /*****************************/
     /** Corptne Module classes **/
     /****************************/
+    'WeDevs\\ERP\\Corptne\\Travel_Agent_List_Table' => $baseDir . '/modules/corptne/includes/travel-agent-table-list.php',
+    'WeDevs\\ERP\\Corptne\\TravelAgent' => $baseDir . '/modules/corptne/includes/claas-travelagent.php',
+    'WeDevs\\ERP\\Corptne\\Models\\TravelAgentview' => $baseDir . '/modules/corptne/includes/models/travelagentview.php',
+    'WeDevs\\ERP\\Corptne\\TravelAgentview' => $baseDir . '/modules/corptne/includes/class-travelagentview.php',
     
     'WeDevs\\ERP\\Corptne\\Admin\\Admin_Menu' => $baseDir . '/modules/corptne/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Corptne\\Form_Handler' => $baseDir . '/modules/corptne/includes/class-form-handler.php',
@@ -424,7 +428,8 @@ return array(
     'WeDevs\\ERP\\Corptne\\Models\\Companyview' => $baseDir . '/modules/corptne/includes/models/companyview.php',
     'WeDevs\\ERP\\Corptne\\Workflow_List_Table' => $baseDir . '/modules/corptne/includes/class-workflow-table.php',
     'WeDevs\\ERP\\Corptne\\Companiesadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-companyadmin-list-table.php',
-	
+	'WeDevs\\ERP\\Corptne\\Masteradmin_List_Table' => $baseDir . '/modules/corptne/includes/class-masteradmin-list-table.php',	
+    
     /*****************************/
     /** CompanyAdmin Module classes **/
     /****************************/
