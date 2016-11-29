@@ -306,8 +306,8 @@ function requestDetails($et){
                             <td width="25%">';
 
     $null_block='<td width="20%">&nbsp;</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="25%">&nbsp;</td>';
+                        <td width="5%">&nbsp;</td>
+                        <td width="25%">&nbsp;</td>';
 
 
     if($row->REQ_Type==2 || $row->REQ_Type==4){
@@ -460,7 +460,8 @@ function requestDetails($et){
   echo '</tr>';
   echo '<tr>';
      echo  '<td width="20%">Request Date</td>';
-      echo '<td width="5%">:</td>';
+     echo '<td width="5%">:</td>';
+     echo '<td width="25%">'.date("d-M-y (h:i a)",strtotime($row->REQ_Date)).'</td>';
   echo '</tr>';
 echo '</table>';
 }
