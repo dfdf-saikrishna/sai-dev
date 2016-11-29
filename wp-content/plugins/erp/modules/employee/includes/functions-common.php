@@ -280,7 +280,7 @@ function workflow(){
     $workflow = $wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");
     return $workflow;
 }
-function requestDetails(){
+function requestDetails($et){
     global $wpdb;
     $reqid  =   $_GET['reqid'];
     $compid = $_SESSION['compid'];
@@ -290,9 +290,173 @@ function requestDetails(){
     echo '<td width="20%">Request Id</td>';
     echo '<td width="5%">:</td>';
     echo '<td width="25%">'.$row->REQ_Code.'</td>';
-    echo '<td width="20%">Reporting Manager Approval</td>';
-    echo '<td width="5%">:</td>';
-    echo '<td width="25%"><?php echo stripslashes(); ?></td>';
+   
+    $repmngr_block='<td width="20%">Reporting Manager Approval</td>
+					<td width="5%">:</td>
+					<td width="25%">';
+					
+					
+					
+    $fin_block='<td width="20%">Finance Approval</td>
+                            <td width="5%">:</td>
+                            <td width="25%">';			
+
+    $second_level_block='<td width="20%">Skip Level Manager Approval</td>
+                            <td width="5%">:</td>
+                            <td width="25%">';
+
+    $null_block='<td width="20%">&nbsp;</td>
+                            <td width="5%">&nbsp;</td>
+                            <td width="25%">&nbsp;</td>';
+
+
+    if($row->REQ_Type==2 || $row->REQ_Type==4){
+
+            echo $null_block;
+
+    }
+    else {
+
+            $secMngrRow=0;
+                                
+            if($selsecStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=5 AND RS_Status=1"))
+            {
+                    $secMngrRow=1;
+
+                    $approvals=approvals($selsecStatus->REQ_Status);
+
+                    $second_level_block .=$approvals;
+
+                    $rsdate=" on ".date('d-M, y',strtotime($selsecStatus->RS_Date));
+
+                    $second_level_block.=$rsdate;
+            }
+            else
+            {
+                    $approvals=approvals(1);
+
+                    $second_level_block.=$approvals;
+            }
+
+
+            $second_level_block.='</td>';
+
+            $repMngrRow=0;
+                                
+            if($selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1"))
+            {
+
+                    $repMngrRow=1;
+
+                    $approvals=approvals($selMngrStatus->REQ_Status);
+
+                    $repmngr_block.=$approvals;
+
+                    $rsdate=" on ".date('d-M, y',strtotime($selMngrStatus->RS_Date));
+
+                    $repmngr_block.=$rsdate;
+            }
+            else
+            {
+                    $approvals=approvals(1);
+
+                    $repmngr_block.=$approvals;
+            }
+
+
+            $repmngr_block.='</td>';
+
+
+    //echo 'RepManagerrow='.$repMngrRow;
+
+
+
+            $finRow=0;
+                            
+            if($selFinance=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=2  AND RS_Status=1"))
+            {
+                    $finRow=1;
+
+                    $approvals=approvals($selFinance->REQ_Status);
+
+                    $fin_block.=$approvals;
+
+                    $rsdate=" on ".date('d-M, y',strtotime($selFinance->RS_Date));
+
+                    $fin_block.=$rsdate;
+
+            }
+            else
+            {
+                    $approvals=approvals(1);
+
+                    $fin_block.=$approvals;
+            }
+
+
+            $fin_block.='</td>';
+
+
+
+            $workflow = workflow();
+            switch ($et)
+            {
+                    case 1:
+                    $expPol=$workflow->COM_Pretrv_POL_Id;
+                    break;
+
+                    case 2:
+                    $expPol=$workflow->COM_Posttrv_POL_Id;
+                    break;
+
+                    case 3:
+                    $expPol=$workflow->COM_Othertrv_POL_Id;
+                    break;
+
+                    case 5:
+                    $expPol=$workflow->COM_Mileage_POL_Id;
+                    break;
+
+                    case 6:
+                    $expPol=$workflow->COM_Utility_POL_Id;
+                    break;
+            }
+
+
+            $polId = "";		
+            switch ($expPol){
+
+                    // e --> r --> f  //e --> r 
+                    case 1 : case 3:
+                    if($row->POL_Id==5 || $row->POL_Id==6){
+                    echo $second_level_block;
+                    $polId = $row->POL_Id;
+                    }
+                    else{
+                    echo $repmngr_block;
+                    }
+                    break;
+                    //e --> f
+                    case 2:
+                    echo $fin_block;
+                    break;
+                    // e--> f --> r    
+                    case 4:
+                    if($row->POL_Id==5){
+                    echo $second_level_block;
+                    $polId = $row->POL_Id;
+                    }
+                    else{
+                    echo $fin_block;
+                    break;
+                    }
+
+            }
+
+
+    }
+    
+    
   echo '</tr>';
   echo '<tr>';
      echo  '<td width="20%">Request Date</td>';

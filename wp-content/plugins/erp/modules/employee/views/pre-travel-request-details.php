@@ -68,7 +68,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
             <!-- Request Details -->
-            <?php _e(requestDetails());?>
+            <?php _e(requestDetails(1));?>
             </div>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
