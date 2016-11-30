@@ -17,6 +17,7 @@
             //Travel Requests
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
             $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
+            $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
      
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
@@ -75,6 +76,32 @@
             reset: function() {
                 console.log("test");
                 $('#request_form')[0].reset();
+            },
+            createChatMsg: function(e){
+                e.preventDefault();
+                $('.erp-note-loader').show();
+                wp.ajax.send( 'send-emp-note', {
+                    data: {
+                        rn_status : $('#rn_status').val(),
+                        req_id : $('#req_id').val(),
+                        emp_id : $('#emp_id').val(),
+                        txtaNotes : $('#txtaNotes').val()
+                    },
+                    success: function(resp) {
+                        $('.erp-note-loader').hide();
+                        switch(resp.status){
+                            case 'success':
+                                $( 'body' ).load( window.location.href + '.pre-travel-request' );
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                });
             },
             create: function() {
                 //alert("test");

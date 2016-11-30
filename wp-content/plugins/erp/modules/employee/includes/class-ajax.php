@@ -26,8 +26,10 @@ class Ajax_Handler {
      */
     public function __construct() {
         
-        // TravelRequest
+        // PreTravelRequest
         $this->action( 'wp_ajax_send_pre_travel_request', 'send_pre_travel_request' );
+        $this->action( 'wp_ajax_send-emp-note', 'send_emp_note' );
+        
         
         // Department
         $this->action( 'wp_ajax_erp-hr-new-dept', 'department_create' );
@@ -571,6 +573,18 @@ class Ajax_Handler {
                     $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
                     $this->send_success($response);
         
+    }
+    
+    function send_emp_note(){
+        global $wpdb;
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $rn_status = $posted['rn_status'];
+        $req_id = $posted['req_id'];
+        $emp_id = $posted['emp_id'];
+        $txtaNotes = $posted['txtaNotes'];
+        $wpdb->insert('requests_notes', array('REQ_Id' => $req_id,'RN_Notes' => $txtaNotes,'EMP_Id' => $emp_id,'RN_Status' => $rn_status));
+        $response = array('status'=>'success','message'=>"You have successfully added a note");
+        $this->send_success($response);
     }
 
     function leave_reject() {
