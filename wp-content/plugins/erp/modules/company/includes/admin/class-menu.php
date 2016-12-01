@@ -49,20 +49,20 @@ class Admin_Menu {
         //add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
         add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
-        add_menu_page('ExpenseManagment', 'Expense Managment', 'companyadmin', 'Expense', 'expense','dashicons-money');
-        add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
-        add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'companyadmin', 'Policy', 'Expense');
-        add_submenu_page('Expense', 'Grades', 'Define Grade Limits(set/Edit Limits)', 'companyadmin', 'GradeLimits', 'Expense');
-        add_submenu_page('Expense', 'categeory', 'Expense Category', 'companyadmin', 'categeory', 'Expense');
-        add_submenu_page('Expense', 'Mileage', 'Mileage', 'companyadmin', 'Mileage', 'Expense');
+        add_menu_page(__('ExpenseManagment', 'companyadmin'), __('Expense Managment', 'companyadmin'), 'companyadmin', 'expensemenu', array($this, 'ExpenseManagment'));
+            //add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
+            //add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'companyadmin', 'Policy', 'Expense');
+            add_submenu_page('expensemenu', __('Expense', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradeslimits', array($this, 'ExpenseGrades'));
+            add_submenu_page('expensemenu', __('default', 'companyadmin'), __('Expense Category', 'companyadmin'), 'companyadmin', 'categeory', array($this, 'DefaultCategory'));
+            add_submenu_page('expensemenu', __('Mileage', 'companyadmin'), __('Mileage', 'companyadmin'), 'companyadmin', 'Mileage', array($this, 'Mileage'));
 
         add_menu_page('WorkFlow', 'WorkFlow', 'companyadmin', 'WorkFlow', array($this, 'company_workflow'),'dashicons-networking');
 
-        add_menu_page('TravelDesk', 'Travel Desk', 'companyadmin', 'Travel', 'TravelDesk','dashicons-location');
-        add_submenu_page('Travel', 'Action', 'View/Edit/Delete Travel Desk', 'companyadmin', 'Action', 'TravelDesk');
-        add_submenu_page('Travel', 'Invoice', 'Travel Desk Invoices', 'companyadmin', 'Invoice', 'TravelDesk','');
-        add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', 'TravelDesk');
-        add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', 'TravelDesk');
+        add_menu_page('View/Edit/Delete Travel Desk', 'Travel Desk', 'companyadmin', 'Travel', array($this, 'TravelDesk'),'dashicons-location');
+        //add_submenu_page('Travel', 'Action', 'View/Edit/Delete Travel Desk', 'companyadmin', 'Action', 'TravelDesk');
+        add_submenu_page('Travel', 'Invoice', 'Travel Desk Invoices', 'companyadmin', 'Invoice',array($this, 'TravelDesk_Invoice'));
+        add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', array($this, 'TravelDesk_Logs'));
+        add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', array($this, 'TravelDesk_Tolerance'));
 
         add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Expense-Requests', array( $this, 'expense_requests'),'dashicons-money');
         
@@ -99,51 +99,39 @@ class Admin_Menu {
     }
 
     /**
-     * Handles the dashboard page
+     * Handles thecompany calling tablefunctions page
      *
      * @return void
      */
+  
     public function dashboard_page() {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
     }
-    
-    /**
-     * Handles the dashboard page
-     *
-     * @return void
-     */
-    public function companies_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/companies_list.php';
+    public function ExpenseGrades() {
+        include WPERP_COMPANY_VIEWS . '/company/ExpenseGrades.php';
     }
-
-    public function workflow(){
-        
-        include WPERP_CORPTNE_VIEWS . '/superadmin/workflow.php';
-	}
-    
-	 /**
-     * Handles the expense category list page
-     *
-     * @return void
-     */
-    public function expensecategory_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/expensecategory_list.php';
+    public function TravelDesk() {
+        include WPERP_COMPANY_VIEWS . '/company/traveldesk.php';
     }
-    
-	/**
-     * Handles the company expense category list page
-     *
-     * @return void
-     */
-    public function companyexpensecategory_list() {
-        include WPERP_CORPTNE_VIEWS . '/superadmin/companyexpensecategory_list.php';
+    public function TravelDesk_Invoice() {
+        include WPERP_COMPANY_VIEWS . '/company/TravelDesk-Invoice.php';
     }
-	
-    /**
-     * Handles the companyDashboard page
-     *
-     * @return void
-     */
+    public function TravelDesk_Logs() {
+        include WPERP_COMPANY_VIEWS . '/company/TravelDesk_Logs.php';
+    }
+    public function TravelDesk_Tolerance() {
+        include WPERP_COMPANY_VIEWS . '/company/TravelDesk_Tolerance_Limits.php';
+    }
+    public function DefaultCategory() {
+        include WPERP_COMPANY_VIEWS . '/company/expensedeafultcat.php';
+    }
+     public function Mileage() {
+        include WPERP_COMPANY_VIEWS . '/company/Mileage.php';
+    }
+     public function ExpenseManagment() {
+        include WPERP_COMPANY_VIEWS . '/company/ExpenseManagment.php';
+    }
+ 
     public function company_dashboard() {
         include WPERP_COMPANY_VIEWS . '/dashboard.php';
     }

@@ -1,5 +1,6 @@
 <div class="erp-employee-form">
     <div>
+             <input type="text" value="{{data.user_id}}" name="company[user_id]" id="user_id">
         <div>  <ol class="form-fields two-col">
                 <li>
                     <label for="Username">User Name <span class="required">*</span></label>

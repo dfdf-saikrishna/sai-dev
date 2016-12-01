@@ -179,7 +179,6 @@
                     },
                     onSubmit: function(modal) {
                         modal.disableButton();
-
                         wp.ajax.send( {
                             data: this.serialize(),
                             success: function(response) {

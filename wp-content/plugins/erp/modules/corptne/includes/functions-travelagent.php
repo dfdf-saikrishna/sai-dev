@@ -17,13 +17,6 @@ function travelagent_create( $args = array() ) {
     $defaults = array(
         //'user_email'      => '',
         'company'        => array(
-//          'SUP_Username'  => '',
-//            'SUP_AgencyName'     => '',
-//            'SUP_Address' => '',
-//            'SUP_Name'         => '',
-//            'SUP_Email'        => '',
-//            'SUP_Contact'     => '',
-//            'SUP_Type'=>   '3',
             
             'txtUsername'     => '',
             'txtAgencyName'      => '',
@@ -39,7 +32,7 @@ function travelagent_create( $args = array() ) {
     $posted = array_map( 'strip_tags_deep', $args );
     $posted = array_map( 'trim_deep', $posted );
     $data   = erp_parse_args_recursive( $posted, $defaults );
-
+ 
     $userdata = array(
         'user_login'   => $data['company']['txtUsername'],
         'user_email'   => $data['company']['txtAgencyName'],

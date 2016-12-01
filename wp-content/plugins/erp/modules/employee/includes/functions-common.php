@@ -45,6 +45,7 @@ function myDetails($empid=NULL)
 {
     global $wpdb;
     $empuserid = $_SESSION['empuserid'];
+    //echo $empuserid;die;
     $compid = $_SESSION['compid'];
 	
 	if(!$empid)

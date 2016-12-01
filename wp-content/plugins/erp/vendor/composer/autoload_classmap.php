@@ -435,6 +435,17 @@ return array(
     /****************************/
     
     //'WeDevs\\ERP\\Company\\PHPExcel' => $baseDir . '/modules/company/includes/class-PHPExcel.php',
+    'WeDevs\\ERP\\Company\\ExpenseGrade_List_Table' => $baseDir . '/modules/company/includes/class-expensegradelimits_table.php',
+    'WeDevs\\ERP\\Company\\Default_expense' => $baseDir . '/modules/company/includes/class-defaultexp-table.php',
+    'WeDevs\\ERP\\Company\\Mileage_List_Table' => $baseDir . '/modules/company/includes/class-mileagetable-list.php',
+    'WeDevs\\ERP\\Company\\Mileage' => $baseDir . '/modules/company/includes/class-mileage.php',
+    'WeDevs\\ERP\\Company\\TravelDesk_List_Table' => $baseDir . '/modules/company/includes/class-traveldesktable-list.php',
+    'WeDevs\\ERP\\Company\\TravelDesk' => $baseDir . '/modules/company/includes/class-traveldesk.php',
+    'WeDevs\\ERP\\Company\\TravelDeskInvoice_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-invoicetable-list.php',
+    'WeDevs\\ERP\\Company\\TravelDeskLogs_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-logstable-list.php',
+    'WeDevs\\ERP\\Company\\TravelDesk_Tolerance_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-tolerance-table-list.php',
+
+    
     'WeDevs\\ERP\\Company\\Admin\\Admin_Menu' => $baseDir . '/modules/company/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Company\\Form_Handler' => $baseDir . '/modules/company/includes/class-form-handler.php',
     'WeDevs\\ERP\\Company\\Emailer' => $baseDir . '/modules/company/includes/class-emails.php',
