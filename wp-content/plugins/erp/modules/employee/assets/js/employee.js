@@ -19,7 +19,7 @@
             $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
-     
+            $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
@@ -94,6 +94,7 @@
                                     //console.log(value);
                                     optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
                                 });
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#table-pre-travel tr').last().after('<tr>\n\
                                 <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea></td>\n\
@@ -115,6 +116,9 @@
                  });
                  
                  
+            },
+            removeRow: function(){
+                $('#table-pre-travel tr:last-child').remove();
             },
             createChatMsg: function(e){
                 e.preventDefault();

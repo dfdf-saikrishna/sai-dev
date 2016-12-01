@@ -167,7 +167,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                         ?>
                     <tr>
-                       <td data-title="Date" class=""><input name="txtDate[]" id="txtDate" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
+                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="form-control" readonly="readonly"' : 'class="pretraveldate form-control"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d/m/Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
                       <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
                       <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
@@ -215,7 +215,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     } ?>
                   </tbody>
                 </table>
-                <div style="float:right;"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"><a title="Add Rows" class="btn btn-default"></a></span><span id="removebuttoncontainer"> </span> </div>
+                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
                 </form>
             </div>
