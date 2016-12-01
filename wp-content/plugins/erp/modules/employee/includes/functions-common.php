@@ -85,7 +85,7 @@ function gradeLimits(){
 			echo '<tr>';
 
 
-				echo '<h4>Expense limits:</h4>';
+				//echo '<h4>Expense limits:</h4>';
 
 				 
 				$i=0;
