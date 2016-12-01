@@ -18,6 +18,7 @@
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
             $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
+            $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
      
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
@@ -76,6 +77,44 @@
             reset: function() {
                 console.log("test");
                 $('#request_form')[0].reset();
+            },
+            addRow: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                $('#table-pre-travel tr').last().after('<tr>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field hasDatepicker" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><input  name="from[]" id="from1" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
+                                
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 });
+                 
+                 
             },
             createChatMsg: function(e){
                 e.preventDefault();

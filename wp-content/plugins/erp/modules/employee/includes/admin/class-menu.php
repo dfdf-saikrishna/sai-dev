@@ -95,6 +95,7 @@ class Admin_Menu {
         $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', 'TravelExpense_init');
         
             add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
+            add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
             add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
             add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
             add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
@@ -137,6 +138,9 @@ class Admin_Menu {
     }
     function pre_travel_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request.php';
+    }
+    function pre_travel_request_edit(){
+        include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-edit.php';
     }
      public function view_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-details.php';

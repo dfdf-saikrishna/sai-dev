@@ -29,6 +29,8 @@ class Ajax_Handler {
         // PreTravelRequest
         $this->action( 'wp_ajax_send_pre_travel_request', 'send_pre_travel_request' );
         $this->action( 'wp_ajax_send-emp-note', 'send_emp_note' );
+        $this->action( 'wp_ajax_get-exp-cat', 'get_exp_cat' );
+        $this->action( 'wp_ajax_get-mode', 'get_mode' );
         
         
         // Department
@@ -585,6 +587,19 @@ class Ajax_Handler {
         $wpdb->insert('requests_notes', array('REQ_Id' => $req_id,'RN_Notes' => $txtaNotes,'EMP_Id' => $emp_id,'RN_Status' => $rn_status));
         $response = array('status'=>'success','message'=>"You have successfully added a note");
         $this->send_success($response);
+    }
+    
+    function get_exp_cat(){
+        global $wpdb;
+        $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
+        $this->send_success($selexpcat);
+    }
+    
+    function get_mode(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
+        $this->send_success($selmode);
     }
 
     function leave_reject() {
