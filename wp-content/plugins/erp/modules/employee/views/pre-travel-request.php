@@ -13,7 +13,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 </style>
 <div class="postbox">
     <div class="inside">
-        <div class="wrap pre-travel-request" id="wp-erp">
+        <div class="wrap pre-travel-request erp" id="wp-erp">
             <h2><?php _e( 'Pre Travel Expense Request', 'employee' ); ?></h2>
             <code class="description">ADD Request</code>
             <!-- Messages -->
@@ -146,11 +146,15 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" name="reset" id="reset" class="button">Reset</button>
             </div>
+            <div style="margin-top:60px" id="grade-limit" class="postbox leads-actions closed">
+                <div class="handlediv" title="<?php _e( 'Click to toggle', 'erp' ); ?>"><br></div>
+                <h3 class="hndle"><span><?php _e( 'Grade Limits', 'erp' ); ?></span></h3>
+                <div class="inside">
+                   <!-- Grade Limits -->
+                   <?php _e(gradeLimits());?>
+                </div>
+            </div><!-- .postbox -->
         </div>
-        
-        <!-- Grade Limits -->
-        <?php _e(gradeLimits());?>
-        
     </div>
     
 </div>

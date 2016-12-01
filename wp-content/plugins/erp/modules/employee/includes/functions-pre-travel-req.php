@@ -63,6 +63,11 @@ ob_start();
 					else{
                                         document.getElementById('show-exceed').innerHTML="Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0;
                                         document.getElementById("expenseLimit").value = "1";
+                                        var myclass = document.getElementById("grade-limit").classList;
+                                         if (myclass.contains("closed")) {
+                                            myclass.remove("closed");
+                                         }
+
 					//alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0);
                                         }
 					//$('#expenseLimit').val("1");

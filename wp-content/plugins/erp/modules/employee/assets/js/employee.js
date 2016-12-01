@@ -20,6 +20,12 @@
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
+            
+            
+            // handle postbox toggle
+            $('body').on( 'click', 'div.handlediv', this.handleToggle );
+            
+            
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
@@ -64,6 +70,25 @@
                 changeYear: true,
                 yearRange: '-100:+0',
             });
+        },
+        
+        /**
+         * Handle postbox toggle effect
+         *
+         * @param  {object} e
+         *
+         * @return {void}
+         */
+        handleToggle: function(e) {
+            e.preventDefault();
+            var self = $(this),
+                postboxDiv = self.closest('.postbox');
+
+            if ( postboxDiv.hasClass('closed') ) {
+                postboxDiv.removeClass('closed');
+            } else {
+                postboxDiv.addClass('closed');
+            }
         },
 
         reloadPage: function() {
