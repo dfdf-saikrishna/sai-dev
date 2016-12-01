@@ -95,14 +95,14 @@
                                     optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
                                 });
                                 $('#table-pre-travel tr').last().after('<tr>\n\
-                                <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field hasDatepicker" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea></td>\n\
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsCat+'\n\
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsMode+'\n\
                                 <td data-title="Place"><input  name="from[]" id="from1" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
                                 <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
                                 <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
-                                
+                                $(".erp-leave-date-field").datepicker();
                             },
                             error: function(error) {
                                 console.log( error );
