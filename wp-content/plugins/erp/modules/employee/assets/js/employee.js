@@ -94,6 +94,7 @@
                                     //console.log(value);
                                     optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
                                 });
+                                var rowCount = $('#table-pre-travel tr').length;
                                 $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#table-pre-travel tr').last().after('<tr>\n\
                                 <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
@@ -118,7 +119,16 @@
                  
             },
             removeRow: function(){
-                $('#table-pre-travel tr:last-child').remove();
+                var rowCount = $('#table-pre-travel tr').length;
+                alert(rowCount);
+                if(rowCount==3){
+                    $('#table-pre-travel tr:last').remove();
+                    $('#removebuttoncontainer').html('');
+                }
+                else if(rowCount>2){
+                $('#table-pre-travel tr:last').remove();
+                }
+                
             },
             createChatMsg: function(e){
                 e.preventDefault();
