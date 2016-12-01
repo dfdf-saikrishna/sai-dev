@@ -65,6 +65,7 @@ class Corptne {
         require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyadmin.php';
+		require_once WPERP_CORPTNE_PATH . '/includes/functions-masteradmin.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
@@ -145,6 +146,9 @@ class Corptne {
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-cr-nonce' ),
             'popup'              => array(
+				'masteradmin_title' => __( 'New Master Admin', 'erp' ),
+				'masteradmin_updatetitle'    => __( 'Update Master Admin', 'erp' ),
+				'masteradmin_update'    => __( 'Update', 'erp' ),
                 'dept_title'         => __( 'New Department', 'erp' ),
                 'dept_submit'        => __( 'Create Department', 'erp' ),
                 'location_title'     => __( 'New Location', 'erp' ),
@@ -202,6 +206,13 @@ class Corptne {
             $employee                          = new Employee();
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
+		 //if its an companyadmin page
+       /*  if ( 'toplevel_page_masteradminmenu' == $hook ) {
+            wp_enqueue_script( 'post' );
+
+            $masteradmin                          = new Masteradmin();
+            $localize_script['masteradmin_empty'] = $masteradmin->masteradmin_array();
+        } */
         wp_localize_script( 'wp-erp-cr', 'wpErpCr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
@@ -228,7 +239,7 @@ class Corptne {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump( $current_screen->base );
+        var_dump( $current_screen->base );
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
@@ -238,10 +249,15 @@ class Corptne {
             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
-			case 'companies_page_mastercompaniesview':
+			/* case 'companies_page_mastercompaniesview':
 				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
-            
+			case 'admin_page_masteradminview':
+				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/master-admin-view.php', 'master-admin-view' );
+                break; */
+			case 'toplevel_page_masteradminmenu':
+			erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/master-admin-add.php', 'master-admin-add' );
+			break;
             case 'toplevel_page_superadmin-dashboard':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;

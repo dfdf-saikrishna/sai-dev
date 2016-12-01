@@ -1,6 +1,8 @@
 <?php
 namespace WeDevs\ERP\Corptne\Admin;
 use WeDevs\ERP\Corptne\Companyview;
+use WeDevs\ERP\Corptne\Masteradminview;
+
 
 /**
  * Admin Menu
@@ -27,10 +29,11 @@ class Admin_Menu {
         if ( current_user_can( 'superadmin' ) ) {
            add_menu_page(__( 'Dashboard', 'superadmin' ),  __( 'Dashboard', 'superadmin' ), 'superadmin', 'superadmin-dashboard', array( $this, 'dashboard_page'),'dashicons-welcome-view-site' );
 
-           add_menu_page( 'Master Admin Menu', 'Master Admin', 'superadmin', 'masteradminmenu', 'masteradminmenu_init','dashicons-building' );
-           $overview = add_submenu_page( 'masteradminmenu', 'Overview', 'Overview', 'superadmin', 'masteradminmenu', 'masteradminmenu_init');
+           //add_menu_page( 'Master Admin Menu', 'Master Admin', 'superadmin', 'masteradminmenu', 'masteradminmenu_init', array( $this, 'masteradmin_list'),'dashicons-building' );
+          add_menu_page( __( 'Master Admin Menu', 'superadmin' ), __( 'Master Admin', 'superadmin' ), 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'),'dashicons-building' );
+		   $overview = add_submenu_page( 'masteradminmenu', 'Overview', 'Overview', 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'));
 		   add_submenu_page( 'masteradminmenu', 'Add Master Admin', 'Add Master Admin', 'superadmin', 'masteradminadd', 'masteradminadd');
-           add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'ViewEditDeleteMasterAdmin', 'ViewEditDeleteMasterAdmin');
+           add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'masteradminview', array( $this, 'masteradminview_page'));
 
            add_menu_page( __( 'Companies', 'superadmin' ), __( 'Companies', 'superadmin' ), 'superadmin', 'companiesmenu', array( $this, 'companies_list'),'dashicons-building' );
            $overview = add_submenu_page('companiesmenu', 'Overview', 'Overview', 'superadmin', 'companiesmenu', array( $this, 'companies_list'));
@@ -97,6 +100,15 @@ class Admin_Menu {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
     }
     
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function masteradmin_list() {
+        include WPERP_CORPTNE_VIEWS . '/superadmin/masteradmin_list.php';
+    }
+	
     /**
      * Handles the dashboard page
      *
@@ -376,6 +388,36 @@ class Admin_Menu {
         }
     }
 
+	
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function masteradminview_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+		
+        switch ($action) {
+            case 'view':
+                $masteradminview = new Masteradminview( $id );
+                if ( !$id ) {
+                    wp_die( __( 'Company not found!', 'erp' ) );
+                }  
+                $template = WPERP_CORPTNE_VIEWS . '/superadmin/masteradminview.php';
+                break;
+
+            default:
+                $template = WPERP_CORPTNE_VIEWS . '/masteradminview.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_hr_company_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
     /**
      * An empty page for testing purposes
      *

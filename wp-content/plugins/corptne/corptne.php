@@ -80,7 +80,7 @@ function my_login_redirect( $redirect_to, $request, $user ) {
 			return "/wp-admin/admin.php?page=employee";
 		}
                 else if ( in_array( 'travelagentclient', $user->roles ) ) {
-			return "/wp-admin/admin.php?page=travelagent-dashboard";
+			return "/wp-admin/admin.php?page=travelagentclient-dashboard";
 		}
                 else if ( in_array( 'traveldesk', $user->roles ) ) {
 			return "/wp-admin/admin.php?page=traveldesk-dashboard";
