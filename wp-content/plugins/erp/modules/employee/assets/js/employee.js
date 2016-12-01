@@ -59,7 +59,7 @@
 
         initDateField: function() {
             $( '.erp-date-field').datepicker({
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'dd-mm-yy',
                 changeMonth: true,
                 changeYear: true,
                 yearRange: '-100:+0',
@@ -97,14 +97,18 @@
                                 var rowCount = $('#table-pre-travel tr').length;
                                 $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#table-pre-travel tr').last().after('<tr>\n\
-                                <td data-title="Date"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea></td>\n\
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsCat+'\n\
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsMode+'\n\
                                 <td data-title="Place"><input  name="from[]" id="from1" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
                                 <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
                                 <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
-                                $(".erp-leave-date-field").datepicker();
+                                $( '.erp-leave-date-field' ).datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true
+                                });
                             },
                             error: function(error) {
                                 console.log( error );
@@ -120,7 +124,6 @@
             },
             removeRow: function(){
                 var rowCount = $('#table-pre-travel tr').length;
-                alert(rowCount);
                 if(rowCount==3){
                     $('#table-pre-travel tr:last').remove();
                     $('#removebuttoncontainer').html('');
