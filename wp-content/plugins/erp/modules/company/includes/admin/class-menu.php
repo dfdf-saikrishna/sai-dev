@@ -39,9 +39,9 @@ class Admin_Menu {
         add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array( $this, 'export_employees'));
         add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile',  array( $this, 'employeeview_page' ));
         add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array( $this, 'employeelogs_list' ));
-        add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', 'employee');
-        add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', 'employee');
-        add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', 'employee');
+        add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array( $this, 'Grades' ));
+        add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', array( $this, 'Designations' ));
+        add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', array( $this, 'Departments'));
         add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation',  array( $this, 'empdelegates_list'));
 
         add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', array($this, 'finance_approvers'),'dashicons-money');
@@ -106,6 +106,15 @@ class Admin_Menu {
   
     public function dashboard_page() {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
+    }
+    public function Designations() {
+        include WPERP_COMPANY_VIEWS . '/company/Designations.php';
+    }
+    public function Departments() {
+        include WPERP_COMPANY_VIEWS . '/company/Department.php';
+    }
+    public function Grades() {
+        include WPERP_COMPANY_VIEWS . '/company/Grades.php';
     }
     public function ExpenseGrades() {
         include WPERP_COMPANY_VIEWS . '/company/ExpenseGrades.php';

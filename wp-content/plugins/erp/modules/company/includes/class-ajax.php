@@ -28,20 +28,6 @@ use Hooker;
      */
     public function __construct() {
 
-        // Department
-        $this->action('wp_ajax_erp-hr-new-dept', 'department_create');
-        $this->action('wp_ajax_erp-hr-del-dept', 'department_delete');
-        $this->action('wp_ajax_erp-hr-get-dept', 'department_get');
-        $this->action('wp_ajax_erp-hr-update-dept', 'department_create');
-
-        // Designation
-        $this->action('wp_ajax_erp-hr-new-desig', 'designation_create');
-        $this->action('wp_ajax_erp-hr-get-desig', 'designation_get');
-        $this->action('wp_ajax_erp-hr-update-desig', 'designation_create');
-        $this->action('wp_ajax_erp-hr-del-desig', 'designation_delete');
-
-
-
         // Company Employee Create
         $this->action('wp_ajax_companyemployee_create', 'companyemployee_create');
         $this->action('wp_ajax_companyemployee_get', 'companyemployee_get');
@@ -88,7 +74,15 @@ use Hooker;
         $this->action('wp_ajax_erp-hr-convert-wp-to-employee', 'employee_create_from_wp_user');
         $this->action('wp_ajax_erp_hr_check_user_exist', 'check_user');
 
-
+        //Grades
+        $this->action('wp_ajax_grades_create', 'grades_create');
+        $this->action('wp_ajax_grades_get', 'grades_get');
+         //Grades
+        $this->action('wp_ajax_designation_create', 'designation_create');
+        $this->action('wp_ajax_designation_get', 'designation_get');
+         //Grades
+        $this->action('wp_ajax_departments_create', 'departments_create');
+        $this->action('wp_ajax_departments_get', 'departments_get');
         //Mielage
         $this->action('wp_ajax_mileage_create', 'mileage_create');
         $this->action('wp_ajax_mileage_get', 'mileage_get');
@@ -96,7 +90,72 @@ use Hooker;
         $this->action('wp_ajax_traveldesk_create', 'traveldesk_create');
         $this->action('wp_ajax_traveldesk_get', 'traveldesk_get');
     }
+    //desgination_createfunctions
+    public function grades_create() {
+        //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
 
+        $posted = array_map('strip_tags_deep', $_POST);
+        $gardes= grades_create($posted);
+        $gardesdata = $posted;
+        $this->send_success($gardesdata);
+    }
+
+    public function grades_get() {
+        global $wpdb;
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $response = $wpdb->get_row("SELECT * FROM employee_grades WHERE EG_Id = $id");
+        $this->send_success($response);
+    }
+ //desgination_createfunctions
+    public function designation_create() {
+        //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
+
+        $posted = array_map('strip_tags_deep', $_POST);
+        $designation= designation_create($posted);
+        
+        $designationdata = $posted;
+        
+        $this->send_success($designationdata);
+    }
+
+    public function designation_get() {
+        global $wpdb;
+
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
+        $response = $wpdb->get_row("SELECT * FROM designation WHERE DES_Id = $id");
+
+        $this->send_success($response);
+    }
+     //Mileage functions
+    public function departments_create() {
+        //$this->send_success('fvjnf');
+        //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
+
+        $posted = array_map('strip_tags_deep', $_POST);
+        $departments = departments_create($posted);
+        $departmentsdata = $posted;
+        $this->send_success($departmentsdata);
+    }
+
+    public function departments_get() {
+        global $wpdb;
+
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
+        $response = $wpdb->get_row("SELECT * FROM mileage WHERE MIL_Id = $id");
+
+        $this->send_success($response);
+    }
     public function traveldesk_create() {
         // $this->verify_nonce( 'wp-erp-hr-travelagent-nonce' );
         //$this->send_success('lakshmi');
@@ -152,178 +211,6 @@ use Hooker;
         $response = $wpdb->get_row("SELECT * FROM mileage WHERE MIL_Id = $id");
 
         $this->send_success($response);
-    }
-
-    /**
-     * Get employee template
-     *
-     * @since 0.1
-     *
-     * @return void
-     */
-    public function employee_template_refresh() {
-        ob_start();
-        include WPERP_HRM_JS_TMPL . '/new-employee.php';
-        $this->send_success(array('content' => ob_get_clean()));
-    }
-
-    /**
-     * Get department template
-     *
-     * @since 0.1
-     *
-     * @return void
-     */
-    public function new_dept_tmp_reload() {
-        ob_start();
-        include WPERP_HRM_JS_TMPL . '/new-dept.php';
-        $this->send_success(array('content' => ob_get_clean()));
-    }
-
-    /**
-     * Get a department
-     *
-     * @since 0.1
-     *
-     * @return void
-     */
-    public function department_get() {
-        $this->verify_nonce('wp-erp-hr-nonce');
-
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-
-        if ($id) {
-            $department = new Department($id);
-            $this->send_success($department);
-        }
-
-        $this->send_success(__('Something went wrong!', 'erp'));
-    }
-
-    /**
-     * Create a new department
-     *
-     * @since 0.1
-     *
-     * @return void
-     */
-    public function department_create() {
-        $this->verify_nonce('erp-new-dept');
-
-        //check permission
-        if (!current_user_can('erp_manage_department')) {
-            $this->send_error(__('You do not have sufficient permissions to do this action', 'erp'));
-        }
-
-        $title = isset($_POST['title']) ? trim(strip_tags($_POST['title'])) : '';
-        $desc = isset($_POST['dept-desc']) ? trim(strip_tags($_POST['dept-desc'])) : '';
-        $dept_id = isset($_POST['dept_id']) ? intval($_POST['dept_id']) : 0;
-        $lead = isset($_POST['lead']) ? intval($_POST['lead']) : 0;
-        $parent = isset($_POST['parent']) ? intval($_POST['parent']) : 0;
-
-        // on update, ensure $parent != $dept_id
-        if ($dept_id == $parent) {
-            $parent = 0;
-        }
-
-        $dept_id = erp_hr_create_department(array(
-            'id' => $dept_id,
-            'title' => $title,
-            'description' => $desc,
-            'lead' => $lead,
-            'parent' => $parent
-                ));
-
-        if (is_wp_error($dept_id)) {
-            $this->send_error($dept_id->get_error_message());
-        }
-
-        $this->send_success(array(
-            'id' => $dept_id,
-            'title' => $title,
-            'lead' => $lead,
-            'parent' => $parent,
-            'employee' => 0
-        ));
-    }
-
-    /**
-     * Delete a department
-     *
-     * @return void
-     */
-    public function department_delete() {
-        $this->verify_nonce('wp-erp-hr-nonce');
-
-        //check permission
-        if (!current_user_can('erp_manage_department')) {
-            $this->send_error(__('You do not have sufficient permissions to do this action', 'erp'));
-        }
-
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-        if ($id) {
-            $deleted = erp_hr_delete_department($id);
-
-            if (is_wp_error($deleted)) {
-                $this->send_error($deleted->get_error_message());
-            }
-
-            $this->send_success(__('Department has been deleted', 'erp'));
-        }
-
-        $this->send_error(__('Something went worng!', 'erp'));
-    }
-
-    /**
-     * Create a new designnation
-     *
-     * @return void
-     */
-    function designation_create() {
-        $this->verify_nonce('erp-new-desig');
-
-        //check permission
-        if (!current_user_can('erp_manage_designation')) {
-            $this->send_error(__('You do not have sufficient permissions to do this action', 'erp'));
-        }
-
-        $title = isset($_POST['title']) ? trim(strip_tags($_POST['title'])) : '';
-        $desc = isset($_POST['desig-desc']) ? trim(strip_tags($_POST['desig-desc'])) : '';
-        $desig_id = isset($_POST['desig_id']) ? intval($_POST['desig_id']) : 0;
-
-        $desig_id = erp_hr_create_designation(array(
-            'id' => $desig_id,
-            'title' => $title,
-            'description' => $desc
-                ));
-
-        if (is_wp_error($desig_id)) {
-            $this->send_error($desig_id->get_error_message());
-        }
-
-        $this->send_success(array(
-            'id' => $desig_id,
-            'title' => $title,
-            'employee' => 0
-        ));
-    }
-
-    /**
-     * Get a department
-     *
-     * @return void
-     */
-    public function designation_get() {
-        $this->verify_nonce('wp-erp-hr-nonce');
-
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-
-        if ($id) {
-            $designation = new Designation($id);
-            $this->send_success($designation);
-        }
-
-        $this->send_error(__('Something went wrong!', 'erp'));
     }
 
     /**

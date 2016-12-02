@@ -3,7 +3,7 @@
 $compid = $_SESSION['compid'];?>
 <div class="erp-employee-form">
     <fieldset class="no-border">
-          <input type="text" value="{{data.user_id}}" name="company[user_id]" id="user_id">
+          <input type="hidden" value="{{data.user_id}}" name="company[user_id]" id="user_id">
         <input type="hidden" value="{{data.COM_Id}}" name="company[compid]" id="compid">
         <input type="hidden" value="{{data.TD_Id}}" name="company[tdid]" id="tdid">
          <div> <ol class="form-fields two-col">

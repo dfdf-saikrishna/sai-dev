@@ -435,6 +435,13 @@ return array(
     /****************************/
     
     //'WeDevs\\ERP\\Company\\PHPExcel' => $baseDir . '/modules/company/includes/class-PHPExcel.php',
+    'WeDevs\\ERP\\Company\\Grades_List_Table' => $baseDir . '/modules/company/includes/class-gradestable-list.php',
+    'WeDevs\\ERP\\Company\\Grades' => $baseDir . '/modules/company/includes/class-grades.php',
+    'WeDevs\\ERP\\Company\\Designation_List_Table' => $baseDir . '/modules/company/includes/class-designation-table-list.php',
+    'WeDevs\\ERP\\Company\\Designation' => $baseDir . '/modules/company/includes/class-designation.php',
+    'WeDevs\\ERP\\Company\\Departments_List_Table' => $baseDir . '/modules/company/includes/class-deaprtment-table-list.php',
+    'WeDevs\\ERP\\Company\\Departments' => $baseDir . '/modules/company/includes/class-departments.php',
+    
     'WeDevs\\ERP\\Company\\ExpenseGrade_List_Table' => $baseDir . '/modules/company/includes/class-expensegradelimits_table.php',
     'WeDevs\\ERP\\Company\\Default_expense' => $baseDir . '/modules/company/includes/class-defaultexp-table.php',
     'WeDevs\\ERP\\Company\\Mileage_List_Table' => $baseDir . '/modules/company/includes/class-mileagetable-list.php',

@@ -192,7 +192,7 @@ class Employee_List_Table extends \WP_List_Table
         $columns = array(
             'cb'           => '<input type="checkbox" />',
             'name'         => __( 'Employee Name Employee code', 'employees_table_list' ),
-			'grade'		   => __( 'Grade', 'employees_table_list' ),
+            'grade'		   => __( 'Grade', 'employees_table_list' ),
             'emailcontact' => __( 'Email-Id Contact No.', 'employees_table_list' ),
             'repm'   	   => __( 'Reporting Manager', 'employees_table_list' ),
             'depdes'       => __( 'Department Designation', 'employees_table_list' ),
