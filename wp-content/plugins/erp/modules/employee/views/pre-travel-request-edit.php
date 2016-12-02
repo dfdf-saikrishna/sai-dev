@@ -217,14 +217,15 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 </table>
                 <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
-                </form>
+                
             </div>
             <div id="my_centered_buttons">
-            <button type="button" name="submit" id="submit-pre-travel-request" class="button button-primary">Submit</button>
+            <input type="submit" name="submit" id="submit-pre-travel-request" class="button button-primary">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" name="reset" id="reset" class="button">Reset</button>
             </div>
+            </form>
             <div style="margin-top:60px" id="grade-limit" class="postbox leads-actions closed">
                 <div class="handlediv" title="<?php _e( 'Click to toggle', 'erp' ); ?>"><br></div>
                 <h3 class="hndle"><span><?php _e( 'Grade Limits', 'erp' ); ?></span></h3>

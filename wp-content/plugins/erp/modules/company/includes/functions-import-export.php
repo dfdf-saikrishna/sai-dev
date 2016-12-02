@@ -205,8 +205,8 @@ function crp_process_import_export() {
                 }
             }
         }
-        $empError=rtrim($empError,", ");
-        header("Location:admin.php?page=Export-Employees&fuid=$fuid&count=$count&error=$empError");
+        //$empError=rtrim($empError,", ");
+        header("Location:admin.php?page=Export-Employees&fuid=$fuid&count=$count");
         //print_r($data);die;
     }
 }

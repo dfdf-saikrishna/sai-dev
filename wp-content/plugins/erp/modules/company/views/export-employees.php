@@ -29,8 +29,8 @@ $objPHPExcel->getActiveSheet()->setTitle('Employee Error Sheet');
 $a = array();
 $count = $_GET['count'];
 $fuid = $_GET['fuid'];
-$empnotadded=$_GET['error'];
-$error = explode(',', $empnotadded);
+//$empnotadded=$_GET['error'];
+//$error = explode(',', $empnotadded);
 
 if($rowsql=$wpdb->get_row("SELECT * FROM file_upload WHERE FU_Id='$fuid'")){
     $fileDirectory = WPERP_COMPANY_PATH . "/upload/$compid/".$rowsql->FU_Filename;
@@ -76,7 +76,7 @@ $objPHPExcelRead = PHPExcel_IOFactory::load($fileDirectory);
                             for ($row = 1; $row <= $highestRow; $row++) 
                             {
                                 //  Read a row of data into an array
-
+                                $error = false;
                                 $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, 
                                 NULL, TRUE, FALSE);
 
@@ -84,29 +84,32 @@ $objPHPExcelRead = PHPExcel_IOFactory::load($fileDirectory);
                                      //echo "<tr data-toggle='tooltip'>";
                                 //echoing every cell in the selected row for simplicity. You can save the data in database too.
                                 $col = 0;
-                                if (preg_match('/\b' . $rowData[0][0] . '\b/',$empnotadded)){
-                                $error = true;
+                                //if (preg_match('/\b' . $rowData[0][0] . '\b/',$empnotadded)){
+                                //$error = true;
                                 $email = $rowData[0][2];
                                 if($rowData[0][0] == ""){
+                                    $error = true;
                                     $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow("10", $row, 'Empid Missing');
                                     $empID = true;
                                     echo "<tr bgcolor='#ff8c8c' data-toggle='tooltip' title='Empid Missing'>";
                                 }
                                 else if($rowData[0][1] == "" || $rowData[0][3] == "" || $rowData[0][4] == "" || $rowData[0][7] == "" || $rowData[0][8] == "" || $rowData[0][9] == ""){
+                                    $error = true;
                                     $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow("10", $row, 'Missing Required Data');
                                     echo "<tr bgcolor='#ff8c8c' data-toggle='tooltip' title='Missing Required Data'>";
                                 }
                                 else if($selemail=$wpdb->get_row("SELECT user_email FROM wp_users users,employees emp WHERE users.user_email='$email' AND users.ID = emp.user_id AND emp.EMP_Status=1")){
+                                    $error = true;
                                     $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow("10", $row, 'Employee Email already Exists');
                                     echo "<tr bgcolor='#ff8c8c' data-toggle='tooltip' title='Employee Email already Exists'>";
                                 }
-                                else{
-                                    echo "<tr data-toggle='tooltip'>";
-                                }
-                            }
-                            else{
-                                $error = false;
-                            }
+                                //else{
+                                    //echo "<tr data-toggle='tooltip'>";
+                                //}
+                            //}
+                            //else{
+                                //$error = false;
+                            //}
                                 
                                 foreach($rowData[0] as $k=>$v){
                                 if($x == 0){
