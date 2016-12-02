@@ -1,5 +1,10 @@
 <div class="postbox">
-    <div class="inside">
+    <div class="inside emp-import">
+        <?php if(isset($_GET['error'])){?>
+        <div id="failure" class="notice notice-error is-dismissible">
+        <p id="p-failure">Please Upload Excel File</p>
+        </div>
+        <?php } ?>
         <h3><?php _e( 'Import Excel', 'crp' ); ?></h3>
 
         <form method="post" action="admin.php?page=Upload-Employees" enctype="multipart/form-data" id="import_form">
@@ -27,8 +32,11 @@
 
                 </tbody>
             </table>
-
-            <?php submit_button( __( 'Import', 'crp' ), 'primary', 'crp_import_excel' ); ?>
+            
+            <p class="submit">
+            <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
+            <input type="submit" name="crp_import_excel" id="crp_import_excel" class="button button-primary" value="Import">
+            </p>
         </form>
     </div><!-- .inside -->
 </div><!-- .postbox -->

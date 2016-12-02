@@ -14,14 +14,17 @@
          */
         initialize: function() {
             //alert("sdasdadas");
+            // Import Excel
+            $( 'body').on( 'click', '#crp_import_excel', this.Emp.import );
+            
             // Dasboard Overview
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
             $( 'ul.erp-dashboard-announcement' ).on( 'click', '.announcement-title a', this.dashboard.viewAnnouncementTitle );
 			
-			$( '.erp-hr-company' ).on( 'click', 'a#erp-companyemployee-new', this.companyEmployee.create );
-			$( '.erp-hr-company' ).on( 'change', '#selectEmployee', this.companyEmployee.view );
-			//$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
+            $( '.erp-hr-company' ).on( 'click', 'a#erp-companyemployee-new', this.companyEmployee.create );
+            $( '.erp-hr-company' ).on( 'change', '#selectEmployee', this.companyEmployee.view );
+            //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
             $( '.erp-hr-company' ).on( 'click', 'span.edit a', this.companyEmployee.edit );
 			$( 'body' ).on( 'click', 'a#company-emp-photo ', this.companyEmployee.setPhoto );
             //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
@@ -80,6 +83,13 @@
             $( '.erp-area-left' ).load( window.location.href + ' #erp-area-left-inner', function() {
                 $('.select2').select2();
             } );
+        },
+        
+        Emp: {
+          import: function(){
+              $('.erp-loader').show();
+              $('#crp_import_excel').addClass('disabled');
+          }  
         },
         
         workflow : {

@@ -8,6 +8,7 @@ function crp_process_import_export() {
     $compid = $_SESSION['compid'];
     //$this->send_success( __( 'successfully!', 'erp' ) );die;
     if ( isset( $_POST['crp_import_excel'] ) ) {
+        if ($_FILES['csv_file']['error'] == "0") {
         //$compid	= $_SESSION['compid'];
         //$compid = '38';
         $objPHPExcel = new PHPExcel();
@@ -123,13 +124,13 @@ function crp_process_import_export() {
                             else
                             {                                                                  
                                    $grd=$wpdb->insert('employee_grades', array('COM_Id' => $compid,'EG_Name' => $grade,'EG_AddedBy' => $adminid)); 
-                                   $wpdb->insert('grade_limits', array('ADM_Id' => $adminid,'COM_Id' => $compid,'EG_Id' => $grd));
+                                   $wpdb->insert('grade_limits', array('ADM_Id' => $adminid,'COM_Id' => $compid,'EG_Id' => $grade));
                             }
 
                     }
                     $added=0;
                                 
-                    if($empcode=="" || $name=="" || $email=="" || $username=="" || $dep=="" || $RMC=="" || $des=="" || $RFMC=="" || $grd=="")
+                    if($empcode=="" || $name=="" || $email=="" || $username=="" || $dep=="" || $RMC=="" || $des=="" || $RFMC=="" || $grade=="")
                     {
                             //$empcode.=" - Missing Reqired Data";
                             if($empcode==""){
@@ -205,9 +206,13 @@ function crp_process_import_export() {
                 }
             }
         }
-        //$empError=rtrim($empError,", ");
-        header("Location:admin.php?page=Export-Employees&fuid=$fuid&count=$count");
+        $empError=rtrim($empError,", ");
+        header("Location:admin.php?page=Export-Employees&fuid=$fuid&count=$count&error=$empError");
         //print_r($data);die;
     }
+    else{
+        header("Location:admin.php?page=Upload-Employees&error=true");
+    }
+}
 }
 ?>

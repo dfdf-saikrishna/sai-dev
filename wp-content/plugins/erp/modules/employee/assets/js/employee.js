@@ -14,15 +14,14 @@
          */
         initialize: function() {
      
-            //Travel Requests
+            // Travel Requests
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
             //$( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
             $( '.pre-travel-request').on( 'submit', '#request_form', this.travelRequest.create );
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
-            
-            
+
             // handle postbox toggle
             $('body').on( 'click', 'div.handlediv', this.handleToggle );
             
