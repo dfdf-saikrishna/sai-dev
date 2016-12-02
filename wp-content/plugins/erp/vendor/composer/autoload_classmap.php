@@ -487,5 +487,6 @@ return array(
     'WeDevs\\ERP\\Employee\\Companyexpensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-  companyexpensecategory-list-table.php',    
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/employee.php',
     'WeDevs\\ERP\\Employee\\Models\\Companyview' => $baseDir . '/modules/employee/includes/models/companyview.php',
+    'WeDevs\\ERP\\Employee\\Emp_Requests_List' => $baseDir . '/modules/employee/includes/class-emp-requests-list-table.php',
 
 );

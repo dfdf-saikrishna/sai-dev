@@ -35,7 +35,7 @@ function isApprover()
         //print_r( $mydetails);die;
         $rcode=$mydetails->EMP_Code;
        // print_r($rcode);die;
-	$selrow=$wpdb->get_results("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' AND EMP_Status=1");
+	$selrow=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' AND EMP_Status=1");
         //print_r( $selrow);die;
 	return $selrow;
 
@@ -915,7 +915,7 @@ if($row)
 
 	$editActbuttons='<br />
         <div id="my_centered_buttons">
-            <button type="button" name="submit" id="submit-pre-travel-request" class="button button-primary">EDIT</button>
+            <a href="/wp-admin/admin.php?page=Pre-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>

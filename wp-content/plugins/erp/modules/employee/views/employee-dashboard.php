@@ -67,7 +67,7 @@ global $wpdb;
 
                         $approver_rejected=count_query("employees emp, requests req, request_employee re","DISTINCT (req.REQ_Id)","WHERE emp.EMP_Reprtnmngrcode IN ($empcodes) AND emp.EMP_Id != '$empuserid' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=3 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
                 }
-            $rprcode=$selrow['0']->EMP_Reprtnmngrcode;
+            $rprcode=$selrow->EMP_Reprtnmngrcode;
             $approver_total+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename,0);
             $approver_approved+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=2 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename); 
             $approver_pending+=count_query("employees emp, requests req, request_employee re","DISTINCT req.REQ_Id","WHERE emp.EMP_Reprtnmngrcode='$rprcode' AND emp.EMP_Id != '$empID' AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id AND req.REQ_Status=1 AND req.REQ_Active !=9 AND re.RE_Status=1 AND emp.EMP_Status=1 AND emp.EMP_Access=1",$filename);  
@@ -117,7 +117,7 @@ global $wpdb;
                                     </tr>
                                     <tr>
                                     <td width="90%">Pending Requests</td>
-                                    <td width="10%"><span class="oval-1"><?php echo $approver_pending?></span></td>
+                                    <td width="10%"><a href="/wp-admin/admin.php?page=View-Emp-Requests&selReqstatus=1"><span class="oval-1"><?php echo $approver_pending?></span></a></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Approved Requests</td>

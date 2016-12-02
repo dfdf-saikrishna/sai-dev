@@ -44,6 +44,7 @@ class Admin_Menu {
            
         add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
         add_submenu_page('', 'Upload', 'View Request', 'employee', 'View-Request', array( $this, 'view_request'));
+        add_submenu_page('', 'Upload', 'View Emp Requests', 'employee', 'View-Emp-Requests', array( $this, 'view_emp_request'));
         if(current_user_can( 'finance' )){
              
         add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
@@ -142,8 +143,11 @@ class Admin_Menu {
     function pre_travel_request_edit(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-edit.php';
     }
-     public function view_request(){
+    public function view_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-details.php';
+    }
+    public function view_emp_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/emp-requests-listing.php';
     }
     
     function employee_Dashboard(){
