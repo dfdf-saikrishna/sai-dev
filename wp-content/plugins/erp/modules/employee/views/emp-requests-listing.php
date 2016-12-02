@@ -24,6 +24,7 @@
 			
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
+                <input type="button" class="button-primary" value="Approve">
                 <?php $table->display() ?>
             </form>
 

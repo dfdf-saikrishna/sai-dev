@@ -405,13 +405,13 @@ class Emp_Requests_List extends \WP_List_Table {
          *
          * @return array
          */
-//    function get_bulk_actions()
-//    {
-//        $actions = array(
-//            'delete' => 'Delete'
-//        );
-//        return $actions;
-//    }
+        function get_bulk_actions()
+        {
+            $actions = array(
+                'approve' => 'Approve'
+            );
+            return $actions;
+        }
 
         /**
          * [OPTIONAL] This method processes bulk actions
@@ -420,20 +420,20 @@ class Emp_Requests_List extends \WP_List_Table {
          * in this example we are processing delete action
          * message about successful deletion will be shown on page in next part
          */
-//    function process_bulk_action()
-//    {
-//        global $wpdb;
-//        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-//        $table_name = "requests";
-//        if ('delete' === $this->current_action()) {
-//            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-//            if (is_array($ids)) $ids = implode(',', $ids);
-//
-//            if (!empty($ids)) {
-//                $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
-//            }
-//        }
-//    }
+        function process_bulk_action()
+        {
+            global $wpdb;
+            //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+            $table_name = "requests";
+            if ('delete' === $this->current_action()) {
+                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                if (is_array($ids)) $ids = implode(',', $ids);
+
+                if (!empty($ids)) {
+                    $wpdb->query("DELETE FROM $table_name WHERE ADM_Id IN($ids)");
+                }
+            }
+        }
 
         /**
          * [REQUIRED] This is the most important method
