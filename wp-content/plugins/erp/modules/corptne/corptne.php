@@ -207,12 +207,12 @@ class Corptne {
             $localize_script['employee_empty'] = $employee->companyadmin_array();
         }
 		 //if its an companyadmin page
-       /*  if ( 'toplevel_page_masteradminmenu' == $hook ) {
+         if ( 'toplevel_page_masteradminmenu' == $hook ) {
             wp_enqueue_script( 'post' );
 
             $masteradmin                          = new Masteradmin();
             $localize_script['masteradmin_empty'] = $masteradmin->masteradmin_array();
-        } */
+        } 
         wp_localize_script( 'wp-erp-cr', 'wpErpCr', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );

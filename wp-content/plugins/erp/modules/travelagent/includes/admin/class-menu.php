@@ -36,8 +36,8 @@ class Admin_Menu {
 		//add_submenu_page('ClientM', 'ClientMActions', 'View /Edit Client', 'travelagent', 'ClientActions', 'ClientManagement');
         add_submenu_page('ClientM', 'ClientAlloc', 'Client Allocations', 'travelagent', 'ClientAllocations',array( $this,'travel_agent_client_allocation'));
         
-    add_menu_page('InvoiceM', 'Invoice Management', 'travelagent','InvoiceM', 'InvoiceManagement','dashicons-id-alt');
-		$overview = add_submenu_page( 'InvoiceM', 'Overview', 'Overview', 'travelagent', 'InvoiceM', array( $this,'InvoiceManagement'));
+    add_menu_page('InvoiceM', 'Invoice Management', 'travelagent','InvoiceM', array( $this,'company_invoicemanagement'),'dashicons-id-alt');
+		$overview = add_submenu_page( 'InvoiceM', 'Overview', 'Overview', 'travelagent', 'InvoiceM', array( $this,'company_invoicemanagement'));
 		//add_submenu_page('InvoiceM', 'Create', 'Create Invoice', 'travelagent', 'AddInvoice', 'InvoiceManagement');
        // add_submenu_page('InvoiceM', 'ViewInv', 'View Invoice ', 'travelagent', 'ViewInvoice', 'InvoiceManagement');
         
@@ -77,6 +77,7 @@ class Admin_Menu {
     public function travel_agent_client_listing() {
         include WPERP_TRAVELAGENT_VIEWS . '/travelagent/travel-agent-client-listing.php';
     }
+	
 	/**
      * Handles the travelagent clientallocation page
      *
@@ -95,6 +96,23 @@ class Admin_Menu {
         include WPERP_TRAVELAGENT_VIEWS . '/travelagent/travel_agent_user_listing.php';
     }
 	
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function company_invoicemanagement() {
+        include WPERP_TRAVELAGENT_VIEWS . '/travelagent/travel_agent_companyinvoice_details.php';
+    }
+	
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function InvoiceManagement() {
+        include WPERP_TRAVELAGENT_VIEWS . '/travelagent/invoicemanagement.php';
+    }
 	/**
      * Handles the bank details page
      *

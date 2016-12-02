@@ -29,5 +29,5 @@
 		</ol>
     </fieldset>  
         <?php wp_nonce_field( 'wp-erp-hr-employee-nonce' ); ?>
-        <input type="hidden" name="action" id="travelagentuser_create" value="travelagentuser_create">
+        <input type="hidden" name="action" id="travelagentclient_create" value="travelagentclient_create">
 </div>

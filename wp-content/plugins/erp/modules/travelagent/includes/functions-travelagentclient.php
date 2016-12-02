@@ -8,8 +8,7 @@
  * @return void
  */
 function travelagentclient_create( $args = array() ) {
-    global $wpdb;
-
+     global $wpdb;
     $defaults = array(
         'travelagentclient'        => array(
             'user_id'         => 0,
@@ -17,7 +16,7 @@ function travelagentclient_create( $args = array() ) {
 			'txtEmpCodePrefx' => '',
 			'txtCompemail' => '',
 			'txtCompmob' => '',
-			 'txtComplandline' => '',
+			'txtComplandline' => '',
 			'txtaCompaddr' => '',
 			'txtCompoloc' => '',
 			'txtCompcity' => '',
@@ -32,18 +31,7 @@ function travelagentclient_create( $args = array() ) {
 			'txtSalesperemail' => '',
 			'txtSalespercontno' => '',
 			'txtadescdeal' => '',
-			'txtComTrvDeskUsername' => '',
 			'selCT' => '',
-			'selFlightTerms' => '',
-			'radioFlightMarkStatus' => '',
-			'txtFlightMarkFare' => '',
-			'selBusTerms' => '',
-			'radioBusMarkStatus' => '',
-			'txtBusMarkFare' => '',
-			'selHotelTerms' => '',
-			'radioHotelMarkStatus' => '',
-			'txtHotelMarkFare' => '',
-			'selTrvAgntUser' => '',
         )
     );
 
@@ -54,12 +42,12 @@ function travelagentclient_create( $args = array() ) {
 
     // attempt to create the user
     $userdata = array(
-        'user_login'   => $data['travelagentclient']['txtEmail'],
-        'user_email'   => $data['travelagentclient']['txtEmail'],
-        'first_name'   => $data['travelagentclient']['txtUsername'],
-        'last_name'    => $data['travelagentclient']['txtUsername'],
+        'user_login'   => $data['travelagentclient']['txtCompemail'],
+        'user_email'   => $data['travelagentclient']['txtCompemail'],
+        'first_name'   => $data['travelagentclient']['txtCompname'],
+        'last_name'    => $data['travelagentclient']['txtCompname'],
         'user_url'     => $data['travelagentclient']['user_url'],
-        'display_name' => $data['travelagentclient']['txtUsername'],
+        'display_name' => $data['travelagentclient']['txtCompname'],
         );
 
     // if user id exists, do an update
@@ -76,34 +64,71 @@ function travelagentclient_create( $args = array() ) {
         $userdata['role'] = 'travelagentclient';
     }
 
-    //$userdata = apply_filters( 'erp_hr_employee_args', $userdata );
+    $userdata = apply_filters( 'erp_hr_travelagentclient_args', $userdata );
     if ( is_wp_error( $user_id ) ) {
         return $user_id;
     }
 	
 	$supid = $_SESSION['supid']; 
 	$travelagentclient_data = array(
-        'user_id' => $user_id,
-        'SUP_Username' => $data['travelagentclient']['txtUsername'],
-        'SUP_AgencyName' => $data['travelagentclient']['txtAgencyName'],
-        'SUP_Name'   => $data['travelagentclient']['txtAgentName'],
-        'SUP_Email'  => $data['travelagentclient']['txtEmail'],
-        'SUP_Contact'   => $data['travelagentclient']['txtPhn'],
-		'SUP_Address'=>$data['travelagentclient']['txtaAddress'],
-		'SUP_Type'=>'4',
-        'SUP_Refid' => $supid,
-        'SUP_AgencyCode'  => $data['travelagentclient']['txtAgencyCode'],
+	'Name'=>'fghfgh',
+        'COM_Name' =>$data['travelagentclient']['txtCompname'],
+		'COMp_Prefix' =>$data['travelagentclient']['txtEmpCodePrefx'],
+		'COM_Email' =>$data['travelagentclient']['txtCompemail'],
+		'COM_Mobile' =>$data['travelagentclient']['txtCompmob'],
+		'COM_Landline' =>$data['travelagentclient'][ 'txtComplandline'],
+		'COM_Address' =>$data['travelagentclient']['txtaCompaddr'],
+		'COM_Location' =>$data['travelagentclient']['txtCompoloc'],
+		'COM_City' =>$data['travelagentclient']['txtCompcity'],
+		'COM_State' =>$data['travelagentclient']['txtCompstate'],
+		'COM_Cp1username' =>$data['travelagentclient']['txtCompcntp1name'],
+		'COM_Cp1email' =>$data['travelagentclient']['txtCompcntp1email'],
+		'COM_Cp1mobile' =>$data['travelagentclient']['txtCompcntp1mob'],
+		'COM_Cp2username' =>$data['travelagentclient']['txtCompcntp2name'],
+		'COM_Cp2email' =>$data['travelagentclient']['txtCompcntp2email'],
+		'COM_Cp2mobile' =>$data['travelagentclient']['txtCompcntp2mob'],
+		'COM_Spname' =>$data['travelagentclient']['txtSalespersname'],
+		'COM_Spemail' =>$data['travelagentclient']['txtSalesperemail'],
+		'COM_Spcontactno' =>$data['travelagentclient']['txtSalespercontno'],
+		'COM_Descdeal' =>$data['travelagentclient']['txtadescdeal'],
+		'SUP_Id'=>$supid,
+		'CT_Id' =>$data['travelagentclient']['selCT'],
+		'COM_Flight'=>'1',
+		'COM_Bus'=>'1',
+		'COM_Hotel'=>'1',
+		'COM_Logo'=>'url',
     );
     if($update){
-       $tablename = "superadmin";
+       $tablename = "company";
        $travelagentclient_data['user_id'] = $user_id;
        $wpdb->update( $tablename,$travelagentclient_data,array( 'user_id' => $user_id ));    
     }
     else{ 
     $user_id  = wp_insert_user( $userdata );
-    $tablename = "superadmin";
-    $travelagentclient_data['user_id'] = $user_id;
-    $wpdb->insert( $tablename, $travelagentclient_data);
+	$tablename = "company";
+	$travelagentclient_data['user_id'] = $user_id;	
+	$wpdb->insert( $tablename, $travelagentclient_data);	
     return $user_id;
     }
-}				
+	return $travelagentclient_data;
+}	
+function get_markupdown_list(){
+	global $wpdb;
+	$markupdownlist = $wpdb->get_results( "SELECT * FROM markupdown_category");
+	return $markupdownlist;
+	}	
+
+function get_bankaccount_list(){
+	global $wpdb;
+	$supid = $_SESSION['supid']; 
+	$bankaccountlist = $wpdb->get_results("SELECT * FROM travel_desk_bank_account WHERE SUP_Id = $supid AND TDBA_Type = 2 AND TDBA_Status = 1");
+	return $bankaccountlist;
+	}
+
+function get_allocation_list(){
+	global $wpdb;
+	$supid = $_SESSION['supid']; 
+	$allocationlist = $wpdb->get_results("SELECT  sup.SUP_Id, sup.SUP_Name, sup.SUP_Username FROM superadmin sup WHERE
+					  sup.SUP_Refid = $supid AND SUP_Status = 1 AND SUP_Type = 4 AND SUP_Access = 1 ORDER BY SUP_Name");
+	return $allocationlist;
+	}	

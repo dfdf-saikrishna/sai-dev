@@ -504,5 +504,7 @@ return array(
 	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-list-table.php',
 	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Bankdetails_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-bankdetails-list-table.php',
 	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_Allocation' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-allocation.php',
+	'WeDevs\\ERP\\Travelagent\\Travelagentclient' => $baseDir . '/modules/travelagent/includes/class-travelagentclient.php',
+	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoice_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoice-table.php',
 	
 	);

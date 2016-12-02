@@ -4,7 +4,7 @@ namespace WeDevs\ERP\Travelagent;
 /**
  * Employee Class
  */
-class Travelagentuser {
+class Travelagentclient {
 
     /**
      * array for lazy loading data from ERP table
@@ -50,17 +50,33 @@ class Travelagentuser {
     public function to_array() {
 	$supid = $_SESSION['supid']; 
 	$defaults = array(
-		'SUP_Username' => '',
-        'SUP_AgencyName' => '',
-        'SUP_Name'   => '',
-        'SUP_Email'  => '',
-        'SUP_Contact'   => '',
-		'SUP_Address'=>'',
-		'SUP_Type'=>'4',
-        'SUP_Refid' => $supid,
-        'SUP_AgencyCode'  => '',
+		'COM_Name' =>'',
+		'COM_Prefix' =>'',
+		'COM_Email' =>'',
+		'COM_Mobile' =>'',
+		'COM_Landline' =>'',
+		'COM_Address' =>'',
+		'COM_Location' =>'',
+		'COM_City' =>'',
+		'COM_State' =>'',
+		'COM_Cp1username' =>'',
+		'COM_Cp1email' =>'',
+		'COM_Cp1mobile' =>'',
+		'COM_Cp2username' =>'',
+		'COM_Cp2email' =>'',
+		'COM_Cp2mobile' =>'',
+		'COM_Spname' =>'',
+		'COM_Spemail' =>'',
+		'COM_Spcontactno' =>'',
+		'COM_Descdeal' =>'',
+		'SUP_Id'=>$supid,
+		'CT_Id' =>'',
+		'COM_Flight'=>'',
+		'COM_Bus'=>'',
+		'COM_Hotel'=>'',
+		'COM_Logo'=>'',
     );
-        return apply_filters( 'erp_hr_get_travelagentuser_fields', $defaults, $this->id, $this->user );
+        return apply_filters( 'erp_hr_get_travelagentclient_fields', $defaults, $this->id, $this->user );
         //return $defaults;
     }
   

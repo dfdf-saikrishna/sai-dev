@@ -63,6 +63,8 @@ class Travelagent {
         require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-tadashboard.php';
         require_once WPERP_TRAVELAGENT_PATH . '/includes/actions-filters.php';
 		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-travelagentuser.php';
+		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-travelagentclient.php';
+		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-invoice.php';
       }
 
     /**
@@ -144,9 +146,18 @@ class Travelagent {
         if ( 'toplevel_page_UserM' == $hook ) {
             wp_enqueue_script( 'post' );
 
-          //  $travelagentuser                          = new Travelagentuser();
-           // $localize_script['travelagentuser_empty'] = $travelagentuser->to_array();
+            $travelagentuser                          = new Travelagentuser();
+            $localize_script['travelagentuser_empty'] = $travelagentuser->to_array();
         }
+		
+		// if its an employee page
+        if ( 'toplevel_page_ClientM' == $hook ) {
+            wp_enqueue_script( 'post' );
+
+            $travelagentclient                          = new Travelagentclient();
+            $localize_script['travelagentclient_empty'] = $travelagentclient->to_array();
+        }
+		
 		
         // if its an employee page
         if ( 'toplevel_page_companiesmenu' == $hook ) {
@@ -185,6 +196,9 @@ class Travelagent {
         switch ($current_screen->base) {
             case 'toplevel_page_UserM':
                 erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentuser-create.php', 'travelagentuser-create' );
+                break;
+			case 'toplevel_page_ClientM':
+                erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentclient-create.php', 'travelagentclient-create' );
                 break;
             default:
                 # code...

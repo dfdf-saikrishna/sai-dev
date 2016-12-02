@@ -215,7 +215,7 @@ class Masteradmin_List_Table extends \WP_List_Table
 
         // will be used in pagination settings
 		$counttotal_items = $wpdb->get_results("SELECT * FROM superadmin  WHERE SUP_Id>1 AND SUP_Status=1 AND SUP_Type=2");
-		echo $total_items = count($counttotal_items);
+		$total_items = count($counttotal_items);
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;

@@ -1,4 +1,4 @@
-<div class="wrap erp ta-clientlist">
+<div class="wrap erp-hr-travelagentclient">
 	<h2>
         <?php
         _e( 'Account Overview', 'erp' );

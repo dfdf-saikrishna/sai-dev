@@ -1557,7 +1557,6 @@
                 });
             },
 			edit: function(e) {
-				alert("sdfsdsfsdfs");
                 e.preventDefault();
                 var self = $(this);
                 $.erpPopup({
