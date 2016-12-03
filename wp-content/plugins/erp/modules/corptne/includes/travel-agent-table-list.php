@@ -19,7 +19,7 @@ namespace WeDevs\ERP\Corptne;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Masteradmin_List_Table extends \WP_List_Table
+class Travel_Agent_List_Table extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -29,85 +29,88 @@ class Masteradmin_List_Table extends \WP_List_Table
         global $status, $page;
 
         parent::__construct(array(
-            'singular' => 'masteradmin',
-            'plural' => 'masteradmins',
+            'singular' => 'company',
+            'plural' => 'companies',
         ));
     }
-    
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_username($item)
+
+    function column_default($item, $column_name)
     {
-        return '<em>' . $item['SUP_Email'] . '</em>';
     }
-    
+//    function column_supname($item)
+//    {
+//        return '<em>' . $item['SUP_Username'] . '</em>';
+//    }
+//    
     function column_contact($item){
         $contact = $item['SUP_Contact']; 
         return $contact;
     }
-    function column_Total_logins($item){
-        global $wpdb;
-
-        $table_name = "super_admin_logs";
-        $SUP_Id = $item['SUP_Id'];
-		$lastlogin=$wpdb->get_results("SELECT SAL_In FROM $table_name WHERE SUP_Id='$SUP_Id' ORDER BY SAL_Id DESC LIMIT 1");
-		if($lastlogin){
-			 $logcount="- ( ".$wpdb->get_var("SELECT COUNT(SAL_In) FROM $table_name WHERE SUP_Id=$SUP_Id")." ) ";
-			 $lastlogindt = $lastlogin[0]->SAL_In;
-		}
-		else{
-		$logcount="NIL";
-		$lastlogindt = "";
-		}
-         return $lastlogindt . '<span class="center">'. $logcount .'</span>';
+     function column_sname($item){
+        $sname = $item['SUP_Name']; 
+        return $sname;
+    }
+    function column_email($item){
+        $email = $item['SUP_Email']; 
+        return $email;
+    }
+    function column_agency($item){
+         $agency = $item['SUP_AgencyName']; 
+        return $agency;
     }
     
-    function column_Reg_Date($item){
+    function column_Tot_Logs($item){
+        global $wpdb;
+        $table_name = "super_admin_logs";
+        $supId = $item['SUP_Id'];
+        $logcount = $wpdb->get_var("SELECT SAL_In FROM $table_name WHERE SUP_Id=$supId");
+        if($logcount == 0){
+            return "nil";
+        }
+        else{
+        $count= "_(".$wpdb->get_var("SELECT COUNT(SAL_In) FROM $table_name WHERE SUP_Id=$supId").")";
+
+            return $logcount.$count;
+        }
+    }
+    function column_address($item){
+         $contact = $item['SUP_Address']; 
+        return $contact;
+    }
+    
+    function column_Created_Date($item){
+
         return date('d/M/Y', strtotime($item['SUP_Date']));
     }
-    
-    function column_Access_Granted($item){
-        global $wpdb;
-		if($item['SUP_Access']==1){ 
-         $item['SUP_Access'] =  "No";
-        } else { 
-          $item['SUP_Access'] = "Yes";
-            } 
-        return $item['SUP_Access'];
-    }
-
-    /**
-     * [OPTIONAL] this is example, how to render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
+ 
     function column_name($item)
     {
+        // links going to /admin.php?page=[your_plugin_page][&other_params]
+        // notice how we used $_REQUEST['page'], so action will be done on curren page
+        // also notice how we use $this->_args['singular'] so in this example it will
+        // be something like &person=2
         $actions = array(
-            'edit' => sprintf('<a href="?page=masteradminmenu" data-id=%s>%s</a>', $item['SUP_Id'], __('Edit', 'masteradmin_table_list')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['SUP_Id'], __('Delete', 'masteradmin_table_list')),
+            'edit' => sprintf('<a href="?page=travelagentsmenu" data-id=%s>%s</a>', $item['SUP_Id'], __('Edit', 'travelagent-table-list')),
+            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['SUP_Id'], __('Delete', 'custom_table_example')),
         );
-		return sprintf('%s %s %s','',
-            '<a href="'.erp_admin_url_single_masteradminview( $item['SUP_Id']).'"><strong>' . $item['SUP_Name'] . '</strong></a>',
-
+//        if($item['COM_Logo']){
+//            $image = '<img src=' . $item['COM_Logo'] . ' alt="" class="avatar avatar-32 photo" height="auto" width="32">';  
+//        }
+//        else{
+//            $image = '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" height="32" width="32">';
+//        }
+        /* return sprintf('%s %s %s',
+            $image,
+            '<a href="#"><strong>' . $item['COM_Name'] . '</strong></a>',
             $this->row_actions($actions)
+        ); */
+		return sprintf('%s %s',
+            '<a href="'.erp_company_url_single_travelagents( $item['SUP_Id']).'"><strong>' . $item['SUP_Name'] . '</strong></a>',
+            $this->row_actions($actions)
+//                    return $emp_count;
         );
     }
 
-    /**
-     * [REQUIRED] this is how checkbox column renders
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
     function column_cb($item)
     {
         return sprintf(
@@ -116,23 +119,19 @@ class Masteradmin_List_Table extends \WP_List_Table
         );
     }
 
-    /**
-     * [REQUIRED] This method return columns to display in table
-     * you can skip columns that you do not want to show
-     * like content, or description
-     *
-     * @return array
-     */
     function get_columns()
     {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('Name', 'masteradmin_table_list'),
-            'username' => __('User Name', 'masteradmin_table_list'),
-            'contact' => __('Contact Number', 'masteradmin_table_list'),
-            'Total_logins' => __('Last Login Total Logins', 'masteradmin_table_list'),
-            'Access_Granted' => __('Access Granted', 'masteradmin_table_list'),
-            'Reg_Date' => __('Reg Date', 'masteradmin_table_list'),
+            'name' => __('Username', 'travelagent-table-list'),
+            'agency' => __('Agency Name', 'travelagent-table-list'),
+            'sname' => __('Name', 'travelagent-table-list'),
+            'email' => __('Email', 'travelagent-table-list'),
+            'contact' => __('Contact', 'travelagent-table-list'),
+            'Tot_Logs' => __('Last Login Total Logins', 'travelagent-table-list'),
+            'address' => __('Address', 'travelagent-table-list'),
+            'Created_Date' => __('Added On', 'travelagent-table-list'),
+            
         );
         return $columns;
     }
@@ -147,12 +146,13 @@ class Masteradmin_List_Table extends \WP_List_Table
     function get_sortable_columns()
     {
         $sortable_columns = array(
-            'Name' => array('name', true),
-            'User Name' => array('username', true),
-            'Contact' => array('contact', true),
-            'Last Login Total Logins' => array('total_logins', true),
-            'Access Granted' => array('access', true),
-            'Reg Date' => array('date', true),
+            'agency' => array('agency', true),
+            //'Company Logo' => array('company_logo', false),
+            //'Contact' => array('contact', false),
+           // 'Tot. Admins' => array('admins', false),
+            //'Tot. Employees' => array('employees', false),
+            //'Tot. Requests' => array('requests', false),
+            //'Created Date' => array('date', false),
         );
         return $sortable_columns;
     }
@@ -180,6 +180,7 @@ class Masteradmin_List_Table extends \WP_List_Table
     function process_bulk_action()
     {
         global $wpdb;
+        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
         $table_name = "superadmin";
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
@@ -214,8 +215,7 @@ class Masteradmin_List_Table extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-		$counttotal_items = $wpdb->get_results("SELECT * FROM superadmin  WHERE SUP_Id>1 AND SUP_Status=1 AND SUP_Type=2");
-		$total_items = count($counttotal_items);
+        $total_items = $wpdb->get_var("SELECT COUNT(SUP_Id) FROM $table_name");
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
@@ -228,25 +228,23 @@ class Masteradmin_List_Table extends \WP_List_Table
             $search = $_POST["s"];
 			$query="";
 			$searchcol= array(
-			'SUP_Name',
-			'SUP_Email',
-			'SUP_Contact'
+			'user_login',
+			'user_email'
 			);
 			$i =0;
 			foreach( $searchcol as $col) {
 				if($i==0) {
-					$sqlterm = 'AND';
+					$sqlterm = 'WHERE';
 				} else {
 					$sqlterm = 'OR';
 				}
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM superadmin WHERE SUP_Id>1 AND SUP_Status=1 AND SUP_Type=2".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE SUP_Status=1 AND SUP_Type=3".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM superadmin WHERE  SUP_Id>1 AND SUP_Status=1 AND SUP_Type=2 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE SUP_Status=1 AND SUP_Type=3 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(

@@ -13,21 +13,7 @@
          * @return {void}
          */
         initialize: function() {
-            // Dasboard Overview
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', '.announcement-title a', this.dashboard.viewAnnouncementTitle );
 
-            // Department
-            $( 'body' ).on( 'click', 'a#erp-new-dept', this.department.create );
-            $( '.erp-hr-depts' ).on( 'click', 'a.submitdelete', this.department.remove );
-            $( '.erp-hr-depts' ).on( 'click', 'span.edit a', this.department.edit );
-
-            // Designation
-            $( 'body' ).on( 'click', 'a#erp-new-designation', this.designation.create );
-            $( '.erp-hr-designation' ).on( 'click', 'a.submitdelete', this.designation.remove );
-            $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
-            
             // Company Admin
             $( 'body' ).on( 'click', 'a#companyadmin-new', this.companyAdmin.create );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
@@ -51,44 +37,11 @@
             $( '.erp-hr-employees' ).on( 'click', 'a#erp-employee-print', this.employee.printData );
             $( 'body' ).on( 'focusout', 'input#erp-hr-user-email', this.employee.checkUserEmail );
             $( 'body' ).on( 'click', 'a#erp-hr-create-wp-user-to-employee', this.employee.makeUserEmployee );
-
-            // Single Employee
-            $( '.erp-employee-single' ).on( 'click', 'a#erp-employee-terminate', this.employee.terminateEmployee );
-            // $( '.erp-employee-single' ).on( 'click', 'a#erp-employee-activate', this.employee.activateEmployee ); // @TODO: Needs to modify it later. :p
-            $( '.erp-employee-single' ).on( 'click', 'input#erp-hr-employee-status-update', this.employee.changeEmployeeStatus );
-
-            // Performance
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-reviews', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-comments', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-performance-goals', this.employee.updatePerformance );
-            $( '.erp-hr-employees' ).on( 'click', '.performance-tab-wrap td.action a.performance-remove', this.employee.removePerformance );
-            // work experience
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-exp', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.work-experience-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.work-experience-delete', this.employee.general.remove );
-
-            // education
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-education', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.education-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.education-delete', this.employee.general.remove );
-
-            // dependent
-            $( '.erp-hr-employees' ).on( 'click', 'a#erp-empl-add-dependent', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.dependent-edit', this.employee.general.create );
-            $( '.erp-hr-employees' ).on( 'click', 'a.dependent-delete', this.employee.general.remove );
-
-            // notes
-            $( '.erp-hr-employees' ).on( 'submit', '.note-tab-wrap form', this.employee.addNote );
-            $( '.erp-hr-employees' ).on( 'click', '.note-tab-wrap input#erp-load-notes', this.employee.loadNotes );
-            $( '.erp-hr-employees' ).on( 'click', '.note-tab-wrap a.delete_note', this.employee.deleteNote );
-
-            // photos
-            $( 'body' ).on( 'click', 'a#erp-set-emp-photo', this.employee.setPhoto );
-            $( 'body' ).on( 'click', 'a.erp-remove-photo', this.employee.removePhoto );
-
-            // Trigger
-            $('body').on( 'erp-hr-after-new-dept', this.department.afterNew );
-            $('body').on( 'erp-hr-after-new-desig', this.designation.afterNew );
+          
+            //Travel Agent Create
+            $( 'body' ).on( 'click', 'a#travel-agent-new', this.travelagent.create );
+            $( '.erp-hr-travelagent' ).on( 'click', 'span.edit a', this.travelagent.edit );
+            //$( '.erp-hr-travelagent' ).on( 'click', 'a#travel-agent-new', this.travelagent.create );
 
             this.initTipTip();
 
@@ -117,7 +70,137 @@
                 $('.select2').select2();
             } );
         },
+            /**
+             * Create a new Travelagent modal
+             *
+             * @param  {event}
+             */
+            travelagent: {
+            
+            reload: function() {
+                
+                $( '.erp-hr-travelagent-wrap' ).load( window.location.href + ' .erp-hr-travelagent-wrap-inner' );
+            },
+            create: function(e) {
+                //alert('dsfkj');
+                if ( typeof e !== 'undefined' ) {
+                    //e.preventDefault();
+                }
 
+                if ( typeof wpErpCr.travelagent_empty === 'undefined' ) {
+                    //return;
+                }
+		//alert("create");
+                $.erpPopup({
+                    title: wpErpCr.popup.travel_title,
+                    button: wpErpCr.popup.travel_submit,
+                   // button1: wpErpCr.popup.travel-agent-reset,
+                    id: "erp-new-travelagent-popup",
+                    content: wperp.template('erp-new-travelagent')( wpErpCr.travelagent_empty ).trim(),
+                    //content: '<h1>sss</h1>',
+		
+                    onReady: function() {
+                        WeDevs_ERP_HR.initDateField();
+                        //$('.select2').select2();
+                       // WeDevs_ERP_HR.Employee.select2Action('erp-hrm-select2');
+                        //WeDevs_ERP_HR.travelagent.select2AddMoreContent();
+
+                        $( '#user_notification').on('click', function() {
+                            if ( $(this).is(':checked') ) {
+                                $('.show-if-notification').show();
+                            } else {
+                                $('.show-if-notification').hide();
+                            }
+                        });
+                    },
+
+                    /**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                    onSubmit: function(modal) {
+                        alert("submit");
+                        $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
+                        wp.ajax.send( 'erp-hr-travelagent-new', {
+                            data: this.serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_HR.travelagent.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+				$('.erp-modal-backdrop, .erp-modal' ).find( '.erp-loader' ).addClass('erp-hide');
+                                //modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+            edit: function(e) {
+                e.preventDefault();
+                var self = $(this);
+                //alert("edit");
+                $.erpPopup({
+                    title: wpErpCr.popup.travel_update,
+                    button: wpErpCr.popup.travel_update,
+                    //content:'dhcvdh',
+                    id: 'erp-travelagent-edit',
+                    onReady: function() {
+                        var modal = this;
+
+                        $( 'header', modal).after( $('<div class="loader"></div>').show() );
+                        //alert('fdhbdfj');
+                        wp.ajax.send( 'erp-hr-travelagent-get', {
+                            data: {
+                                id: self.data('id'),
+                                _wpnonce: wpErpCr.nonce
+                            },
+                            success: function(response) {
+                                //console.log("test");
+                                console.log(response);
+                                var html = wp.template('erp-new-travelagent')( response );
+                                $( '.content', modal ).html( html );
+                                $( '.loader', modal).remove();
+
+                                WeDevs_ERP_HR.initDateField();
+
+                                $( 'li[data-selected]', modal ).each(function() {
+                                    var self = $(this),
+                                        selected = self.data('selected');
+
+                                    if ( selected !== '' ) {
+                                        self.find( 'select' ).val( selected ).trigger('change');
+                                    }
+                                });
+
+                                // disable current one
+                                $('#work_reporting_to option[value="' + response.id + '"]', modal).attr( 'disabled', 'disabled' );
+                            }
+                        });
+                    },
+                    onSubmit: function(modal) {
+                        modal.disableButton();
+                        wp.ajax.send( {
+                            data: this.serialize(),
+                            success: function(response) {
+                                WeDevs_ERP_HR.travelagent.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+                                modal.showError( error );
+                            }
+                        });
+                    }
+                });
+            },
+
+        },
         dashboard : {
             markAnnouncementRead: function(e) {
                 e.preventDefault();
