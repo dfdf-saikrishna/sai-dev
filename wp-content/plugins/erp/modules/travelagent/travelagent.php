@@ -138,7 +138,11 @@ class Travelagent {
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-ta-nonce' ),
             'popup'              => array(
-				'masteradmin_updatetitle'    => __( 'Update Master Admin', 'erp' )
+            'travelagentuser_title'    => __( 'Create Travel Agent User', 'erp' ),
+            'travelagentuser_update'    => __( 'Edit Travel Agent User', 'erp' ),
+            'travelagentclient_title'    => __( 'Create Travel Agent Client', 'erp' ),   
+            'travelagentclient_update'    => __( 'Edit Travel Agent Client', 'erp' ),   
+            'update' => __( 'Update', 'erp' )
               ),
        ) );
 

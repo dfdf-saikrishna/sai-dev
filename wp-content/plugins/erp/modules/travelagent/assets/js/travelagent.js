@@ -92,7 +92,7 @@
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpTa.popup.travelagentuser_update,
-                    button: wpErpTa.popup.travelagentuser_update,
+                    button: wpErpTa.popup.update,
                     id: 'erp-employee-edit',
                     onReady: function() {
                         var modal = this;
@@ -199,7 +199,7 @@
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpTa.popup.travelagentclient_update,
-                    button: wpErpTa.popup.travelagentclient_update,
+                    button: wpErpTa.popup.update,
                     id: 'erp-employee-edit',
                     onReady: function() {
                         var modal = this;
