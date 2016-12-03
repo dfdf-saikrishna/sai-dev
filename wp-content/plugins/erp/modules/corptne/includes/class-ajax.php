@@ -43,6 +43,10 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_companyadmin_get', 'companyadmin_get' );
         $this->action( 'wp_ajax_companyadmin-delete', 'companyadmin_remove' );
         
+		// Master Admin
+        $this->action( 'wp_ajax_masteradmin_create', 'masteradmin_create' );
+        $this->action( 'wp_ajax_masteradmin_get', 'masteradmin_get' );
+		
         // Employee
         $this->action( 'wp_ajax_erp-hr-employee-new', 'employee_create' );
         $this->action( 'wp_ajax_erp-hr-emp-get', 'company_get' );
@@ -1809,5 +1813,35 @@ class Ajax_Handler {
         $content = ob_get_clean();
 
         $this->send_success( $content );
+    }
+	
+	  /**
+     * Create/update an employee
+     *
+     * @return void
+     */
+    public function masteradmin_create() {
+       // unset( $_POST['_wp_http_referer'] );
+       // unset( $_POST['_wpnonce'] );
+       // unset( $_POST['action'] );
+//alert($posted);
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $masteradmin_id  = masteradmin_create( $posted );
+        // user notification email
+            $emailer    = wperp()->emailer->get_email( 'New_Employee_Welcome' );
+            $send_login = isset( $posted['login_info'] ) ? true : false;
+
+            if ( is_a( $emailer, '\WeDevs\ERP\Email') ) {
+                $emailer->trigger( $masteradmin_id, $send_login );
+            }
+
+        $data = $posted;
+        $this->send_success( $data );
+    }
+	public function masteradmin_get() {	
+        global $wpdb;
+        $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+        $response = $wpdb->get_row("SELECT * FROM superadmin WHERE SUP_Id = $id");
+        $this->send_success( $response );
     }
 }

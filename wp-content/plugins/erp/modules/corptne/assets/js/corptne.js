@@ -33,6 +33,11 @@
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.edit a', this.companyAdmin.edit );
             $( '.erp-hr-companyadmin' ).on( 'click', 'span.delete a', this.companyAdmin.remove );
             
+			 // Master Admin
+            $( 'body' ).on( 'click', 'a#masteradmin-new', this.masterAdmin.create );
+            $( '.erp-hr-masteradmin' ).on( 'click', 'span.edit a', this.masterAdmin.edit );
+			 $( '.erp-hr-masteradmin' ).on( 'click', 'a#erp-masteradmin-print', this.masterAdmin.printData );
+			
             // employee
             $( 'body' ).on( 'click', 'a#erp-company-new', this.employee.create );
             $( '.erp-hr-employees' ).on( 'click', 'a#erp-employee-new', this.employee.create );
@@ -1494,7 +1499,128 @@
                 }
             }
 
-        }
+        },
+		
+		masterAdmin: {
+                
+			 /**
+             * Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-hr-masteradmin-wrap' ).load( window.location.href + ' .erp-hr-masteradmin-wrap-inner' );
+            },
+            /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+            create: function(e) {
+                //alert("test");
+                if ( typeof e !== 'undefined' ) {
+                    //e.preventDefault();
+                }
+
+                if ( typeof wpErpCr.masteradmin_empty === 'undefined' ) {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpCr.popup.masteradmin_title,
+                    button: wpErpCr.popup.masteradmin_create,
+                    id: "erp-new-matseradmin-popup",
+					//content: '<h1>sss</h1>',
+                   content: wperp.template('master-admin-add')( wpErpCr.masteradmin_empty ).trim(),
+                    /**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                    onSubmit: function(modal) {
+                        $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
+                        wp.ajax.send( 'masteradmin_create', {
+                            data: this.serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_HR.masterAdmin.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+				$('.erp-modal-backdrop, .erp-modal' ).find( '.erp-loader' ).addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+			edit: function(e) {
+                e.preventDefault();
+                var self = $(this);
+                $.erpPopup({
+                    title: wpErpCr.popup.masteradmin_updatetitle,
+                    button: wpErpCr.popup.masteradmin_update,
+                    id: 'erp-masteradmin-edit',
+                    onReady: function() {
+                        var modal = this;
+
+                        $( 'header', modal).after( $('<div class="loader"></div>').show() );
+
+                        wp.ajax.send( 'masteradmin_get', {
+                            data: {
+                                id: self.data('id'),
+                                _wpnonce: wpErpCr.nonce
+                            },
+                            success: function(response) {
+                                //console.log(response);
+                              var html = wp.template('master-admin-add')( response );
+                                $( '.content', modal ).html( html );
+                                $( '.loader', modal).remove();
+                               // WeDevs_ERP_HR.initDateField();
+
+                               /* $( 'li[data-selected]', modal ).each(function() {
+                                    var self = $(this),
+                                        selected = self.data('selected');
+
+                                    if ( selected !== '' ) {
+                                        self.find( 'select' ).val( selected ).trigger('change');
+                                    }
+                                });*/
+
+                                // disable current one
+                                //$('#work_reporting_to option[value="' + response.id + '"]', modal).attr( 'disabled', 'disabled' );
+                            }
+                        });
+                    },
+                    onSubmit: function(modal) {
+                        modal.disableButton();
+                        wp.ajax.send( {
+                            data: this.serialize(),
+                            success: function(response) {
+								//console.log(response);
+                                WeDevs_ERP_HR.masterAdmin.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+                                modal.showError( error );
+								console.log(error);
+								alert("test error");
+                            }
+                        });
+                    }
+                });
+            },
+			printData: function(e) {
+                e.preventDefault();
+                window.print();
+            },
+			
+        },
+		
     };
 
     $(function() {

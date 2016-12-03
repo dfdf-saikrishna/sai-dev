@@ -42,9 +42,6 @@
 	function custom_menu_page_removing($user) {
 		if ( current_user_can( 'employee' ) || current_user_can( 'travelagentclient' ) || current_user_can( 'traveldesk' ) || current_user_can( 'superadmin' ) || current_user_can( 'companyadmin' ) || current_user_can( 'travelagent' ) || current_user_can( 'masteradmin' ) || current_user_can( 'travelagentuser' )) {
 				remove_menu_page( 'index.php' );
-                                remove_menu_page( 'profile.php' );
-                                remove_menu_page( 'import.php' );
-                                remove_menu_page( 'upload.php' );
 		}
 	}
 	/**
@@ -59,13 +56,13 @@
 				return $redirect_to;
 			}
 					else if ( in_array( 'finance', $user->roles ) ) {
-				return "/wp-admin/admin.php?page=financemenu";
+				return "/wp-admin/admin.php?page=finance-dashboard";
 			}
 					else if ( in_array( 'employee', $user->roles ) ) {
 				return "/wp-admin/admin.php?page=employee";
 			}
 					else if ( in_array( 'travelagentclient', $user->roles ) ) {
-				return "/wp-admin/admin.php?page=travelagentclient-dashboard";
+				return "/wp-admin/admin.php?page=travelagent-dashboard";
 			}
 					else if ( in_array( 'traveldesk', $user->roles ) ) {
 				return "/wp-admin/admin.php?page=traveldesk-dashboard";
@@ -89,51 +86,4 @@
 			return $redirect_to;
 		}
 	}
-        /**
-	 * Store session values for Login user
-	 */
-        function custom_login() {
-            global $wpdb;
-                if ( is_user_logged_in() ) {
-                    $user = wp_get_current_user();
-                    if($result=$wpdb->get_row("SELECT * FROM admin WHERE user_id='$user->ID'")){
-                        $_SESSION['adminid'] = $result->ADM_Id;
-                        $_SESSION['compid'] = $result->COM_Id;
-                        $_SESSION['username'] = $result->ADM_Username;
-                        $_SESSION['adminname'] = $result->ADM_Name;
-                        $_SESSION['sessionid'] = session_id();
-                        //$sessionid=$_SESSION['sessionid'];
-                        //$compid=$_SESSION['compid'];
-                    }
-                    else if($result=$wpdb->get_row("SELECT * FROM employees WHERE user_id='$user->ID'")){
-                        //session of empuserid
-                        $_SESSION['empuserid']=$result->EMP_Id;
-                        $_SESSION['emp_code']=$result->EMP_Code;
-                        //session of compid
-                        $_SESSION['compid']=$result->COM_Id;
-                        //session of employee name
-                        $_SESSION['username']=$result->EMP_Name;
-                        //session id
-                        $_SESSION['sessionid']=session_id();  
-                        $_SESSION['delegate']=NULL;
-                    } else if($result=$wpdb->get_row("SELECT SUP_Id, SUP_Type, SUP_Name FROM superadmin WHERE user_id='$user->ID' AND SUP_Status=1 AND SUP_Type IN (3)")){
-                        
-						//session of supid
-						$_SESSION['supid']    		=	$result->SUP_Id;
-						//session of name 
-						$_SESSION['name']           =	$result->SUP_Name;		
-						//session id
-						$_SESSION['taSessionid']    =	session_id();
-						$sessionid					=	$_SESSION['taSessionid'];
-						//session of type 3=travel agent, 4=travel agent user
-						$_SESSION['suptype']        =	$result->SUP_Type;
-                    }
-                  
-                }
-        }
-        
-        function custom_logout(){
-            // Finally, destroy the session.
-            session_destroy();
-        }
 ?>
