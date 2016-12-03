@@ -185,6 +185,8 @@
                 });
             },
             create: function() {
+                $('.erp-loader').show();
+                $('#submit-pre-travel-request').addClass('disabled');
                 //alert("rest");
                 //console.log("result");
                 //return false;
@@ -207,6 +209,8 @@
                         to: $('#to1').val()
                     },
                     success: function(resp) {
+                        $('.erp-loader').hide();
+                        $('#submit-pre-travel-request').removeClass('disabled');
                         switch(resp.status){
                             case 'info':
                                 $('#p-info').html(resp.message);

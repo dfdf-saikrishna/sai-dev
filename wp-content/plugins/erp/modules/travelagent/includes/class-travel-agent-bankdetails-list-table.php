@@ -114,6 +114,46 @@ class Travel_Agent_Bankdetails_List_Table extends \WP_List_Table
     }
 
     /**
+     * [OPTIONAL] Return array of bult actions if has any
+     *
+     * @return array
+     */
+    function get_bulk_actions()
+    {
+        $actions = array(
+            'delete' => 'Delete'
+        );
+        return $actions;
+    }
+
+    /**
+     * [OPTIONAL] This method processes bulk actions
+     * it can be outside of class
+     * it can not use wp_redirect coz there is output already
+     * in this example we are processing delete action
+     * message about successful deletion will be shown on page in next part
+     */
+    function process_bulk_action()
+    {
+        global $wpdb;
+        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+        //$table_name = "superadmin";
+        if ('delete' === $this->current_action()) {
+            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+            if (is_array($ids)) $ids = implode(',', $ids);
+
+        if (!empty($ids)) {
+		$supid = $_SESSION['supid'];
+		$row = $wpdb->get_results("SELECT * FROM travel_desk_bank_account WHERE SUP_Id = '$supid' AND TDBA_Id IN($ids) AND TDBA_Status = 1 AND TDBA_Type = 2 ORDER BY TDBA_Id DESC");
+		if(empty($row)){
+			$wpdb->query("");
+		}else{
+	$wpdb->query("UPDATE travel_desk_bank_account SET TDBA_Status=9, TDBA_DeletedDate=NOW() WHERE TDBA_Id IN($ids)");           
+		}  
+        }
+        }
+    }
+	/**
      * [OPTIONAL] This method return columns that may be used to sort table
      * all strings in array - is column names
      * notice that true on name column means that its default sort
