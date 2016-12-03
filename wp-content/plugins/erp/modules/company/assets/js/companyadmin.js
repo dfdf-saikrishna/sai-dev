@@ -108,8 +108,7 @@
                 $('.select2').select2();
             });
         },
-<<<<<<< HEAD
-        
+
         Emp: {
           import: function(){
               $('.erp-loader').show();
@@ -122,7 +121,154 @@
             PreTrvPol: function() {
     
                 wp.ajax.send( 'save-PreTrvPol', {
-=======
+                    data: {
+                        select : $('#selPreTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            },
+            PostTrvPol: function() {
+    
+                wp.ajax.send( 'save-PostTrvPol', {
+                    data: {
+                        select : $('#selPostTrvPol').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            },
+            GenExpReq: function() {
+    
+                wp.ajax.send( 'save-GenExpReq', {
+                    data: {
+                        select : $('#selGenExpReq').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            },
+            MileageReq: function() {
+    
+                wp.ajax.send( 'save-MileageReq', {
+                    data: {
+                        select : $('#selMileageReq').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            },
+            UtilityReq: function() {
+    
+                wp.ajax.send( 'save-UtilityReq', {
+                    data: {
+                        select : $('#selUtilityReq').val()
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(resp) {
+                        $('#p-failure').html("Something went wrong Please try again");
+                        $('#failure').show();
+                        $("#failure").delay(5000).slideUp(200);
+                        return;
+                    }
+                    
+                } );
+            }
+        },
         //  *****************************
         //         Desination add
         //   *****************************
