@@ -31,16 +31,6 @@
             //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
             $( '.erp-hr-company' ).on( 'click', 'a#erp-employee-print', this.companyEmployee.printData );
           
-            // Department
-            $( 'body' ).on( 'click', 'a#erp-new-dept', this.department.create );
-            $( '.erp-hr-depts' ).on( 'click', 'a.submitdelete', this.department.remove );
-            $( '.erp-hr-depts' ).on( 'click', 'span.edit a', this.department.edit );
-
-            // Designation
-            $( 'body' ).on( 'click', 'a#erp-new-designation', this.designation.create );
-            $( '.erp-hr-designation' ).on( 'click', 'a.submitdelete', this.designation.remove );
-            $( '.erp-hr-designation' ).on( 'click', 'span.edit a', this.designation.edit );
-
             //Mileage
             //$('body').on('click', 'a#erp-new-mileage', this.mileage.create);
             $('.erp-company-mileage').on('click', 'a#erp-new-mileage', this.mileage.create);
