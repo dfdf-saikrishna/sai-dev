@@ -65,7 +65,7 @@ class Corptne {
         require_once WPERP_CORPTNE_PATH . '/includes/functions-company.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyview.php';
         require_once WPERP_CORPTNE_PATH . '/includes/functions-companyadmin.php';
-//        require_once WPERP_CORPTNE_PATH . '/includes/layout-functions.php';
+       require_once WPERP_CORPTNE_PATH . '/includes/functions-travelagent.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-leave.php';
 //        require_once WPERP_CORPTNE_PATH . '/includes/functions-capabilities.php';
@@ -79,6 +79,7 @@ class Corptne {
      *
      * @return void
      */
+   
     private function init_actions() {
         $this->action( 'admin_enqueue_scripts', 'admin_scripts' );
         $this->action( 'admin_footer', 'admin_js_templates' );
@@ -145,6 +146,11 @@ class Corptne {
         $localize_script = apply_filters( 'erp_hr_localize_script', array(
             'nonce'              => wp_create_nonce( 'wp-erp-cr-nonce' ),
             'popup'              => array(
+                'travel_title'=>__(' Add Travel Agents Login Details', 'erp' ),
+                'travel_submit'=>__(' Submit', 'erp' ),
+                'travel_update'=>__(' Update Details', 'erp' ),
+                'travel_agent-reset'=>__(' Reset', 'erp' ),
+                
                 'dept_title'         => __( 'New Department', 'erp' ),
                 'dept_submit'        => __( 'Create Department', 'erp' ),
                 'location_title'     => __( 'New Location', 'erp' ),
@@ -159,17 +165,6 @@ class Corptne {
                 'employee_update'    => __( 'Update Company', 'erp' ),
                 'employment_status'  => __( 'Employment Status', 'erp' ),
                 'update_status'      => __( 'Update', 'erp' ),
-                'policy'             => __( 'Leave Policy', 'erp' ),
-                'policy_create'      => __( 'Create Policy', 'erp' ),
-                'holiday'            => __( 'Holiday', 'erp' ),
-                'holiday_create'     => __( 'Create Holiday', 'erp' ),
-                'holiday_update'     => __( 'Update Holiday', 'erp' ),
-                'new_leave_req'      => __( 'Leave Request', 'erp' ),
-                'take_leave'         => __( 'Send Leve Request', 'erp' ),
-                'terminate'          => __( 'Terminate', 'erp' ),
-                'leave_reject'       => __( 'Reject Reason', 'erp' ),
-                'already_terminate'  => __( 'Sorry, this employee is already terminated', 'erp' ),
-                'already_active'     => __( 'Sorry, this employee is already active', 'erp' )
             ),
             'emp_upload_photo'       => __( 'Upload Employee Photo', 'erp' ),
             'emp_set_photo'          => __( 'Set Photo', 'erp' ),
@@ -188,6 +183,13 @@ class Corptne {
             'empty_entitlement_text' => sprintf( '<span>%s <a href="%s" title="%s">%s</a></span>', __( 'Please create entitlement first', 'erp' ), add_query_arg( [ 'page' => 'erp-leave-assign', 'tab' => 'assignment' ], admin_url( 'admin.php' ) ), __( 'Create Entitlement', 'erp' ), __( 'Create Entitlement', 'erp' ) ),
         ) );
 
+       
+        //Travel agent page
+         if ( 'toplevel_page_travelagentsmenu' == $hook ) {
+            wp_enqueue_script( 'post' );
+            $travelagent                          = new TravelAgent();
+            $localize_script['travelagent_empty'] = $travelagent->to_array();
+        }
         // if its an employee page
         if ( 'toplevel_page_companiesmenu' == $hook ) {
             wp_enqueue_script( 'post' );
@@ -228,14 +230,20 @@ class Corptne {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump( $current_screen->base );
+        var_dump( $current_screen->base );
         switch ($current_screen->base) {
             
             case 'companies_page_companies-admin':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );
                 break;
             
-            case 'toplevel_page_companiesmenu':
+            case 'toplevel_page_travelagentsmenu':
+                erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-travelagent.php', 'erp-new-travelagent' );
+                break;
+			case 'travelagents_page_travelagents':
+				erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-travelagent.php', 'erp-new-travelagent' );
+                break;
+             case 'toplevel_page_companiesmenu':
                 erp_get_js_template( WPERP_CORPTNE_JS_TMPL . '/new-employee.php', 'erp-new-employee' );
                 break;
 			case 'companies_page_mastercompaniesview':

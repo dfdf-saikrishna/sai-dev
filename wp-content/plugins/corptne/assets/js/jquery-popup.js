@@ -14,6 +14,7 @@
             content: '',
             id: '',
             button: 'Submit',
+            //button1: 'reset',
             extraClass: '',
             onReady: function() {},
             onSubmit: function() {},

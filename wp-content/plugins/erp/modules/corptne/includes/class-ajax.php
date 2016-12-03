@@ -26,18 +26,6 @@ class Ajax_Handler {
      */
     public function __construct() {
 
-        // Department
-        $this->action( 'wp_ajax_erp-hr-new-dept', 'department_create' );
-        $this->action( 'wp_ajax_erp-hr-del-dept', 'department_delete' );
-        $this->action( 'wp_ajax_erp-hr-get-dept', 'department_get' );
-        $this->action( 'wp_ajax_erp-hr-update-dept', 'department_create' );
-
-        // Designation
-        $this->action( 'wp_ajax_erp-hr-new-desig', 'designation_create' );
-        $this->action( 'wp_ajax_erp-hr-get-desig', 'designation_get' );
-        $this->action( 'wp_ajax_erp-hr-update-desig', 'designation_create' );
-        $this->action( 'wp_ajax_erp-hr-del-desig', 'designation_delete' );
-
         // Company Admin
         $this->action( 'wp_ajax_companyadmin_create', 'companyadmin_create' );
         $this->action( 'wp_ajax_companyadmin_get', 'companyadmin_get' );
@@ -62,53 +50,70 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp-hr-convert-wp-to-employee', 'employee_create_from_wp_user' );
         $this->action( 'wp_ajax_erp_hr_check_user_exist', 'check_user' );
 
-        // Dashaboard
-        $this->action ( 'wp_ajax_erp_hr_announcement_mark_read', 'mark_read_announcement' );
-        $this->action ( 'wp_ajax_erp_hr_announcement_view', 'view_announcement' );
+ 
+         //Travel Agent
+        $this->action( 'wp_ajax_erp-hr-travelagent-new', 'travelagent_create' );
+        $this->action( 'wp_ajax_erp-hr-travelagent-get', 'travelagent_get' );
+	//$this->action( 'wp_ajax_erp-hr-travelagentsview-get', 'travelagent_get' );
+    }
+ /**
+     * Create/update an employee
+     *
+     * @return void
+     */
+    public function travelagent_create() {
+       // $this->verify_nonce( 'wp-erp-hr-travelagent-nonce' );
+        //$this->send_success('lakshmi');
+        unset( $_POST['_wp_http_referer'] );
+        unset( $_POST['_wpnonce'] );
+        unset( $_POST['action'] );
+//$data = "tgdfhfh";
+//$this->send_success( $data );
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+//        $posted['type']       = 'customer';
+        //print_r($posted);die;
+        $travelagent_id  = travelagent_create( $posted );
 
-        // Performance
-        $this->action( 'wp_ajax_erp-hr-emp-update-performance-reviews', 'employee_update_performance' );
-        $this->action( 'wp_ajax_erp-hr-emp-update-performance-comments', 'employee_update_performance' );
-        $this->action( 'wp_ajax_erp-hr-emp-update-performance-goals', 'employee_update_performance' );
-        $this->action( 'wp_ajax_erp-hr-emp-delete-performance', 'employee_delete_performance' );
+        $travelagent               = new TravelAgent( $travelagent_id );
+        $data                   = $posted;
+//        $data['work']['joined'] = $employee->get_joined_date();
+//        $data['work']['type']   = $employee->get_type();
+//        $data['url']            = $employee->get_details_url();
 
-        // work experience
-        $this->action( 'wp_ajax_erp-hr-create-work-exp', 'employee_work_experience_create' );
-        $this->action( 'wp_ajax_erp-hr-emp-delete-exp', 'employee_work_experience_delete' );
+        // user notification email
+        //if ( isset( $posted['user_notification'] ) && $posted['user_notification'] == 'on' ) {
+            $emailer    = wperp()->emailer->get_email( 'New_TravelAgent_Welcome' );
+            $send_login = isset( $posted['login_info'] ) ? true : false;
 
-        // education
-        $this->action( 'wp_ajax_erp-hr-create-education', 'employee_education_create' );
-        $this->action( 'wp_ajax_erp-hr-emp-delete-education', 'employee_education_delete' );
-
-        // dependents
-        $this->action( 'wp_ajax_erp-hr-create-dependent', 'employee_dependent_create' );
-        $this->action( 'wp_ajax_erp-hr-emp-delete-dependent', 'employee_dependent_delete' );
-
-        // leave policy
-        $this->action( 'wp_ajax_erp-hr-leave-policy-create', 'leave_policy_create' );
-        $this->action( 'wp_ajax_erp-hr-leave-policy-delete', 'leave_policy_delete' );
-        $this->action( 'wp_ajax_erp-hr-leave-request-req-date', 'leave_request_dates' );
-        $this->action( 'wp_ajax_erp-hr-leave-employee-assign-policies', 'leave_assign_employee_policy' );
-        $this->action( 'wp_ajax_erp-hr-leave-policies-availablity', 'leave_available_days' );
-        $this->action( 'wp_ajax_erp-hr-leave-req-new', 'leave_request' );
-
-        //leave holiday
-        $this->action( 'wp_ajax_erp_hr_holiday_create', 'holiday_create' );
-        $this->action( 'wp_ajax_erp-hr-get-holiday', 'get_holiday' );
-        $this->action( 'wp_ajax_erp-hr-import-ical', 'import_ical' );
-
-        //leave entitlement
-        $this->action( 'wp_ajax_erp-hr-leave-entitlement-delete', 'remove_entitlement' );
-
-        //leave rejected
-        $this->action( 'wp_ajax_erp_hr_leave_reject', 'leave_reject' );
-
-        // script reload
-        $this->action( 'wp_ajax_erp_hr_script_reload', 'employee_template_refresh' );
-        $this->action( 'wp_ajax_erp_hr_new_dept_tmp_reload', 'new_dept_tmp_reload' );
-        $this->action( 'wp_ajax_erp-hr-holiday-delete', 'holiday_remove' );
+            if ( is_a( $emailer, '\WeDevs\ERP\Email') ) {
+                $emailer->trigger( $travelagent_id, $send_login );
+            }
+        //}
+        //$data = $posted;die;
+        $this->send_success( $data );
     }
 
+    /**
+     * Get an employee for ajax
+     *
+     * @return void
+     */
+    public function travelagent_get() {
+        global $wpdb;
+//        $this->verify_nonce( 'wp-erp-hr-nonce' );
+//
+        $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+//        $user        = get_user_by( 'id', $employee_id );
+//
+//        if ( ! $user ) {
+//            $this->send_error( __( 'Employee does not exists.', 'erp' ) );
+//        }
+//
+//        $employee = new Employee( $user );
+        //$this->send_success( $employee->to_array() );
+        $response = $wpdb->get_row("SELECT * FROM superadmin WHERE SUP_Id = $id");
+        $this->send_success( $response );
+    }
     function leave_reject() {
         $this->verify_nonce( 'wp-erp-hr-nonce' );
 

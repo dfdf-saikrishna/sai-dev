@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\ERP\Corptne\Admin;
 use WeDevs\ERP\Corptne\Companyview;
+use WeDevs\ERP\Corptne\TravelAgentview;
 
 /**
  * Admin Menu
@@ -27,8 +28,9 @@ class Admin_Menu {
         if ( current_user_can( 'superadmin' ) ) {
            add_menu_page(__( 'Dashboard', 'superadmin' ),  __( 'Dashboard', 'superadmin' ), 'superadmin', 'superadmin-dashboard', array( $this, 'dashboard_page'),'dashicons-welcome-view-site' );
 
-           add_menu_page( 'Master Admin Menu', 'Master Admin', 'superadmin', 'masteradminmenu', 'masteradminmenu_init','dashicons-building' );
-           $overview = add_submenu_page( 'masteradminmenu', 'Overview', 'Overview', 'superadmin', 'masteradminmenu', 'masteradminmenu_init');
+           //add_menu_page( 'Master Admin Menu', 'Master Admin', 'superadmin', 'masteradminmenu', 'masteradminmenu_init', array( $this, 'masteradmin_list'),'dashicons-building' );
+          add_menu_page( __( 'Master Admin Menu', 'superadmin' ), __( 'Master Admin', 'superadmin' ), 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'),'dashicons-building' );
+		   $overview = add_submenu_page( 'masteradminmenu', 'Overview', 'Overview', 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'));
 		   add_submenu_page( 'masteradminmenu', 'Add Master Admin', 'Add Master Admin', 'superadmin', 'masteradminadd', 'masteradminadd');
            add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'ViewEditDeleteMasterAdmin', 'ViewEditDeleteMasterAdmin');
 
@@ -39,41 +41,41 @@ class Admin_Menu {
            add_submenu_page( 'companiesmenu', 'View / Edit Company', 'View / Edit Company', 'superadmin', 'mastercompaniesview',array( $this, 'companyview_page' ));
            add_submenu_page( 'companiesmenu', 'Company Admins', 'Company Admins', 'superadmin', 'companies-admin',  array( $this, 'companiesadmin')); 
 
-           add_menu_page( 'Travelagents Menu', 'Travel Agents', 'superadmin', 'travelagentsmenu', 'travelagentsmenu_init' );
-		   $overview = add_submenu_page( 'travelagentsmenu', 'Overview', 'Overview', 'superadmin', 'travelagentsmenu', 'travelagentsmenu_init');
-		   add_submenu_page( 'travelagentsmenu', 'Add Travel Agents', 'Add Travel Agents', 'superadmin', 'superadmintravelagentsadd', 'superadmintravelagentsadd');
-           add_submenu_page( 'travelagentsmenu', 'View / Edit / Delete Travel Agents ', 'View / Edit / Delete Travel Agents ', 'superadmin', 'superadmintravelagentsview', 'superadmintravelagentsview');
-           add_submenu_page( 'travelagentsmenu', 'Travel Desk Logs', 'Travel Desk Logs', 'superadmin', 'superadmintravelagentslogs', 'superadmintravelagentslogs');
+           add_menu_page( 'Travelagents', 'Travelagents', 'superadmin', 'travelagentsmenu',array( $this, 'travelagent_create'),'dashicons-building');
+		   //$overview = add_submenu_page( 'travelagentsmenu', 'Overview', 'Overview', 'superadmin', 'travelagentsmenu','travelagentsmenu_init',array( $this, 'travelagent_create'));
+		   //add_submenu_page( 'travelagentsmenu', 'Add Travel Agents', 'Add Travel Agents', 'superadmin', 'superadmintravelagentsadd', 'superadmintravelagentsadd');
+           add_submenu_page( 'travelagentsmenu', 'travelagentadd', 'View / Edit / Delete Travel Agents ', 'superadmin', 'travelagents',array( $this, 'travelagentsview_page' ));
+           //add_submenu_page( 'travelagentsmenu', 'Travel Desk Logs', 'Travel Desk Logs', 'superadmin', 'superadmintravelagentslogs', 'superadmintravelagentslogs');
 
            add_menu_page(__( 'WorkFlow', 'superadmin' ), __( 'WorkFlow', 'superadmin' ),  'superadmin', 'workflowsmenu', array( $this, 'workflow'),'dashicons-products' );
            $overview = add_submenu_page( 'workflowsmenu', 'Overview', 'Overview', 'superadmin', 'workflowsmenu', array( $this, 'workflow'));
 		   add_submenu_page( 'workflowsmenu', 'Add / Edit / Delete Workflow', 'Add / Edit / Delete Workflow', 'superadmin', 'mastercompaniesworkflow', 'mastercompaniesworkflow');
 
-           add_menu_page( 'reportscharts Menu', 'Reports & Charts', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init','dashicons-chart-bar');
-           $overview = add_submenu_page( 'reportschartsmenu', 'Overview', 'Overview', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init');
-		   add_submenu_page( 'reportschartsmenu', 'Chart 1', 'Chart 1', 'superadmin', '', '');
-           add_submenu_page( 'reportschartsmenu', 'Chart 2', 'Chart 2', 'superadmin', '', '');
-           add_submenu_page( 'reportschartsmenu', 'Chart 3', 'Chart 3', 'superadmin', '', '');
-           add_submenu_page( 'reportschartsmenu', 'Chart 4', 'Chart 4', 'superadmin', '', '');
+//           add_menu_page( 'reportscharts Menu', 'Reports & Charts', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init','dashicons-chart-bar');
+//           $overview = add_submenu_page( 'reportschartsmenu', 'Overview', 'Overview', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init');
+//		   add_submenu_page( 'reportschartsmenu', 'Chart 1', 'Chart 1', 'superadmin', '', '');
+//           add_submenu_page( 'reportschartsmenu', 'Chart 2', 'Chart 2', 'superadmin', '', '');
+//           add_submenu_page( 'reportschartsmenu', 'Chart 3', 'Chart 3', 'superadmin', '', '');
+//           add_submenu_page( 'reportschartsmenu', 'Chart 4', 'Chart 4', 'superadmin', '', '');
 
            add_menu_page( 'Expense Category Menu', 'Expense Category', 'superadmin', 'expensecategorymenu', array( $this, 'expensecategory_list'));
            $overview = add_submenu_page( 'expensecategorymenu', 'Overview', 'Overview', 'superadmin', 'expensecategorymenu', array( $this, 'expensecategory_list'));
 		   add_submenu_page( 'expensecategorymenu', 'Default Expense Category', 'Default Expense Category', 'superadmin', 'masterexpensecategory', array( $this, 'expensecategory_list'));
            add_submenu_page( 'expensecategorymenu', 'Company Expense Category', 'Company Expense Category', 'superadmin', 'mastercompanyexpcat',  array( $this, 'companyexpensecategory_list')); 
 
-           add_menu_page( 'Help Docs Menu', 'Help Docs', 'superadmin', 'helpdocsmenu', 'helpdocsmenu_init' );
-           $overview = add_submenu_page( 'helpdocsmenu', 'Overview', 'Overview', 'superadmin', 'helpdocsmenu', 'helpdocsmenu_init');
-		   add_submenu_page( 'helpdocsmenu', 'Create Topic', 'Create Topic', 'superadmin', '', '');
-           add_submenu_page( 'helpdocsmenu', 'View /Edit Topic', 'View /Edit Topic', 'superadmin', '', ''); 
+//           add_menu_page( 'Help Docs Menu', 'Help Docs', 'superadmin', 'helpdocsmenu', 'helpdocsmenu_init' );
+//           $overview = add_submenu_page( 'helpdocsmenu', 'Overview', 'Overview', 'superadmin', 'helpdocsmenu', 'helpdocsmenu_init');
+//		   add_submenu_page( 'helpdocsmenu', 'Create Topic', 'Create Topic', 'superadmin', '', '');
+//           add_submenu_page( 'helpdocsmenu', 'View /Edit Topic', 'View /Edit Topic', 'superadmin', '', ''); 
 
-           add_menu_page( 'Settings Menu', 'Settings', 'superadmin', 'settingsmenu', 'settingsmenu_init','dashicons-editor-ul');
-           $overview = add_submenu_page( 'settingsmenu', 'Overview', 'Overview', 'superadmin', 'settingsmenu', 'settingsmenu_init');
-		   add_submenu_page( 'settingsmenu', 'Change Password', 'Change Password', 'superadmin', 'masterchangepassword', 'masterchangepassword');
-           add_submenu_page( 'settingsmenu', 'Hide User Panel', 'Hide User Panel', 'superadmin', '', ''); 
-           add_submenu_page( 'settingsmenu', 'Show & Hide', 'Show & Hide', 'superadmin', '', '');  
-           add_submenu_page( 'settingsmenu', 'Top Menu', 'Top Menu', 'superadmin', '', ''); 
-           add_submenu_page( 'settingsmenu', 'Footer Show', 'Footer Show', 'superadmin', '', ''); 
-           add_submenu_page( 'settingsmenu', 'Footer with menu', 'Footer with menu', 'superadmin', '', ''); 
+//           add_menu_page( 'Settings Menu', 'Settings', 'superadmin', 'settingsmenu', 'settingsmenu_init','dashicons-editor-ul');
+//           $overview = add_submenu_page( 'settingsmenu', 'Overview', 'Overview', 'superadmin', 'settingsmenu', 'settingsmenu_init');
+//		   add_submenu_page( 'settingsmenu', 'Change Password', 'Change Password', 'superadmin', 'masterchangepassword', 'masterchangepassword');
+//           add_submenu_page( 'settingsmenu', 'Hide User Panel', 'Hide User Panel', 'superadmin', '', ''); 
+//           add_submenu_page( 'settingsmenu', 'Show & Hide', 'Show & Hide', 'superadmin', '', '');  
+//           add_submenu_page( 'settingsmenu', 'Top Menu', 'Top Menu', 'superadmin', '', ''); 
+//           add_submenu_page( 'settingsmenu', 'Footer Show', 'Footer Show', 'superadmin', '', ''); 
+//           add_submenu_page( 'settingsmenu', 'Footer with menu', 'Footer with menu', 'superadmin', '', ''); 
          }
     }
 
@@ -97,6 +99,19 @@ class Admin_Menu {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
     }
     
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+ 
+    public function travelagent_create() {
+        include WPERP_CORPTNE_VIEWS . '/superadmin/travel-agent-create.php';
+    }
+    public function masteradmin_list() {
+        include WPERP_CORPTNE_VIEWS . '/superadmin/masteradmin_list.php';
+    }
+	
     /**
      * Handles the dashboard page
      *
@@ -146,38 +161,6 @@ class Admin_Menu {
     public function companiesadmin() {
         include WPERP_CORPTNE_VIEWS . '/companyadmin/view.php';
     }
-    
-
-    /**
-     * Handles the dashboard page
-     *
-     * @return void
-     */
-    public function employee_page() {
-        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
-        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
-
-        switch ($action) {
-            case 'view':
-                $employee = new Employee( $id );
-                if ( ! $employee->id ) {
-                    wp_die( __( 'Employee not found!', 'erp' ) );
-                }
-
-                $template = WPERP_HRM_VIEWS . '/employee/single.php';
-                break;
-
-            default:
-                $template = WPERP_HRM_VIEWS . '/employee.php';
-                break;
-        }
-
-        $template = apply_filters( 'erp_hr_employee_templates', $template, $action, $id );
-
-        if ( file_exists( $template ) ) {
-            include $template;
-        }
-    }
 
 	/**
      * Handles the dashboard page
@@ -209,7 +192,36 @@ class Admin_Menu {
         }
     }
 
+	/**
+     * Handles the travelagentsview_page
+     *
+     * @return void
+     */
+    public function travelagentsview_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+		
+        switch ($action) {
+           
+            case 'view':
+                $travelagentview = new TravelAgentview( $id );
+                if ( !$id ) {
+                    wp_die( __( 'Travel Agent not found!', 'erp' ) );
+                }  
+                $template = WPERP_CORPTNE_VIEWS . '/superadmin/travelagentview.php';
+                break;
 
+            default:
+                $template = WPERP_CORPTNE_VIEWS . '/travelagentview.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_hr_travelagents_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
     /**
      * Employee my profile page template
      *

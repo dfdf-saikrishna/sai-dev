@@ -15,9 +15,7 @@ function erp_hr_employee_on_delete( $user_id, $hard = 0 ) {
     if ( ! $user ) {
         return;
     }
-
     $role = reset( $user->roles );
-
     if ( 'employee' == $role ) {
         \WeDevs\ERP\HRM\Models\Employee::where( 'user_id', $user_id )->withTrashed()->forceDelete();
     }
