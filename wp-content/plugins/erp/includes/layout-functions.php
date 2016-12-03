@@ -118,15 +118,15 @@
                         $_SESSION['delegate']=NULL;
                     } else if($result=$wpdb->get_row("SELECT SUP_Id, SUP_Type, SUP_Name FROM superadmin WHERE user_id='$user->ID' AND SUP_Status=1 AND SUP_Type IN (3)")){
                         
-						//session of supid
-						$_SESSION['supid']    		=	$result->SUP_Id;
-						//session of name 
-						$_SESSION['name']           =	$result->SUP_Name;		
-						//session id
-						$_SESSION['taSessionid']    =	session_id();
-						$sessionid					=	$_SESSION['taSessionid'];
-						//session of type 3=travel agent, 4=travel agent user
-						$_SESSION['suptype']        =	$result->SUP_Type;
+                        //session of supid
+                        $_SESSION['supid']          =	$result->SUP_Id;
+                        //session of name 
+                        $_SESSION['name']           =	$result->SUP_Name;		
+                        //session id
+                        $_SESSION['taSessionid']    =	session_id();
+                        $sessionid					=	$_SESSION['taSessionid'];
+                        //session of type 3=travel agent, 4=travel agent user
+                        $_SESSION['suptype']        =	$result->SUP_Type;
                     }
                   
                 }

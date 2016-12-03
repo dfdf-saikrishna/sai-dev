@@ -89,7 +89,7 @@
 			edit: function(e) {
                 e.preventDefault();
                 var self = $(this);
-                alert("edit");
+                //alert("edit");
                 $.erpPopup({
                     title: wpErpTa.popup.travelagentuser_update,
                     button: wpErpTa.popup.travelagentuser_update,
@@ -151,7 +151,7 @@
              * @param  {event}
              */
             create: function(e) {
-                alert("test");
+                //alert("test");
                 if ( typeof e !== 'undefined' ) {
                     //e.preventDefault();
                 }
@@ -171,7 +171,7 @@
                      * @param  {modal}
                      */
                     onSubmit: function(modal) {
-						alert("sdfsdfsf");
+						//alert("sdfsdfsf");
                         $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
                         wp.ajax.send( 'travelagentclient_create', {
                             data: this.serialize(),
@@ -196,7 +196,7 @@
 			edit: function(e) {
                 e.preventDefault();
                 var self = $(this);
-                alert("edit");
+                //alert("edit");
                 $.erpPopup({
                     title: wpErpTa.popup.travelagentclient_update,
                     button: wpErpTa.popup.travelagentclient_update,
@@ -260,7 +260,7 @@
                 var self = $(this);
 				var Companyinvoice = $('#Companyinvoice').val();
 				var tabkey = $('#key').val();
-				alert(Companyinvoice);
+				//alert(Companyinvoice);
                  wp.ajax.send( 'companyinvoice_view', {
                              data: {
                                 id: Companyinvoice,
