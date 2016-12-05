@@ -635,7 +635,7 @@ class Ajax_Handler {
 	
 	$count=count($rdids);
 	
-	$cnt=count($wpdb->get_results("SELECT RD_Id FROM request_details WHERE WHERE REQ_Id='$reqid' AND RD_Status=1"));
+	$cnt=count($wpdb->get_results("SELECT RD_Id FROM request_details WHERE REQ_Id='$reqid' AND RD_Status=1"));
                                 
         $selreq		=	$wpdb->get_results("SELECT req.REQ_Code FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' and req.REQ_Id=re.REQ_Id AND RE_Status=1 AND REQ_Active=1 and re.EMP_Id='$empuserid'");
 	
@@ -880,7 +880,7 @@ class Ajax_Handler {
 		
         $wpdb->update('request_status', array( 'RS_Status' => '2' ), array( 'REQ_Id' => $reqid ));
         
-        $wpdb->update('requests', array( 'RS_Status' => '1' ), array( 'REQ_Id' => $reqid ));
+        $wpdb->update('requests', array( 'REQ_Status' => '1' ), array( 'REQ_Id' => $reqid ));
 
         //echo 'reqtype='.$reqtype; exit;
 

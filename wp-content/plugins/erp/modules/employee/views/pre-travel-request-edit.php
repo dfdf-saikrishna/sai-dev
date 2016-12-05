@@ -116,6 +116,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                       <th class="column-primary" >Place</th>
                       <th class="column-primary">Estimated Cost</th>
                       <th class="column-primary">Get Quote</th>
+                      <th class="column-primary">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -209,6 +210,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" id="reqid"/>
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
+                      <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row" <?php echo ($disabled) ? 'disabled="disabled" ' : ' title="delete row"'; ?> ><i class="fa fa-times"></i></button></td>
                     </tr>
                     <?php 
                     $rows++; 
