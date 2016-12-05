@@ -641,6 +641,7 @@ class Ajax_Handler {
         $selreq		=	$wpdb->get_results("SELECT req.REQ_Code FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' and req.REQ_Id=re.REQ_Id AND RE_Status=1 AND REQ_Active=1 and re.EMP_Id='$empuserid'");
 	
 	$expreqcode	=	$selreq->REQ_Code;
+        
         if($etype=="" || $reqid=="" || $expreqcode==""){
 	
 		//header("location:$filename?msg=2&reqid=$reqid");exit;
@@ -689,8 +690,7 @@ class Ajax_Handler {
 //        }
         
         for($i=0;$i<$cnt;$i++)
-        {		
-
+        {
                 if($date[$i]=="n/a"){
 
                         $dateformat=NULL;
@@ -698,9 +698,9 @@ class Ajax_Handler {
                 } else {
 
                         $dateformat=$date[$i];
-                        $dateformat=explode("/",$dateformat);
+                        $dateformat=explode("-",$dateformat);
                         $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];				
-
+                        //$this->send_success($dateformat);
                 }
 
 
@@ -730,11 +730,14 @@ class Ajax_Handler {
 
 
 
-                        if($to[$i]=="n/a")	$to[$i]=NULL;
+                        if($to[$i]=="n/a")	
+                        $to[$i]=NULL;
 
-                        if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
+                        if($selStayDur[$i]=="n/a")	
+                        $selStayDur[$i]=NULL;
 
-                        if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
+                        if($txtdist[$i]=="n/a")	
+                        $txtdist[$i]=NULL;
 
 
                         $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
@@ -745,7 +748,7 @@ class Ajax_Handler {
 
                         $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
 
-
+                        
                         if($etype==5){
                                                         
                                         $selmilrate=$wpdb->get_row("SELECT MIL_Amount FROM mileage WHERE COM_Id='$compid' and MOD_Id='$selModeofTransp[$i]' and MIL_Status='1' and MIL_Active=1");
@@ -758,22 +761,22 @@ class Ajax_Handler {
 
                                 }
 
-
+                              
                                 //$rate ? $rate="'".$rate."'" : $rate="NULL";	
 
 
                         $rdid=$rdids[$i];	
 
                         $desc	=	addslashes($txtaExpdesc[$i]);
-
-                        $wpdb->update('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]), array( 'RD_Id' => $rdid ));
                         
+                        $wpdb->update('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]), array( 'RD_Id' => $rdid ));
+                         
         }        
                         // insert those newly added row details if any 
 		
-		
+	$this->send_success($cnt); 	
         if($hidrowno != $cnt){
-
+           
 
             for($i=$cnt;$i<$hidrowno;$i++)
             {	
