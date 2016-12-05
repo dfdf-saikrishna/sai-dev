@@ -131,7 +131,7 @@
                     title: wpErpCompany.popup.departments_title,
                     button: wpErpCompany.popup.departments_submit,
                     id: "erp-new-departments-popup",
-                    content: wperp.template('departments-create')(wpErpCompany.departments_empty).trim(),
+                    content: wperp.template('department-create')(wpErpCompany.departments_empty).trim(),
                    
                     //content: '<h1>Test</h1>',
 //                    onReady: function () {
@@ -180,7 +180,7 @@
                             },
                             success: function (response) {
                                 console.log(response);
-                                var html = wp.template('departments-create')(response);
+                                var html = wp.template('department-create')(response);
                                 $('.content', modal).html(html);
                                 $('.loader', modal).remove();
                                 WeDevs_ERP_COMPANY.initDateField();

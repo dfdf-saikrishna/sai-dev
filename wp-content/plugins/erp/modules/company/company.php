@@ -240,7 +240,7 @@ class Company {
             $designation = new Designation();
             $localize_script['designation_empty'] = $designation->designation_array();
         }
-        if ('management_page_Dep' == $hook) {
+        if ('employee-management_page_Dep' == $hook) {
             wp_enqueue_script('post');
             $departments = new Departments();
             $localize_script['departments_empty'] = $departments->departments_array();
@@ -284,7 +284,7 @@ class Company {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump( $current_screen->base );
+        var_dump( $current_screen->base );
         switch ($current_screen->base) {
             case 'expense-managment_page_Mileage':
                 //var_dump('inside');
@@ -295,7 +295,7 @@ class Company {
             case 'employee-management_page_Des':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/designation-create.php', 'designation-create');
-            case 'management_page_Dep':
+            case 'employee-management_page_Dep':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/department-create.php', 'department-create');
 

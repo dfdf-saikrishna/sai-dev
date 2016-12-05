@@ -152,7 +152,7 @@ use Hooker;
 
         $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
-        $response = $wpdb->get_row("SELECT * FROM mileage WHERE MIL_Id = $id");
+        $response = $wpdb->get_row("SELECT * FROM department WHERE DEP_Id = $id");
 
         $this->send_success($response);
     }
