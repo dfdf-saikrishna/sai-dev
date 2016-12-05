@@ -582,6 +582,7 @@ class Ajax_Handler {
         $compid = $_SESSION['compid'];
         $empuserid = $_SESSION['empuserid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
+        //$this->send_success($posted);
         
         $expenseLimit                           = 	$posted['expenseLimit'];
 
