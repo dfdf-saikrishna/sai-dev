@@ -123,7 +123,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                         </select>
                         </span></td>
-                      <td data-title="Place"><span id="city1container">
+                        <td data-title="Place"><span id="city1container">
                         <input  name="from[]" id="from1" type="text" placeholder="From" class="">
                         <input  name="to[]" id="to1" type="text" placeholder="To" class="">
                         </span></td>
@@ -132,21 +132,22 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </br><span class="red" id="show-exceed"></span>
                         <input type="hidden" value="1" name="ectype" id="ectype"/>
                         <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
+                        <input type="hidden" name="action" id="send_pre_travel_request" value="send_pre_travel_request">
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                     </tr>
                   </tbody>
                 </table>
                 <span id="totaltable"> </span>
-                </form>
             </div>
             <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
-            <button type="button" name="submit" id="submit-pre-travel-request" class="button button-primary">Submit</button>
+            <input type="submit" name="submit" id="submit-pre-travel-request" class="button button-primary">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" name="reset" id="reset" class="button">Reset</button>
             </div>
+            </form>
             <div style="margin-top:60px" id="grade-limit" class="postbox leads-actions closed">
                 <div class="handlediv" title="<?php _e( 'Click to toggle', 'erp' ); ?>"><br></div>
                 <h3 class="hndle"><span><?php _e( 'Grade Limits', 'erp' ); ?></span></h3>

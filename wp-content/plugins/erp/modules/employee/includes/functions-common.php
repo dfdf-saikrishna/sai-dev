@@ -999,12 +999,13 @@ function chat_box($rn_status){
       global $content;
       global $image;
       global $author;
+      echo '<div class="note-tab-wrap erp-grid-container">';
+      echo '<h3>Send Notes</h3>';
+
+      echo '<form action="" class="note-form row" method="post">';    
       if($selsql=$wpdb->get_results("SELECT * FROM requests_notes WHERE REQ_Id='$reqid' ORDER BY RN_Id ASC")){
       //print_r($selsql);die;
-      echo '<div class="note-tab-wrap erp-grid-container">';
-        echo '<h3>Send Notes</h3>';
-
-        echo '<form action="" class="note-form row" method="post">';    
+      
 	  foreach($selsql as $rowsql){
 	  
 	  

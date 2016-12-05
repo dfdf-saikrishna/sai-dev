@@ -28,6 +28,7 @@ class Ajax_Handler {
         
         // PreTravelRequest
         $this->action( 'wp_ajax_send_pre_travel_request', 'send_pre_travel_request' );
+        $this->action( 'wp_ajax_send_pre_travel_request_edit', 'send_pre_travel_request_edit' );
         $this->action( 'wp_ajax_send-emp-note', 'send_emp_note' );
         $this->action( 'wp_ajax_get-exp-cat', 'get_exp_cat' );
         $this->action( 'wp_ajax_get-mode', 'get_mode' );
@@ -122,7 +123,6 @@ class Ajax_Handler {
         $compid = $_SESSION['compid'];
         $empuserid = $_SESSION['empuserid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
-        //$this->send_success($posted);
         
         $expenseLimit                           = 	$posted['expenseLimit'];
 
@@ -409,7 +409,7 @@ class Ajax_Handler {
 
                 for($i=0;$i<$count;$i++)
                 {
-
+                        
                         if($date[$i]=="n/a"){
 
                                 $dateformat=NULL;
@@ -417,9 +417,8 @@ class Ajax_Handler {
                         } else {
 
                                 $dateformat=$date[$i];
-                                $dateformat=explode("/",$dateformat);
-                                $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];				
-
+                                $dateformat=explode("-",$dateformat);
+                                $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];
                         }
 
 
@@ -456,13 +455,13 @@ class Ajax_Handler {
                         if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
 
 
-                        $to[$i] ? $to[$i]="'".$to[$i]."'" : $to[$i]="NULL";
+                        $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
 
                         $selStayDur[$i] ? $selStayDur[$i]="'".$selStayDur[$i]."'" : $selStayDur[$i]="NULL";
 
                         $txtdist[$i] ? $txtdist[$i]="'".$txtdist[$i]."'" : $txtdist[$i]="NULL";
 
-                        $textBillNo[$i] ? $textBillNo[$i]="'".$textBillNo[$i]."'" : $textBillNo[$i]="NULL";
+                        $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
 
 
                         $desc	=	addslashes($txtaExpdesc[$i]);
@@ -485,8 +484,8 @@ class Ajax_Handler {
 
 
                         //$rate ? $rate="'".$rate."'" : $rate="NULL";	
-
-                        $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost));
+                        
+                        $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
                         $rdid=$wpdb->insert_id;
                         
 
@@ -576,6 +575,429 @@ class Ajax_Handler {
                     $this->send_success($response);
         
     }
+    
+    function send_pre_travel_request_edit(){
+        ob_end_clean();
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $empuserid = $_SESSION['empuserid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        
+        $expenseLimit                           = 	$posted['expenseLimit'];
+
+	$etype					=	$posted['ectype'];
+	
+	$expreqcode				=	genExpreqcode($etype);
+		
+	$date					=	$posted['txtDate'];
+	
+	$txtStartDate                           =	$posted['txtStartDate'];
+	
+	$txtEndDate				=	$posted['txtEndDate'];
+	
+	$txtaExpdesc                            =	$posted['txtaExpdesc'];
+	
+	$selExpcat				=	$posted['selExpcat'];
+	
+	$selModeofTransp                        =	$posted['selModeofTransp'];
+	
+	$from					=	$posted['from'];
+	
+	$to					=	$posted['to'];
+        
+        $hidrowno                               =	$_POST['hidrowno'];
+	
+	//$selStayDur				=	$posted['selStayDur'];
+	
+	$txtdist				=	$posted['txtdist'];
+	
+	$txtCost				=	$posted['txtCost'];
+        
+	$rdids                                  =	$_POST['rdids'];
+        
+        $reqid                                  =	$_POST['reqid'];
+	
+	//  QUOTATION 
+	
+	//$sessionid				=	$posted['sessionid'];
+	
+	//$hiddenPrefrdSelected                 =	$posted['hiddenPrefrdSelected'];
+	
+	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
+	
+	//$selProjectCode			=	$posted['selProjectCode'];
+        $selProjectCode                         =	"0";
+	$selCostCenter                          =	"0";
+	//$selCostCenter			=	$posted['selCostCenter'];
+	
+	$textBillNo				=	$posted['textBillNo'];
+	
+	
+	$count=count($rdids);
+	
+	$cnt=count($wpdb->get_results("SELECT RD_Id FROM request_details WHERE WHERE REQ_Id='$reqid' AND RD_Status=1"));
+                                
+        $selreq		=	$wpdb->get_results("SELECT req.REQ_Code FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' and req.REQ_Id=re.REQ_Id AND RE_Status=1 AND REQ_Active=1 and re.EMP_Id='$empuserid'");
+	
+	$expreqcode	=	$selreq->REQ_Code;
+        if($etype=="" || $reqid=="" || $expreqcode==""){
+	
+		//header("location:$filename?msg=2&reqid=$reqid");exit;
+	
+	}else {
+	
+		$checked=false;
+		
+		for($i=0;$i<$count;$i++):
+			
+			
+			if($date[$i]=="" || $txtaExpdesc[$i]=="" || $selExpcat[$i]=="" || $selModeofTransp[$i]=="" || $txtdist[$i]=="" || $textBillNo[$i]=="" || $txtCost[$i]=="" || $txtStartDate[$i]=="" || $txtEndDate[$i]==""){
+			
+				$checked=true;
+				
+				break;
+			
+			}
+		
+		endfor;
+		
+		
+		
+		if($checked){
+			//header("location:$filename?msg=2&reqid=$reqid");exit;
+		}
+		
+		
+	
+	} 
+        
+        // updating project code if set 
+		
+//        $selprocod=$wpdb->get_row("SELECT * FROM PC_Id, CC_Id WHERE REQ_Id='$reqid'");
+//
+//        if($selprocod->PC_Id != $selProjectCode){
+//
+//                update_query("requests", "PC_Id='$selProjectCode'", "REQ_Id='$reqid'", $filename, 0);
+//
+//        }
+//
+//        if($selprocod->CC_Id != $selCostCenter){
+//
+//                update_query("requests", "CC_Id='$selCostCenter'", "REQ_Id='$reqid'", $filename, 0);
+//
+//        }
+        
+        for($i=0;$i<$cnt;$i++)
+        {		
+
+                if($date[$i]=="n/a"){
+
+                        $dateformat=NULL;
+
+                } else {
+
+                        $dateformat=$date[$i];
+                        $dateformat=explode("/",$dateformat);
+                        $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];				
+
+                }
+
+
+                if($txtStartDate[$i]=="n/a"){
+
+                        $startdate=NULL;
+
+                } else {
+
+                        $startdate=$txtStartDate[$i];
+                        $startdate=explode("-",$startdate);
+                        $startdate=$startdate[2]."-".$startdate[1]."-".$startdate[0];				
+
+                }
+
+                if($txtEndDate[$i]=="n/a"){
+
+                        $enddate=NULL;
+
+                } else {
+
+                        $enddate=$txtEndDate[$i];
+                        $enddate=explode("-",$enddate);
+                        $enddate=$enddate[2]."-".$enddate[1]."-".$enddate[0];				
+
+                }
+
+
+
+                        if($to[$i]=="n/a")	$to[$i]=NULL;
+
+                        if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
+
+                        if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
+
+
+                        $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
+
+                        $selStayDur[$i] ? $selStayDur[$i]="".$selStayDur[$i]."" : $selStayDur[$i]="NULL";
+
+                        $txtdist[$i] ? $txtdist[$i]="".$txtdist[$i]."" : $txtdist[$i]="NULL";
+
+                        $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
+
+
+                        if($etype==5){
+                                                        
+                                        $selmilrate=$wpdb->get_row("SELECT MIL_Amount FROM mileage WHERE COM_Id='$compid' and MOD_Id='$selModeofTransp[$i]' and MIL_Status='1' and MIL_Active=1");
+
+                                        $rate=$selmilrate->MIL_Amount;
+
+                                        if($rate && $txtdist[$i])					
+                                        $txtCost[$i]=$rate * trim($txtdist[$i], "'");
+
+
+                                }
+
+
+                                //$rate ? $rate="'".$rate."'" : $rate="NULL";	
+
+
+                        $rdid=$rdids[$i];	
+
+                        $desc	=	addslashes($txtaExpdesc[$i]);
+
+                        $wpdb->update('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]), array( 'RD_Id' => $rdid ));
+                        
+        }        
+                        // insert those newly added row details if any 
+		
+		
+        if($hidrowno != $cnt){
+
+
+            for($i=$cnt;$i<$hidrowno;$i++)
+            {	
+
+                    //echo 'hidrow='.$hidrowno." cnt=".$cnt; exit;			
+
+                    if($date[$i]=="n/a"){
+
+                            $dateformat=NULL;
+
+                    } else {
+
+                            $dateformat=$date[$i];
+                            $dateformat=explode("/",$dateformat);
+                            $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];				
+
+                    }
+
+
+                    if($txtStartDate[$i]=="n/a"){
+
+                            $startdate=NULL;
+
+                    } else {
+
+                            $startdate=$txtStartDate[$i];
+                            $startdate=explode("/",$startdate);
+                            $startdate=$startdate[2]."-".$startdate[1]."-".$startdate[0];				
+
+                    }
+
+
+                    if($txtEndDate[$i]=="n/a"){
+
+                            $enddate=NULL;
+
+                    } else {
+
+                            $enddate=$txtEndDate[$i];
+                            $enddate=explode("/",$enddate);
+                            $enddate=$enddate[2]."-".$enddate[1]."-".$enddate[0];				
+
+                    }
+
+
+
+                            if($to[$i]=="n/a")	$to[$i]=NULL;
+
+                            if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
+
+                            if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
+
+
+                            $to[$i] ? $to[$i]="'".$to[$i]."'" : $to[$i]="NULL";
+
+                            $selStayDur[$i] ? $selStayDur[$i]="'".$selStayDur[$i]."'" : $selStayDur[$i]="NULL";
+
+                            $txtdist[$i] ? $txtdist[$i]="'".$txtdist[$i]."'" : $txtdist[$i]="NULL";
+
+                            $textBillNo[$i] ? $textBillNo[$i]="'".$textBillNo[$i]."'" : $textBillNo[$i]="NULL";
+
+
+                            $desc	=	addslashes($txtaExpdesc[$i]);
+
+
+                            $rate=0;
+
+                            // select mileage rate
+
+                    if($etype==5){
+
+                            $selmilrate=$wpdb->get_row("SELECT MIL_Amount FROM mileage WHERE COM_Id='$compid' and MOD_Id='$selModeofTransp[$i]' and MIL_Status='1' and MIL_Active=1");
+
+                            $rate=$selmilrate->MIL_Amount;
+
+                            if($rate && $txtdist[$i])					
+                            $txtCost[$i]=$rate * trim($txtdist[$i], "'");
+
+
+                    }
+
+
+                    //echo $rate; exit;
+
+                    //$rate ? $rate="'".$rate."'" : $rate="NULL";	
+
+
+                    $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
+                    $rdid=$wpdb->insert_id;
+
+
+
+
+
+
+
+
+
+            } // end of for loop
+		
+		
+	} // end of outer most if loop
+
+        // update new details
+		
+        $wpdb->update('request_status', array( 'RS_Status' => '2' ), array( 'REQ_Id' => $reqid ));
+        
+        $wpdb->update('requests', array( 'RS_Status' => '1' ), array( 'REQ_Id' => $reqid ));
+
+        //echo 'reqtype='.$reqtype; exit;
+
+        /*if($reqtype){*/
+
+                switch ($etype)
+                {
+                        case 1:
+                        $polid=$workflow->COM_Pretrv_POL_Id;
+                        break;
+
+                        case 2:
+                        $polid=$workflow->COM_Posttrv_POL_Id;
+                        break;
+
+                        case 3:
+                        $polid=$workflow->COM_Othertrv_POL_Id;
+                        break;
+
+                        case 5:
+                        $polid=$workflow->COM_Mileage_POL_Id;
+                        break;
+
+                        case 6:
+                        $polid=$workflow->COM_Utility_POL_Id;
+                        break;
+
+                }
+                        
+                // Retrieving my details
+			$mydetails=myDetails();
+			
+			switch ($polid)
+			{
+				//-------- employee -->  rep mngr  -->  finance
+				case 1:
+					
+					if($mydetails->EMP_Code==$mydetails->EMP_Reprtnmngrcode)
+					{						
+						//mail to accounts
+						//notify($expreqcode, $etype, 1);
+						
+						// insert into request_status
+                                                $wpdb->insert('request_status', array( 'REQ_Id' => $reqid, 'EMP_Id' => $empuserid, 'REQ_Status' => 2 ));
+		
+					}
+					else
+					{						
+						//mail to reporting manager
+						//notify($expreqcode, $etype, 2);
+					}	
+				
+				break;
+				
+				
+				
+				
+				//  employee --> rep mngr 
+				case 3:
+									
+					if($mydetails->EMP_Code==$mydetails->EMP_Reprtnmngrcode)
+					{
+						// mail to himself saying that he can make the journey
+						//notify($expreqcode, $etype, 19);
+						
+						// insert into request_status
+                                                $wpdb->insert('request_status', array( 'REQ_Id' => $reqid, 'EMP_Id' => $empuserid, 'REQ_Status' => 2 ));
+						
+                                                $wpdb->update('requests', array( 'REQ_Status' => 2),array('REQ_Id' => $reqid));
+					}
+					else
+					{
+						//mail to reporting manager
+						//notify($expreqcode, $etype, 2);
+					}	
+				
+				
+				break;
+				
+				//--------- employee --> finance --> rep mngr
+				case 2:
+					
+					if($mydetails->EMP_Code==$mydetails->EMP_Reprtnmngrcode)
+					{
+						//mail to finance
+						//notify($expreqcode, $etype, 1);
+					}
+					else
+					{
+						//mail to finance
+						//notify($expreqcode, $etype, 20);
+					}
+									
+				break;
+				
+				
+				//--------- employee  --> finance
+				case 4:	
+					
+					//mail to finance
+					//notify($expreqcode, $etype, 20);
+				
+				break;
+				
+				
+			}
+			
+		
+		/*}*/
+		
+		
+		
+			
+		//header("location:$filename?msg=1&reqid=$reqid");exit;	
+
+
+        }   
     
     function send_emp_note(){
         global $wpdb;

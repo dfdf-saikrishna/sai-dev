@@ -106,7 +106,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <p id="p-info"></p>
             </div>
             <div style="margin-top:60px;">
-            <form id="request_form" name="input" action="#" method="post">
+            <form id="request_edit_form" name="input" action="#" method="post">
             <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
                   <thead class="cf">
                     <tr>
@@ -204,6 +204,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </br><span class="red" id="show-exceed"></span>
                         <input type="hidden" value="1" name="ectype" id="ectype"/>
                         <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
+                        <input type="hidden" value="<?php echo $rowrequest->RD_Id; ?>" name="rdids[]"/>
+                        <input type="hidden" name="action" id="send_pre_travel_request_edit" value="send_pre_travel_request_edit">
+                        <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" id="reqid"/>
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                     </tr>
@@ -215,6 +218,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     } ?>
                   </tbody>
                 </table>
+                <input type="hidden" id="hidrowno" name="hidrowno" value="<?php echo $rows-1; ?>" />
                 <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
                 

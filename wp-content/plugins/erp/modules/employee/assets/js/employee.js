@@ -16,8 +16,9 @@
      
             // Travel Requests
             $( '.pre-travel-request' ).on( 'click', '#reset', this.travelRequest.reset );
-            $( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
-            //$( '.pre-travel-request').on( 'submit', '#request_form', this.travelRequest.create );
+            //$( '.pre-travel-request').on( 'click', '#submit-pre-travel-request', this.travelRequest.create );
+            $( '.pre-travel-request').on( 'submit', '#request_form', this.travelRequest.create );
+            $( '.pre-travel-request').on( 'submit', '#request_edit_form', this.travelRequest.edit );
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
@@ -184,31 +185,15 @@
                     }
                 });
             },
-            create: function() {
+            create: function(e) {
+                e.preventDefault();
                 $('.erp-loader').show();
                 $('#submit-pre-travel-request').addClass('disabled');
-                //alert("rest");
-                //console.log("result");
-                //return false;
-                //WeDevs_CRP_EMP.department.reload();
-                //alert("test");
                 wp.ajax.send( 'send_pre_travel_request', {
-                    data: {
-                        txtCost : $('#txtCost').val(),
-                        txtDate : $('#txtDate1').val(),
-                        txtaExpdesc : $('#txtaExpdesc1').val(),
-                        selExpcat : $('#selExpcat1').val(),
-                        selModeofTransp : $('#selModeofTransp1').val(),
-                        txtdist : $('#txtdist1').val(),
-                        textBillNo : $('#textBillNo1').val(),
-                        txtStartDate : $('#txtStartDate1').val(),
-                        txtEndDate : $('#txtEndDate1').val(),
-                        ectype: $('#ectype').val(),
-                        expenseLimit: $('#expenseLimit').val(),
-                        from: $('#from1').val(),
-                        to: $('#to1').val()
-                    },
+                      data: $(this).serialize(),
                     success: function(resp) {
+                        console.log("success");
+                        console.log(resp);
                         $('.erp-loader').hide();
                         $('#submit-pre-travel-request').removeClass('disabled');
                         switch(resp.status){
@@ -235,6 +220,49 @@
                         }
                     },
                     error: function(error) {
+                        console.log("failure");
+                        console.log( error );
+                    }
+                });
+                
+           },
+           
+           edit: function(e) {
+                e.preventDefault();
+                $('.erp-loader').show();
+                $('#submit-pre-travel-request').addClass('disabled');
+                wp.ajax.send( 'send_pre_travel_edit_request', {
+                      data: $(this).serialize(),
+                    success: function(resp) {
+                        console.log("success");
+                        console.log(resp);
+                        $('.erp-loader').hide();
+                        $('#submit-pre-travel-request_edit').removeClass('disabled');
+                        switch(resp.status){
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log("failure");
                         console.log( error );
                     }
                 });
