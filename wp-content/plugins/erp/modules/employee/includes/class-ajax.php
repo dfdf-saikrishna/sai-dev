@@ -639,13 +639,13 @@ class Ajax_Handler {
 	
 	$cnt=count($wpdb->get_results("SELECT RD_Id FROM request_details WHERE REQ_Id='$reqid' AND RD_Status=1"));
                                 
-        $selreq		=	$wpdb->get_results("SELECT req.REQ_Code FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' and req.REQ_Id=re.REQ_Id AND RE_Status=1 AND REQ_Active=1 and re.EMP_Id='$empuserid'");
+        $selreq		=	$wpdb->get_row("SELECT req.REQ_Code FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' and req.REQ_Id=re.REQ_Id AND RE_Status=1 AND REQ_Active=1 and re.EMP_Id='$empuserid'");
 	
 	$expreqcode	=	$selreq->REQ_Code;
         
         if($etype=="" || $reqid=="" || $expreqcode==""){
-	
-		//header("location:$filename?msg=2&reqid=$reqid");exit;
+		$response = array('status'=>'failure','message'=>"Some fields went missing. Please enable javascript in your browser and try again");
+                $this->send_success($response);
 	
 	}else {
 	
@@ -667,7 +667,8 @@ class Ajax_Handler {
 		
 		
 		if($checked){
-			//header("location:$filename?msg=2&reqid=$reqid");exit;
+                        $response = array('status'=>'failure','message'=>"Some fields went missing. Please enable javascript in your browser and try again");
+                        $this->send_success($response);
 		}
 		
 		
@@ -862,17 +863,8 @@ class Ajax_Handler {
 
                     //$rate ? $rate="'".$rate."'" : $rate="NULL";	
 
-                    //$this->send_success($dateformat);
                     $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
                     $rdid=$wpdb->insert_id;
-
-
-
-
-
-
-
-
 
             } // end of for loop
 		
@@ -995,9 +987,8 @@ class Ajax_Handler {
 		/*}*/
 		
 		
-		$this->send_success($polid);
-			
-		//header("location:$filename?msg=1&reqid=$reqid");exit;	
+		$response = array('status'=>'success','message'=>"You have successfully update this Request");
+                $this->send_success($response);
 
 
         }
@@ -1020,17 +1011,13 @@ class Ajax_Handler {
 		
                 $wpdb->update('request_details', array( 'RD_Status' => 9),array('RD_Id' => $deleteRowbutton,'REQ_Id' => $reqid,'RD_Status' => 1));
 
-		//$msg=3;
-                $this->send_success("3");
+		$response = array('status'=>'success','message'=>"Request details deleted successfully");
+                $this->send_success($response);
 	} else {
 	
-		//$msg=6;
-                $this->send_success("6");
+		$response = array('status'=>'failure','message'=>"Error in removing request details. Please try again.");
+                $this->send_success($response);
 	}
-	
-	
-	$this->send_success("success");
-	//header("location:$filename?msg=$msg&reqid=$reqid");exit;
     }
     
     function send_emp_note(){

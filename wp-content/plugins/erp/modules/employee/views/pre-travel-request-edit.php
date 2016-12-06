@@ -168,7 +168,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                         ?>
                     <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="erp-leave-date-field" readonly="readonly"' : 'class="erp-leave-date-field"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
+                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="" readonly="readonly"' : 'class="erp-leave-date-field"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
                       <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
                       <input type="text" name="textBillNo[]" id="textBillNo<?php echo $rows; ?>" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
@@ -209,7 +209,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input type="hidden" name="action" id="send_pre_travel_request_edit" value="send_pre_travel_request_edit">
                         <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" id="reqid"/>
                         </span></td>
-                      <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
+                      <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)" <?php echo ($disabled) ? 'disabled="disabled" ' : ' title="Get Quote"'; ?>>Get Quote</button></td>
                       <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row" <?php echo ($disabled) ? 'disabled="disabled" ' : ' title="delete row"'; ?> ><i class="fa fa-times"></i></button></td>
                     </tr>
                     <?php 

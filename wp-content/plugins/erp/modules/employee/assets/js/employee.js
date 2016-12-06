@@ -242,20 +242,12 @@
                         $('.erp-loader').hide();
                         $('#submit-pre-travel-request_edit').removeClass('disabled');
                         switch(resp.status){
-                            case 'info':
-                                $('#p-info').html(resp.message);
-                                $('#info').show();
-                                $("#info").delay(5000).slideUp(200);
-                                break;
-                            case 'notice':
-                                $('#p-notice').html(resp.message);
-                                $('#notice').show();
-                                $("#notice").delay(5000).slideUp(200);
-                                break;
                             case 'success':
                                 $('#p-success').html(resp.message);
                                 $('#success').show();
                                 $("#success").delay(5000).slideUp(200);
+                                //$( 'body' ).load( window.location.href + '.pre-travel-request' );
+                                location.reload()
                                 break;
                             case 'failure':
                                 $('#p-failure').html(resp.message);
@@ -282,21 +274,13 @@
                         console.log(resp);
                         $('.erp-loader').hide();
                         $('#submit-pre-travel-request_edit').removeClass('disabled');
-                        switch(resp.status){
-                            case 'info':
-                                $('#p-info').html(resp.message);
-                                $('#info').show();
-                                $("#info").delay(5000).slideUp(200);
-                                break;
-                            case 'notice':
-                                $('#p-notice').html(resp.message);
-                                $('#notice').show();
-                                $("#notice").delay(5000).slideUp(200);
-                                break;
+                        switch(resp.status){                         
                             case 'success':
                                 $('#p-success').html(resp.message);
                                 $('#success').show();
                                 $("#success").delay(5000).slideUp(200);
+                                //$( 'body' ).load( window.location.href + '.pre-travel-request' );
+                                location.reload()
                                 break;
                             case 'failure':
                                 $('#p-failure').html(resp.message);
