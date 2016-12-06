@@ -29,6 +29,7 @@ class Ajax_Handler {
         // PreTravelRequest
         $this->action( 'wp_ajax_send_pre_travel_request', 'send_pre_travel_request' );
         $this->action( 'wp_ajax_send_pre_travel_request_edit', 'send_pre_travel_request_edit' );
+        $this->action( 'wp_ajax_pre-travel-request-delete', 'pre_travel_request_delete' );
         $this->action( 'wp_ajax_send-emp-note', 'send_emp_note' );
         $this->action( 'wp_ajax_get-exp-cat', 'get_exp_cat' );
         $this->action( 'wp_ajax_get-mode', 'get_mode' );
@@ -773,11 +774,9 @@ class Ajax_Handler {
                          
         }        
                         // insert those newly added row details if any 
-		
-	$this->send_success($cnt); 	
         if($hidrowno != $cnt){
            
-
+            
             for($i=$cnt;$i<$hidrowno;$i++)
             {	
 
@@ -790,7 +789,7 @@ class Ajax_Handler {
                     } else {
 
                             $dateformat=$date[$i];
-                            $dateformat=explode("/",$dateformat);
+                            $dateformat=explode("-",$dateformat);
                             $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];				
 
                     }
@@ -830,13 +829,13 @@ class Ajax_Handler {
                             if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
 
 
-                            $to[$i] ? $to[$i]="'".$to[$i]."'" : $to[$i]="NULL";
+                            $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
 
-                            $selStayDur[$i] ? $selStayDur[$i]="'".$selStayDur[$i]."'" : $selStayDur[$i]="NULL";
+                            $selStayDur[$i] ? $selStayDur[$i]="".$selStayDur[$i]."" : $selStayDur[$i]="NULL";
 
-                            $txtdist[$i] ? $txtdist[$i]="'".$txtdist[$i]."'" : $txtdist[$i]="NULL";
+                            $txtdist[$i] ? $txtdist[$i]="".$txtdist[$i]."" : $txtdist[$i]="NULL";
 
-                            $textBillNo[$i] ? $textBillNo[$i]="'".$textBillNo[$i]."'" : $textBillNo[$i]="NULL";
+                            $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
 
 
                             $desc	=	addslashes($txtaExpdesc[$i]);
@@ -863,7 +862,7 @@ class Ajax_Handler {
 
                     //$rate ? $rate="'".$rate."'" : $rate="NULL";	
 
-
+                    //$this->send_success($dateformat);
                     $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
                     $rdid=$wpdb->insert_id;
 
@@ -881,7 +880,7 @@ class Ajax_Handler {
 	} // end of outer most if loop
 
         // update new details
-		
+        
         $wpdb->update('request_status', array( 'RS_Status' => '2' ), array( 'REQ_Id' => $reqid ));
         
         $wpdb->update('requests', array( 'REQ_Status' => '1' ), array( 'REQ_Id' => $reqid ));
@@ -889,7 +888,7 @@ class Ajax_Handler {
         //echo 'reqtype='.$reqtype; exit;
 
         /*if($reqtype){*/
-
+                $workflow = workflow();
                 switch ($etype)
                 {
                         case 1:
@@ -916,12 +915,12 @@ class Ajax_Handler {
                         
                 // Retrieving my details
 			$mydetails=myDetails();
-			
+                        
 			switch ($polid)
 			{
 				//-------- employee -->  rep mngr  -->  finance
 				case 1:
-					
+				
 					if($mydetails->EMP_Code==$mydetails->EMP_Reprtnmngrcode)
 					{						
 						//mail to accounts
@@ -996,12 +995,43 @@ class Ajax_Handler {
 		/*}*/
 		
 		
-		
+		$this->send_success($polid);
 			
 		//header("location:$filename?msg=1&reqid=$reqid");exit;	
 
 
-        }   
+        }
+        
+    function pre_travel_request_delete(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $empuserid = $_SESSION['empuserid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+	
+	$reqid	=	$posted['req_id'];
+	
+	$deleteRowbutton	=	$posted['id'];
+	
+	//$msg=0;
+	
+	//echo $reqid; exit;
+                    
+	if($selsql=$wpdb->get_row("SELECT req.REQ_Id FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empuserid' AND COM_Id='$compid' AND re.RE_Status=1 AND req.REQ_Active=1")){
+		
+                $wpdb->update('request_details', array( 'RD_Status' => 9),array('RD_Id' => $deleteRowbutton,'REQ_Id' => $reqid,'RD_Status' => 1));
+
+		//$msg=3;
+                $this->send_success("3");
+	} else {
+	
+		//$msg=6;
+                $this->send_success("6");
+	}
+	
+	
+	$this->send_success("success");
+	//header("location:$filename?msg=$msg&reqid=$reqid");exit;
+    }
     
     function send_emp_note(){
         global $wpdb;

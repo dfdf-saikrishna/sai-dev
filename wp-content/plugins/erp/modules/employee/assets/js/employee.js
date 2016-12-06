@@ -122,15 +122,17 @@
                                     optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
                                 });
                                 var rowCount = $('#table-pre-travel tr').length;
+                                $('#hidrowno').val(rowCount);
                                 $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#table-pre-travel tr').last().after('<tr>\n\
                                 <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
-                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea></td>\n\
-                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsCat+'\n\
-                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp1" class=""><option value="">Select</option>'+optionsMode+'\n\
-                                <td data-title="Place"><input  name="from[]" id="from1" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
-                                <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
-                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\
+                                <td><button type="button" value="" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-times"></i></button></td></tr>');
                                 $( '.erp-leave-date-field' ).datepicker({
                                     dateFormat: 'dd-mm-yy',
                                     changeMonth: true,
@@ -270,7 +272,44 @@
                 
            },
            delete: function(){
-             alert("delete");  
+              wp.ajax.send( 'pre-travel-request-delete', {
+                    data: {
+                      id : $(this).val(),
+                      req_id : $('#reqid').val(), 
+                    },
+                    success: function(resp) {
+                        console.log("success");
+                        console.log(resp);
+                        $('.erp-loader').hide();
+                        $('#submit-pre-travel-request_edit').removeClass('disabled');
+                        switch(resp.status){
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log("failure");
+                        console.log( error );
+                    }
+                });
            },
             
         },

@@ -168,13 +168,13 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                         ?>
                     <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate1" <?php echo $disabled ? 'class="form-control" readonly="readonly"' : 'class="pretraveldate form-control"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
-                      <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
-                      <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
+                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="erp-leave-date-field" readonly="readonly"' : 'class="erp-leave-date-field"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
+                      <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
+                      <input type="text" name="textBillNo[]" id="textBillNo<?php echo $rows; ?>" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
-                      <td data-title="Description"><textarea name="txtaExpdesc[]" <?php echo $disabled ? 'readonly="readonly"':'';?> id="txtaExpdesc1" class="" autocomplete="off"><?php echo stripslashes($rowrequest->RD_Description); ?></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
+                      <td data-title="Description"><textarea name="txtaExpdesc[]" <?php echo $disabled ? 'readonly="readonly"':'';?> id="txtaExpdesc<?php echo $rows; ?>" class="" autocomplete="off"><?php echo stripslashes($rowrequest->RD_Description); ?></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
                       <td data-title="Category"><input type="hidden" <?php if($disabled){?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" value="<?php echo $rowrequest->EC_Id?>" <?php } ?>/>
-                          <select <?php if($disabled){?> disabled="disabled" <?php } else ?> name="selExpcat[]" id="selExpcat1" class="">
+                          <select <?php if($disabled){?> disabled="disabled" <?php } else ?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selexpcat as $rowexpcat)
@@ -186,7 +186,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </select></td>
                       <td data-title="Category"><input type="hidden" <?php if($disabled){ ?> name="selModeofTransp[]" id="selModeofTransp<?php echo $rows; ?>" value="<?php echo $rowrequest->MOD_Id; ?>" <?php } ?> />
                         <span id="modeoftr<?php echo $rows; ?>1acontent">
-                        <select <?php if($disabled){ ?> disabled="disabled" <?php } else ?> name="selModeofTransp[]"  id="selModeofTransp1" class="">
+                        <select <?php if($disabled){ ?> disabled="disabled" <?php } else ?> name="selModeofTransp[]"  id="selModeofTransp<?php echo $rows; ?>" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selmode as $rowsql)
