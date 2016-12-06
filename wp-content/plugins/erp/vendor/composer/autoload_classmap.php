@@ -444,6 +444,12 @@ return array(
     'WeDevs\\ERP\\Company\\Departments_List_Table' => $baseDir . '/modules/company/includes/class-deaprtment-table-list.php',
     'WeDevs\\ERP\\Company\\Departments' => $baseDir . '/modules/company/includes/class-departments.php',
     
+    'WeDevs\\ERP\\Company\\CostCenter_List_Table' => $baseDir . '/modules/company/includes/class-cost-center-table-list.php',
+    'WeDevs\\ERP\\Company\\CostCenter' => $baseDir . '/modules/company/includes/class-costcenter.php',
+    
+    'WeDevs\\ERP\\Company\\Projectcodes_List_Table' => $baseDir . '/modules/company/includes/class-projectcode-table-list.php',
+    'WeDevs\\ERP\\Company\\Projectcode' => $baseDir . '/modules/company/includes/class-projectcode.php',
+    
     'WeDevs\\ERP\\Company\\ExpenseGrade_List_Table' => $baseDir . '/modules/company/includes/class-expensegradelimits_table.php',
     'WeDevs\\ERP\\Company\\Default_expense' => $baseDir . '/modules/company/includes/class-defaultexp-table.php',
     'WeDevs\\ERP\\Company\\Mileage_List_Table' => $baseDir . '/modules/company/includes/class-mileagetable-list.php',

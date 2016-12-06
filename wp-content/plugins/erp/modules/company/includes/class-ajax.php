@@ -89,8 +89,52 @@ use Hooker;
         //Travel DEsk
         $this->action('wp_ajax_traveldesk_create', 'traveldesk_create');
         $this->action('wp_ajax_traveldesk_get', 'traveldesk_get');
+        //Project Code
+        $this->action('wp_ajax_projectcode_create', 'projectcode_create');
+        $this->action('wp_ajax_projectcode_get', 'projectcode_get');
+        //costcenter
+        $this->action('wp_ajax_costcenter_create', 'costcenter_create');
+        $this->action('wp_ajax_costcenter_get', 'costcenter_get');
     }
-    //desgination_createfunctions
+    //costcenter
+    public function costcenter_create() {
+        //$this->send_success('lakshmi');
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
+        $posted = array_map('strip_tags_deep', $_POST);
+        $costcenter= costcenter_create($posted);
+        $costcenterdata = $posted;
+        //echo $posted;die;
+        $this->send_success($costcenterdata);
+    }
+
+    public function costcenter_get() {
+        global $wpdb;
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $response = $wpdb->get_row("SELECT * FROM cost_center WHERE CC_Id = $id");
+        $this->send_success($response);
+    }
+    //costcenter
+    public function projectcode_create() {
+        //$this->send_success('lakshmi');
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
+        $posted = array_map('strip_tags_deep', $_POST);
+        $projectcode= projectcode_create($posted);
+        $projectcodedata = $posted;
+        //echo $posted;die;
+        $this->send_success($projectcodedata);
+    }
+
+    public function projectcode_get() {
+        global $wpdb;
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $response = $wpdb->get_row("SELECT * FROM project_code WHERE PC_Id = $id");
+        $this->send_success($response);
+    }
+    //grades createfunctions
     public function grades_create() {
         //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
         unset($_POST['_wp_http_referer']);

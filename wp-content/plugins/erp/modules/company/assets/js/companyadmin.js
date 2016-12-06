@@ -15,39 +15,46 @@
         initialize: function () {
             //alert("sdasdadas");
             // Import Excel
-            $( 'body').on( 'click', '#crp_import_excel', this.Emp.import );
-            
+            $('body').on('click', '#crp_import_excel', this.Emp.import);
+
             // Dasboard Overview
 
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.mark-read', this.dashboard.markAnnouncementRead );
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', 'a.view-full', this.dashboard.viewAnnouncement );
-            $( 'ul.erp-dashboard-announcement' ).on( 'click', '.announcement-title a', this.dashboard.viewAnnouncementTitle );
-			
-            $( '.erp-hr-company' ).on( 'click', 'a#erp-companyemployee-new', this.companyEmployee.create );
-            $( '.erp-hr-company' ).on( 'change', '#selectEmployee', this.companyEmployee.view );
+            $('ul.erp-dashboard-announcement').on('click', 'a.mark-read', this.dashboard.markAnnouncementRead);
+            $('ul.erp-dashboard-announcement').on('click', 'a.view-full', this.dashboard.viewAnnouncement);
+            $('ul.erp-dashboard-announcement').on('click', '.announcement-title a', this.dashboard.viewAnnouncementTitle);
+
+            $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
+            $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
             //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
-            $( '.erp-hr-company' ).on( 'click', 'span.edit a', this.companyEmployee.edit );
-			$( 'body' ).on( 'click', 'a#company-emp-photo ', this.companyEmployee.setPhoto );
+            $('.erp-hr-company').on('click', 'span.edit a', this.companyEmployee.edit);
+            $('body').on('click', 'a#company-emp-photo ', this.companyEmployee.setPhoto);
             //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
-            $( '.erp-hr-company' ).on( 'click', 'a#erp-employee-print', this.companyEmployee.printData );
+            $('.erp-hr-company').on('click', 'a#erp-employee-print', this.companyEmployee.printData);
 
             //Mileage
             //$('body').on('click', 'a#erp-new-mileage', this.mileage.create);
             $('.erp-company-mileage').on('click', 'a#erp-new-mileage', this.mileage.create);
             $('.erp-company-mileage').on('click', 'span.edit a', this.mileage.edit);
-            
+
             //Grades
             $('.erp-company-grades').on('click', 'a#erp-new-grades', this.grades.create);
             $('.erp-company-grades').on('click', 'span.edit a', this.grades.edit);
 
-            
+
             //Designation
             $('body').on('click', 'a#erp-new-designations', this.designations.create);
             $('.erp-company-designations').on('click', 'span.edit a', this.designations.edit);
-            
+
             //Departments
             $('.erp-company-departments').on('click', 'a#erp-new-departments', this.departments.create);
             $('.erp-company-departments').on('click', 'span.edit a', this.departments.edit);
+            //cost center
+            $('.erp-company-costcenter').on('click', 'a#erp-new-costcenter', this.costcenter.create);
+            $('.erp-company-costcenter').on('click', 'span.edit a', this.costcenter.edit);
+            //Project Code
+            $('.erp-company-projectcode').on('click', 'a#erp-new-projectcode', this.projectcode.create);
+            $('.erp-company-projectcode').on('click', 'span.edit a', this.projectcode.edit);
+
 
             $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
             $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
@@ -73,7 +80,7 @@
             $('body').on('click', 'a#companyadmin-new', this.companyAdmin.create);
             $('.erp-hr-companyadmin').on('click', 'span.edit a', this.companyAdmin.edit);
             $('.erp-hr-companyadmin').on('click', 'span.delete a', this.companyAdmin.remove);
-            
+
             $('.erp-company-traveldesk').on('click', 'a#erp-new-traveldesk', this.traveldesk.create);
             $('.erp-company-traveldesk').on('click', 'span.edit a', this.traveldesk.edit);
             this.initTipTip();
@@ -100,19 +107,239 @@
                 $('.select2').select2();
             });
         },
-
-        
         Emp: {
-          import: function(){
-              $('.erp-loader').show();
-              $('#crp_import_excel').addClass('disabled');
-          }  
+            import: function () {
+                $('.erp-loader').show();
+                $('#crp_import_excel').addClass('disabled');
+            }
+        },
+          //  *****************************
+        //         costcenter add
+        //   *****************************
+        costcenter: {
+            reload: function () {
+                $('.erp-company-costcenter-wrap').load(window.location.href + ' .erp-company-costcenter-wrap-inner');
+            },
+            /**
+             project code   modal
+             */
+            create: function (e) {
+                //alert('test');
+                if (typeof e !== 'undefined') {
+                    //e.preventDefault();
+                }
+                if (typeof wpErpCompany.costcenter_empty === 'undefined') {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpCompany.popup.costcenter_title,
+                    button: wpErpCompany.popup.costcenter_submit,
+                    id: "erp-new-costcenter-popup",
+                    extraClass: 'smaller',
+                    content: wperp.template('costcenter-create')(wpErpCompany.costcenter_empty).trim(),
+                    //content: '<h1>Test</h1>',
+                    /**
+                     * Handle the onsubmit function
+                     */
+                    onSubmit: function (modal) {
+                        $('button[type=submit]', '.erp-modal').attr('disabled', 'disabled');
+                        wp.ajax.send('costcenter_create', {
+                            data: this.serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                switch (response.status) {
+                            case 'success':
+                                $('#p-success').html(response.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(response.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                $('.erp-modal-backdrop, .erp-modal').find('.erp-loader').addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+            edit: function (e) {
+                e.preventDefault();
+                var self = $(this);
+                //alert("edit");
+                $.erpPopup({
+                    title: wpErpCompany.popup.costcenter_edit,
+                    button: wpErpCompany.popup.update,
+                    id: 'erp-costcenter-edit',
+                    extraClass: 'smaller',
+                    //content: wperp.template('costcenter-create')().trim(),
+                    onReady: function () {
+                        //alert('dfhdvj');
+                        var modal = this;
+                        $('header', modal).after($('<div class="loader"></div>').show());
+                        wp.ajax.send('costcenter_get', {
+                            data: {
+                                id: self.data('id'),
+                                _wpnonce: wpErpCompany.nonce
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                switch (response.status) {
+                            case 'success':
+                                $('#p-success').html(response.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(response.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                                var html = wp.template('costcenter-create')(response);
+                                $('.content', modal).html(html);
+                                $('.loader', modal).remove();
+                            }
+                        });
+                    },
+                    onSubmit: function (modal) {
+                        modal.disableButton();
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function (response) {
+                                WeDevs_ERP_COMPANY.costcenter.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                modal.showError(error);
+                            }
+                        });
+                    }
+                });
+            },
+        },
+         //  *****************************
+        //         projectcode add
+        //   *****************************
+        projectcode: {
+            reload: function () {
+                $('.erp-company-projectcode-wrap').load(window.location.href + ' .erp-company-projectcode-wrap-inner');
+            },
+            /**
+             project code   modal
+             */
+            create: function (e) {
+                //alert('test');
+                if (typeof e !== 'undefined') {
+                    //e.preventDefault();
+                }
+                if (typeof wpErpCompany.projectcode_empty === 'undefined') {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpCompany.popup.projectcode_title,
+                    button: wpErpCompany.popup.projectcode_submit,
+                    id: "erp-new-projectcode-popup",
+                    extraClass: 'smaller',
+                    content: wperp.template('project-create')(wpErpCompany.projectcode_empty).trim(),
+                    //content: '<h1>Test</h1>',
+//                    onReady: function () {
+//                        WeDevs_ERP_COMPANY.initDateField();
+//                    },
+                    /**
+                     * Handle the onsubmit function
+                     */
+                    onSubmit: function (modal) {
+                        $('button[type=submit]', '.erp-modal').attr('disabled', 'disabled');
+                        wp.ajax.send('projectcode_create', {
+                            data: this.serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                WeDevs_ERP_COMPANY.projectcode.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                $('.erp-modal-backdrop, .erp-modal').find('.erp-loader').addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+            edit: function (e) {
+                e.preventDefault();
+                var self = $(this);
+                //alert("edit");
+                $.erpPopup({
+                    title: wpErpCompany.popup.projectcode_edit,
+                    button: wpErpCompany.popup.update,
+                    id: 'erp-projectcode-edit',
+                    extraClass: 'smaller',
+                    //content: wperp.template('projectcode-create')().trim(),
+                    onReady: function () {
+                        //alert('dfhdvj');
+                        var modal = this;
+                        $('header', modal).after($('<div class="loader"></div>').show());
+                        wp.ajax.send('projectcode_get', {
+                            data: {
+                                id: self.data('id'),
+                                _wpnonce: wpErpCompany.nonce
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                var html = wp.template('project-create')(response);
+                                $('.content', modal).html(html);
+                                $('.loader', modal).remove();
+//                                WeDevs_ERP_COMPANY.initDateField();
+//
+//                                $('li[data-selected]', modal).each(function () {
+//                                    var self = $(this),
+//                                            selected = self.data('selected');
+//
+//                                    if (selected !== '') {
+//                                        self.find('select').val(selected).trigger('change');
+//                                    }
+//                                });
+                            }
+                        });
+                    },
+                    onSubmit: function (modal) {
+                        modal.disableButton();
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function (response) {
+                                WeDevs_ERP_COMPANY.projectcode.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                modal.showError(error);
+                            }
+                        });
+                    }
+                });
+            },
         },
         
         //  *****************************
-        //         Desination add
+        //        Department add
         //   *****************************
-         departments: {
+        departments: {
             reload: function () {
                 $('.erp-company-departments-wrap').load(window.location.href + ' .erp-company-departments-wrap-inner');
             },
@@ -131,8 +358,8 @@
                     title: wpErpCompany.popup.departments_title,
                     button: wpErpCompany.popup.departments_submit,
                     id: "erp-new-departments-popup",
+                    extraClass: 'smaller',
                     content: wperp.template('department-create')(wpErpCompany.departments_empty).trim(),
-                   
                     //content: '<h1>Test</h1>',
 //                    onReady: function () {
 //                        WeDevs_ERP_COMPANY.initDateField();
@@ -160,14 +387,15 @@
                     }
                 });
             },
-                edit: function (e) {
+            edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpCompany.popup.departments_edit,
-                    button: wpErpCompany.popup.departments_update,
+                    button: wpErpCompany.popup.update,
                     id: 'erp-departments-edit',
+                    extraClass: 'smaller',
                     //content: wperp.template('departments-create')().trim(),
                     onReady: function () {
                         //alert('dfhdvj');
@@ -214,10 +442,10 @@
                 });
             },
         },
-           //  *****************************
+        //  *****************************
         //         Desination add
         //   *****************************
-         designations: {
+        designations: {
             reload: function () {
                 $('.erp-company-designations-wrap').load(window.location.href + ' .erp-company-designations-wrap-inner');
             },
@@ -236,8 +464,8 @@
                     title: wpErpCompany.popup.designation_title,
                     button: wpErpCompany.popup.designation_submit,
                     id: "erp-new-designations-popup",
+                    extraClass: 'smaller',
                     content: wperp.template('designation-create')(wpErpCompany.designation_empty).trim(),
-                   
                     //content: '<h1>Test</h1>',
 //                    onReady: function () {
 //                        WeDevs_ERP_COMPANY.initDateField();
@@ -265,14 +493,15 @@
                     }
                 });
             },
-                edit: function (e) {
+            edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpCompany.popup.designation_edit,
-                    button: wpErpCompany.popup.designation_update,
+                    button: wpErpCompany.popup.update,
                     id: 'erp-designations-edit',
+                    extraClass: 'smaller',
                     //content: wperp.template('desgination-create')().trim(),
                     onReady: function () {
                         //alert('dfhdvj');
@@ -309,7 +538,7 @@
                 });
             },
         },
-             //  *****************************
+        //  *****************************
         //         Grades add
         //   *****************************
         grades: {
@@ -331,8 +560,8 @@
                     title: wpErpCompany.popup.gardes_title,
                     button: wpErpCompany.popup.gardes_submit,
                     id: "erp-new-grades-popup",
+                    extraClass: 'smaller',
                     content: wperp.template('grades-create')(wpErpCompany.grades_empty).trim(),
-                   
 //                    //content: '<h1>Test</h1>',
 //                    onReady: function () {
 //                        WeDevs_ERP_COMPANY.initDateField();
@@ -360,14 +589,15 @@
                     }
                 });
             },
-                edit: function (e) {
+            edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpCompany.popup.gardes_edit,
-                    button: wpErpCompany.popup.grades_update,
+                    button: wpErpCompany.popup.update,
                     id: 'erp-grades-edit',
+                    extraClass: 'smaller',
                     //content: wperp.template('grades-create')().trim(),
                     onReady: function () {
                         //alert('dfhdvj');
@@ -405,7 +635,7 @@
                 });
             },
         },
-         //  *****************************
+        //  *****************************
         //        Travel Desk
         //   *****************************
         traveldesk: {
@@ -427,8 +657,8 @@
                     title: wpErpCompany.popup.traveldesk_title,
                     button: wpErpCompany.popup.traveldesk_submit,
                     id: "erp-new-traveldesk-popup",
+                    extraClass: 'smaller',
                     content: wperp.template('traveldesk-create')(wpErpCompany.traveldesk_empty).trim(),
-                   
                     //content: '<h1>Test</h1>',
                     onReady: function () {
                         WeDevs_ERP_COMPANY.initDateField();
@@ -456,14 +686,15 @@
                     }
                 });
             },
-                edit: function (e) {
+            edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
                 //alert("edit");
                 $.erpPopup({
                     title: wpErpCompany.popup.traveldesk_edit,
-                    button: wpErpCompany.popup.traveldesk_update,
+                    button: wpErpCompany.popup.update,
                     id: 'erp-traveldesk-edit',
+                    extraClass: 'smaller',
                     //content: wperp.template('traveldesk-create')().trim(),
                     onReady: function () {
                         //alert('dfhdvj');
@@ -502,7 +733,7 @@
                 });
             },
         },
-         //  *****************************
+        //  *****************************
         //         Mileage add
         //   *****************************
         mileage: {
@@ -524,8 +755,8 @@
                     title: wpErpCompany.popup.mileage_title,
                     button: wpErpCompany.popup.mileage_submit,
                     id: "erp-new-mileage-popup",
+                    extraClass: 'smaller',
                     content: wperp.template('mileage-create')(wpErpCompany.mileage_empty).trim(),
-                   
                     //content: '<h1>Test</h1>',
                     onReady: function () {
                         WeDevs_ERP_COMPANY.initDateField();
@@ -553,7 +784,7 @@
                     }
                 });
             },
-                edit: function (e) {
+            edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
                 //alert("edit");
@@ -561,6 +792,7 @@
                     title: wpErpCompany.popup.mileage_edit,
                     button: wpErpCompany.popup.mileage_update,
                     id: 'erp-mileage-edit',
+                    extraClass: 'smaller',
                     //content: wperp.template('mileage-create')().trim(),
                     onReady: function () {
                         //alert('dfhdvj');
@@ -611,7 +843,6 @@
             PreTrvPol: function () {
 
                 wp.ajax.send('save-PreTrvPol', {
-
                     data: {
                         select: $('#selPreTrvPol').val()
                     },
@@ -1247,7 +1478,7 @@
                         }
                     });
                 }
-         },
+            },
         },
         companyEmployee: {
             /**
