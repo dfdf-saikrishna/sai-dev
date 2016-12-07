@@ -35,7 +35,7 @@ function isApprover()
         //print_r( $mydetails);die;
         $rcode=$mydetails->EMP_Code;
        // print_r($rcode);die;
-	$selrow=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' AND EMP_Status=1");
+	$selrow=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Reprtnmngrcode='$rcode' OR EMP_Funcrepmngrcode='$rcode' AND EMP_Status=1");
         //print_r( $selrow);die;
 	return $selrow;
 
