@@ -132,7 +132,7 @@ class Finance_Approvers_List extends \WP_List_Table
      */
     function column_empname_empcode($item)
     {
-        ($item['EMP_Access']==1) ? $active='<img src='.WPERP_COMPANY_ASSETS.'/img/on.png title="active" alt="active" />' : $active='<img src='.WPERP_COMPANY_ASSETS.'/img/off.png title="blocked" alt="blocked" />';
+        ($item['EMP_Access']==1) ? $active='<img src='.WPERP_COMPANY_ASSETS.'/img/on.png title="active" alt="active" width=10 height=10/>' : $active='<img src='.WPERP_COMPANY_ASSETS.'/img/off.png title="blocked" alt="blocked" width=10 height=10 />';
 						
         if($item['EMP_AccountsApprover']==1)
         $acc='<img src='.WPERP_COMPANY_ASSETS.'/img/acc-apprv-icon.png title="finance approver" alt="finance approver" width=10 height=10 />';
@@ -148,7 +148,7 @@ class Finance_Approvers_List extends \WP_List_Table
        
         return sprintf('%s %s',
            // $image,
-            $active.$acc."<a href='admin-employees-display.php?empid=$item[EMP_Id]'>".$item['EMP_Name']."</a></br>".$item['EMP_Code'],
+            $active.$acc.'<a href="admin-employees-display.php?empid=$item[EMP_Id]">'.$item['EMP_Name'].'</a></br>'.$item['EMP_Code'],
             $this->row_actions($actions)
         );
     }
@@ -164,6 +164,7 @@ class Finance_Approvers_List extends \WP_List_Table
     function column_rep_manager($item){
         $compid = $_SESSION['compid'];
         global $wpdb;
+        $found = 0;
         if($selrepmng=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Code='$item[EMP_Reprtnmngrcode]' AND COM_Id='$compid'"))
         {
             $repMngid		=	$selrepmng->EMP_Id;

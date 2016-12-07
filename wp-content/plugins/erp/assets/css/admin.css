@@ -12,6 +12,17 @@
   box-shadow: 0 1px 0 #ba281e !important;
   text-shadow: 0 -1px 1px #ba281e, 1px 0 1px #ba281e, 0 1px 1px #ba281e, -1px 0 1px #ba281e !important;
 }
+.erp-button-success {
+  background: #36BE47 !important;
+  border-color: #36BE47 #36BE47 #36BE47 !important;
+  color: white !important;
+  -webkit-box-shadow: 0 1px 0 #36BE47 !important;
+  -moz-box-shadow: 0 1px 0 #36BE47 !important;
+  -o-box-shadow: 0 1px 0 #36BE47 !important;
+  -ms-box-shadow: 0 1px 0 #36BE47 !important;
+  box-shadow: 0 1px 0 #36BE47 !important;
+  text-shadow: 0 -1px 1px #36BE47, 1px 0 1px #36BE47, 0 1px 1px #36BE47, -1px 0 1px #36BE47 !important;
+}
 .crm-dashboard .badge-container {
   margin-bottom: 40px;
 }
@@ -1563,6 +1574,12 @@ span.green {
   margin-top: 1px;
 }
 .erp-hr-company table.wp-list-table .column-name img {
+  float: left;
+  margin-right: 10px;
+  margin-top: 1px;
+}
+
+.erp-hr-companyadmin table.wp-list-table img {
   float: left;
   margin-right: 10px;
   margin-top: 1px;

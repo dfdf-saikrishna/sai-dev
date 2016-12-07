@@ -34,6 +34,19 @@ class Employee_List_Table extends \WP_List_Table
             'ajax'     => false
         ) );
     }
+    
+    function extra_tablenav( $which ) {
+        if ( $which != 'top' ) {
+            return;
+        }?>
+        <div class="alignleft actions">
+        <a href="#" id="set_finance" class="button button-primary">Set as Finance Approver</a> 
+        <a href="#" id="remove_finance" class="button erp-button-danger">Remove as Finance Approver</a>
+        <a href="#" id="allow_access" class="button erp-button-success">Allow Access</a> 
+        <a href="#" id="remove_access" class="button erp-button-danger">Block Access</a>
+        </div>
+        <?php
+    }
 
     /**
      * [REQUIRED] this is a default column renderer
@@ -142,7 +155,13 @@ class Employee_List_Table extends \WP_List_Table
      */
     function column_name($item)
     {
-		//var_dump($item);
+        global $acc;
+        global $active;
+	($item['EMP_Access']==1) ? $active='<img src='.WPERP_COMPANY_ASSETS.'/img/on.png title="active" alt="active" width=10 height=10 />' : $active='<img src='.WPERP_COMPANY_ASSETS.'/img/off.png title="blocked" alt="blocked" width=10 height=10 />';
+						
+        if($item['EMP_AccountsApprover']==1)
+        $acc='<img src='.WPERP_COMPANY_ASSETS.'/img/acc-apprv-icon.png title="finance approver" alt="finance approver" width=10 height=10 />';
+        
         $actions = array(
             'edit' => sprintf('<a href="?page=menu" data-id=%s>%s</a>', $item['EMP_Id'], __('Edit', 'employees_table_list')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['EMP_Id'], __('Delete', 'custom_table_example')),
@@ -157,7 +176,7 @@ class Employee_List_Table extends \WP_List_Table
         // return sprintf( '%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s',$image,$item['EMP_Name'], $this->row_actions($actions), erp_company_url_single_employeeview(''),'');
     return sprintf('%s %s %s',
             $image,
-            '<a href="'.erp_company_url_single_employeeview('').'"><strong>' . $item['EMP_Name'] . '</strong></a>',
+            $active.$acc.'<a href="'.erp_company_url_single_employeeview('').'"><strong>' . $item['EMP_Name'] . '</strong></a>',
             $this->row_actions($actions)
         );
     }

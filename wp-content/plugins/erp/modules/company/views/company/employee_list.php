@@ -11,6 +11,13 @@
         }
         ?>
     </h2>
+    <!-- Messages -->
+    <div style="display:none" id="failure" class="notice notice-error is-dismissible">
+        <p id="p-failure"></p>
+    </div>
+    <div style="display:none" id="success" class="notice notice-success is-dismissible">
+        <p id="p-success"></p>
+    </div>
 	<?php
         $employee_table = new \WeDevs\ERP\Company\Employee_List_Table();
         $employee_table->prepare_items();

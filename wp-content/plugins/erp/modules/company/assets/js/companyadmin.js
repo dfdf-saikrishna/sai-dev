@@ -48,7 +48,8 @@
             //Departments
             $('.erp-company-departments').on('click', 'a#erp-new-departments', this.departments.create);
             $('.erp-company-departments').on('click', 'span.edit a', this.departments.edit);
-
+            
+            //Employee
             $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
             $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
             //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
@@ -56,6 +57,8 @@
             $('body').on('click', 'a#company-emp-photo ', this.companyEmployee.setPhoto);
             //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
             $('.erp-hr-company').on('click', 'a#erp-employee-print', this.companyEmployee.printData);
+            $('body').on('click', '#allow_access', this.companyEmployee.allowAccess);
+            $('body').on('click', '#remove_access', this.companyEmployee.removeAccess);
 
             // Workflow
             $('.workflow-update').on('click', '#selPreTrvPol-update', this.workflow.PreTrvPol);
@@ -68,6 +71,8 @@
             $('body').on('change', '#select-finance-approver', this.finance.setAmount);
             $('body').on('click', '#submit_app_limit', this.finance.subAmount);
             $('body').on('click', '#remove_finance', this.finance.removieFinance);
+            $('body').on('click', '#set_finance', this.finance.setFinance);
+            
 
             // Company Admin
             $('body').on('click', 'a#companyadmin-new', this.companyAdmin.create);
@@ -835,6 +840,49 @@
                     }
                 });
             },
+            setFinance: function () {
+                var values = new Array();
+                $.each($("input[name='id[]']:checked"), function () {
+                    values.push($(this).val());
+                });
+                wp.ajax.send('set-finance-approver', {
+                    data: {
+                        select: values,
+                    },
+                    success: function (resp) {
+                        console.log(resp);
+                        WeDevs_ERP_COMPANY.finance.reload();
+                        switch (resp.status) {
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+
+
+                    },
+                    error: function (resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                        console.log(resp);
+                    }
+                });
+            },
             removieFinance: function (e) {
                 var values = new Array();
                 $.each($("input[name='id[]']:checked"), function () {
@@ -1257,6 +1305,92 @@
              */
             reload: function () {
                 $('.erp-hr-employees-wrap').load(window.location.href + ' .erp-hr-employees-wrap-inner');
+            },
+            allowAccess: function () {
+                var values = new Array();
+                $.each($("input[name='id[]']:checked"), function () {
+                    values.push($(this).val());
+                });
+                wp.ajax.send('allow-access', {
+                    data: {
+                        select: values,
+                    },
+                    success: function (resp) {
+                        console.log(resp);
+                        WeDevs_ERP_COMPANY.finance.reload();
+                        switch (resp.status) {
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+
+
+                    },
+                    error: function (resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                        console.log(resp);
+                    }
+                });
+            },
+            removeAccess: function () {
+                var values = new Array();
+                $.each($("input[name='id[]']:checked"), function () {
+                    values.push($(this).val());
+                });
+                wp.ajax.send('block-access', {
+                    data: {
+                        select: values,
+                    },
+                    success: function (resp) {
+                        console.log(resp);
+                        WeDevs_ERP_COMPANY.finance.reload();
+                        switch (resp.status) {
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+
+
+                    },
+                    error: function (resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                        console.log(resp);
+                    }
+                });
             },
             /**
              * Set photo popup

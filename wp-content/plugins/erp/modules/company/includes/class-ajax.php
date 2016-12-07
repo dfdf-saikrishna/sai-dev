@@ -28,11 +28,13 @@ use Hooker;
      */
     public function __construct() {
 
-        // Company Employee Create
+        // Company Employee
         $this->action('wp_ajax_companyemployee_create', 'companyemployee_create');
         $this->action('wp_ajax_companyemployee_get', 'companyemployee_get');
         $this->action('wp_ajax_companyemployee-delete', 'companyemployee_remove');
         $this->action('wp_ajax_companyemployee_view', 'companyemployee_view');
+        $this->action('wp_ajax_allow-access', 'allow_access');
+        $this->action('wp_ajax_block-access', 'block_access');
 
         // Company Admin
         $this->action('wp_ajax_companyadmin_create', 'companyadmin_create');
@@ -53,6 +55,8 @@ use Hooker;
         $this->action('wp_ajax_get-limit-amount', 'get_limit_amount');
         $this->action('wp_ajax_set-limit-amount', 'set_limit_amount');
         $this->action('wp_ajax_remove-finance-approver', 'remove_finance_approver');
+        $this->action('wp_ajax_set-finance-approver', 'set_finance_approver');
+       
 
         // Employee
         $this->action('wp_ajax_erp-hr-employee-new', 'employee_create');
@@ -313,26 +317,89 @@ use Hooker;
             }
         }
     }
+    
+    public function set_finance_approver(){
+        global $wpdb;
+        global $blocked;
+        $adminid = $_SESSION['adminid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        $array = $data['select'];
+        foreach ($array as $value) {
+          
+            $selemp=$wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
+            if ($selemp->EMP_Access==1) {
+                
+                if(!$sel=$wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")){
+                
+                $wpdb->insert('accounts_set_approver', array('EMP_Id' => $value, 'COM_Id' => $compid, 'ASA_SetBy' => $adminid));
+                $wpdb->update('employees', array('EMP_AccountsApprover' => 1), array('EMP_Id' => $value));
+                
+                }
+            } else {
+                $blocked.=$selemp->EMP_Code.", ";
+            }
+        }
+        $blocked=rtrim($blocked,", ");
+        if($blocked)
+        $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
+        else
+        $response = array('status' => 'success', 'message' => "Employee set as finance approver successfully");
+        $this->send_success($response);
+        exit;
+    }
 
     public function remove_finance_approver() {
         global $wpdb;
+        global $blocked;
         $adminid = $_SESSION['adminid'];
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
         $array = $data['select'];
         foreach ($array as $value) {
+            $selemp=$wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
             if ($wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")) {
                 $wpdb->update('accounts_set_approver', array('ASA_Set' => 2, 'ASA_ResetDate' => 'NOW()', 'ASA_ResetBy' => $adminid), array('EMP_Id' => $value, 'ASA_Set' => 1));
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 0), array('EMP_Id' => $value));
-                $response = array('status' => 'success', 'message' => "Employee removed as finance approver successfully");
-                $this->send_success($response);
-                exit;
+                
             } else {
-                $response = array('status' => 'failure', 'message' => "Error!! Please try again");
-                $this->send_success($response);
-                exit;
+                $blocked.=$selemp->EMP_Code.", ";
             }
+            
         }
+        if($blocked)
+        $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
+        else
+        $response = array('status' => 'success', 'message' => "Employee removed as finance approver successfully");
+        $this->send_success($response);
+        exit;
+    }
+    
+    public function allow_access(){
+        global $wpdb;
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        $array = $data['select'];
+        foreach ($array as $value) {
+            $wpdb->update('employees', array('EMP_Access' => 1), array('EMP_Id' => $value));
+        }
+        $response = array('status' => 'success', 'message' => "Employee Activated Successfully");
+        $this->send_success($response);
+        exit;
+    }
+    
+    public function block_access(){
+        global $wpdb;
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        $array = $data['select'];
+        foreach ($array as $value) {
+            $wpdb->update('employees', array('EMP_Access' => 2), array('EMP_Id' => $value));
+        }
+        $response = array('status' => 'success', 'message' => "Employee Blocked Successfully");
+        $this->send_success($response);
+        exit;
     }
 
     public function save_PreTrvPol() {
