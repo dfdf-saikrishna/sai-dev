@@ -155,8 +155,8 @@ class Employee_List_Table extends \WP_List_Table
      */
     function column_name($item)
     {
-        global $acc;
-        global $active;
+        $acc = "";
+        $active = "";
 	($item['EMP_Access']==1) ? $active='<img src='.WPERP_COMPANY_ASSETS.'/img/on.png title="active" alt="active" width=10 height=10 />' : $active='<img src='.WPERP_COMPANY_ASSETS.'/img/off.png title="blocked" alt="blocked" width=10 height=10 />';
 						
         if($item['EMP_AccountsApprover']==1)

@@ -80,7 +80,7 @@
                   $count = count($getrepm);
                   ?>
            <label for="grade">Reporting Manager Code</label>
-           <select required id="txtRepmngrcode" name="companyemployee[txtRepmngrcode]" tabindex="-1" aria-hidden="true">
+           <select id="txtRepmngrcode" name="companyemployee[txtRepmngrcode]" tabindex="-1" aria-hidden="true">
            <option value="">-Select Reporting Manager -</option>
                <?php for($i=0; $i<$count; $i++){?>
                <option value="<?php echo $getrepm[$i]->EMP_Code; ?>"><?php echo $getrepm[$i]->EMP_Code ."---". $getrepm[$i]->EMP_Name; ?></option>
@@ -93,7 +93,7 @@
                   $count = count($getfrepm);
                   ?>
            <label for="RFM">Reporting Functional Manager Code</label>
-           <select required id="txtRepfuncmngrcode" name="companyemployee[txtRepfuncmngrcode]" tabindex="-1" aria-hidden="true">
+           <select id="txtRepfuncmngrcode" name="companyemployee[txtRepfuncmngrcode]" tabindex="-1" aria-hidden="true">
            <option value="">-Select Functional Reporting Manager -</option>
                <?php for($i=0; $i<$count; $i++){?>
                <option value="<?php echo $getfrepm[$i]->EMP_Code; ?>"><?php echo $getfrepm[$i]->EMP_Code ."---". $getfrepm[$i]->EMP_Name; ?></option>
