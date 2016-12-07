@@ -197,25 +197,68 @@ class Emp_Requests_List extends \WP_List_Table {
         function column_rep_manager_code($item) {
             global $wpdb;
             global $approvals;
-            if ($item['REQ_Type'] == 2 || $item['REQ_Type'] == 4 || $item['REQ_Type'] == 5) {
 
-                $approvals = $this->approvals(5);
+            if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['POL_Id'] ==5){
+
+                $approvals=approvals(5);
+
             } else {
 
                 // reporting manager status
 
-                if ($item['POL_Id'] != 4) {
-                    if ($repmngrStatus = $wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=1")) {
-                        $approvals = $this->approvals($repmngrStatus->REQ_Status);
-                    } else {
-                        $approvals = $this->approvals(1);
+                if($item['POL_Id'] !=4){
+
+                    if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=1"))
+                    {
+                        $approvals=approvals($repmngrStatus->REQ_Status);
                     }
+                    else
+                    {
+                        $approvals=approvals(1);
+                    }
+
                 } else {
 
-                    $approvals = $this->approvals(5);
+                    $approvals=approvals(5);
+
                 }
+
             }
             return $approvals;
+        }
+        
+        function column_skiplevel_manager_approval($item){
+
+            global $wpdb;
+            global $approvals;
+
+            if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['REQ_Type']==3){
+
+                $approvals=approvals(5);
+
+            } else {
+
+                // skiplevel manager status
+                //var_dump($item['POL_Id']);
+                if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
+
+                    if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
+                    {
+                        $approvalss=approvals($repmngrStatus->REQ_Status);
+                    }
+                    else
+                    {
+                        $approvalss=approvals(1);
+                    }
+
+                } else {
+
+                    $approvalss=approvals(5);
+
+                }
+
+            }
+            return $approvalss;
         }
 
         function column_finance_approval($item) {
@@ -373,6 +416,7 @@ class Emp_Requests_List extends \WP_List_Table {
                 'request_code' => __('Request Code', 'emp_req_table_list'),
                 'total_cost' => __('Total Cost', 'emp_req_table_list'),
                 'rep_manager_code' => __('Reporting Manager Approval', 'emp_req_table_list'),
+                'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'emp_req_table_list'),
                 'finance_approval' => __('Finance Approval', 'emp_req_table_list'),
                 'request_date' => __('Request Date', 'emp_req_table_list'),
                 'claim_status' => __('Claim Status', 'emp_req_table_list'),
@@ -393,6 +437,7 @@ class Emp_Requests_List extends \WP_List_Table {
                 'request_code' => array('Request Code', true),
                 'total_cost' => array('Total Cost', true),
                 'rep_manager_code' => array('Reporting Manager Approval', true),
+                'skiplevel_manager_approval' => array('SkipLevel Manager Approval', true),
                 'finance_approval' => array('Finance Approval', true),
                 'request_date' => array('Request Date', true),
                 'claim_status' => array('Claim Status', true)
