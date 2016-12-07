@@ -5,27 +5,27 @@ $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
 $reqid = $_GET['reqid'];
             
-if(!$row=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE RT_Id=1 AND req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empuserid' AND REQ_Active=1 AND re.RE_Status=1"))
-{
-	header("location:employee-dashboard.php?msg=1"); exit;
-}
+//if(!$row=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE RT_Id=1 AND req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empuserid' AND REQ_Active=1 AND re.RE_Status=1"))
+//{
+//	header("location:employee-dashboard.php?msg=1"); exit;
+//}
 
-$claim=0;
-
- if($row->REQ_Claim){
- 	
-	$claim=1;
-	
-	header("location:employee-dashboard.php?msg=1"); exit;
-	
-	
- } else {
-	 
-	 $claim=0;
-	 
-	 $url='action.php?reqid='.$reqid;
-	 
- }
+//$claim=0;
+//
+// if($row->REQ_Claim){
+// 	
+//	$claim=1;
+//	
+//	header("location:employee-dashboard.php?msg=1"); exit;
+//	
+//	
+// } else {
+//	 
+//	 $claim=0;
+//	 
+//	 $url='action.php?reqid='.$reqid;
+//	 
+// }
 $empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
 $repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
@@ -79,7 +79,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <td><?php echo $empdetails->DES_Name; ?></td>
                 <td>Reporting Manager Name</td>
                 <td>:</td>
-                <td><?php echo $repmngname->EMP_Name;?></td>
+                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
               </tr>
               <tr>
                 <td width="20%">Employee Department</td>
@@ -124,7 +124,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                         $rows=1;
 
-                        $selrequest=$wpdb->get_results("SELECT * FROM request_details WHERE REQ_Id='$row->REQ_Id' AND RD_Status=1 ORDER BY RD_Dateoftravel ASC");
+                        $selrequest=$wpdb->get_results("SELECT * FROM request_details WHERE REQ_Id='$reqid' AND RD_Status=1 ORDER BY RD_Dateoftravel ASC");
 
                         $rdidarry=array();
 

@@ -59,7 +59,7 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
                 <td><?php echo $empdetails->DES_Name; ?></td>
                 <td>Reporting Manager Name</td>
                 <td>:</td>
-                <td><?php echo $repmngname->EMP_Name;?></td>
+                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
               </tr>
               <tr>
                 <td width="20%">Employee Department</td>

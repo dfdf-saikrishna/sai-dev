@@ -107,23 +107,23 @@ class Emp_Requests_List extends \WP_List_Table {
             global $href;
             switch ($item['RT_Id']) {
                 case 1:
-                    $href = "admin-employee-pre-travel-request-details.php";
+                    $href = "/wp-admin/admin.php?page=View-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 2:
-                    $href = "admin-employee-post-travel-request-details.php";
+                    $href = "/wp-admin/admin.php?page=View-Post-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 3:
-                    $href = "admin-employee-other-expense-details.php";
+                    $href = "/wp-admin/admin.php?page=View-other-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 5:
-                    $href = "admin-employee-mileage-expense-details.php";
+                    $href = "/wp-admin/admin.php?page=View-Mileage-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 6:
-                    $href = "admin-employee-utility-expense-details.php";
+                    $href = "/wp-admin/admin.php?page=View-Utility-Request&reqid=".$item['REQ_Id'];
                     break;
             }
             switch ($item['REQ_Type']) {
@@ -155,7 +155,7 @@ class Emp_Requests_List extends \WP_List_Table {
                     break;
             }
 
-            return "<a href='$href?reqid=$item[REQ_Id]'>$item[REQ_Code]</a>&nbsp;$type";
+            return "<a href='$href'>$item[REQ_Code]</a>&nbsp;$type";
         }
 
         function column_total_cost($item) {
