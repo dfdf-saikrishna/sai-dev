@@ -4,7 +4,7 @@ global $wpdb;
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
 $empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
-$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
+$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
 $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
 $reqid  =   $_GET['reqid'];
@@ -57,9 +57,13 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
                 <td>Employee Designation </td>
                 <td>:</td>
                 <td><?php echo $empdetails->DES_Name; ?></td>
+                
+                <?php if($repmngname){?>
                 <td>Reporting Manager Name</td>
                 <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
+                <td><?php echo $repmngname->EMP_Name;?></td>
+                <? } ?>
+                
               </tr>
               <tr>
                 <td width="20%">Employee Department</td>
@@ -109,6 +113,7 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
                     foreach($selsql as $rowsql){
                     ?>
                     <tr>
+                      <input type="hidden" id="et" value="1">
                       <td data-title="Date" style="width: 9%;"><?php echo date('d-M-Y',strtotime($rowsql->RD_Dateoftravel));?></td>
                       <td data-title="Description"><?php echo stripslashes($rowsql->RD_Description); ?></td>
                       <td data-title="Category"><?php echo $rowsql->EC_Name; ?></td>
@@ -425,7 +430,7 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
     <button type="button" name="reset" id="reset" class="button">Reset</button>
     </div>-->
     <!-- Edit Buttons -->
-    <?php _e(editActions(1));?>
+    <?php _e(Actions(1));?>
     
 </div>
 </div>

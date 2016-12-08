@@ -639,7 +639,11 @@ function requestDetails($et){
             }
             else
             {
-                    $approvals=approvals(5);
+                    switch ($expPol){
+                        case 1:
+                            $approvals=approvals(1);
+                    }
+                    //$approvals=approvals(5);
 
                     $fin_block.=$approvals;
             }
@@ -727,268 +731,278 @@ function requestDetails($et){
   echo '</tr>';
 echo '</table>';
 }
-function editActions($et){
+function Actions($et){
     global $wpdb;
     $reqid  =   $_GET['reqid'];
     $empuserid = $_SESSION['empuserid'];
     $compid = $_SESSION['compid'];
     $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
-//    $actionButtons='
-//	<div class="col-sm-3">
-//	</div>
-//	<div class="col-sm-3">
-//	  <div class="form-group">
-//		<button class="btn btn-success" type="submit" name="subApprove" onClick="return reqApprv()">Approve</button>
-//	  </div>
-//	</div>
-//	<div class="col-sm-3">
-//	  <div class="form-group">
-//		<button class="btn btn-danger" type="submit" name="subReject" onClick="return reqReject()">Reject</button>
-//	  </div>
-//	</div>
-//	<div class="col-sm-3">
-//	  <div class="form-group">
-//		<button class="btn btn-info btn-transparent"  type="button" onClick="window.history.back();">Back</button>
-//	  </div>
-//	</div>';
-	
-	//<input type="hidden" value="$et;" name="skiplevel" id="skiplevel"  />
-	
-//	if($approver)
-//	{
-//	
-//		$notmyreq=0;
-//                
-//		if($selreqs=$wpdb->get_row("SELECT EMP_Id FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND EMP_Id='$empuserid' AND req.REQ_Id='$reqid'")){
-//			
-//			$notmyreq=1;
-//		
-//		}
-//		
-//		switch ($expPol)
-//		{
-//			// employee --> rep manager --> finance
-//			
-//			case 1:
-//			
-//				//if its not my request
-//				if(!$notmyreq)
-//				{
-//                                    if($polId=="5"){
-//                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)) 
-//                                        {
-//
-//                                            echo $actionButtons;
-//
-//                                        }
-//                                    }
-//                                    //if its not my request and approval is waiting from rep manager
-//                                    
-//                                    else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")) 
-//                                    {
-//
-//                                            echo $actionButtons;
-//
-//                                    }
-//			
-//				}
-//				
-//			break;
-//			
-//			
-//			
-//			// employee --> finance --> rep manager
-//			
-//			case 2:
-//			
-//			
-//			//if its not my request
-//			if(!$notmyreq)
-//			{
-//				
-//				// check for finance approval
-//                            
-//				if($selFinStat=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=2 AND RS_Status=1")){
-//                                        if($polId=="5"){
-//                                            if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)){
-//                                               
-//						echo $actionButtons;
-//					
-//                                            }
-//                                        }
-//					//if its not my request and finance has apprvd & waiting for my approval
-//                                        
-//					else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")){
-//                                               
-//						echo $actionButtons;
-//					
-//					}
-//				
-//				}
-//				
-//				
-//			
-//			}
-//			
-//			break;
-//			
-//			// employee -- > approver
-//			case 3:
-//				
-//				//if its not my request
-//				if(!$notmyreq)
-//				{
-//                                        if($polId=="5" || $polId=="6"){
-//                                            if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)){
-//                                           
-//						echo $actionButtons;
-//					
-//                                            }
-//                                        }
-//					//if its not my request and approval is waiting from rep manager
-//					else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")){
-//                                            if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)){}
-//                                            else{
-//						echo $actionButtons;
-//                                            }
-//					}
-//			
-//				}
-//				
-//			break;
-//                        
-//                        // employee --> finance
-//			
-//			case 4:
-//			
-//				//if its not my request
-//				if(!$notmyreq)
-//				{
-//                                    if($polId=="5"){
-//                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)) 
-//                                        {
-//
-//                                            //echo $actionButtons;
-//
-//                                        }
-//                                    }
-//			
-//				}
-//				
-//			break;
-//                        
-//                        // Second Level Manager Request
-//                        case 5:
-//			
-//				//if its not my request
-//				if(!$notmyreq)
-//				{
-//					//if its not my request and approval is waiting from rep manager
-//					if(!($row->EMP_Reprtnmngrcode == $emp_code) || (in_array("'".$row->EMP_Reprtnmngrcode."'", $find_empcodes)) || ($row->EMP_Id==$empuserid)) 
-//					{
-//                                            
-//						echo $actionButtons;
-//					
-//					}
-//			
-//				}
-//				
-//			break;
-//			
-//			
-//		}
-//	
-//	
-//	}
-//	
-//	
-//	
-//}
-//
-//?>
-    <br />
-    <br />
-    <?php 	
 
-
-if($row)
-{
-
-	$editActbuttons='<br />
+    $actionButtons='<br />
         <div id="my_centered_buttons">
-            <a href="/wp-admin/admin.php?page=Pre-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+        <a href="" id="subApprove" class="button button-primary">Approve</a> 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" name="reject" id="reject" class="button erp-button-danger">Reject</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" name="back" id="reset" onClick="window.history.back();" class="button">Back</button>
         </div>';
-	
-	
-	// checking if the any details in this request has gone for booking tickets, then disable the 
-			
-		$sel = $wpdb->get_row("SELECT DISTINCT(req.REQ_Id) AS totalRequests FROM requests req, request_details rd, booking_status bs WHERE COM_Id='$compid' AND req.REQ_Id='$reqid' AND req.REQ_Id=rd.REQ_Id AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 LIMIT 1");
-		
-		$cntSel	=	count($sel);
-		
-		if($cntSel){
-		
-			$editActbuttons='<br />
-                        <div class="row">
-                        <div class="col-sm-3">
-                        </div>
-                          <div class="col-sm-3">
-                          <div class="form-group">
-                                <button name="buttnEdit" class="btn btn-theme" type="button" onclick="editTravelExpense('.$et.','.$reqid.');">EDIT</button>
-                                </div>
-                          </div>
-                          <div class="col-sm-3">
-                           <div class="form-group">
-                                <button class="btn btn-info btn-transparent"  type="button" onClick="window.history.back();">BACK</button>
-                                </div>
-                          </div>
-                        </div>';
-		
-		}
-	
-		
-		// if approved 
-		if($row->REQ_Status==2){
-			
-			$edit=0;
-			
-		} else {
-			
-			// if pending , if rejected
-			if($row->REQ_Status==1 ||$row->REQ_Status==3)
-			$edit=1;
-			
-		}
+    $approver = isApprover();
+    if($approver)
+    {       
+            $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+            $notmyreq=0;
 
-		
-		if($et==1)
-		{
-                        
-			if($selclaim=$wpdb->get_row("SELECT * FROM pre_travel_claim WHERE REQ_Id='$reqid'"))
-			$edit=0;
-			else
-			$edit=1;
-			
-			
-			
-		
-		}
-		
-		
+            if($selreqs=$wpdb->get_row("SELECT EMP_Id FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND EMP_Id='$empuserid' AND req.REQ_Id='$reqid'")){
+
+                    $notmyreq=1;
+
+            }
+            
+            $workflow = workflow();
+            switch ($et)
+            {
+                    case 1:
+                    $expPol=$workflow->COM_Pretrv_POL_Id;
+                    break;
+
+                    case 2:
+                    $expPol=$workflow->COM_Posttrv_POL_Id;
+                    break;
+
+                    case 3:
+                    $expPol=$workflow->COM_Othertrv_POL_Id;
+                    break;
+
+                    case 5:
+                    $expPol=$workflow->COM_Mileage_POL_Id;
+                    break;
+
+                    case 6:
+                    $expPol=$workflow->COM_Utility_POL_Id;
+                    break;
+            }
+            $mydetails = myDetails();
+            $emp_code=$mydetails->EMP_Code;
+            switch ($expPol)
+            {
+                    // employee --> rep manager --> finance
+                    
+                    case 1:
+                            
+                            //if its not my request
+                            if(!$notmyreq)
+                            {
+                                if($rowpol->POL_Id=="5"){
+                                    if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
+                                    {
+
+                                        echo $actionButtons;
+
+                                    }
+                                }
+                                //if its not my request and approval is waiting from rep manager
+
+                                else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")) 
+                                {
+                                    if(!($row->EMP_Funcrepmngrcode == $emp_code))
+                                        echo $actionButtons;
+
+                                }
+
+                            }
+
+                    break;
+
+
+
+                    // employee --> finance --> rep manager
+
+                    case 2:
+
+
+                    //if its not my request
+                    if(!$notmyreq)
+                    {
+
+                            // check for finance approval
+
+                            if($selFinStat=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=2 AND RS_Status=1")){
+                                    if($rowpol->POL_Id=="5"){
+                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){
+
+                                            echo $actionButtons;
+
+                                        }
+                                    }
+                                    //if its not my request and finance has apprvd & waiting for my approval
+
+                                    else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")){
+
+                                            echo $actionButtons;
+
+                                    }
+
+                            }
+
+
+
+                    }
+
+                    break;
+
+                    // employee -- > approver
+                    case 3:
+
+                            //if its not my request
+                            if(!$notmyreq)
+                            {
+                                    if($rowpol->POL_Id=="5" || $rowpol->POL_Id=="6"){
+                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){
+
+                                            echo $actionButtons;
+
+                                        }
+                                    }
+                                    //if its not my request and approval is waiting from rep manager
+                                    else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")){
+                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){}
+                                        else{
+                                            echo $actionButtons;
+                                        }
+                                    }
+
+                            }
+
+                    break;
+
+                    // employee --> finance
+
+                    case 4:
+
+                            //if its not my request
+                            if(!$notmyreq)
+                            {
+                                if($rowpol->POL_Id=="5"){
+                                    if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
+                                    {
+
+                                        //echo $actionButtons;
+
+                                    }
+                                }
+
+                            }
+
+                    break;
+
+                    // Second Level Manager Request
+                    case 5:
+
+                            //if its not my request
+                            if(!$notmyreq)
+                            {
+                                    //if its not my request and approval is waiting from rep manager
+                                    if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
+                                    {
+
+                                            echo $actionButtons;
+
+                                    }
+
+                            }
+
+                    break;
+
+
+            }
+
+
+    }
+    else{
 	
-		if($edit)
-		{
-			echo $editActbuttons;
-		}
 	
-			
-}
+	
+
+
+    	
+
+
+        if($row)
+        {
+            $editActbuttons='<br />
+            <div id="my_centered_buttons">
+                <a href="/wp-admin/admin.php?page=Pre-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+            </div>';
+
+
+            // checking if the any details in this request has gone for booking tickets, then disable the 
+
+            $sel = $wpdb->get_row("SELECT DISTINCT(req.REQ_Id) AS totalRequests FROM requests req, request_details rd, booking_status bs WHERE COM_Id='$compid' AND req.REQ_Id='$reqid' AND req.REQ_Id=rd.REQ_Id AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 LIMIT 1");
+
+            $cntSel	=	count($sel);
+
+            if($cntSel){
+
+                    $editActbuttons='<br />
+                    <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                      <div class="col-sm-3">
+                      <div class="form-group">
+                            <button name="buttnEdit" class="btn btn-theme" type="button" onclick="editTravelExpense('.$et.','.$reqid.');">EDIT</button>
+                            </div>
+                      </div>
+                      <div class="col-sm-3">
+                       <div class="form-group">
+                            <button class="btn btn-info btn-transparent"  type="button" onClick="window.history.back();">BACK</button>
+                            </div>
+                      </div>
+                    </div>';
+
+            }
+
+
+            // if approved 
+            if($row->REQ_Status==2){
+
+                    $edit=0;
+
+            } else {
+
+                    // if pending , if rejected
+                    if($row->REQ_Status==1 ||$row->REQ_Status==3)
+                    $edit=1;
+
+            }
+
+
+            if($et==1)
+            {
+
+                    if($selclaim=$wpdb->get_row("SELECT * FROM pre_travel_claim WHERE REQ_Id='$reqid'"))
+                    $edit=0;
+                    else
+                    $edit=1;
+
+            }
+
+
+
+            if($edit)
+            {
+                    echo $editActbuttons;
+            }
+
+        }
+    }
 
 }
 function chat_box($rn_status){

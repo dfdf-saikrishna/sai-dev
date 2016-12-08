@@ -23,6 +23,7 @@
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
+            $( 'body').on( 'click', 'a#subApprove', this.travelRequest.subApprove );
 
             // handle postbox toggle
             $('body').on( 'click', 'div.handlediv', this.handleToggle );
@@ -104,6 +105,32 @@
             reset: function() {
                 console.log("test");
                 $('#request_form')[0].reset();
+            },
+            subApprove: function(e){
+              e.preventDefault();
+              wp.ajax.send( 'approve-request', {
+                    data: {
+                        et    : $('#et').val(),
+                        empid : $('#emp_id').val(),
+                        req_id : $('#req_id').val(),
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                });
+              
+              
+              //alert(reqid);
             },
             addRow: function(){
                 var optionsCat;

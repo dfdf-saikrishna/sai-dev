@@ -325,7 +325,65 @@ class Emp_Requests_List extends \WP_List_Table {
         }
         
         function column_actions($item){
-            return '<a href="#" title="Approve"><span class="dashicons dashicons-yes"></a>';
+            $reqid = $item['REQ_Id'];
+            $empuserid = $_SESSION['empuserid'];
+            $compid = $_SESSION['compid'];
+            global $wpdb;
+            $expPol = isset($_REQUEST['selReqstatus']) ? $_REQUEST['selReqstatus'] : 0;
+            $approver = isApprover();
+            $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+            if($approver)
+            {       
+                $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+                $notmyreq=0;
+
+            if($selreqs=$wpdb->get_row("SELECT EMP_Id FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND EMP_Id='$empuserid' AND req.REQ_Id='$reqid'")){
+
+                    $notmyreq=1;
+
+            }
+            $workflow = workflow();
+            $mydetails = myDetails();
+            $emp_code=$mydetails->EMP_Code;
+            switch ($expPol)
+            {
+                    // employee --> rep manager --> finance
+                    
+                    case 1:
+                            
+                            //if its not my request
+                            if(!$notmyreq)
+                            {
+                                if($rowpol->POL_Id=="5"){
+                                    if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
+                                    {
+
+                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+
+                                    }
+                                    else
+                                    return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+                                }
+                                //if its not my request and approval is waiting from rep manager
+
+                                else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")) 
+                                {
+                                    if(!($row->EMP_Funcrepmngrcode == $emp_code))
+                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                    else
+                                    return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+                                }
+
+                            }
+
+                    break;
+            
+            
+                }
+            }
+            else{
+                return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+            }
         }
 
         function tdclaimapprovals($string) {
@@ -570,50 +628,5 @@ class Emp_Requests_List extends \WP_List_Table {
 
     }
 
-//}
 
-    /**
-     * Simple function that validates data and retrieve bool on success
-     * and error message(s) on error
-     *
-     * @param $item
-     * @return bool|string
-     */
-    function custom_table_example_validate_person($item) {
-        $messages = array();
-
-        if (empty($item['name']))
-            $messages[] = __('Name is required', 'custom_table_example');
-        if (!empty($item['email']) && !is_email($item['email']))
-            $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
-        if (!ctype_digit($item['age']))
-            $messages[] = __('Age in wrong format', 'custom_table_example');
-        //if(!empty($item['age']) && !absint(intval($item['age'])))  $messages[] = __('Age can not be less than zero');
-        //if(!empty($item['age']) && !preg_match('/[0-9]+/', $item['age'])) $messages[] = __('Age must be number');
-        //...
-
-        if (empty($messages))
-            return true;
-        return implode('<br />', $messages);
-    }
-
-    /**
-     * Do not forget about translating your plugin, use __('english string', 'your_uniq_plugin_name') to retrieve translated string
-     * and _e('english string', 'your_uniq_plugin_name') to echo it
-     * in this example plugin your_uniq_plugin_name == custom_table_example
-     *
-     * to create translation file, use poedit FileNew catalog...
-     * Fill name of project, add "." to path (ENSURE that it was added - must be in list)
-     * and on last tab add "__" and "_e"
-     *
-     * Name your file like this: [my_plugin]-[ru_RU].po
-     *
-     * http://codex.wordpress.org/Writing_a_Plugin#Internationalizing_Your_Plugin
-     * http://codex.wordpress.org/I18n_for_WordPress_Developers
-     */
-    function custom_table_example_languages() {
-        load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
-    }
-
-    add_action('init', 'custom_table_example_languages');
     

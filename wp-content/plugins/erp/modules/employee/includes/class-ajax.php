@@ -33,6 +33,7 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_send-emp-note', 'send_emp_note' );
         $this->action( 'wp_ajax_get-exp-cat', 'get_exp_cat' );
         $this->action( 'wp_ajax_get-mode', 'get_mode' );
+        $this->action( 'wp_ajax_approve-request', 'approve_request' );
         
         
         // Department
@@ -116,6 +117,76 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp_hr_script_reload', 'employee_template_refresh' );
         $this->action( 'wp_ajax_erp_hr_new_dept_tmp_reload', 'new_dept_tmp_reload' );
         $this->action( 'wp_ajax_erp-hr-holiday-delete', 'holiday_remove' );
+    }
+    
+    function approve_request(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $empuserid = $_SESSION['empuserid'];
+        $et = $posted['et'];
+        $empid = $posted['empid'];
+        $reqid = $posted['req_id'];
+        $request=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' AND COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.RE_Status=1");
+        $empid = $request->EMP_Id;
+        $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+        $polId = $rowpol->POL_Id;
+        $workflow = workflow();
+        switch($et)
+		{
+                case 1:
+                //pre travel
+                $expPol=$workflow->COM_Pretrv_POL_Id;
+                break;
+
+                case 2:
+                //post travel
+                $expPol=$workflow->COM_Posttrv_POL_Id;
+                break;
+
+                case 3:
+                //other travel
+                $expPol=$workflow->COM_Othertrv_POL_Id;
+                break;
+
+                case 5:
+                //mileage
+                $expPol=$workflow->COM_Mileage_POL_Id;
+                break;
+
+                case 6:
+                //utility
+                $expPol=$workflow->COM_Utility_POL_Id;
+                break;
+        }
+        switch ($expPol)
+	{
+            // emp --> rep mngr -->finance
+
+            case 1:
+
+                if($polId==5){
+                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 5));
+                    // mail to employee
+                    //notify($request['REQ_Code'], $request['RT_Id'], 3);
+
+                    // mail to accounts
+                    //notify($request['REQ_Code'], $request['RT_Id'], 4);
+                }
+                else{
+                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 1));
+
+                    // mail to employee
+                    //notify($request['REQ_Code'], $request['RT_Id'], 3);
+
+                    // mail to accounts
+                    //notify($request['REQ_Code'], $request['RT_Id'], 4);
+                }
+            break;
+        }
+        $response = array('status'=>'notice','message'=>"Request Approved Successfully");
+        $this->send_success($response);
+        
     }
     
     function send_pre_travel_request(){
