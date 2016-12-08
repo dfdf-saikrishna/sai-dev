@@ -325,7 +325,7 @@ use Hooker;
         $compid = $_SESSION['compid'];
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
-        $array = $data['select'];
+        $array = $data['select'];        
         foreach ($array as $value) {
           
             $selemp=$wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
@@ -336,6 +336,9 @@ use Hooker;
                 $wpdb->insert('accounts_set_approver', array('EMP_Id' => $value, 'COM_Id' => $compid, 'ASA_SetBy' => $adminid));
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 1), array('EMP_Id' => $value));
                 
+                $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
+                $user = get_user_by( 'id', intval( $user_id ) );
+                $user->add_role( 'finance' );   
                 }
             } else {
                 $blocked.=$selemp->EMP_Code.", ";
@@ -362,7 +365,9 @@ use Hooker;
             if ($wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")) {
                 $wpdb->update('accounts_set_approver', array('ASA_Set' => 2, 'ASA_ResetDate' => 'NOW()', 'ASA_ResetBy' => $adminid), array('EMP_Id' => $value, 'ASA_Set' => 1));
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 0), array('EMP_Id' => $value));
-                
+                $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
+                $user = get_user_by( 'id', intval( $user_id ) );
+                $user->remove_role( 'finance' );   
             } else {
                 $blocked.=$selemp->EMP_Code.", ";
             }

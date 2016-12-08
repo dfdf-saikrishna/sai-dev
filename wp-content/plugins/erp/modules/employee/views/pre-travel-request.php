@@ -84,7 +84,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
             <form id="request_form" name="input" action="#" method="post">
-            <table class="wp-list-table widefat striped admins" border="0" id="table1">
+            <table class="wp-list-table widefat striped admins table.erp-ac-transaction-table" border="0" id="table1">
                   <thead class="cf">
                     <tr>
                       <th class="column-primary">Date</th>
