@@ -408,6 +408,9 @@ class Finance_Requests_List extends \WP_List_Table {
 
 
                             }
+                            else{
+                                return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+                            }
 
 
                     break;
