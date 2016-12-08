@@ -107,7 +107,7 @@ class Finance_Requests_List extends \WP_List_Table {
             global $href;
             switch ($item['RT_Id']) {
                 case 1:
-                    $href = "/wp-admin/admin.php?page=View-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 2:
@@ -325,65 +325,127 @@ class Finance_Requests_List extends \WP_List_Table {
         }
         
         function column_actions($item){
-            $reqid = $item['REQ_Id'];
-            $empuserid = $_SESSION['empuserid'];
-            $compid = $_SESSION['compid'];
             global $wpdb;
+            $reqid = $item['REQ_Id'];
             $expPol = isset($_REQUEST['selReqstatus']) ? $_REQUEST['selReqstatus'] : 0;
-            $approver = isApprover();
-            $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
-            if($approver)
-            {       
-                $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
-                $notmyreq=0;
+            // checking reporting manager has approved ?
+            $repMngrApprvd=0;
 
-            if($selreqs=$wpdb->get_row("SELECT EMP_Id FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND EMP_Id='$empuserid' AND req.REQ_Id='$reqid'")){
+            if($selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND REQ_Status=2 AND RS_Status=1"))
+            $repMngrApprvd=1;
 
-                    $notmyreq=1;
+            // checking second level manager has approved ?
 
-            }
+            $secMngrApprvd=0;
+
+            if($selsecMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=5 AND REQ_Status=2 AND RS_Status=1"))
+            $secMngrApprvd=1;
+
+            // checking finance has approved ?
+
+            $finApprvd=0;
+
+            if($selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=2 AND REQ_Status IN (2,4) AND RS_Status=1"))
+            $finApprvd=1;
+            $limit=0;
             $workflow = workflow();
+            switch ($expPol)
+            {
+                    case 1:
+                    $expPol=$workflow->COM_Pretrv_POL_Id;
+                    break;
+
+                    case 2:
+                    $expPol=$workflow->COM_Posttrv_POL_Id;
+                    break;
+
+                    case 3:
+                    $expPol=$workflow->COM_Othertrv_POL_Id;
+                    break;
+
+                    case 5:
+                    $expPol=$workflow->COM_Mileage_POL_Id;
+                    break;
+
+                    case 6:
+                    $expPol=$workflow->COM_Utility_POL_Id;
+                    break;
+            }
             $mydetails = myDetails();
             $emp_code=$mydetails->EMP_Code;
             switch ($expPol)
             {
-                    // employee --> rep manager --> finance
-                    
-                    case 1:
-                            
-                            //if its not my request
-                            if(!$notmyreq)
-                            {
-                                if($rowpol->POL_Id=="5"){
-                                    if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
-                                    {
+                // employee --> rep manager --> finance
 
-                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                    case 1:
+                            //if its not my request and approval is waiting from sec manager
+                            if($secMngrApprvd) 
+                            {
+
+                                    if(!$finApprvd){
+
+                                            if(!$limit)
+                                            return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                            else
+                                            return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
 
                                     }
-                                    else
-                                    return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
-                                }
-                                //if its not my request and approval is waiting from rep manager
 
-                                else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")) 
-                                {
-                                    if(!($row->EMP_Funcrepmngrcode == $emp_code))
-                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
-                                    else
-                                    return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
-                                }
+
+                            }
+                            //if its not my request and approval is waiting from rep manager
+                            else if($repMngrApprvd) 
+                            {
+
+                                    if(!$finApprvd){
+
+                                            if(!$limit)
+                                            return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                            else
+                                            return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+
+                                    }
+
 
                             }
 
+
                     break;
-            
-            
-                }
+
+
+
+                    // employee --> finance --> rep manager
+
+                    case 2:
+
+                    // employee -- > finance
+                    case 4:
+                        if($secMngrApprvd) 
+                        {
+                            if(!$finApprvd){
+
+                                    if(!$limit)
+                                    return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                    else
+                                    return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+
+                            }
+                        }
+    //                    else if(!$secMngrApprvd){
+    //                        if(!$finApprvd){
+    //				
+    //				if(!$limit)
+    //				echo $actionButtons;
+    //				else
+    //				echo $limitFlag;
+    //				
+    //			}
+    //                    }
+
+                    break;
             }
-            else{
-                return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
-            }
+            
+           
         }
 
         function tdclaimapprovals($string) {
@@ -460,6 +522,10 @@ class Finance_Requests_List extends \WP_List_Table {
         {
             return '<input type="checkbox" id="checkbox" name="id[]" value="%s" />'; 
         }
+        
+        function column_emp_name($item){
+            return $item['EMP_Name'];
+        }
 
         /**
          * [REQUIRED] This method return columns to display in table
@@ -472,6 +538,7 @@ class Finance_Requests_List extends \WP_List_Table {
             $columns = array(
                 'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
                 'request_code' => __('Request Code', 'emp_req_table_list'),
+                'emp_name' => __('Employee Name', 'emp_req_table_list'),
                 'total_cost' => __('Total Cost', 'emp_req_table_list'),
                 'rep_manager_code' => __('Reporting Manager Approval', 'emp_req_table_list'),
                 'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'emp_req_table_list'),
@@ -493,6 +560,7 @@ class Finance_Requests_List extends \WP_List_Table {
         function get_sortable_columns() {
             $sortable_columns = array(
                 'request_code' => array('Request Code', true),
+                'emp_name' => array('Employee Name', true),
                 'total_cost' => array('Total Cost', true),
                 'rep_manager_code' => array('Reporting Manager Approval', true),
                 'skiplevel_manager_approval' => array('SkipLevel Manager Approval', true),
@@ -612,7 +680,7 @@ class Finance_Requests_List extends \WP_List_Table {
                     $i++;
                 }
                 $total_items = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) AS reqids, req.*,emp.* FROM requests req, request_employee re, employees emp " . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != $mydetails->EMP_Id AND re.EMP_Id = emp.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1"));
-                $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT (req.REQ_Id) AS reqids, req.*,emp.* FROM requests req, request_employee re, employees emp WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != $mydetails->EMP_Id AND re.EMP_Id = emp.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT (req.REQ_Id) AS reqids, req.*,emp.* FROM requests req, request_employee re, employees emp " . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != $mydetails->EMP_Id AND re.EMP_Id = emp.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
             } else {
                 $total_items = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) AS reqids, req.*,emp.* FROM requests req, request_employee re, employees emp WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != $mydetails->EMP_Id AND re.EMP_Id = emp.EMP_Id AND req.REQ_Active !=9 AND re.RE_Status=1 " . $query));
 
