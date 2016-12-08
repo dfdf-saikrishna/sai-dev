@@ -337,8 +337,8 @@ use Hooker;
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 1), array('EMP_Id' => $value));
                 
                 $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
-                $user = get_user_by( 'id', intval( $user_id ) );
-                $user->add_role( 'finance' );   
+                $user = get_user_by( 'id', intval( $user_id->user_id ) );
+                $user->add_role('finance');   
                 }
             } else {
                 $blocked.=$selemp->EMP_Code.", ";
@@ -366,8 +366,8 @@ use Hooker;
                 $wpdb->update('accounts_set_approver', array('ASA_Set' => 2, 'ASA_ResetDate' => 'NOW()', 'ASA_ResetBy' => $adminid), array('EMP_Id' => $value, 'ASA_Set' => 1));
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 0), array('EMP_Id' => $value));
                 $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
-                $user = get_user_by( 'id', intval( $user_id ) );
-                $user->remove_role( 'finance' );   
+                $user = get_user_by( 'id', intval( $user_id->user_id ) );
+                $user->remove_role('finance');   
             } else {
                 $blocked.=$selemp->EMP_Code.", ";
             }
