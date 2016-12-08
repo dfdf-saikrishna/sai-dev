@@ -21,7 +21,7 @@ $compid = $_SESSION['compid'];
 <div class="erp-employee-form">
     <input type="hidden" value="{{data.COM_Id}}" name="company[compid]" id="compid">
 <!--    <input type="hidden" value="{{data.ADM_Id}}" name="company[adminid]" id="adminid">-->
-    <input type="text" value="{{data.CC_Id}}" name="company[ccId]" id="ccId">
+    <input type="hidden" value="{{data.CC_Id}}" name="company[ccId]" id="ccId">
     <div class="row">
         <?php erp_html_form_label(__('CostCenter Code', 'erp'), 'costcenter-title', true); ?>
         <span class="field">

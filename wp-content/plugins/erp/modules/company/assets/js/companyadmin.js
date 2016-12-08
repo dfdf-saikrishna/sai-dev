@@ -16,6 +16,7 @@
             //alert("sdasdadas");
             // Import Excel
             $('body').on('click', '#crp_import_excel', this.Emp.import);
+            $('body').on('click', '#crp_import_pdf', this.gradelimitsupload.download);
 
             // Dasboard Overview
 
@@ -83,6 +84,9 @@
 
             $('.erp-company-traveldesk').on('click', 'a#erp-new-traveldesk', this.traveldesk.create);
             $('.erp-company-traveldesk').on('click', 'span.edit a', this.traveldesk.edit);
+            //employee grade limits edit
+            // $('body').on('click', 'span.edit a', this.gradelimits.create);
+            $('.erp-company-gradelimits').on('click', 'span.edit a', this.gradelimits.edit);
             this.initTipTip();
 
             // this.employee.addWorkExperience();
@@ -113,7 +117,105 @@
                 $('#crp_import_excel').addClass('disabled');
             }
         },
-          //  *****************************
+        gradelimitsupload: {
+            download: function () {
+                $('.erp-loader').show();
+                $('#crp_import_pdf').addClass('disabled');
+            }
+        },
+        //  *****************************
+        //         gradelimits add
+        //   *****************************
+        gradelimits: {
+            reload: function () {
+                $('.erp-company-gradelimits-wrap').load(window.location.href + ' .erp-company-gradelimits-wrap-inner');
+            },
+//             create: function (e) {
+//                //alert('test');
+//                if (typeof e !== 'undefined') {
+//                    //e.preventDefault();
+//                }
+//                if (typeof wpErpCompany.gradelimits_empty === 'undefined') {
+//                    //return;
+//                }
+//                $.erpPopup({
+//                    title: wpErpCompany.popup.gradelimits_title,
+//                    button: wpErpCompany.popup.gradelimits_submit,
+//                    id: "erp-new-gradelimits-popup",
+//                   // extraClass: 'smaller',
+//                    content: wperp.template('grade-limits')(wpErpCompany.gradelimits_empty).trim(),
+//                    //content: '<h1>Test</h1>',
+//                    /**
+//                     * Handle the onsubmit function
+//                     */
+//                    onSubmit: function (modal) {
+//                        $('button[type=submit]', '.erp-modal').attr('disabled', 'disabled');
+//                        wp.ajax.send('gradelimits_create', {
+//                            data: this.serialize(),
+//                            success: function (response) {
+//                                console.log(response);
+//                                modal.enableButton();
+//                                modal.closeModal();
+//                            },
+//                            error: function (error) {
+//                                modal.enableButton();
+//                                $('.erp-modal-backdrop, .erp-modal').find('.erp-loader').addClass('erp-hide');
+//                                modal.showError(error);
+//                                console.log(error);
+//                            }
+//                        });
+//                    }
+//                });
+//            },
+            edit: function (e) {
+                e.preventDefault();
+                var self = $(this);
+                //alert("edit");
+                $.erpPopup({
+                    title: wpErpCompany.popup.gradelimits_edit,
+                    button: wpErpCompany.popup.update,
+                    id: 'erp-gradelimits-edit',
+                    //extraClass: 'smaller',
+                    //content: wperp.template('gradelimits-create')().trim(),
+                    onReady: function () {
+                        //alert('dfhdvj');
+                        var modal = this;
+                        $('header', modal).after($('<div class="loader"></div>').show());
+                        wp.ajax.send('gradelimits_get', {
+                            data: {
+                                id: self.data('id'),
+                            },
+                            success: function (response) {
+                                //alert(response);
+                                //console.log(response);
+                                var html = wp.template('grade-limits')(response);
+                                $('.content', modal).html(html);
+                                $('.loader', modal).remove();
+                                //console.log(response);
+                            }
+                        });
+                    },
+                    onSubmit: function (modal) {
+                        modal.disableButton();
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function (response) {
+                                WeDevs_ERP_COMPANY.gradelimits.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                                //console.log(response);
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                modal.enableButton();
+                                modal.showError(error);
+                            }
+                        });
+                    }
+                });
+            },
+        },
+        //  *****************************
         //         costcenter add
         //   *****************************
         costcenter: {
@@ -148,17 +250,17 @@
                             success: function (response) {
                                 console.log(response);
                                 switch (response.status) {
-                            case 'success':
-                                $('#p-success').html(response.message);
-                                $('#success').show();
-                                $("#success").delay(5000).slideUp(200);
-                                break;
-                            case 'failure':
-                                $('#p-failure').html(response.message);
-                                $('#failure').show();
-                                $("#failure").delay(5000).slideUp(200);
-                                break;
-                        }
+                                    case 'success':
+                                        $('#p-success').html(response.message);
+                                        $('#success').show();
+                                        $("#success").delay(5000).slideUp(200);
+                                        break;
+                                    case 'failure':
+                                        $('#p-failure').html(response.message);
+                                        $('#failure').show();
+                                        $("#failure").delay(5000).slideUp(200);
+                                        break;
+                                }
                                 modal.enableButton();
                                 modal.closeModal();
                             },
@@ -194,17 +296,17 @@
                             success: function (response) {
                                 console.log(response);
                                 switch (response.status) {
-                            case 'success':
-                                $('#p-success').html(response.message);
-                                $('#success').show();
-                                $("#success").delay(5000).slideUp(200);
-                                break;
-                            case 'failure':
-                                $('#p-failure').html(response.message);
-                                $('#failure').show();
-                                $("#failure").delay(5000).slideUp(200);
-                                break;
-                        }
+                                    case 'success':
+                                        $('#p-success').html(response.message);
+                                        $('#success').show();
+                                        $("#success").delay(5000).slideUp(200);
+                                        break;
+                                    case 'failure':
+                                        $('#p-failure').html(response.message);
+                                        $('#failure').show();
+                                        $("#failure").delay(5000).slideUp(200);
+                                        break;
+                                }
                                 var html = wp.template('costcenter-create')(response);
                                 $('.content', modal).html(html);
                                 $('.loader', modal).remove();
@@ -229,7 +331,7 @@
                 });
             },
         },
-         //  *****************************
+        //  *****************************
         //         projectcode add
         //   *****************************
         projectcode: {
@@ -335,7 +437,6 @@
                 });
             },
         },
-        
         //  *****************************
         //        Department add
         //   *****************************

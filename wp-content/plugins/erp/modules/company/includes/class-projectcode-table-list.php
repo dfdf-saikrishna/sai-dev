@@ -53,9 +53,28 @@ class Projectcodes_List_Table extends \WP_List_Table {
     }
 
     function column_name($item) {
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        if ($cnt = count($wpdb->get_results("SELECT PC_Id FROM project_code WHERE PC_Id='$item[PC_Id]' AND COM_Id='$compid' AND PC_Active = 1"))) {
+            $cnt = count($wpdb->get_results("SELECT REQ_Id FROM requests WHERE PC_Id='$item[PC_Id]' AND COM_Id='$compid' AND REQ_Active != 9"));
+
+            if ($item['PC_Status'] == 1) {
+                if ($cnt > 0)
+                    $delete = sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['PC_Id'], __('Delete', 'project_table_list'));
+                else
+                    $delete = "";
+            }
+            else {
+
+                return approvals(5);
+            }
+        }
+
         $actions = array(
             'edit' => sprintf('<a href="?page=projects" data-id=%s">%s</a>', $item['PC_Id'], __('Edit', 'project_table_list')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['PC_Id'], __('Delete', 'project_table_list')),
+            'delete' => sprintf($delete),
+                        'close' => sprintf('<a href="?page=%s&action=close&id=%s">%s</a>', $_REQUEST['page'], $item['PC_Id'], __('Close', 'project_table_list')),
+
         );
         return sprintf('%s %s', '<a href="' . erp_company_url_single_projectcode($item['PC_Id']) . '"><strong>' . $item['PC_Code'] . '</strong></a>', $this->row_actions($actions)
                 // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
@@ -100,13 +119,13 @@ class Projectcodes_List_Table extends \WP_List_Table {
     function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('Project Code', 'project_table_list'),
             'code' => __('Project Name', 'project_table_list'),
             'plocation' => __('Project Location', 'project_table_list'),
             'pdesc' => __('Project Description', 'project_table_list'),
             'status' => __('Status', 'project_table_list'),
             'added_date' => __('Added Date', 'project_table_list'),
             'closed_date' => __('Closed Date', 'project_table_list'),
+            'name' => __('Project Code', 'project_table_list'),
         );
         return $columns;
         //return $columns;
@@ -140,7 +159,26 @@ class Projectcodes_List_Table extends \WP_List_Table {
                 $ids = implode(',', $ids);
 
             if (!empty($ids)) {
-                $wpdb->query("DELETE FROM $table_name WHERE PC_Id IN($ids)");
+                $pcid = $ids;
+                if ($cnt = count($wpdb->get_results("SELECT PC_Id FROM project_code WHERE PC_Id='$pcid' AND COM_Id='$compid' AND PC_Active = 1"))) {
+                    $cnt = count($wpdb->get_results("SELECT REQ_Id FROM  requests WHERE PC_Id='$pcid' AND COM_Id='$compid' AND REQ_Active != 9"));
+
+                    if ($cnt > 0) {
+                        if ($upd = $wpdb->query("UPDATE project_code SET PC_Status=2 ,PC_ClosedDate=NOW() WHERE PC_Status=1 AND PC_Active=1 AND PC_Id IN($pcid)")) {
+                            echo "Project Code Closed Successfully";
+                            exit;
+                        } else {
+                            echo"Error. Please try again.";
+                            exit;
+                        }
+                    } else {
+                        echo "Sorry. None Expense Request assigned with that Project Code. <br>Project Code cannot be closed. ";
+                        exit;
+                    }
+                } else {
+                    echo"Error. Please try again.";
+                    exit;
+                }
             }
 //             if (!empty($ids)) {
 //                $wpdb->query("UPDATE employee_grades SET EG_Status=9 AND EG_UpdatedBy='$adminid' AND EG_UpdatedDate=NOW() WHERE EG_Id IN($ids)");

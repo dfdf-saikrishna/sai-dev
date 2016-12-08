@@ -4,9 +4,11 @@ $compid = $_SESSION['compid'];
 ?>
 <div class="erp-employee-form">
     <fieldset class="no-border">
-        <input type="hidden" value="{{data.user_id}}" name="company[user_id]" id="user_id">
+        <input type="text" value="{{data.user_id}}" name="company[user_id]" id="user_id">
+        <input type="hidden" value="{{data.ADM_Id}}" name="company[adminid]" id="adminid">
+<!--         <input type="text" value="{{data.SUP_Id}}" name="company[supid]" id="supid">-->
         <input type="hidden" value="{{data.COM_Id}}" name="company[compid]" id="compid">
-        <input type="hidden" value="{{data.TD_Id}}" name="company[tdid]" id="tdid">
+        <input type="text" value="{{data.TD_Id}}" name="company[tdid]" id="tdid">
         <div class="row">
             <?php erp_html_form_label(__('User Name', 'erp'), 'traveldesk-title', true); ?>
             <span class="field">

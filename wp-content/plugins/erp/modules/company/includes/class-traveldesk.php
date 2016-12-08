@@ -80,38 +80,20 @@ class TravelDesk {
     public function to_array() {
         global $wpdb;
         $compid = $_SESSION['compid'];
+        
         $defaults = array(
-            'compid' => $compid,
-            'txtUsername' => '',
-            'txtEmail' => '',
-            'tdid' => '',
+            'user_id'=>'',
+            'COM_Id' => $compid,
+            'TD_Username' => '',
+            'TD_Email' => '',
+            'TD_Id' => '',
             'TD_Type' => '1',
+            
                 //'txtadescdeal'     => '',
         );
         return apply_filters('erp_company_get_traveldesk_fields', $defaults, $this->id, $this->user);
         // var_dump($defaults);
     }
-//
-//    public function traveldesk_array() {
-//        global $wpdb;
-//        $compid = $_SESSION['compid'];
-//        //echo $compid;
-//        $defaults = array(
-//            'COM_Id' =>$compid,
-//            'TD_Username' => '',
-//            'TD_Email' => '',
-//            'TD_Id' => '',
-//            'TD_Type' => '1',
-//                //'ADM_Username'     => '',
-//        );
-//        $traveldesklist = $wpdb->get_results("SELECT * FROM travel_desk  WHERE COM_Id='$compid' AND TD_Status=1");
-//        $defaults['traveldesklist'] = $traveldesklist;
-//        //print_r($traveldesklist);die;
-//
-//        return apply_filters('erp_company_get_traveldesklist_fields', $defaults, $this->id, $this->user);
-//        //return $defaults;
-//    }
-
     /**
      * Get single employee page view url
      *

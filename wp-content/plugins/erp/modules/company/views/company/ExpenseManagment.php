@@ -1,41 +1,36 @@
 
-    <div  class="wrap erp-company-expense">
-        <h2>Company Expense Policy</h2>
-        <?php
-        $pdf = 0;
-        if ($expense = get_expense()) {
-            $pdf = 1;
-        } else {
-            $pdf = 0;
-        }
-        ?>
-        <?php if ($pdf) { ?>
-            <label class="color">UPDATE<strong> Company Expense Policy </strong></label>
-        <?php } else { ?>
-            <label class="color">UPLOAD<strong> Company Expense Policy </strong></label>
-        <?php } ?>
-    </div>
-    <div class="wrap erp-company-expense">
-        <label class="control-label">Upload Company Expense Policy Document</label>
-        <div>
-            <div id="fileDiv">
-                <script>
-                    function upload()
-                        bkp=document.getElementById('fileDiv').innerHTML;
-                        document.getElementById('fileDiv').innerHTML="<input type='file' name='fileComplogo' id='fileComplogo' onchange='Validate(this.id);'  />&nbsp;<a href='javascript:cancelImg()'>Cancel</a>";
-                </script>
-                <?php
-                if ($expense) {
-                    ?>
-                    <a href='javascript:upload()'><img src="E:\xampp\htdocs\wordpress\wp-content\plugins\erp\assets\images" title="click to upload new document" /> </a>
-                <?php } else { ?>
-                    <a  href="javascript:upload();">Upload Now</a>
-                <?php } ?>
+<div  class="postbox">
+    <div class="inside emp-import">
+        <?php if (isset($_GET['error'])) { ?>
+            <div id="failure" class="notice notice-error is-dismissible">
+                <p id="p-failure">Please Upload PDF File</p>
             </div>
-              <div>
-                  <button type="submit"  id="submiaddpdf">Submit</button>
-                  <button type="button"> Cancel</button>
-                </div>
-            <input type="hidden" name="oldfile" id="oldfile" value="<?php echo $selpol['TEPD_Filename']; ?>" />
-        </div>
+        <?php } ?>
+        <h2><?php _e('Company Expense Policy', 'crp'); ?></h2>
+        <form method="post" action="admin.php?page=expensemenu" enctype="multipart/form-data" id="import_pdf">
+            <table class="form-table">
+                <tbody>
+                    <tr>
+                        <th>
+                            <label for="type"><?php _e('Upload Company Expense Policy Document', 'crp'); ?> <span class="required">*</span></label>
+                        </th>
+                        <td>
+                            <input type="file" name="csv_file" id="csv_file" />
+                            <p class="description"><?php _e('Upload a Policy file.', 'crp'); ?></p>
+<!--                            <p id="download_sample_wrap">
+                                <input type="hidden" value="" />
+                                <a href="#">Download Sample Excel</a>
+                            </p>-->
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="fields_container" style="display: none;">
+                </tbody>
+            </table>
+            <p class="submit">
+                <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
+                <input type="submit" name="crp_import_pdf" id="crp_import_pdf" class="button button-primary" value="Submit">
+            </p>
+        </form>
     </div>
+</div>

@@ -77,10 +77,10 @@ use Hooker;
         //Grades
         $this->action('wp_ajax_grades_create', 'grades_create');
         $this->action('wp_ajax_grades_get', 'grades_get');
-         //Grades
+        //Grades
         $this->action('wp_ajax_designation_create', 'designation_create');
         $this->action('wp_ajax_designation_get', 'designation_get');
-         //Grades
+        //Grades
         $this->action('wp_ajax_departments_create', 'departments_create');
         $this->action('wp_ajax_departments_get', 'departments_get');
         //Mielage
@@ -95,7 +95,11 @@ use Hooker;
         //costcenter
         $this->action('wp_ajax_costcenter_create', 'costcenter_create');
         $this->action('wp_ajax_costcenter_get', 'costcenter_get');
+        //grade limits
+        //$this->action('wp_ajax_gradelimits-create', 'gradelimits_create');
+        $this->action('wp_ajax_gradelimits_get', 'gradelimits_get');
     }
+
     //costcenter
     public function costcenter_create() {
         //$this->send_success('lakshmi');
@@ -103,7 +107,7 @@ use Hooker;
         unset($_POST['_wpnonce']);
         unset($_POST['action']);
         $posted = array_map('strip_tags_deep', $_POST);
-        $costcenter= costcenter_create($posted);
+        $costcenter = costcenter_create($posted);
         $costcenterdata = $posted;
         //echo $posted;die;
         $this->send_success($costcenterdata);
@@ -115,6 +119,7 @@ use Hooker;
         $response = $wpdb->get_row("SELECT * FROM cost_center WHERE CC_Id = $id");
         $this->send_success($response);
     }
+
     //costcenter
     public function projectcode_create() {
         //$this->send_success('lakshmi');
@@ -122,7 +127,7 @@ use Hooker;
         unset($_POST['_wpnonce']);
         unset($_POST['action']);
         $posted = array_map('strip_tags_deep', $_POST);
-        $projectcode= projectcode_create($posted);
+        $projectcode = projectcode_create($posted);
         $projectcodedata = $posted;
         //echo $posted;die;
         $this->send_success($projectcodedata);
@@ -134,6 +139,7 @@ use Hooker;
         $response = $wpdb->get_row("SELECT * FROM project_code WHERE PC_Id = $id");
         $this->send_success($response);
     }
+
     //grades createfunctions
     public function grades_create() {
         //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
@@ -142,7 +148,7 @@ use Hooker;
         unset($_POST['action']);
 
         $posted = array_map('strip_tags_deep', $_POST);
-        $gardes= grades_create($posted);
+        $gardes = grades_create($posted);
         $gardesdata = $posted;
         $this->send_success($gardesdata);
     }
@@ -153,7 +159,8 @@ use Hooker;
         $response = $wpdb->get_row("SELECT * FROM employee_grades WHERE EG_Id = $id");
         $this->send_success($response);
     }
- //desgination_createfunctions
+
+    //desgination_createfunctions
     public function designation_create() {
         //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
         unset($_POST['_wp_http_referer']);
@@ -161,10 +168,10 @@ use Hooker;
         unset($_POST['action']);
 
         $posted = array_map('strip_tags_deep', $_POST);
-        $designation= designation_create($posted);
-        
+        $designation = designation_create($posted);
+
         $designationdata = $posted;
-        
+
         $this->send_success($designationdata);
     }
 
@@ -177,7 +184,8 @@ use Hooker;
 
         $this->send_success($response);
     }
-     //Mileage functions
+
+    //Mileage functions
     public function departments_create() {
         //$this->send_success('fvjnf');
         //$this->verify_nonce( 'wp-erp-hr-employee-nonce' );
@@ -200,6 +208,7 @@ use Hooker;
 
         $this->send_success($response);
     }
+
     public function traveldesk_create() {
         // $this->verify_nonce( 'wp-erp-hr-travelagent-nonce' );
         //$this->send_success('lakshmi');
@@ -211,16 +220,14 @@ use Hooker;
         $traveldesk_id = traveldesk_create($posted);
 
         $traveldesk = new TravelDesk($traveldesk_id);
-        //print_r(TravelDesk);die;
-        $data = $posted;
-
         //if ( isset( $posted['user_notification'] ) && $posted['user_notification'] == 'on' ) {
-        $emailer = wperp()->emailer->get_email('New_Traveldesk_Welcome');
+        $emailer = wperp()->emailer->get_email('New_Employee_Welcome');
         $send_login = isset($posted['login_info']) ? true : false;
 
-        if (is_a($emailer, '\WeDevs\ERP\Email')) {
+        if (is_a($emailer, '\WeDevs\Company\Email')) {
             $emailer->trigger($traveldesk_id, $send_login);
         }
+        $data = $posted;
         $this->send_success($data);
     }
 
@@ -230,8 +237,34 @@ use Hooker;
         $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
         $response = $wpdb->get_row("SELECT * FROM travel_desk WHERE TD_Id = $id");
-        //print_r($response);die;
         $this->send_success($response);
+    }
+
+    //gradelimits functions
+    public function gradelimits_create() {
+      
+        $this->send_success("test123");
+        $posted = array_map('strip_tags_deep', $_POST);
+        $gradelimits = gradelimits_create($posted);
+        $gradelimitsdata = $posted;
+        $this->send_success($gradelimits);
+    }
+
+    public function gradelimits_get() {
+        global $wpdb;
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        if(isset($_POST['id'])){
+        $id = $data['id'];
+        //$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $response = $wpdb->get_row("SELECT * FROM grade_limits WHERE GL_Id = '$id' ");
+        $this->send_success($response);
+        }
+        else{
+            $gradelimits = gradelimits_create($posted);
+            //$gradelimitsdata = $posted;
+            $this->send_success($gradelimits);
+        }
     }
 
     //Mileage functions
@@ -1573,7 +1606,7 @@ use Hooker;
             'effective_date' => $effective_date,
             'location' => $location,
             'instant_apply' => $instant_apply
-                ));
+        ));
 
         if (is_wp_error($policy_id)) {
             $this->send_error($policy_id->get_error_message());
@@ -1636,7 +1669,7 @@ use Hooker;
             'start' => $start_date,
             'end' => $end_date,
             'description' => $description,
-                ));
+        ));
 
         if (is_wp_error($holiday_id)) {
             $this->send_error($holiday_id->get_error_message());
@@ -1853,7 +1886,7 @@ use Hooker;
             'start_date' => $start_date,
             'end_date' => $end_date,
             'reason' => $leave_reason
-                ));
+        ));
 
         if (!is_wp_error($request_id)) {
 

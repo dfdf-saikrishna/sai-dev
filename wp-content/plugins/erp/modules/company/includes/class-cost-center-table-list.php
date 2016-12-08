@@ -55,8 +55,6 @@ class CostCenter_List_Table extends \WP_List_Table {
     function column_name($item) {
         global $wpdb;
         $compid = $_SESSION['compid'];
-        //$selsql = $wpdb->get_results("SELECT * FROM cost_center WHERE COM_Id='$compid' AND CC_Active=1 ORDER BY CC_Id IN($ids)");
-        //$delete = "sprintf('<a href='?page=%s&action=delete&id=%s'>%s</a>', $_REQUEST[page], $item[CC_Id], __('Delete', 'costcenter_table_list'))";
 
         if ($cnt = count($wpdb->get_results("SELECT CC_Id FROM cost_center WHERE CC_Id='$item[CC_Id]' AND COM_Id='$compid' AND CC_Active = 1"))) {
             $cnt = count($wpdb->get_results("SELECT REQ_Id FROM requests WHERE CC_Id='$item[CC_Id]' AND COM_Id='$compid' AND REQ_Active != 9"));
@@ -72,7 +70,7 @@ class CostCenter_List_Table extends \WP_List_Table {
                 return approvals(5);
             }
         }
-        
+
         //}
         $actions = array(
             'edit' => sprintf('<a href="?page=projects" data-id=%s">%s</a>', $item['CC_Id'], __('Edit', 'costcenter_table_list')),
@@ -122,13 +120,13 @@ class CostCenter_List_Table extends \WP_List_Table {
     function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('CC Code', 'costcenter_table_list'),
             'code' => __('CC Name', 'costcenter_table_list'),
             'plocation' => __('CC Location', 'costcenter_table_list'),
             'pdesc' => __('CC Description', 'costcenter_table_list'),
             'status' => __('Status', 'costcenter_table_list'),
             'added_date' => __('Added Date', 'costcenter_table_list'),
             'closed_date' => __('Closed Date', 'costcenter_table_list'),
+            'name' => __('CC Code', 'costcenter_table_list'),
         );
         return $columns;
         //return $columns;
@@ -169,7 +167,7 @@ class CostCenter_List_Table extends \WP_List_Table {
 
                     if ($cnt > 0) {
                         if ($upd = $wpdb->query("UPDATE cost_center SET CC_Status=2 ,CC_ClosedDate=NOW() WHERE CC_Status=1 AND CC_Active=1 AND CC_Id IN($ccid)")) {
-                             echo "Cost Center Closed Successfully";
+                            echo "Cost Center Closed Successfully";
                             exit;
                         } else {
                             echo"Error. Please try again.";

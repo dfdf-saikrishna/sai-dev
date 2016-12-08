@@ -76,6 +76,8 @@ class Company {
         require_once WPERP_COMPANY_PATH . '/includes/function-departments.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-projectcode.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-costcenter.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-gradelimits.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-reportsgraphs.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-leave.php';
@@ -156,7 +158,7 @@ class Company {
         $localize_script = apply_filters('erp_hr_localize_script', array(
             'nonce' => wp_create_nonce('wp-erp-hr-nonce'),
             'popup' => array(
-                //Mileage
+                'gradelimits_edit' => __('Grade Limits For', 'erp'),
                 'mileage_title' => __('Add Mileage Details', 'erp'),
                 'mileage_submit' => __('Submit', 'erp'),
                 'mileage_edit' => __('Edit Mileage Details', 'erp'),
@@ -221,7 +223,7 @@ class Company {
             'employee_exit' => __('This employee already exists', 'erp'),
             'employee_created' => __('Employee successfully created', 'erp'),
             'create_employee_text' => __('Click to create employee', 'erp'),
-            'empty_entitlement_text' => sprintf('<span>%s <a href="%s" title="%s">%s</a></span>', __('Please create entitlement first', 'erp'), add_query_arg([ 'page' => 'erp-leave-assign', 'tab' => 'assignment'], admin_url('admin.php')), __('Create Entitlement', 'erp'), __('Create Entitlement', 'erp')),
+            'empty_entitlement_text' => sprintf('<span>%s <a href="%s" title="%s">%s</a></span>', __('Please create entitlement first', 'erp'), add_query_arg(['page' => 'erp-leave-assign', 'tab' => 'assignment'], admin_url('admin.php')), __('Create Entitlement', 'erp'), __('Create Entitlement', 'erp')),
         ));
 
         //Mileage Page
@@ -265,6 +267,13 @@ class Company {
             $costcenter = new CostCenter();
             $localize_script['costcenter_empty'] = $costcenter->costcenter_array();
         }
+        if ('expense-managment_page_gradeslimits' == $hook) {
+            //var_dump('inside');
+            wp_enqueue_script('post');
+            $gradelimits = new GradeLimits();
+            $localize_script['gradelimits_empty'] = $gradelimits->gradelimits_array();
+        }
+
 
         // if its an employee page
         if ('toplevel_page_menu' == $hook) {
@@ -319,7 +328,10 @@ class Company {
 
             case 'toplevel_page_Budget':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/project-create.php', 'project-create');
-            
+
+            case 'expense-managment_page_gradeslimits':
+                //var_dump('inside');
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-limits.php', 'grade-limits');
             case 'budget-control_page_Center':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/costcenter-create.php', 'costcenter-create');

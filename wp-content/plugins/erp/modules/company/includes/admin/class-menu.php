@@ -73,20 +73,20 @@ class Admin_Menu {
             add_submenu_page('Budget', 'Project', 'Project Code', 'companyadmin', 'Project', 'BudgetController');
             add_submenu_page('Budget', 'Center', 'Cost Center', 'companyadmin', 'Center', array($this, 'CostCenter'));
 
-            add_menu_page('ReportsGraphs', 'ReportsGraphs', 'companyadmin', 'Graphs', 'ReportsGraphs', 'dashicons-chart-bar');
-            add_submenu_page('Graphs', 'Estimated', ' Estimated Cost Vs Actual Spend ', 'companyadmin', 'Estimated', 'ReportsGraphs ');
-            add_submenu_page('Graphs', 'Department', 'Department Wise', 'companyadmin', 'DepartmentWise', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'EmployeeWise', 'Employee Wise', 'companyadmin', 'EmployeeWise', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'Hotels', 'Hotels - Budget limit Vs Actual Spend ', 'companyadmin', 'Hotels', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'Compare', 'Compare Travel Spends across Departments', 'companyadmin', 'Compare', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'All', 'All Travel Category', 'companyadmin', 'Travel Category', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'Tracker', 'Travel Spend Tracker related to Air / Car / Hotels / Bus', 'companyadmin', 'Tracker', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'Lowest', 'Air / Bus - Lowest Fare Vs Actual Booked ', 'companyadmin', 'Lowest', 'ReportsGraphs');
-            add_submenu_page('Graphs', 'Approved', 'Pre Approved Travel Vs Post Travel Request', 'companyadmin', 'Approved', 'ReportsGraphs');
+            add_menu_page('ReportsGraphs', 'ReportsGraphs', 'companyadmin', 'Graphs', array($this, 'ReportsGraphs'), 'dashicons-chart-bar');
+            //add_submenu_page('Graphs', 'Estimated', ' Estimated Cost Vs Actual Spend ', 'companyadmin', 'Estimated', 'ReportsGraphs ');
+            //add_submenu_page('Graphs', 'Department', 'Department Wise', 'companyadmin', 'DepartmentWise', 'ReportsGraphs');
+            add_submenu_page('Graphs', 'EmployeeWise', 'Employee Wise', 'companyadmin','Employeewise', array($this, 'EmployeeGraphs'), 'ReportsGraphs');
+           // add_submenu_page('Graphs', 'Hotels', 'Hotels - Budget limit Vs Actual Spend ', 'companyadmin', 'Hotels', 'ReportsGraphs');
+            //add_submenu_page('Graphs', 'Compare', 'Compare Travel Spends across Departments', 'companyadmin', 'Compare', 'ReportsGraphs');
+            //add_submenu_page('Graphs', 'All', 'All Travel Category', 'companyadmin', 'Travel Category', 'ReportsGraphs');
+            add_submenu_page('Graphs', 'Tracker', 'Travel Spend Tracker related to Air / Car / Hotels / Bus', 'companyadmin', 'Tracker', array($this, 'TravelGraphs'));
+            //add_submenu_page('Graphs', 'Lowest', 'Air / Bus - Lowest Fare Vs Actual Booked ', 'companyadmin', 'Lowest', 'ReportsGraphs');
+            //add_submenu_page('Graphs', 'Approved', 'Pre Approved Travel Vs Post Travel Request', 'companyadmin', 'Approved', 'ReportsGraphs');
 
-            add_menu_page('Settings', 'Settings', 'companyadmin', 'Settings', 'Settings', 'dashicons-menu');
-            add_submenu_page('Settings', 'Always', 'Always Left menu', 'companyadmin', 'Always', 'Settings');
-            add_submenu_page('Settings', 'Show', 'Show & Hide Left menu', 'companyadmin', 'Show', 'Settings');
+//            add_menu_page('Settings', 'Settings', 'companyadmin', 'Settings', 'Settings', 'dashicons-menu');
+//            add_submenu_page('Settings', 'Always', 'Always Left menu', 'companyadmin', 'Always', 'Settings');
+//            add_submenu_page('Settings', 'Show', 'Show & Hide Left menu', 'companyadmin', 'Show', 'Settings');
         }
     }
 
@@ -161,7 +161,15 @@ class Admin_Menu {
     public function CostCenter() {
         include WPERP_COMPANY_VIEWS . '/company/CostCenter.php';
     }
-
+     public function ReportsGraphs() {
+        include WPERP_COMPANY_VIEWS . '/reporting/Reportingraphs.php';
+    }
+     public function EmployeeGraphs() {
+        include WPERP_COMPANY_VIEWS . '/reporting/Employeegraphs.php';
+    }
+    public function TravelGraphs() {
+        include WPERP_COMPANY_VIEWS . '/reporting/TravelGraphs.php';
+    }
     public function company_dashboard() {
         include WPERP_COMPANY_VIEWS . '/dashboard.php';
     }
@@ -350,6 +358,9 @@ class Admin_Menu {
 
             case 'years-of-service':
                 $template = WPERP_HRM_VIEWS . '/reporting/years-of-service.php';
+                break;
+            case 'years-of-service':
+                $template = WPERP_HRM_VIEWS . '/reporting/Reportingraphs.php';
                 break;
 
             default:
