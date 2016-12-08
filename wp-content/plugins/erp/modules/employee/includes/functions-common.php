@@ -1005,6 +1005,163 @@ function Actions($et){
     }
 
 }
+function FinanceActions($et){
+    global $wpdb;
+    $reqid  =   $_GET['reqid'];
+    $empuserid = $_SESSION['empuserid'];
+    $compid = $_SESSION['compid'];
+    $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+
+    $actionButtons='<br />
+        <div id="my_centered_buttons">
+        <a href="" id="subApprove" class="button button-primary">Approve</a> 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" name="reject" id="reject" class="button erp-button-danger">Reject</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" name="back" id="reset" onClick="window.history.back();" class="button">Back</button>
+        </div>';
+    $approver = isApprover();
+    
+    
+    $limitFlag	= '<div id="notice" class="notice notice-warning is-dismissible"><p id="p-notice">Sorry. Total expense cost exceeded your approval limit.</p></div>';
+
+    // checking reporting manager has approved ?
+	
+	$repMngrApprvd=0;
+	
+	if($selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND REQ_Status=2 AND RS_Status=1"))
+	$repMngrApprvd=1;
+	
+        // checking second level manager has approved ?
+	
+	$secMngrApprvd=0;
+	
+	if($selsecMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=5 AND REQ_Status=2 AND RS_Status=1"))
+	$secMngrApprvd=1;
+	
+	// checking finance has approved ?
+	
+	$finApprvd=0;
+	
+	if($selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=2 AND REQ_Status IN (2,4) AND RS_Status=1"))
+	$finApprvd=1;
+	
+	
+	// finance approval limit
+	
+	$limit=0;
+	
+	//echo 'Total Cost='.$totalcost;
+                                
+	if($selfinlimit	=	$wpdb->get_row("SELECT APL_LimitAmount FROM approval_limit WHERE EMP_Id=$empuserid AND APL_Status=1 AND APL_Status IS NOT NULL AND APL_Active=1")){
+	
+		$limit_amnt	=	$selfinlimit['APL_LimitAmount'];
+		
+		if($limit_amnt <= $totalcost)
+		$limit=1;
+	
+	}
+        $workflow = workflow();
+        switch ($et)
+        {
+                case 1:
+                $expPol=$workflow->COM_Pretrv_POL_Id;
+                break;
+
+                case 2:
+                $expPol=$workflow->COM_Posttrv_POL_Id;
+                break;
+
+                case 3:
+                $expPol=$workflow->COM_Othertrv_POL_Id;
+                break;
+
+                case 5:
+                $expPol=$workflow->COM_Mileage_POL_Id;
+                break;
+
+                case 6:
+                $expPol=$workflow->COM_Utility_POL_Id;
+                break;
+        }
+        $mydetails = myDetails();
+        $emp_code=$mydetails->EMP_Code;
+        switch ($expPol)
+        {
+            // employee --> rep manager --> finance
+		
+		case 1:
+	
+                        //if its not my request and approval is waiting from sec manager
+			if($secMngrApprvd) 
+			{
+			
+				if(!$finApprvd){
+				
+					if(!$limit)
+					echo $actionButtons;
+					else
+					echo $limitFlag;
+				
+				}
+				
+			
+			}
+			//if its not my request and approval is waiting from rep manager
+			else if($repMngrApprvd) 
+			{
+			
+				if(!$finApprvd){
+				
+					if(!$limit)
+					echo $actionButtons;
+					else
+					echo $limitFlag;
+				
+				}
+				
+			
+			}
+		
+			
+		break;
+		
+		
+		
+		// employee --> finance --> rep manager
+		
+		case 2:
+		
+		// employee -- > finance
+		case 4:
+                    if($secMngrApprvd) 
+                    {
+			if(!$finApprvd){
+				
+				if(!$limit)
+				echo $actionButtons;
+				else
+				echo $limitFlag;
+				
+			}
+                    }
+//                    else if(!$secMngrApprvd){
+//                        if(!$finApprvd){
+//				
+//				if(!$limit)
+//				echo $actionButtons;
+//				else
+//				echo $limitFlag;
+//				
+//			}
+//                    }
+		
+		break;
+        }
+
+}
 function chat_box($rn_status){
       global $wpdb;
       $empuserid = $_SESSION['empuserid'];  

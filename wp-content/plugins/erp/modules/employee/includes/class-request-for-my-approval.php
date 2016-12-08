@@ -100,7 +100,7 @@ class Request_Travel_Expenses extends \WP_List_Table
         global $wpdb;
         global $approvals;
         
-        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['POL_Id'] ==5){
             
             $approvals=approvals(5);
 
@@ -140,7 +140,7 @@ class Request_Travel_Expenses extends \WP_List_Table
 
         } else {
 
-            // reporting manager status
+            // finance approver status
             
             if($item['POL_Id'] !=3){
                 
@@ -218,58 +218,14 @@ class Request_Travel_Expenses extends \WP_List_Table
      */
     function column_request_code($item)
     {
-        $href="";
-        if ($item['REQ_Type'] == 4) {
-            $href = "#";
-        } else {
-            if ($item['REQ_Type'] > 1) {
-                switch ($item['REQ_Type']) {
-                    case 2:
-                        $href = "#";
-                        break;
+        if($item['REQ_Type']==1){
 
-                    case 3: case 4:
-                        $href = "#";
-                        break;
-                }
-            } else {
-
-                if ($item['REQ_PreToPostStatus']) {
-
-                    $href = "#";
-                } else {
-
-                    switch ($item['RT_Id']) {
-                        case 1:
-                            $href = "#";
-                            break;
-
-                        case 2:
-                            $href = "#";
-                            break;
-
-                        case 3:
-                            $href = "#";
-                            break;
-
-                        case 5:
-                            $href = "#";
-                            break;
-
-                        case 6:
-                            $href = "#";
-                            break;
-                    }
-                }
-            }
-        }
-
-        if($item['REQ_Type']==4){
-            $cls='class="boldfont"';
-                $href="#=".$item['REQ_Id'];
+                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
 
         } else {
-                $href="#".$item['REQ_Id'];
+
+                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+
         }
 
         $type=NULL;
@@ -293,7 +249,41 @@ class Request_Travel_Expenses extends \WP_List_Table
                 break;
 
           }
-          return "<a href='<?php echo $href; ?>' >".$item['REQ_Code']."</a>".$type;
+          return "<a href='$href' >".$item['REQ_Code']."</a>".$type;
+    }
+    
+    function column_skiplevel_manager_approval($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['REQ_Type']==3){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // skiplevel manager status
+            //var_dump($item['POL_Id']);
+            if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
+                {
+                    $approvalss=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvalss=approvals(1);
+                }
+
+            } else {
+
+                $approvalss=approvals(5);
+
+            }
+
+        }
+        return $approvalss;
     }
 
     function get_columns()
@@ -303,6 +293,7 @@ class Request_Travel_Expenses extends \WP_List_Table
             'request_code' => __('Request Code', 'companiesadmin_table_list'),
             'estimated_cost' => __('Total Cost', 'companiesadmin_table_list'),
             'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
+            'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'companiesadmin_table_list'),
             'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
             'request_date' => __('Request Date', 'companiesadmin_table_list'),
             'status' => __('Claim Status', 'companiesadmin_table_list'),
@@ -324,6 +315,7 @@ class Request_Travel_Expenses extends \WP_List_Table
             'request_code' => array('Request Code', true),
             'estimated_cost' => array('Total Cost', true),
             'reporting_manager_approval' => array('Reporting Manager Approval', false),
+            'skiplevel_manager_approval' => array('SkipLevel Manager Approval', false),
             'finance_approval' => array('Finance Approval', false),
             'request_date' => array('Request Date', false),
             'status'=>array('Claim Status', false),

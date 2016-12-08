@@ -273,6 +273,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
             'request_code' => array('Request Code', true),
             'estimated_cost' => array('Estimated Cost', false),
             'reporting_manager_approval' => array('Reporting Manager Approval', false),
+            'skiplevel_manager_approval' => array('SkipLevel Manager Approval', false),
             'finance_approval' => array('Finance Approval', false),
             'request_date' => array('Request Date', false),
         );
