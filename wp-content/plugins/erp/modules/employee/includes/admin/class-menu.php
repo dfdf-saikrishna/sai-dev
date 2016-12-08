@@ -54,6 +54,7 @@ class Admin_Menu {
         //add_menu_page('financedashboard', 'Finance Dashboard', 'finance', 'finance-dashboard', 'financeDashboard','dashicons-admin-users');
         add_submenu_page('financemenu','pre', 'Travel Expense Requests', 'finance', 'travel',  array($this,'Travel_Requests'),'dashicons-money');
         add_submenu_page('', 'Upload', 'View Accounts Request', 'finance', 'View-Accounts-Request', array( $this, 'view_accounts_request'));
+        add_submenu_page('', 'Upload', 'View All Accounts Requests', 'employee', 'View-All-Accounts-Requests', array( $this, 'view_all_accounts_request'));
         add_menu_page('FinanceExpense', 'Expense', 'finance', 'FinanceExpense', array($this,'All_Expense_Request'),'dashicons-money');
             $overview = add_submenu_page( 'FinanceExpense', 'All Expense Requests', 'Overview', 'finance', 'FinanceExpense',array($this,'All_Expense_Request'), 'FinanceExpense_init');
                
@@ -151,6 +152,9 @@ class Admin_Menu {
     }
     public function view_accounts_request(){
         include WPERP_EMPLOYEE_VIEWS . '/finance-requests-details.php';
+    }
+    public function view_all_accounts_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/view-account-requests.php';
     }
     function employee_Dashboard(){
         include WPERP_EMPLOYEE_VIEWS . '/employee-dashboard.php';

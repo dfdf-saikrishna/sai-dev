@@ -224,7 +224,7 @@ class Request_Travel_Expenses extends \WP_List_Table
 
         } else {
 
-                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+                $href="/wp-admin/admin.php?page=View-All-Accounts-Requests&reqid=".$item['REQ_Id'];
 
         }
 

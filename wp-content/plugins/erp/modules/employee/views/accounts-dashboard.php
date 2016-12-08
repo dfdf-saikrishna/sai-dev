@@ -1,34 +1,25 @@
 <?php
 global $wpdb;
 $compid = $_SESSION['compid'];
-//echo $compid;die;
-//$empID = $_SESSION['empuserid'];
-// Retrieving my details
 $mydetails=myDetails();
-
-
-//if($mydetails['EMP_AccountsApprover'] != 1){
-//	//session_destroy();
-//} else if($mydetails['EMP_AccountsApprover']) {
-//	if(!$_SESSION['accs-menu'])
-//	$_SESSION['accs-menu']=time();
-//}
     $empid=$mydetails->EMP_Id;
         //Eployee Travel Request
         $count_total=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Active != 9 AND re.RE_Status=1");
-	
+	$count_total = isset( $count_total ) ? $count_total : 0;
         $count_approved=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=2 AND REQ_Active != 9 AND re.RE_Status=1"); 
-	
+	$count_approved = isset( $count_approved ) ? $count_approved : 0;
         $count_pending=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=1 AND REQ_Active != 9 AND re.RE_Status=1"); 
-	
+	$count_pending = isset( $count_pending ) ? $count_pending : 0;
         $count_rejected=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=3 AND REQ_Active != 9 AND re.RE_Status=1");  
-	
+	$count_rejected = isset( $count_rejected ) ? $count_rejected : 0;
         //Travel Desk
         $cnttdc		=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid'");
-       // print_r($cnttdc);die;
+        $cnttdc = isset( $cnttdc ) ? $cnttdc : 0;
         $cntpendng	=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=1");
+        $cntpendng = isset( $cntpendng ) ? $cntpendng : 0;
         $cntapprvd	=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=2");
-?>
+        $cntapprvd = isset( $cntapprvd ) ? $cntapprvd : 0;
+        ?>
 <div class="wrap erp hrm-dashboard">
 
     <div class="erp-single-container">
@@ -36,7 +27,7 @@ $mydetails=myDetails();
         <!--div class="erp-area-left"-->
                 <div class="postbox">
                 <div class="inside">
-				    <div class="badge-container">
+                    <div class="badge-container">
                         <div class="badge-wrap badge-aqua">
 
                             <table class="wp-list-table widefat striped admins">
@@ -70,7 +61,7 @@ $mydetails=myDetails();
                                     </tr>
                                     <tr>
                                     <td width="90%">Pending Requests</td>
-                                    <td width="10%"><span class="oval-1"><?php echo $cntpendng?></span></td>
+                                    <td width="10%"><a href="/wp-admin/admin.php?page=View-All-Accounts-Requests&selReqstatus=1"><span class="oval-1"><?php echo $cntpendng?></span></a></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Approved Requests</td>
@@ -83,9 +74,9 @@ $mydetails=myDetails();
                                 </table>
                             </div><!-- .badge-wrap -->
                         
-					       </div>
-                        </div>
                     </div>
+                </div>
+                </div>
             <div class="postbox">
                 <div class="inside">
                     <h2>Requests For My Approval</h2>
