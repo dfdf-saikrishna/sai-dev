@@ -51,10 +51,10 @@ $selpol = $wpdb->get_results("SELECT EMP_Code, EMP_Id, EMP_Name FROM employees W
             </tbody>
         </table> </form>
 </div>
-<div id="poststuff">
+<!--<div id="poststuff">
     <div id="post-body" class="metabox-holder columns-2">
 
-        <!-- main content -->
+         main content 
         <div id="post-body-content">
 
             <div class="meta-box-sortables ui-sortable">
@@ -62,27 +62,60 @@ $selpol = $wpdb->get_results("SELECT EMP_Code, EMP_Id, EMP_Name FROM employees W
                 <div class="postbox">
 
                     <div class="handlediv" title="Click to toggle"><br></div>
-                    <!-- Toggle -->
+                     Toggle 
 
-                    <h2 class="hndle"><span><?php _e('Employee Wise', 'erp'); ?></span>
-                    </h2>
+-->                    <h2 class="hndle"><span><?php _e('Employee Wise', 'erp'); ?></span>
+</h2>
 
-                    <div class="inside">
+<!--<div class="inside">-->
 
-                        <div id="emp-headcount" style="width:100%;height:400px;"></div>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+google.charts.load("current", {packages: ["corechart"]});
+google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+    var data = google.visualization.arrayToDataTable
+            ([['X', 'Y'],
+                [1, 3],
+                [2, 2.5],
+                [3, 2],
+                [4, 3],
+                [5, 4.5],
+                [6, 6.5],
+                [7, 9],
+                [8, 12]
+            ]);
 
-                    </div>
-                    <!-- .inside -->
+    var options = {
+        legend: 'none',
+        colors: ['#15A0C8'],
+        pointSize: 30,
+        pointShape: {type: 'triangle', rotation: 180}
+    };
 
-                </div>
-                <!-- .postbox -->
+    var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+}
+    </script>
+</head>
+<body>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
 
-            </div>
-            <!-- .meta-box-sortables .ui-sortable -->
+</div>
+<!-- .inside -->
 
-        </div>
-    </div>
-    <!-- #postbox-container-1 .postbox-container -->
+</div>
+<!-- .postbox -->
+
+</div>
+<!-- .meta-box-sortables .ui-sortable -->
+
+</div>
+</div>
+<!-- #postbox-container-1 .postbox-container -->
 
 </div>
 <!-- #post-body .metabox-holder .columns-2 -->

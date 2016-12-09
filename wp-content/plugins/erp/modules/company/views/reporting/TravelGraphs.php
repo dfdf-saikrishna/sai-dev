@@ -64,14 +64,41 @@ $selpol = $wpdb->get_results("SELECT * FROM mode WHERE EC_Id=1 AND COM_Id IN (0,
                     <div class="handlediv" title="Click to toggle"><br></div>
                     <!-- Toggle -->
 
-                    <h2 class="hndle"><span><?php _e('Department Wise Graphs', 'erp'); ?></span>
-                    </h2>
+<!--                    <h2 class="hndle"><span><?php _e('Department Wise Graphs', 'erp'); ?></span>
+                    </h2>-->
 
-                    <div class="inside">
+                    <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'All Travels', 'Flight', 'Bus'],
+           ['2013', 1030, 540, 350],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+        ]);
 
-                        <div id="emp-headcount" style="width:100%;height:400px;"></div>
+        var options = {
+          chart: {
+            title: 'Compare Travel Spends across Departments ',
+            subtitle: 'All Travels, and Flight,Bus',
+          }
+        };
 
-                    </div>
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
                     <!-- .inside -->
 
                 </div>
