@@ -1014,7 +1014,7 @@ function FinanceActions($et){
 
     $actionButtons='<br />
         <div id="my_centered_buttons">
-        <a href="" id="subApprove" class="button button-primary">Approve</a> 
+        <a href="" id="submitApprove" class="button button-primary">Approve</a> 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button type="button" name="reject" id="reject" class="button erp-button-danger">Reject</button>

@@ -4,20 +4,20 @@ $compid = $_SESSION['compid'];
 $mydetails=myDetails();
     $empid=$mydetails->EMP_Id;
         //Eployee Travel Request
-        $count_total=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Active != 9 AND re.RE_Status=1");
+        $count_total=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Active != 9 AND re.RE_Status=1"));
 	$count_total = isset( $count_total ) ? $count_total : 0;
-        $count_approved=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=2 AND REQ_Active != 9 AND re.RE_Status=1"); 
+        $count_approved=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=2 AND REQ_Active != 9 AND re.RE_Status=1")); 
 	$count_approved = isset( $count_approved ) ? $count_approved : 0;
-        $count_pending=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=1 AND REQ_Active != 9 AND re.RE_Status=1"); 
+        $count_pending=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=1 AND REQ_Active != 9 AND re.RE_Status=1")); 
 	$count_pending = isset( $count_pending ) ? $count_pending : 0;
-        $count_rejected=$wpdb->get_var("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=3 AND REQ_Active != 9 AND re.RE_Status=1");  
+        $count_rejected=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id != '$empid' AND REQ_Status=3 AND REQ_Active != 9 AND re.RE_Status=1"));  
 	$count_rejected = isset( $count_rejected ) ? $count_rejected : 0;
         //Travel Desk
-        $cnttdc		=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid'");
+        $cnttdc		=count($wpdb->get_results("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid'"));
         $cnttdc = isset( $cnttdc ) ? $cnttdc : 0;
-        $cntpendng	=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=1");
+        $cntpendng	=count($wpdb->get_results("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=1"));
         $cntpendng = isset( $cntpendng ) ? $cntpendng : 0;
-        $cntapprvd	=$wpdb->get_var("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=2");
+        $cntapprvd	=count($wpdb->get_results("SELECT TDC_Id FROM travel_desk_claims WHERE COM_Id='$compid' AND TDC_Status=2"));
         $cntapprvd = isset( $cntapprvd ) ? $cntapprvd : 0;
         ?>
 <div class="wrap erp hrm-dashboard">
@@ -36,7 +36,7 @@ $mydetails=myDetails();
                                 </tr>
                                 <tr>
                                 <td width="90%">Pending Requests</td>
-                                <td width="10%"><span class="oval-1"><?php echo $count_pending?></span></td>
+                                <td width="10%"><a href="/wp-admin/admin.php?page=View-All-Accounts-Requests&selReqstatus=1"><span class="oval-1"><?php echo $count_pending?></span></a></td>
                                 </tr>
                                 <tr>
                                 <td width="90%">Approved Requests</td>
@@ -61,7 +61,7 @@ $mydetails=myDetails();
                                     </tr>
                                     <tr>
                                     <td width="90%">Pending Requests</td>
-                                    <td width="10%"><a href="/wp-admin/admin.php?page=View-All-Accounts-Requests&selReqstatus=1"><span class="oval-1"><?php echo $cntpendng?></span></a></td>
+                                    <td width="10%"><span class="oval-1"><?php echo $cntpendng?></span></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Approved Requests</td>

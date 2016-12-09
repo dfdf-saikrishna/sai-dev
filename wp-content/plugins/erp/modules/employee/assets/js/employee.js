@@ -24,6 +24,7 @@
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
             $( 'body').on( 'click', 'a#subApprove', this.travelRequest.subApprove );
+            $( 'body').on( 'click', 'a#submitApprove', this.travelRequest.submitApprove );
 
             // handle postbox toggle
             $('body').on( 'click', 'div.handlediv', this.handleToggle );
@@ -116,6 +117,34 @@
                     },
                     success: function(resp) {
                         console.log(resp);
+                        $( 'body' ).load( window.location.href + '.pre-travel-request' );
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                });
+              
+              
+              //alert(reqid);
+            },
+            submitApprove: function(e){
+              e.preventDefault();
+              wp.ajax.send( 'approve-finance-request', {
+                    data: {
+                        et    : $('#et').val(),
+                        empid : $('#emp_id').val(),
+                        req_id : $('#req_id').val(),
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        $( 'body' ).load( window.location.href + '.pre-travel-request' );
                         switch(resp.status){
                             case 'success':
                                 $('#p-success').html(resp.message);

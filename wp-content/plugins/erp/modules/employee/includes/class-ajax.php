@@ -34,7 +34,7 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_get-exp-cat', 'get_exp_cat' );
         $this->action( 'wp_ajax_get-mode', 'get_mode' );
         $this->action( 'wp_ajax_approve-request', 'approve_request' );
-        
+        $this->action( 'wp_ajax_approve-finance-request', 'approve_finance_request' );
         
         // Department
         $this->action( 'wp_ajax_erp-hr-new-dept', 'department_create' );
@@ -172,6 +172,8 @@ class Ajax_Handler {
 
                     // mail to accounts
                     //notify($request['REQ_Code'], $request['RT_Id'], 4);
+                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                    $this->send_success($response);
                 }
                 else{
                     $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 1));
@@ -181,11 +183,199 @@ class Ajax_Handler {
 
                     // mail to accounts
                     //notify($request['REQ_Code'], $request['RT_Id'], 4);
+                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                    $this->send_success($response);
                 }
             break;
         }
-        $response = array('status'=>'notice','message'=>"Request Approved Successfully");
-        $this->send_success($response);
+        
+    }
+    
+    function approve_finance_request(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $empuserid = $_SESSION['empuserid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $et = $posted['et'];
+        $reqid = $posted['req_id'];
+        $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
+        $polId = $rowpol->POL_Id;
+        
+        $selsql = $wpdb->get_row("SELECT * FROM requests req, request_employee re, employees emp WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND req.COM_Id='$compid' AND RE_Status=1");
+        $workflow = workflow();
+        switch($et)
+		{
+                case 1:
+                //pre travel
+                $expPol=$workflow->COM_Pretrv_POL_Id;
+                break;
+
+                case 2:
+                //post travel
+                $expPol=$workflow->COM_Posttrv_POL_Id;
+                break;
+
+                case 3:
+                //other travel
+                $expPol=$workflow->COM_Othertrv_POL_Id;
+                break;
+
+                case 5:
+                //mileage
+                $expPol=$workflow->COM_Mileage_POL_Id;
+                break;
+
+                case 6:
+                //utility
+                $expPol=$workflow->COM_Utility_POL_Id;
+                break;
+        }
+        switch ($expPol)
+	{
+		// emp --> rep mngr -->finance
+		
+		case 1:
+                    if($polId==5){ 
+                        // check whether 2nd level mangr has approved it or not
+                        
+			if($secLevmngr=$wpdb->get_row("SELECT RS_Id FROM request_status WHERE REQ_Id='$reqid' and REQ_Status=2 and RS_EmpType=5 and RS_Status=1")){
+                                
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+                                
+                                $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+				
+				
+				//mail to employee
+				//notify($selsql['REQ_Code'], $selsql['RT_Id'], 6);
+                                $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                $this->send_success($response);
+			
+			} else {
+			
+				//header("location:$filename?msg=10&reqid=$reqid"); exit;
+			
+			}
+                    }    
+                    else{
+			// check whether rep mangr has approved it or not
+                        
+			if($rowRepmngr=$wpdb->get_row("SELECT RS_Id FROM request_status WHERE REQ_Id='$reqid' and REQ_Status=2 and RS_EmpType=1 and RS_Status=1")){
+                                
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+				
+				$wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+				
+				
+				//mail to employee
+				//notify($selsql['REQ_Code'], $selsql['RT_Id'], 6);
+                                $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                $this->send_success($response);
+			
+			} else {
+			
+				//header("location:$filename?msg=10&reqid=$reqid"); exit;
+			
+			}
+                    }        
+		break;
+		
+		
+		
+		// emp --> finance
+		
+		case 4:
+			
+			insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
+			
+			update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
+			
+			
+			//mail to employee
+			notify($selsql['REQ_Code'], $selsql['RT_Id'], 6);
+			
+		break;
+		
+		
+		
+		// emp --> finance --> rep mngr
+		
+		case 2:
+						
+			$empid		=	$selsql['EMP_Id'];
+			
+			$empcode	=	$selsql['EMP_Code'];
+			
+			if($polId==5){ 
+                            // select second level manager
+                            $selrepmngrid	=	select_query("employees", "EMP_Id", "EMP_Code='$selsql[EMP_Funcrepmngrcode]'", $filename);
+
+                            $secmngid		=	$selrepmngrid['EMP_Id'];
+
+                            if($secmngid==$empid)
+                            {
+
+                                    //mail to employee
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empid', 2, 5", $filename);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
+
+                                    update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
+
+
+                            }
+                            else
+                            {
+
+                                    //mail to employee
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
+
+                                    // MAIL TO REPORTING MANAGER
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
+
+                            }
+                        }
+                        else{
+                            // select reporting manager
+                            $selrepmngrid	=	select_query("employees", "EMP_Id", "EMP_Code='$selsql[EMP_Reprtnmngrcode]'", $filename);
+
+                            $repmngid		=	$selrepmngrid['EMP_Id'];
+
+                            if($repmngid==$empid)
+                            {
+
+                                    //mail to employee
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empid', 2, 1", $filename);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
+
+                                    update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
+
+
+                            }
+                            else
+                            {
+
+                                    //mail to employee
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
+
+                                    // MAIL TO REPORTING MANAGER
+                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
+
+                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
+
+                            }
+			
+                        }
+		break;
+		
+	}
+        
         
     }
     
