@@ -123,12 +123,17 @@ class Ajax_Handler {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
+        $this->send_success($posted);return false;
         $empuserid = $_SESSION['empuserid'];
         $et = $posted['et'];
-        $empid = $posted['empid'];
-        $reqid = $posted['req_id'];
+        if(isset($posted['req_id_table'])){
+            $reqid = $posted['req_id_table'];
+        }else{
+            $reqid = $posted['req_id'];
+        }
+        
         $request=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' AND COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND re.RE_Status=1");
-        $empid = $request->EMP_Id;
+        //$empid = $request->EMP_Id;
         $rowpol = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
         $polId = $rowpol->POL_Id;
         $workflow = workflow();
@@ -301,74 +306,74 @@ class Ajax_Handler {
 		
 		case 2:
 						
-			$empid		=	$selsql['EMP_Id'];
+			$empid		=	$selsql->EMP_Id;
 			
-			$empcode	=	$selsql['EMP_Code'];
+			$empcode	=	$selsql->EMP_Code;
 			
 			if($polId==5){ 
                             // select second level manager
-                            $selrepmngrid	=	select_query("employees", "EMP_Id", "EMP_Code='$selsql[EMP_Funcrepmngrcode]'", $filename);
+                                                        
+                            $selrepmngrid	=	$wpdb->get_row("SELECT EMP_Id FROM employees WHERE EMP_Code='$selsql->EMP_Funcrepmngrcode'");
 
-                            $secmngid		=	$selrepmngrid['EMP_Id'];
+                            $secmngid		=	$selrepmngrid->EMP_Id;
 
                             if($secmngid==$empid)
                             {
 
                                     //mail to employee
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
 
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empid', 2, 5", $filename);
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 5));
 
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
-
-                                    update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
-
-
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+                                    
+                                    $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+                                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                    $this->send_success($response);
                             }
                             else
                             {
 
                                     //mail to employee
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
 
                                     // MAIL TO REPORTING MANAGER
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
-
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
-
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+                                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                    $this->send_success($response);
                             }
                         }
                         else{
-                            // select reporting manager
-                            $selrepmngrid	=	select_query("employees", "EMP_Id", "EMP_Code='$selsql[EMP_Reprtnmngrcode]'", $filename);
+                            // select reporting manager 
+                            $selrepmngrid	=	$wpdb->get_row("SELECT EMP_Id FROM employees WHERE EMP_Code='$selsql->EMP_Reprtnmngrcode'");
 
-                            $repmngid		=	$selrepmngrid['EMP_Id'];
+                            $repmngid		=	$selrepmngrid->EMP_Id;
 
                             if($repmngid==$empid)
                             {
 
                                     //mail to employee
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 8);
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 1));
 
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empid', 2, 1", $filename);
-
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
-
-                                    update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
-
-
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+                                    
+                                    $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+                                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                    $this->send_success($response);
                             }
                             else
                             {
 
                                     //mail to employee
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 9);
 
                                     // MAIL TO REPORTING MANAGER
-                                    notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
-
-                                    insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
-
+                                    //notify($selsql['REQ_Code'], $selsql['RT_Id'], 2, $selsql[EMP_Id]);
+                                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
+                                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
+                                    $this->send_success($response);
                             }
 			
                         }
@@ -572,36 +577,39 @@ class Ajax_Handler {
                 case 3:
 
                 if($expenseLimit > 0){
-                        if($mydetails['EMP_Code']==$mydetails['EMP_Funcreprtnmngrcode'])
+                        if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
                         {
 
                                 // insert into request
-                                $reqid=insert_query("requests","REQ_Status, POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","2, 6, '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-
+                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                                $reqid=$wpdb->insert_id; 
 
                                 // insert into request_status
-                                insert_query("request_status","REQ_Id, EMP_Id, REQ_Status","'$reqid', '$empuserid', 2",$filename);
-
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
                                 $setreqstatus=1;
 
 
                         }
                         else
                         {
-                                $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","6, '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
+                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $reqid=$wpdb->insert_id;
+                            $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 3,'RS_EmpType' => 3));
                         }
                 }
                 else{
 
-                        if($mydetails['EMP_Code']==$mydetails['EMP_Reprtnmngrcode'])
+                        if($mydetails->EMP_Code==$mydetails->EMP_Reprtnmngrcode)
                         {
 
                                 // insert into request
-                                $reqid=insert_query("requests","REQ_Status, POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","2, '$polid', '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-
+                                
+                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                                $reqid=$wpdb->insert_id; 
 
                                 // insert into request_status
-                                insert_query("request_status","REQ_Id, EMP_Id, REQ_Status","'$reqid', '$empuserid', 2",$filename);
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
+
 
                                 $setreqstatus=1;
 
@@ -609,7 +617,9 @@ class Ajax_Handler {
                         }
                         else
                         {
-                                $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","'$polid', '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
+                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $reqid=$wpdb->insert_id;
+                                
                         }	
 
                 }
@@ -618,11 +628,13 @@ class Ajax_Handler {
                 //--------- employee --> finance --> rep mngr
                 case 2:
                 if($expenseLimit > 0){
-                        $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","5, '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-                }
+                        
+                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $reqid=$wpdb->insert_id;
+                }   
                 else{
-                        $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","'$polid', '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-
+                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $reqid=$wpdb->insert_id;
                 }
                 break;
 

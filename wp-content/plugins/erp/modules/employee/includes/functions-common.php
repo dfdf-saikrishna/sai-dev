@@ -571,8 +571,11 @@ function requestDetails($et){
             }
             else
             {
-
-                    $approvals=approvals(5);
+                    switch ($expPol){
+                        case 2:
+                            $approvals=approvals(1);
+                    }
+                    //$approvals=approvals(5);
 
                     $repmngr_block.=$approvals;
             }
@@ -608,8 +611,11 @@ function requestDetails($et){
             }
             else
             {
-
-                    $approvals=approvals(5);
+                    switch ($expPol){
+                        case 2:
+                            $approvals=approvals(1);
+                    }
+                    //$approvals=approvals(5);
 
                     $second_level_block_second.=$approvals;
             }
@@ -1133,7 +1139,10 @@ function FinanceActions($et){
 		// employee --> finance --> rep manager
 		
 		case 2:
-		
+                    if(!$limit)
+                    echo $actionButtons;
+                    else
+                    echo $limitFlag;
 		// employee -- > finance
 		case 4:
                     if($secMngrApprvd) 

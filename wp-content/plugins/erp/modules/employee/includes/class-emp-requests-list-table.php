@@ -274,7 +274,11 @@ class Emp_Requests_List extends \WP_List_Table {
                 if ($item['POL_Id'] != 3) {
                     if ($repmngrStatus = $wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=2")) {
                         $approvals = $this->approvals($repmngrStatus->REQ_Status);
-                    } else {
+                    } 
+                    else {
+                        if($wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=3"))
+                        $approvals = $this->approvals(5);
+                        else
                         $approvals = $this->approvals(1);
                     }
                 } else {
@@ -329,7 +333,8 @@ class Emp_Requests_List extends \WP_List_Table {
             $empuserid = $_SESSION['empuserid'];
             $compid = $_SESSION['compid'];
             global $wpdb;
-            $expPol = isset($_REQUEST['selReqstatus']) ? $_REQUEST['selReqstatus'] : 0;
+            //$expPol = isset($_REQUEST['selReqstatus']) ? $_REQUEST['selReqstatus'] : 0;
+            $expPol = $item['POL_Id'];
             $approver = isApprover();
             $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
             if($approver)
@@ -358,7 +363,7 @@ class Emp_Requests_List extends \WP_List_Table {
                                     if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
                                     {
 
-                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                        return '<a href="#" id="subApprove" data-id='. $reqid .' title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
 
                                     }
                                     else
@@ -369,12 +374,48 @@ class Emp_Requests_List extends \WP_List_Table {
                                 else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")) 
                                 {
                                     if(!($row->EMP_Funcrepmngrcode == $emp_code))
-                                        return '<a href="#" title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+                                        return '<a href="#" id="subApprove" data-id='. $reqid .' title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
                                     else
                                     return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
                                 }
 
                             }
+
+                    break;
+                    case 2:
+
+
+                    //if its not my request
+                    if(!$notmyreq)
+                    {
+
+                            // check for finance approval
+
+                            if($selFinStat=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=2 AND RS_Status=1")){
+                                    if($rowpol->POL_Id=="5"){
+                                        if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){
+
+                                            return '<a href="#" id="subApprove" data-id='. $reqid .' title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+
+                                        }
+                                        else
+                                        return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+                                    }
+                                    //if its not my request and finance has apprvd & waiting for my approval
+
+                                    else if(!$selMngrStatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND RS_EmpType=1 AND RS_Status=1")){
+
+                                            return '<a href="#" id="subApprove" data-id='. $reqid .' title="Approve"><span class="dashicons dashicons-thumbs-up"></a>';
+
+                                    }
+
+                            }
+                            else
+                            return "<span title='Cannot Approve' class='dashicons dashicons-lock'>";
+
+
+
+                    }
 
                     break;
             

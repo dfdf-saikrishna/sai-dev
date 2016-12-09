@@ -109,15 +109,17 @@
             },
             subApprove: function(e){
               e.preventDefault();
+              var self = $(this);
               wp.ajax.send( 'approve-request', {
                     data: {
                         et    : $('#et').val(),
                         empid : $('#emp_id').val(),
                         req_id : $('#req_id').val(),
+                        req_id_table: self.data( 'id' ),
                     },
                     success: function(resp) {
                         console.log(resp);
-                        $( 'body' ).load( window.location.href + '.pre-travel-request' );
+                        //$( 'body' ).load( window.location.href + '.pre-travel-request' );
                         switch(resp.status){
                             case 'success':
                                 $('#p-success').html(resp.message);
