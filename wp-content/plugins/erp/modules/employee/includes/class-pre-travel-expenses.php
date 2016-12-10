@@ -111,11 +111,9 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
     }
     
     function column_finance_approval($item){
-
         global $wpdb;
         global $approvals;
-        
-        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+        if($item['REQ_Type'] == 2 || $item['REQ_Type'] == 4 || $item['REQ_Type'] == 5){
             
             $approvals=approvals(5);
 
@@ -131,6 +129,9 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
                 }
                 else
                 {
+                    if($wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=3"))
+                    $approvals = approvals(5);
+                    else
                     $approvals=approvals(1);
                 }
 

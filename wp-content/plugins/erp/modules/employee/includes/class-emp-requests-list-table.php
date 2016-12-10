@@ -244,21 +244,21 @@ class Emp_Requests_List extends \WP_List_Table {
 
                     if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
                     {
-                        $approvalss=approvals($repmngrStatus->REQ_Status);
+                        $approvals=approvals($repmngrStatus->REQ_Status);
                     }
                     else
                     {
-                        $approvalss=approvals(1);
+                        $approvals=approvals(1);
                     }
 
                 } else {
 
-                    $approvalss=approvals(5);
+                    $approvals=approvals(5);
 
                 }
 
             }
-            return $approvalss;
+            return $approvals;
         }
 
         function column_finance_approval($item) {
@@ -266,24 +266,28 @@ class Emp_Requests_List extends \WP_List_Table {
             global $approvals;
             if ($item['REQ_Type'] == 2 || $item['REQ_Type'] == 4 || $item['REQ_Type'] == 5) {
 
-                $approvals = $this->approvals(5);
+                $approvals = approvals(5);
+                
             } else {
 
                 // finance status
 
                 if ($item['POL_Id'] != 3) {
                     if ($repmngrStatus = $wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=2")) {
-                        $approvals = $this->approvals($repmngrStatus->REQ_Status);
+                        $approvals = approvals($repmngrStatus->REQ_Status);
+                        
                     } 
                     else {
                         if($wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=3"))
-                        $approvals = $this->approvals(5);
+                        $approvals = approvals(5);
                         else
-                        $approvals = $this->approvals(1);
+                        $approvals = approvals(1);
+                        
                     }
                 } else {
 
-                    $approvals = $this->approvals(5);
+                    $approvals = approvals(5);
+                    
                 }
             }
             return $approvals;
