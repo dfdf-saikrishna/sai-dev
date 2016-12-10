@@ -1,6 +1,6 @@
 <?php
 namespace WeDevs\ERP\Travelagent\Admin;
-
+use WeDevs\ERP\Travelagent\Invoiceview;
 /**
  * Admin Menu
  */
@@ -38,8 +38,8 @@ class Admin_Menu {
         
     add_menu_page('InvoiceM', 'Invoice Management', 'travelagent','InvoiceM', array( $this,'company_invoicemanagement'),'dashicons-id-alt');
 		$overview = add_submenu_page( 'InvoiceM', 'Overview', 'Overview', 'travelagent', 'InvoiceM', array( $this,'company_invoicemanagement'));
-		//add_submenu_page('InvoiceM', 'Create', 'Create Invoice', 'travelagent', 'AddInvoice', 'InvoiceManagement');
-       // add_submenu_page('InvoiceM', 'ViewInv', 'View Invoice ', 'travelagent', 'ViewInvoice', 'InvoiceManagement');
+		add_submenu_page('InvoiceM', 'Create', 'Create Invoice', 'travelagent', 'createinvoice', array( $this,'company_invoicecreate'));
+        add_submenu_page('InvoiceM', 'ViewInv', 'View Invoice ', 'travelagent', 'ViewInvoice', array( $this,'view_invoice'));
         
     add_menu_page('BankM', 'Bank Management', 'travelagent','BankM', array( $this,'travel_agent_bank_details'),'dashicons-money');
 		$overview = add_submenu_page( 'BankM', 'Overview', 'Overview', 'travelagent', 'BankM', array( $this,'travel_agent_bank_details'));
@@ -110,6 +110,14 @@ class Admin_Menu {
      *
      * @return void
      */
+    public function company_invoicecreate() {
+        include WPERP_TRAVELAGENT_VIEWS . '/travelagent/travel_agent_companyinvoice_create.php';
+    }
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
     public function InvoiceManagement() {
         include WPERP_TRAVELAGENT_VIEWS . '/travelagent/invoicemanagement.php';
     }
@@ -121,6 +129,40 @@ class Admin_Menu {
     public function travel_agent_bank_details() {
         include WPERP_TRAVELAGENT_VIEWS . '/travelagent/travel_agent_bank_details.php';
     }
+	
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function view_invoice() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+        $id     = isset( $_GET['tdcid'] ) ? intval( $_GET['tdcid'] ) : 0;
+		
+        switch ($action) {
+            case 'view':
+                $invoiceview = new Invoiceview( $id );
+                if ( !$id ) {
+                    wp_die( __( 'Invoice id not found!', 'erp' ) );
+                }  
+                $template = WPERP_TRAVELAGENT_VIEWS . '/travelagent/invoiceview.php';
+                break;
+
+            default:
+                $template = WPERP_TRAVELAGENT_VIEWS . '/invoiceview.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_hr_company_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+
+	
+	
+	
     /**
      * An empty page for testing purposes
      *

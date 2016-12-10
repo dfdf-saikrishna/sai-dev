@@ -32,6 +32,9 @@ class Ajax_Handler {
 		
 		$this->action( 'wp_ajax_companyinvoice_view', 'companyinvoice_view' );
 		
+		$this->action( 'wp_ajax_travelagentbankdetails_create', 'travelagentbankdetails_create' );
+		$this->action( 'wp_ajax_travelagentbankdetails_get', 'travelagentbankdetails_get' );
+		
     }
 	
 /*** Create/update an travelagentuser */
@@ -72,7 +75,6 @@ class Ajax_Handler {
         unset( $_POST['action'] );
         $posted               = array_map( 'strip_tags_deep', $_POST );
         $travelagentclient_id  = travelagentclient_create( $posted );
-	alert($posted);
         // user notification email
              $emailer    = wperp()->emailer->get_email( 'New_Employee_Welcome' );
             $send_login = isset( $posted['login_info'] ) ? true : false;
@@ -81,20 +83,40 @@ class Ajax_Handler {
                 $emailer->trigger( $travelagentclient_id, $send_login );
             } 
 
-        //$data = $posted;
-		$data = "sadasduasgid";
+        $data = $posted;
         $this->send_success( $data );
     }
 	
 	public function travelagentclient_get() {
+		// $this->send_success( "sfsdf" ); 
         global $wpdb;
-        $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
-		$supid = $_SESSION['supid']; 
-        $response = $wpdb->get_row("SELECT * FROM company WHERE COM_Id=$id AND COM_Status=0 AND SUP_Id='$supid'");
-        $this->send_success( $response );
+         $id = $_REQUEST['id'];
+		 $supid = $_SESSION['supid']; 
+        $response = $wpdb->get_row("SELECT * FROM company WHERE COM_Id = '$id' AND COM_Status=0 AND SUP_Id='$supid'");
+        $this->send_success( $response ); 
     }
 	
-	    /**
+	/*** Create/update an travelagentbankdetails */
+
+    public function travelagentbankdetails_create() {
+        unset( $_POST['_wp_http_referer'] );
+        unset( $_POST['_wpnonce'] );
+        unset( $_POST['action'] );
+//alert($posted);
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $travelagentbankdetails_id  = travelagentbankdetails_create( $posted );
+        $data = $posted;
+        $this->send_success( $data );
+    }
+	
+	public function travelagentbankdetails_get() {
+        global $wpdb;
+        $id = $_REQUEST['id'];
+		$supid = $_SESSION['supid']; 
+        $response = $wpdb->get_row("SELECT * FROM travel_desk_bank_account WHERE TDBA_Id = '$id' AND SUP_Id='$supid' AND TDBA_Status=1");
+        $this->send_success( $response );
+    }
+	  /**
      * Gets the leave dates
      *
      * Returns the date list between the start and end date of the

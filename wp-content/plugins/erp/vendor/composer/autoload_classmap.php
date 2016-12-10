@@ -516,7 +516,7 @@ return array(
     'WeDevs\\ERP\\Employee\\Finance_Requests_List' => $baseDir . '/modules/employee/includes/class-finance-requests-list-table.php',
 
 
-    /*****************************/
+        /*****************************/
     /** Travel Agent Module classes **/
     /****************************/
     'WeDevs\\ERP\\Travelagent\\Travelagent' => $baseDir . '/modules/travelagent/travelagent.php',
@@ -532,4 +532,7 @@ return array(
     'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_Allocation' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-allocation.php',
     'WeDevs\\ERP\\Travelagent\\Travelagentclient' => $baseDir . '/modules/travelagent/includes/class-travelagentclient.php',
     'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoice_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoice-table.php',
+	'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
+    'WeDevs\\ERP\\Travelagent\\Invoiceview' => $baseDir . '/modules/travelagent/includes/class-invoiceview.php',
+	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
 );

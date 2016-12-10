@@ -1,4 +1,4 @@
-<div class="wrap erp-companyinvoice" id="wp-erp">
+<div class="wrap erp-companyinvoicecreate" id="wp-erp">
 
 <h2>
         <?php
@@ -7,7 +7,7 @@
     </h2>
 
 	<?php
-        $companyinvoice_table = new \WeDevs\ERP\Travelagent\Travel_Agent_Company_Invoice_Table();
+        $companyinvoice_table = new \WeDevs\ERP\Travelagent\Travel_Agent_Company_Invoicecreate_Table();
         $companyinvoice_table->prepare_items();
         $message = '';
             if ('delete' === $companyinvoice_table->current_action()) {
@@ -15,8 +15,8 @@
             }
                 ?>
 
-     <div class="list-table-wrap erp-hr-employees-wrap">
-        <div class="list-table-inner erp-hr-employees-wrap-inner">
+     <div class="list-table-wrap erp-companyinvoicecreate-wrap">
+        <div class="list-table-inner erp-companyinvoicecreate-wrap-inner">
             <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />

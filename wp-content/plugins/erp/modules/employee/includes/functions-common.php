@@ -894,7 +894,7 @@ function Actions($et){
                                     if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
                                     {
 
-                                        //echo $actionButtons;
+                                        echo $actionButtons;
 
                                     }
                                 }
@@ -1145,8 +1145,8 @@ function FinanceActions($et){
                     echo $limitFlag;
 		// employee -- > finance
 		case 4:
-                    if($secMngrApprvd) 
-                    {
+                    //if($secMngrApprvd) 
+                    //{
 			if(!$finApprvd){
 				
 				if(!$limit)
@@ -1155,7 +1155,7 @@ function FinanceActions($et){
 				echo $limitFlag;
 				
 			}
-                    }
+                    //}
 //                    else if(!$secMngrApprvd){
 //                        if(!$finApprvd){
 //				

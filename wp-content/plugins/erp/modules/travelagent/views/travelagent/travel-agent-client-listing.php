@@ -1,4 +1,4 @@
-<div class="wrap erp-hr-travelagentclient">
+<div class="wrap erp-travelagentclient">
 	<h2>
         <?php
         _e( 'Account Overview', 'erp' );
@@ -10,7 +10,6 @@
         }
         ?>
     </h2>
-	    <div class="erp-single-container">
 		<?php
 			global $wpdb;
 			
@@ -22,21 +21,19 @@
                 $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'custom_table_example'), count($_REQUEST['id'])) . '</p></div>';
             }
             ?>
-        <div class="wrap">
-
-            <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-			 <?php echo $message;?>
+       <div class="list-table-wrap erp-travelagentclient-wrap">
+        <div class="list-table-inner erp-travelagentclient-wrap-inner">
+            <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />
-			  <?php $table->search_box('search Company', 'search_id'); ?>
+			  <?php $table->search_box('Search Client', 'search_id'); ?>
 			</form>
 			
-            <form id="persons-table" method="GET">
+            <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                 <?php $table->display() ?>
             </form>
 
-        </div>	
-    </div>
-    
+        </div>
+        </div>
 </div>

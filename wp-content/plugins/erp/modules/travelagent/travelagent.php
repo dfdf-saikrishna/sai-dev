@@ -64,6 +64,7 @@ class Travelagent {
         require_once WPERP_TRAVELAGENT_PATH . '/includes/actions-filters.php';
 		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-travelagentuser.php';
 		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-travelagentclient.php';
+		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-travelagentbankdetails.php';
 		require_once WPERP_TRAVELAGENT_PATH . '/includes/functions-invoice.php';
       }
 
@@ -141,12 +142,14 @@ class Travelagent {
             'travelagentuser_title'    => __( 'Create Travel Agent User', 'erp' ),
             'travelagentuser_update'    => __( 'Edit Travel Agent User', 'erp' ),
             'travelagentclient_title'    => __( 'Create Travel Agent Client', 'erp' ),   
-            'travelagentclient_update'    => __( 'Edit Travel Agent Client', 'erp' ),   
+            'travelagentclient_update'    => __( 'Edit Travel Agent Client', 'erp' ),
+			'travelagentbankdetails_title'    => __( 'Create Travel Agent Bank Details', 'erp' ),
+			'travelagentbankdetails_update'    => __( 'Edit Travel Agent Bank Details', 'erp' ),
             'update' => __( 'Update', 'erp' )
               ),
        ) );
 
-		// if its an employee page
+		// if its an travel agent user page
         if ( 'toplevel_page_UserM' == $hook ) {
             wp_enqueue_script( 'post' );
 
@@ -154,7 +157,7 @@ class Travelagent {
             $localize_script['travelagentuser_empty'] = $travelagentuser->to_array();
         }
 		
-		// if its an employee page
+		// if its an travel agent client  page
         if ( 'toplevel_page_ClientM' == $hook ) {
             wp_enqueue_script( 'post' );
 
@@ -163,13 +166,21 @@ class Travelagent {
         }
 		
 		
-        // if its an employee page
-        if ( 'toplevel_page_companiesmenu' == $hook ) {
+        // if its an Bank Details page
+        if ( 'toplevel_page_BankM' == $hook ) {
             wp_enqueue_script( 'post' );
 
-            $employee                          = new Employee();
-            $localize_script['employee_empty'] = $employee->to_array();
+            $travelagentbankdetails                          = new Travelagentbankdetails();
+            $localize_script['travelagentbankdetails_empty'] = $travelagentbankdetails->to_array();
         }
+		// if its an Bank Details page
+        if ( 'invoice-management_page_ViewInvoice' == $hook ) {
+            wp_enqueue_script( 'post' );
+
+            $invoiceview                          = new Invoiceview();
+            $localize_script['invoiceview_empty'] = $invoiceview->to_array();
+        }
+
         wp_localize_script( 'wp-erp-ta', 'wpErpTa', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
@@ -196,7 +207,7 @@ class Travelagent {
     public function admin_js_templates() {
         global $current_screen;
 
-       // var_dump( $current_screen->base );
+        var_dump( $current_screen->base );
         switch ($current_screen->base) {
             case 'toplevel_page_UserM':
                 erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentuser-create.php', 'travelagentuser-create' );
@@ -204,6 +215,10 @@ class Travelagent {
 			case 'toplevel_page_ClientM':
                 erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentclient-create.php', 'travelagentclient-create' );
                 break;
+			case 'toplevel_page_BankM':
+                erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentbankdetails-create.php', 'travelagentbankdetails-create' );
+                break;	
+				
             default:
                 # code...
                 break;

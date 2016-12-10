@@ -74,7 +74,7 @@ class Travelagentclient {
 		'COM_Flight'=>'',
 		'COM_Bus'=>'',
 		'COM_Hotel'=>'',
-		'COM_Logo'=>'',
+		'user_id'=>'',
     );
         return apply_filters( 'erp_hr_get_travelagentclient_fields', $defaults, $this->id, $this->user );
         //return $defaults;

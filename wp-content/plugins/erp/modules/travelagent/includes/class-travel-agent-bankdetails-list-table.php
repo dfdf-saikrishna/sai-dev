@@ -168,6 +168,7 @@ class Travel_Agent_Bankdetails_List_Table extends \WP_List_Table
 			'BankName' => __('Bank Name',true),
 			'BranchName' => __('Branch Name',true),
 			'BankIFSCCode' => __('Bank IFSC Code',true),
+			'AddedDate' => __('Added Date',true),
         );
         return $sortable_columns;
     }

@@ -123,7 +123,7 @@ class Ajax_Handler {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
-        $this->send_success($posted);return false;
+        //$this->send_success($posted);return false;
         $empuserid = $_SESSION['empuserid'];
         $et = $posted['et'];
         if(isset($posted['req_id_table'])){
@@ -188,11 +188,83 @@ class Ajax_Handler {
 
                     // mail to accounts
                     //notify($request['REQ_Code'], $request['RT_Id'], 4);
-                    $response = array('status'=>'success','message'=>"Request Approved Successfully");
-                    $this->send_success($response);
                 }
             break;
+            // emp --> finance --> rep mngr
+		
+            case 2:
+
+                    // check finance approval
+                            
+                    if($rowfin=$wpdb->get_row("SELECT RS_Id FROM request_status WHERE REQ_Id='$reqid' and REQ_Status=2 and RS_EmpType=2 and RS_Status=1")){
+                            if($polId==5){
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 5));
+                                
+                            }
+                            else{
+                                $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 1));
+                                
+                            }
+                            $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+
+                            // mail to employee
+                            //notify($request['REQ_Code'], $request['RT_Id'], 6);
+
+                    } else {
+
+                            //header("location:$filename?msg=11&reqid=$reqid"); exit;
+
+                    }
+
+            break;
+            // emp --> rep mngr
+
+            case 3:
+                    if($polId==5){
+                        $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 5));
+
+                        $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+
+                        if($request[REQ_Type]==5){
+
+                                // mail to employee
+                                //notify($request['REQ_Code'], $request['RT_Id'], 24, $empid);
+
+                                // mail to travel desk
+                                //notify($request['REQ_Code'], $request['RT_Id'], 25, $empid);
+
+                        } else {
+
+                                // mail to employee
+                                //notify($request['REQ_Code'], $request['RT_Id'], 24);
+
+                        }
+                    }
+                    else{
+                        $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 1));
+
+                        $wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+
+                        if($request[REQ_Type]==3){
+
+                                // mail to employee
+                                //notify($request['REQ_Code'], $request['RT_Id'], 24, $empid);
+
+                                // mail to travel desk
+                                //notify($request['REQ_Code'], $request['RT_Id'], 25, $empid);
+
+                        } else {
+
+                                // mail to employee
+                                //notify($request['REQ_Code'], $request['RT_Id'], 24);
+
+                        }
+                    }
+
+            break;
         }
+        $response = array('status'=>'success','message'=>"Request Approved Successfully");
+        $this->send_success($response);
         
     }
     
@@ -289,14 +361,12 @@ class Ajax_Handler {
 		// emp --> finance
 		
 		case 4:
+			$wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 2));
 			
-			insert_query("request_status", "REQ_Id, EMP_Id, REQ_Status, RS_EmpType", "'$reqid', '$empuserid', 2, 2", $filename);
-			
-			update_query("requests", "REQ_Status=2", "REQ_Id='$reqid'", $filename);
-			
-			
+			$wpdb->update('requests', array('REQ_Status' => 2), array('REQ_Id' => $reqid));
+	
 			//mail to employee
-			notify($selsql['REQ_Code'], $selsql['RT_Id'], 6);
+			//notify($selsql['REQ_Code'], $selsql['RT_Id'], 6);
 			
 		break;
 		
@@ -640,28 +710,29 @@ class Ajax_Handler {
 
 
                 //--------- employee  --> finance
-                case 4:	
+                case 4:
                 if($expenseLimit > 0){
                    //-------- employee -->  2nd level manager  -->  finance
-                   if($mydetails['EMP_Code']==$mydetails['EMP_Funcreprtnmngrcode'])
+                   if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
                     {
 
                             // insert into request
-                            $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","5, '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
+                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $reqid=$wpdb->insert_id;                           
 
                             // insert into request_status
-                            insert_query("request_status","REQ_Id, EMP_Id, REQ_Status","'$reqid', '$empuserid', 2",$filename);
-
+                            $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
+                            
                     }
                     else
                     {
-                            $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","5, '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-
+                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));   
+                        $reqid=$wpdb->insert_id;
                     }
                 }
-                else{	
-                        $reqid=insert_query("requests","POL_Id, REQ_Code, COM_Id, RT_Id, PC_Id, CC_Id","'$polid', '$expreqcode', '$compid', '$etype', '$selProjectCode', '$selCostCenter'",$filename);
-
+                else{
+                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $reqid=$wpdb->insert_id;
                 }				
                 break;
 

@@ -12,11 +12,16 @@
          * @return {void}
          */
         initialize: function() {
-			$( '.erp-hr-travelagent' ).on( 'click', 'a#erp-travelagentuser-new', this.travelagentUser.create );
-            $( '.erp-hr-travelagent' ).on( 'click', 'span.edit a', this.travelagentUser.edit );
-			$( '.erp-hr-travelagentclient' ).on( 'click', 'a#erp-travelagentclient-new', this.travelagentClient.create );
-			$( '.erp-hr-travelagentclient' ).on( 'click', 'span.edit a', this.travelagentClient.edit );
+			$( '.erp-hr-travelagentuser' ).on( 'click', 'a#erp-travelagentuser-new', this.travelagentUser.create );
+            $( '.erp-hr-travelagentuser' ).on( 'click', 'span.edit a', this.travelagentUser.edit );
+			$( '.erp-travelagentclient' ).on( 'click', 'a#erp-travelagentclient-new', this.travelagentClient.create );
+			$('.erp-travelagentclient').on('click', 'span.edit a', this.travelagentClient.edit);
+			  $('body').on('click', 'a#client-photo ', this.travelagentClient.setPhoto);
             $( '.erp-invoice-management' ).on( 'change', '#Companyinvoice', this.travelagentInvoice.view );
+			$( '.erp-travelagentbankdetails' ).on( 'click', 'a#erp-travelagentbankdetails-new', this.travelagentBankdetails.create );
+			$( '.erp-travelagentbankdetails' ).on( 'click', 'span.edit a', this.travelagentBankdetails.edit );
+			$( '.companyinvoicearrow' ).on( 'click', '', this.travelagentcompanyinvoicearw.view);
+			
 			this.initTipTip();
         },
 
@@ -28,7 +33,6 @@
             } );
         },	
 		
-		
 	travelagentUser: {
                 
 			 /**
@@ -37,7 +41,7 @@
              * @return {void}
              */
             reload: function() {
-                $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+                $( '.erp-hr-travelagentuser-wrap' ).load( window.location.href + ' .erp-hr-travelagentuser-wrap-inner' );
             },
 			
             /**
@@ -142,9 +146,59 @@
              * @return {void}
              */
             reload: function() {
-                $( '.erp-hr-employees-wrap' ).load( window.location.href + ' .erp-hr-employees-wrap-inner' );
+                $( '.erp-travelagentclient-wrap' ).load( window.location.href + ' .erp-travelagentclient-wrap-inner' );
             },
 			
+			/**
+             * Set photo popup
+             *
+             * @param {event}
+             */
+            setPhoto: function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                //console.log("inside1");
+                var frame;
+
+                if (frame) {
+                    frame.open();
+                    return;
+                }
+
+                frame = wp.media({
+                    title: wpErpTa.emp_upload_photo,
+                    button: {text: wpErpTa.emp_set_photo}
+                });
+
+                frame.on('select', function () {
+                    var selection = frame.state().get('selection');
+
+                    selection.map(function (attachment) {
+                        attachment = attachment.toJSON();
+
+                        var html = '<img src="' + attachment.url + '" alt="" />';
+                        html += '<input type="hidden" id="emp-photo-id" name="travelagentclient[photo_id]" value="' + attachment.id + '" />';
+                        html += '<a href="#" class="erp-remove-photo">&times;</a>';
+                        //console.log("inside2");
+                        $('.photo-container', '.erp-employee-form').html(html);
+                    });
+                });
+
+                frame.open();
+            },
+            /**
+             * Remove an employees avatar
+             *
+             * @param  {event}
+             */
+            removePhoto: function (e) {
+                e.preventDefault();
+
+                var html = '<a href="#" id="erp-set-emp-photo" class="button button-small">' + wpErpTa.emp_upload_photo + '</a>';
+                html += '<input type="hidden" name="travelagentclient[photo_id]" id="emp-photo-id" value="0">';
+
+                $('.photo-container', '.erp-employee-form').html(html);
+            },
             /**
              * Create a new employee modal
              *
@@ -171,7 +225,7 @@
                      * @param  {modal}
                      */
                     onSubmit: function(modal) {
-						//alert("sdfsdfsf");
+						alert("sdfsdfsf");
                         $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
                         wp.ajax.send( 'travelagentclient_create', {
                             data: this.serialize(),
@@ -192,24 +246,21 @@
                     }
                 });
             },
-			
 			edit: function(e) {
                 e.preventDefault();
                 var self = $(this);
-                //alert("edit");
+                
                 $.erpPopup({
                     title: wpErpTa.popup.travelagentclient_update,
                     button: wpErpTa.popup.update,
-                    id: 'erp-employee-edit',
+                    id: 'erp-travelagentbankdetails-edit',
                     onReady: function() {
                         var modal = this;
-
                         $( 'header', modal).after( $('<div class="loader"></div>').show() );
-
-                        wp.ajax.send( 'travelagentclient_get', {
+                        wp.ajax.send('travelagentclient_get', {
                             data: {
                                 id: self.data('id'),
-                                _wpnonce: wpErpTa.nonce
+                               // _wpnonce: wpErpTa.nonce
                             },
                             success: function(response) {
                                 console.log(response);
@@ -223,7 +274,7 @@
                     onSubmit: function(modal) {
                         modal.disableButton();
 
-                        wp.ajax.send( {
+                        wp.ajax.send({
                             data: this.serialize(),
                             success: function(response) {
                                 WeDevs_ERP_TRAVELAGENT.travelagentClient.reload();
@@ -233,12 +284,12 @@
                             error: function(error) {
                                 modal.enableButton();
                                 modal.showError( error );
+								console.log(error);
                             }
                         });
                     }
                 });
             },
-			
         },	
 		travelagentInvoice: {
 			 /**
@@ -276,10 +327,125 @@
             },
 			
 		},
+				
+	travelagentBankdetails: {
+                
+			 /**
+             * Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-travelagentbankdetails-wrap' ).load( window.location.href + ' .erp-travelagentbankdetails-wrap-inner' );
+            },
+			
+            /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+            create: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    //e.preventDefault();
+                }
+
+                if ( typeof wpErpTa.travelagentbankdetails_empty === 'undefined' ) {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpTa.popup.travelagentbankdetails_title,
+                    button: wpErpTa.popup.travelagentbankdetails_create,
+                    id: "erp-new-travelagentbankdetails-popup",
+					//content:"<h1>Test</h1>",
+                   content: wperp.template('travelagentbankdetails-create')( wpErpTa.travelagentbankdetails_empty ).trim(),
+                    /**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                    onSubmit: function(modal) {
+                        $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
+                        wp.ajax.send( 'travelagentbankdetails_create', {
+                            data: this.serialize(),
+                            success: function(response) {
+                                //console.log(response);
+                                WeDevs_ERP_TRAVELAGENT.travelagentBankdetails.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+				$('.erp-modal-backdrop, .erp-modal' ).find( '.erp-loader' ).addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+			edit: function(e) {
+                e.preventDefault();
+                var self = $(this);
+                
+                $.erpPopup({
+                    title: wpErpTa.popup.travelagentbankdetails_update,
+                    button: wpErpTa.popup.update,
+                    id: 'erp-travelagentbankdetails-edit',
+                    onReady: function() {
+                        var modal = this;
+                        $( 'header', modal).after( $('<div class="loader"></div>').show() );
+                        wp.ajax.send('travelagentbankdetails_get', {
+                            data: {
+                                id: self.data('id'),
+                               // _wpnonce: wpErpTa.nonce
+                            },
+                            success: function(response) {
+                                //console.log(response);
+                              var html = wp.template('travelagentbankdetails-create')( response );
+                                $( '.content', modal ).html( html );
+                                $( '.loader', modal).remove();
+                                // disable current one
+                                }
+                        });
+                    },
+                    onSubmit: function(modal) {
+                        modal.disableButton();
+
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function(response) {
+                                WeDevs_ERP_TRAVELAGENT.travelagentBankdetails.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+                                modal.showError( error );
+								console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+        },
+		
+		travelagentcompanyinvoicearw:{
+			
+			view: function(e) {
+				 alert("test");
+				 //$(".hide-table").not($(this)).hide('slow');
+				 $(this).closest('tr').hide('slow');
+				 //$(".hide-table").hide('slow');
+				 //$(this).find('.hide-table').hide();
+                },
+			
+		},
 		
 	
     };
 
+	
+	
     $(function() {
         WeDevs_ERP_TRAVELAGENT.initialize();
     });

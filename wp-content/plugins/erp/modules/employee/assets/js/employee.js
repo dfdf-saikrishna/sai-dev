@@ -253,8 +253,9 @@
                 wp.ajax.send( 'send_pre_travel_request', {
                       data: $(this).serialize(),
                     success: function(resp) {
-                        console.log("success");
+                        console.log("success"); 
                         console.log(resp);
+                        
                         $('.erp-loader').hide();
                         $('#submit-pre-travel-request').removeClass('disabled');
                         switch(resp.status){
