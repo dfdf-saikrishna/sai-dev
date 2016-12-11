@@ -17,6 +17,7 @@ add_action('login_head', 'my_loginlogo');
 add_action('admin_head','favicon');
 add_action( 'login_head', 'hide_login_nav' );
 add_action('admin_head', 'hid_wordpress_thankyou');
+//add_action('wp_before_admin_bar_render', 'wpb_custom_logo');
 
 /** Filters *******************************************************************/
 
