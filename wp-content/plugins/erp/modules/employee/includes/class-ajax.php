@@ -262,6 +262,17 @@ class Ajax_Handler {
                     }
 
             break;
+            // emp --> rep mngr
+             case 4:
+                 if($polId==5){
+                    $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2,'RS_EmpType' => 5));
+                    // mail to employee
+                    //notify($request['REQ_Code'], $request['RT_Id'], 3);
+
+                    // mail to accounts
+                    //notify($request['REQ_Code'], $request['RT_Id'], 4);
+                }
+             break;
         }
         $response = array('status'=>'success','message'=>"Request Approved Successfully");
         $this->send_success($response);

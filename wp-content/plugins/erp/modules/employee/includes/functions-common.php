@@ -833,13 +833,12 @@ function Actions($et){
                     {
 
                             // check for finance approval
-
+                             
                             if($selFinStat=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=2 AND RS_Status=1")){
                                     if($rowpol->POL_Id=="5"){
                                         if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){
-
-                                            echo $actionButtons;
-
+                                            if(!$selsecstatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=5 AND RS_Status=1"))
+                                            echo $actionButtons; 
                                         }
                                     }
                                     //if its not my request and finance has apprvd & waiting for my approval
@@ -866,7 +865,7 @@ function Actions($et){
                             {
                                     if($rowpol->POL_Id=="5" || $rowpol->POL_Id=="6"){
                                         if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)){
-
+                                            if(!$selsecstatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=5 AND RS_Status=1"))
                                             echo $actionButtons;
 
                                         }
@@ -893,7 +892,7 @@ function Actions($et){
                                 if($rowpol->POL_Id=="5"){
                                     if(!($row->EMP_Reprtnmngrcode == $emp_code) || ($row->EMP_Id==$empuserid)) 
                                     {
-
+                                        if(!$selsecstatus=$wpdb->get_row("SELECT * FROM request_status WHERE REQ_Id='$reqid' AND REQ_Status=2 AND RS_EmpType=5 AND RS_Status=1"))
                                         echo $actionButtons;
 
                                     }
@@ -1143,6 +1142,7 @@ function FinanceActions($et){
                     echo $actionButtons;
                     else
                     echo $limitFlag;
+                break;
 		// employee -- > finance
 		case 4:
                     //if($secMngrApprvd) 

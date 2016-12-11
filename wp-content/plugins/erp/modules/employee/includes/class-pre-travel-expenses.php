@@ -160,7 +160,7 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
             //var_dump($item['POL_Id']);
             if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
                 
-                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=5"))
                 {
                     $approvalss=approvals($repmngrStatus->REQ_Status);
                 }
