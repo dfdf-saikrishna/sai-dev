@@ -207,7 +207,7 @@ class Travelagent {
     public function admin_js_templates() {
         global $current_screen;
 
-        var_dump( $current_screen->base );
+        //var_dump( $current_screen->base );
         switch ($current_screen->base) {
             case 'toplevel_page_UserM':
                 erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentuser-create.php', 'travelagentuser-create' );

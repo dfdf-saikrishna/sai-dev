@@ -535,4 +535,33 @@ return array(
 	'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
     'WeDevs\\ERP\\Travelagent\\Invoiceview' => $baseDir . '/modules/travelagent/includes/class-invoiceview.php',
 	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
+    
+    /*****************************/
+    /** Traveldesk Module classes **/
+    /****************************/
+    
+    'WeDevs\\ERP\\Traveldesk\\Request_Travel_Expenses' => $baseDir . '/modules/traveldesk/includes/class-request-for-my-approval.php',
+    'WeDevs\\ERP\\Traveldesk\\My_Pre_Travel_Expenses' => $baseDir . '/modules/traveldesk/includes/class-pre-travel-expenses.php',
+    'WeDevs\\ERP\\Traveldesk\\Travel_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-travel-expense-request-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Mileage_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-mileage-request-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Others_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-others-request-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Utility_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-utility-request-table.php',
+    'WeDevs\\ERP\\Traveldesk\\All_Expense_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-all-expense-request-table.php',
+
+    
+    'WeDevs\\ERP\\Traveldesk\\Admin\\Admin_Menu' => $baseDir . '/modules/traveldesk/includes/admin/class-menu.php',
+    'WeDevs\\ERP\\Traveldesk\\Form_Handler' => $baseDir . '/modules/traveldesk/includes/class-form-handler.php',
+    'WeDevs\\ERP\\Traveldesk\\Emailer' => $baseDir . '/modules/traveldesk/includes/class-emails.php',
+    'WeDevs\\ERP\\Traveldesk\\Ajax_Handler' => $baseDir . '/modules/traveldesk/includes/class-ajax.php',
+    'WeDevs\\ERP\\Traveldesk\\Announcement' => $baseDir . '/modules/traveldesk/includes/class-announcement.php',
+    'WeDevs\\ERP\\Traveldesk\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/traveldesk/includes/emails/class-email-new-employee-welcome.php',
+    'WeDevs\\ERP\\Traveldesk\\Employee' => $baseDir . '/modules/traveldesk/includes/class-employee.php',
+    'WeDevs\\ERP\\Traveldesk\\Superadmin_List_Table' => $baseDir . '/modules/traveldesk/includes/class-superadmin-list-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Companies_List_Table' => $baseDir . '/modules/traveldesk/includes/class-company-list-table.php',	
+    'WeDevs\\ERP\\Traveldesk\\Expensecategory_List_Table' => $baseDir . '/modules/traveldesk/includes/class-expensecategory-list-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Companyexpensecategory_List_Table' => $baseDir . '/modules/traveldesk/includes/class-companyexpensecategory-list-table.php',    
+    'WeDevs\\ERP\\Traveldesk\\Traveldesk' => $baseDir . '/modules/traveldesk/traveldesk.php',
+    'WeDevs\\ERP\\Traveldesk\\Models\\Companyview' => $baseDir . '/modules/traveldesk/includes/models/companyview.php',
+    'WeDevs\\ERP\\Traveldesk\\Companiestravel_List_Table' => $baseDir . '/modules/traveldesk/includes/class-companytravel-list-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Traveldesk_Claims_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-claims-list-table.php',
 );

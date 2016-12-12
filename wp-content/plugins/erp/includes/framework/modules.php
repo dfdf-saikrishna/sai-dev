@@ -76,12 +76,19 @@ class Modules {
                 'callback'    => '\WeDevs\ERP\Employee\Employee',
                 'modules'     => apply_filters( 'erp_employee_modules', [ ] )
             ],
-			'TravelAgent' => [
+            'TravelAgent' => [
                 'title'       => __( 'TravelAgent', 'erp' ),
                 'slug'        => 'erp-accounting',
                 'description' => __( 'Travel Agent Functionalities', 'erp' ),
                 'callback'    => '\WeDevs\ERP\Travelagent\Travelagent',
                 'modules'     => apply_filters( 'erp_travelagent_modules', [ ] )
+            ],
+            'Traveldesk' => [
+                'title'       => __( 'Traveldesk', 'erp' ),
+                'slug'        => 'erp-accounting',
+                'description' => __( 'Traveldesk Functionalities', 'erp' ),
+                'callback'    => '\WeDevs\ERP\Traveldesk\Traveldesk',
+                'modules'     => apply_filters( 'erp_employee_modules', [ ] )
             ]
         ];
     }

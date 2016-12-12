@@ -141,6 +141,17 @@
                         $sessionid					=	$_SESSION['taSessionid'];
                         //session of type 3=travel agent, 4=travel agent user
                         $_SESSION['suptype']        =	$result->SUP_Type;
+                    }else if($result=$wpdb->get_row("SELECT * FROM travel_desk WHERE user_id='$user->ID'")){
+                        //session of empuserid
+                      //  $_SESSION['empuserid']=$result->EMP_Id;
+                      //  $_SESSION['emp_code']=$result->EMP_Code;
+                        //session of compid
+                        $_SESSION['compid']=$result->COM_Id;
+                        //session of employee name
+                        $_SESSION['tdid']=$result->TD_Id;
+                        //session id
+                        $_SESSION['sessionid']=session_id();  
+                        $_SESSION['delegate']=NULL;
                     }
                   
                 }
