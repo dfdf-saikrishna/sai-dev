@@ -221,7 +221,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   </tbody>
                 </table>
                 <input type="hidden" id="hidrowno" name="hidrowno" value="<?php echo $rows-1; ?>" />
-                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
+                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
                 
             </div>

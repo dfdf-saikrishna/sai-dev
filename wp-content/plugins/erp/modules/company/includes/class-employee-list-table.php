@@ -39,12 +39,19 @@ class Employee_List_Table extends \WP_List_Table
         if ( $which != 'top' ) {
             return;
         }?>
-        <div class="alignleft actions">
-        <a href="#" id="set_finance" class="button button-primary">Set as Finance Approver</a> 
-        <a href="#" id="remove_finance" class="button erp-button-danger">Remove as Finance Approver</a>
-        <a href="#" id="allow_access" class="button erp-button-success">Allow Access</a> 
-        <a href="#" id="remove_access" class="button erp-button-danger">Block Access</a>
+        <div class="alignleft">
+        <a href="#" id="set_finance" class="button button-primary">Set as Finance Approver</a>
         </div>
+        <div class="alignleft">
+        <a href="#" id="remove_finance" class="button erp-button-danger">Remove as Finance Approver</a>
+        </div>
+        <div class="alignleft">
+        <a href="#" id="allow_access" class="button erp-button-success">Allow Access</a>
+        </div>
+`       <div class="alignleft">
+        <a href="#" id="remove_access" class="button erp-button-danger">Block Access</a>
+        </div>  
+        
         <?php
     }
 

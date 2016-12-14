@@ -39,7 +39,7 @@ class Finance_Approvers_List extends \WP_List_Table
         if ( $which != 'top' ) {
             return;
         }?>
-        <div class="alignleft actions">
+        <div class="alignleft">
         <a href="#" id="remove_finance" class="button button-primary">Remove as Finance Approver</a> 
         </div>
         <?php

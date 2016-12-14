@@ -76,25 +76,10 @@ if(isset($_REQUEST['selEmployees'])){
                         </tr>
                       </table>
        
-              <!-- Messages -->
-              <div style="display:none" id="failure" class="notice notice-error is-dismissible">
-              <p id="p-failure"></p>
-              </div>
-
-              <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
-                  <p id="p-notice"></p>
-              </div>
-
-              <div style="display:none" id="success" class="notice notice-success is-dismissible">
-                  <p id="p-success"></p>
-              </div>
-
-              <div style="display:none" id="info" class="notice notice-info is-dismissible">
-                  <p id="p-info"></p>
-              </div>
+              
               <div style="margin-top:60px;">
-                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post">
-                <table class="wp-list-table widefat striped admins" border="0" id="traveldesk_request">
+                <form id="traveldesk_request" name="traveldesk_request_form" action="#" method="post">
+                <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
                       <thead class="cf">
                         <tr>
                           <th class="column-primary">Date</th>
@@ -142,10 +127,7 @@ if(isset($_REQUEST['selEmployees'])){
                             </br><span class="red" id="show-exceed"></span>
                             <input type="hidden" value="1" name="ectype" id="ectype"/>
                             <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
-                            <input type="hidden" value="1" name="hiddenDraft" id="hiddenDraft"  />
-                            <input type="hidden" value="<?php echo $empuserid; ?>" name="hiddenEmp" id="hiddenEmp" />
-                            <input type="hidden" value="1" name="addnewrequest" id="addnewrequest" />
-                            <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
+                            <input type="hidden" name="action" id="send_pre_travel_request" value="send_pre_travel_request">
                             </span></td>
                           <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                         </tr>

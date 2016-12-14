@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\ERP\Corptne;
+namespace WeDevs\ERP\Traveldesk;
 /**
  * PART 2. Defining Custom Table List
  * ============================================================================
@@ -19,7 +19,7 @@ namespace WeDevs\ERP\Corptne;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Workflow_List_Table extends \WP_List_Table
+class Request_WithoutAppr_List extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -79,36 +79,40 @@ class Workflow_List_Table extends \WP_List_Table
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_ID($item)
+    function column_Request_Code($item)
     {
-        return '<em>' . $item['	POL_Id'] . '</em>';
+        return "<a href='#'>".$item['REQ_Code']."</a>";
     }
     
-    function column_Type_Workflow($item){
-        $type = $item['POL_Type'] ; 
-        return $type;
+    function column_Total_Cost($item){
+        global $wpdb;
+        $totalcost = $wpdb->get_var("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id='$item[REQ_Id]' AND RD_Status=1");
+        return IND_money_format($totalcost).".00";
     }
      
-    function column_Total_Count($item){
-          global $wpdb;
+    function column_Claim_Status($item){
+        global $wpdb;
          
-        $polId = $item['POL_Id'];
-      
-       $total_count = $wpdb->get_results("SELECT distinct (wp.COM_Id) FROM workflow_period wp, company com WHERE POL_Id=$polId and wp.COM_Id=com.COM_Id and COM_Status=0 and WP_Status=1");
-       //var_dump($total_count);
-      return count($total_count);
-        //workflow_period wp, company com", "distinct (wp.COM_Id)", "POL_Id=$rowcom[POL_Id] and wp.COM_Id=com.COM_Id and COM_Status=0 and WP_Status=1
-        if($toatl_count == 0){
-           return "nil";
-       }
-      else{
-           return '(' . $toatl_count . ')';
-      }
+        if($item['REQ_Claim']){
+						
+                return '<span class="label label-success" title="Claimed on: '.date("d/M/y",strtotime($item["REQ_ClaimDate"])).'">Claimed</span>';
+
+        } else {
+                
+                if($selptc=$wpdb->get_row("SELECT PTC_Id, PTC_Status FROM pre_travel_claim WHERE REQ_Id='$item[REQ_Id]'")){
+
+                        echo $appr=approvals($selptc->PTC_Status);
+
+                } else {
+
+                        echo approvals(5);
+                }
+        }
     }
     
-    function column_Added_Date($item){
+    function column_Request_Date($item){
 
-        return date('d/M/Y', strtotime($item['POL_Date']));
+        return date('d-M-y',strtotime($item['REQ_Date']));
     }
  function column_cb($item)
     {
@@ -122,12 +126,10 @@ class Workflow_List_Table extends \WP_List_Table
     {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-           // 'name' => __('Name', 'companies_table_list'),
-            'Type_Workflow' => __('Workflow', 'work-flow'),
-            'Total_Count' => __('Total Company', 'work-flow'),
-            //'Tot_Employees' => __('Employees', 'companies_table_list'),
-            //'Tot_Requests' => __('Requests', 'companies_table_list'),
-            'Added_Date' => __('Added On', 'work-flow'),
+            'Request_Code' => __('Request Code', 'emp_table_list'),
+            'Total_Cost' => __('Total Cost', 'emp_table_list'),
+            'Request_Date' => __('Request Date', 'emp_table_list'),
+            'Claim_Status' => __('Claim Status', 'emp_table_list'),
         );
         return $columns;
     }
@@ -142,13 +144,10 @@ class Workflow_List_Table extends \WP_List_Table
     function get_sortable_columns()
     {
         $sortable_columns = array(
-            'Type ' => array('workflow_name', true),
-            //'Company Logo' => array('company_logo', false),
-            //'Contact' => array('contact', false),
-            'Toatal_Count' => array('company', false),
-            //'Tot. Employees' => array('employees', false),
-            //'Tot. Requests' => array('requests', false),
-            'Added Date' => array('date', false),
+            'Request_Code' => array('Request Code', true),
+            'Total_Cost' => array('Total Cost', false),
+            'Request_Date' => array('Request Date', false),
+            'Claim_Status' => array('Claim Status', false),  
         );
         return $sortable_columns;
     }
@@ -196,6 +195,7 @@ class Workflow_List_Table extends \WP_List_Table
     function prepare_items()
     {
         global $wpdb;
+        $compid = $_SESSION['compid'];
         $table_name = 'policy'; // do not forget about tables prefix
 
         $per_page = 5; // constant, how much records will be shown per page
@@ -211,7 +211,7 @@ class Workflow_List_Table extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(POL_Id) FROM $table_name");
+        $total_items = count($wpdb->get_results("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
@@ -237,11 +237,11 @@ class Workflow_List_Table extends \WP_List_Table
 //				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 //				$i++;
 //			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE WP_Status=0".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
 			//$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE WP_Status=0 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-                        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE POL_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
