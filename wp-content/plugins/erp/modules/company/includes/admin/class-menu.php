@@ -32,14 +32,12 @@ class Admin_Menu {
         if (current_user_can('companyadmin')) {
             add_menu_page(__('Dashboard', 'companyadmin'), __('Dashboard', 'companyadmin'), 'companyadmin', 'company-dashboard', array($this, 'company_dashboard'), 'dashicons-dashboard');
 
-            // add_menu_page('Employeemanagement', 'Employee management', 'companyadmin','menu', 'employee','dashicons-admin-users');
-
-
             add_menu_page('Employeemanagement', 'Employee management', 'companyadmin', 'menu', array($this, 'employee_list'), 'dashicons-admin-users');
 
             $overview = add_submenu_page('menu', 'Overview', 'Overview', 'companyadmin', 'menu', array($this, 'employee_list'));
                 add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array($this, 'upload_employees'));
                 add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array($this, 'export_employees'));
+                add_submenu_page('menu', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
                 add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeview_page'));
                 add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array($this, 'employeelogs_list'));
                 add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array($this, 'Grades'));
@@ -81,8 +79,7 @@ class Admin_Menu {
             add_menu_page('ReportsGraphs', 'ReportsGraphs', 'companyadmin', 'Graphs', array($this, 'ReportsGraphs'), 'dashicons-chart-bar');
                 add_submenu_page('Graphs', 'EmployeeWise', 'Employee Wise', 'companyadmin', 'Employeewise', array($this, 'EmployeeGraphs'), 'ReportsGraphs');
                 add_submenu_page('Graphs', 'Tracker', 'Travel Spend Tracker related to Air / Car / Hotels / Bus', 'companyadmin', 'Tracker', array($this, 'TravelGraphs'));
-          
-//   
+
         }
     }
 
@@ -191,6 +188,9 @@ class Admin_Menu {
     } 
     public function TdInvoiceDisplay() {
         include WPERP_COMPANY_VIEWS . '/travel-desk-claims.php';
+    } 
+    public function EmployeeDisplay() {
+        include WPERP_COMPANY_VIEWS . '/employee-display.php';
     } 
     /**
      * Handles company admin page
@@ -394,70 +394,7 @@ class Admin_Menu {
         }
     }
 
-    /**
-     * Render the leave policy page
-     *
-     * @return void
-     */
-    public function leave_policy_page() {
-        include WPERP_HRM_VIEWS . '/leave/leave-policies.php';
-    }
-
-    /**
-     * Render the holiday page
-     *
-     * @return void
-     */
-    public function holiday_page() {
-        include WPERP_HRM_VIEWS . '/leave/holiday.php';
-    }
-
-    /**
-     * Render the leave entitlements page
-     *
-     * @return void
-     */
-    public function leave_entitilements() {
-        include WPERP_HRM_VIEWS . '/leave/leave-entitlements.php';
-    }
-
-    /**
-     * Render the leave entitlements calendar
-     *
-     * @return void
-     */
-    public function leave_calendar_page() {
-        include WPERP_HRM_VIEWS . '/leave/calendar.php';
-    }
-
-    /**
-     * Render the leave requests page
-     *
-     * @return void
-     */
-    public function leave_requests() {
-        $view = isset($_GET['view']) ? $_GET['view'] : 'list';
-
-        switch ($view) {
-            case 'new':
-                include WPERP_HRM_VIEWS . '/leave/new-request.php';
-                break;
-
-            default:
-                include WPERP_HRM_VIEWS . '/leave/requests.php';
-                break;
-        }
-    }
-
-    /**
-     * An empty page for testing purposes
-     *
-     * @return void
-     */
-    public function empty_page() {
-        
-    }
-
+   
     /**
      * Handles the Employe list Page
      *

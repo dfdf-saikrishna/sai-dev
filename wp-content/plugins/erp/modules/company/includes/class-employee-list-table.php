@@ -153,11 +153,11 @@ class Employee_List_Table extends \WP_List_Table
         else{
             $image = '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" height="32" width="32">';
         }
-		
+	 //return "<a href= 'admin.php?page=Employeesdisplay&empid=$item[EMP_Id]' >" . $item['EMP_Name'] . "</a>";	
         // return sprintf( '%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s',$image,$item['EMP_Name'], $this->row_actions($actions), erp_company_url_single_employeeview(''),'');
     return sprintf('%s %s %s',
             $image,
-            '<a href="'.erp_company_url_single_employeeview('').'"><strong>' . $item['EMP_Name'] . '</strong></a>',
+            "<a href='admin.php?page=Employeesdisplay&empid=$item[EMP_Id]'>" . $item['EMP_Name'] . "</a>",
             $this->row_actions($actions)
         );
     }

@@ -43,109 +43,109 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
                                 <th class="column-primary" >Place</th>
                                 <th class="column-primary">Estimated Cost</th>
 <!--                                <th class="column-primary">Select</th>-->
-                                    <?php
-                                    if ($row[0]->REQ_Status == 2) {
-                                        ?>
+                                <?php
+                                if ($row[0]->REQ_Status == 2) {
+                                    ?>
                                     <th class="column-primary">Booking Status</th>
                                     <th class="column-primary">Cancellation Status</th>
                                 </tr>
                             <?php } ?>
                         </thead>
                         <tbody>
-                                <?php
-                                $rdidarry = array();
-                                foreach ($selsql as $rowsql) {
-                                    //echo $rowsql->RD_Duplicate;
-                                    //print_r($rowsql);die;
-                                    ?>
+                            <?php
+                            $rdidarry = array();
+                            foreach ($selsql as $rowsql) {
+                                //echo $rowsql->RD_Duplicate;
+                                //print_r($rowsql);die;
+                                ?>
                                 <tr>
                                     <td data-title="Date" style="width: 9%;"><?php echo date('d-M-Y', strtotime($rowsql->RD_Dateoftravel)); ?></td>
                                     <td data-title="Description"><?php echo stripslashes($rowsql->RD_Description); ?></td>
                                     <td data-title="Category"><?php echo $rowsql->EC_Name; ?></td>
                                     <td data-title="Category"><?php echo $rowsql->MOD_Name; ?></td>
                                     <td data-title="Place"><?php
-                            if ($rowsql->EC_Id == 1) {
+                                        if ($rowsql->EC_Id == 1) {
 
-                                echo '<b>From:</b> ' . $rowsql->RD_Cityfrom . '<br />';
-                                echo '<b>To:</b> ' . $rowsql->RD_Cityto;
-                            } else {
+                                            echo '<b>From:</b> ' . $rowsql->RD_Cityfrom . '<br />';
+                                            echo '<b>To:</b> ' . $rowsql->RD_Cityto;
+                                        } else {
 
-                                echo '<b>Loc:</b> ' . $rowsql->RD_Cityfrom;
+                                            echo '<b>Loc:</b> ' . $rowsql->RD_Cityfrom;
 
 
-                                if ($rowsd = $wpdb->get_row("SELECT SD_Name FROM stay_duration WHERE SD_Id='$rowsql->SD_Id'"))
-                                    echo '<br>Stay :' . $rowsd->SD_Name;
-                            }
-                            ?></td>
+                                            if ($rowsd = $wpdb->get_row("SELECT SD_Name FROM stay_duration WHERE SD_Id='$rowsql->SD_Id'"))
+                                                echo '<br>Stay :' . $rowsd->SD_Name;
+                                        }
+                                        ?></td>
                                     <td data-title="Estimated Cost"><?php echo $rowsql->RD_Cost ? IND_money_format($rowsql->RD_Cost) . ".00" : approvals(5); ?>
                                     </td>
-                                <?php
-                                if ($row[0]->REQ_Status == 2) {
-                                    ?>
+                                    <?php
+                                    if ($row[0]->REQ_Status == 2) {
+                                        ?>
                                         <td><?php
-                                        if ($row[0]->REQ_Status == 2) {
+                                            if ($row[0]->REQ_Status == 2) {
 
-                                            $imdir = "upload/$compid/bills_tickets/";
+                                                $imdir = "upload/$compid/bills_tickets/";
 
-                                            if (in_array($rowsql->MOD_Id, array(1, 2, 5))) {
+                                                if (in_array($rowsql->MOD_Id, array(1, 2, 5))) {
 
-                                                // check for self booking
+                                                    // check for self booking
 
-                                                if ($selrdbs = $wpdb->get_results("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=2 AND BS_Active=1")) {
+                                                    if ($selrdbs = $wpdb->get_results("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=2 AND BS_Active=1")) {
 
-                                                    echo bookingStatus(8);
-                                                    echo '<br><b>Date: </b>' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BS_Date));
-                                                } else {
-
-                                                    $selrdbs = $wpdb->get_results("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=1 AND BS_Active=1");
-                                                    if (!empty($selrdbs[0]->RD_Id)) {
-                                                        if ($selrdbs[0]->RD_Id) {
-
-                                                            echo '<b>Request date: </b>' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BS_Date)) . "<br>";
-
-                                                            echo '----------------------------------<br>';
-
-                                                            echo bookingStatus($selrdbs[0]->BA_Id);
-                                                            $bsId = $selrdbs[0]->BS_Id;
-
-                                                            $seldocs = $wpdb->get_results("SELECT * FROM booking_documents WHERE BS_Id='$bsId'");
-
-                                                            $doc = NULL;
-
-                                                            $f = 1;
-
-                                                            foreach ($seldocs as $docs) {
-
-                                                                $doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="#?file=' . $imdir . $docs->BD_Filename . '" class="btn btn-link">download</a><br>';
-
-                                                                $f++;
-                                                            }
-
-
-
-                                                            switch ($selrdbs[0]->BA_Id) {
-                                                                case 2:
-                                                                    echo '<br><b>Booked Amnt:</b> ' . IND_money_format($selrdbs[0]->BS_TicketAmnt) . '.00</span><br>';
-                                                                    echo $doc;
-                                                                    echo '<b>Booked Date:</b> ' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BA_ActionDate));
-                                                                    break;
-
-                                                                case 3:
-                                                                    echo '<br><b>Failed Date</b>: ' . date('d-M-y (h:i a)', strtotime($selrdbs->BA_ActionDate));
-                                                                    break;
-                                                            }
-                                                        }
+                                                        echo bookingStatus(8);
+                                                        echo '<br><b>Date: </b>' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BS_Date));
                                                     } else {
 
-                                                        echo bookingStatus(NULL);
-                                                    }
-                                                }
-                                            } else {
+                                                        $selrdbs = $wpdb->get_results("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=1 AND BS_Active=1");
+                                                        if (!empty($selrdbs[0]->RD_Id)) {
+                                                            if ($selrdbs[0]->RD_Id) {
 
-                                                echo bookingStatus(NULL);
+                                                                echo '<b>Request date: </b>' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BS_Date)) . "<br>";
+
+                                                                echo '----------------------------------<br>';
+
+                                                                echo bookingStatus($selrdbs[0]->BA_Id);
+                                                                $bsId = $selrdbs[0]->BS_Id;
+
+                                                                $seldocs = $wpdb->get_results("SELECT * FROM booking_documents WHERE BS_Id='$bsId'");
+
+                                                                $doc = NULL;
+
+                                                                $f = 1;
+
+                                                                foreach ($seldocs as $docs) {
+
+                                                                    $doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="#?file=' . $imdir . $docs->BD_Filename . '" class="btn btn-link">download</a><br>';
+
+                                                                    $f++;
+                                                                }
+
+
+
+                                                                switch ($selrdbs[0]->BA_Id) {
+                                                                    case 2:
+                                                                        echo '<br><b>Booked Amnt:</b> ' . IND_money_format($selrdbs[0]->BS_TicketAmnt) . '.00</span><br>';
+                                                                        echo $doc;
+                                                                        echo '<b>Booked Date:</b> ' . date('d-M-y (h:i a)', strtotime($selrdbs[0]->BA_ActionDate));
+                                                                        break;
+
+                                                                    case 3:
+                                                                        echo '<br><b>Failed Date</b>: ' . date('d-M-y (h:i a)', strtotime($selrdbs->BA_ActionDate));
+                                                                        break;
+                                                                }
+                                                            }
+                                                        } else {
+
+                                                            echo bookingStatus(NULL);
+                                                        }
+                                                    }
+                                                } else {
+
+                                                    echo bookingStatus(NULL);
+                                                }
                                             }
-                                        }
-                                        ?></td>   <td><?PHP
+                                            ?></td>   <td><?PHP
                                             $rdId = $rowsql->RD_Id;
                                             //echo $rdId;die;
                                             if ($row[0]->REQ_Status == 2) {
@@ -344,11 +344,12 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
                                                             <th></th>
                                                             <th>DEPARTURE</th>
                                                             <th>ARRIVAL</th>
-                                                            <th><?php if ($rowRdDetails->MOD_Id == '1')
-                                echo 'DURATION';
-                            else
-                                echo 'Seats';
-                            ?></th>
+                                                            <th><?php
+                                                                if ($rowRdDetails->MOD_Id == '1')
+                                                                    echo 'DURATION';
+                                                                else
+                                                                    echo 'Seats';
+                                                                ?></th>
                                                             <th style="text-align:right">PRICE (Rs)&nbsp;&nbsp;</th>
                                                         </tr>
                                                     </thead>
@@ -398,9 +399,9 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
                                                                 <td <?php echo $style; ?> class="text-right"><?php echo IND_money_format($rowrgquote["GQF_Price"]); ?>&nbsp;&nbsp;</td>
                                                             </tr>
 
-                    <?php
-                }
-                ?>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -438,9 +439,9 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
                                                             <td data-title="PRICE" <?php echo $style; ?> align="right" ><?php echo IND_money_format($rowrgquote["GQF_Price"]); ?></td>
                                                         </tr>
                                                         <!-- end ngRepeat: flt in (filterdlist=(flights|masterfilter:journeyFilterRequest:filterData.dep))|orderBy:sortFn:order|limitTo:displayed -->
-                    <?php
-                }
-                ?>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </tbody>
                                             </table>
 
@@ -464,5 +465,5 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
 </div>
 </form>
 
-                                <?php _e(chat_box(2)); ?>  
+<?php _e(chat_box(2)); ?>  
 
