@@ -29,14 +29,19 @@ class Admin_Menu {
        if ( current_user_can( 'traveldesk' ) ) {
         add_menu_page(__( 'Dashboard', 'traveldesk' ), __( 'Dashboard', 'traveldesk' ), 'traveldesk','traveldesk-dashboard', array( $this, 'traveldesk_dashboard'),'dashicons-dashboard');
 
-        add_menu_page('Request Without Approval', 'Request Without Approval', 'traveldesk','Request-Without-Approval', array( $this, 'traveldeskrequest_withoutapp'),'dashicons-admin-users');
-
-        add_submenu_page('Request-Without-Approval', 'Create Request', 'Create Request', 'traveldesk', 'Create Request', array( $this,'traveldeskrequest_dashboard'),'dashicons-admin-users');
-        add_submenu_page('Request-Without-Approval', 'View / Edit Request', 'View / Edit Request', 'traveldesk', 'View-Edit-Request', array( $this,'view_req_withoutappr'),'dashicons-admin-users');
+        add_menu_page('View-Edit-Request', 'Request Without Approval', 'traveldesk','View-Edit-Request', array( $this, 'view_req_withoutappr'),'dashicons-admin-users');
         
-        add_menu_page('Request-With-Approval', 'Request With Approval', 'traveldesk', 'Request-With-Approval',array( $this, 'traveldeskrequest_withapp'),'dashicons-money');
-        add_submenu_page('Request-With-Approval', 'Create Request', 'Create Request approval', 'traveldesk', 'Create Request approval', 'Create Request approval');
-        add_submenu_page('Request-With-Approval', 'View / Edit Request', 'View / Edit Request', 'traveldesk', 'View-Edit-appRequest', array( $this, 'view_req_withappr'));
+        $overview = add_submenu_page('View-Edit-Request', 'Overview', 'Overview', 'traveldesk', 'View-Edit-Request', array( $this,'view_req_withoutappr'));
+
+        add_submenu_page('View-Edit-Request', 'Create Request', 'Create Request', 'traveldesk', 'Request-Without-Approval', array( $this,'traveldeskrequest_withoutapp'),'dashicons-admin-users');
+        
+        
+        add_menu_page('View-Edit-appRequest', 'Request With Approval', 'traveldesk','View-Edit-appRequest', array( $this, 'view_req_withappr'),'dashicons-admin-users');
+        
+        $overview = add_submenu_page('View-Edit-appRequest', 'Overview', 'Overview', 'traveldesk', 'View-Edit-appRequest', array( $this,'view_req_withappr'));
+
+        add_submenu_page('View-Edit-appRequest', 'Create Request', 'Create Request', 'traveldesk', 'Request-With-Approval', array( $this,'traveldeskrequest_withapp'),'dashicons-admin-users');
+ 
 
 //        add_menu_page('ExpenseManagment', 'Expense Managment', 'traveldesk', 'Expense', 'expense','dashicons-money');
 //        add_submenu_page('Expense', 'action', 'Expense Policy', 'traveldesk', 'ExpenseP', 'Expense');
