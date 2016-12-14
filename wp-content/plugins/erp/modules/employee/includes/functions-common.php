@@ -44,6 +44,7 @@ function isApprover()
 function myDetails($empid=NULL)
 {
     global $wpdb;
+    if(isset($_SESSION['empuserid']))
     $empuserid = $_SESSION['empuserid'];
     //echo $empuserid;die;
     $compid = $_SESSION['compid'];
@@ -71,10 +72,10 @@ function IND_money_format($money){
     return strrev($m);
 }
 
-function gradeLimits(){
+function gradeLimits($empuserid){
     
         global $wpdb;
-        $mydetails = myDetails();
+        $mydetails = myDetails($empuserid);
         if($selgrdLim=$wpdb->get_row("SELECT * FROM grade_limits WHERE EG_Id='$mydetails->EG_Id' AND GL_Status=1")){
 			$selgrdLim = json_decode(json_encode($selgrdLim), True);
 			//print_r($selgrdLim);

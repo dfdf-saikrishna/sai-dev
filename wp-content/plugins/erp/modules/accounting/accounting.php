@@ -190,7 +190,6 @@ class Accounting {
      */
     public function admin_js_templates() {
         global $current_screen;
-
         if ( $current_screen->base == 'accounting_page_erp-accounting-expense' ) {
             erp_get_js_template( WPERP_ACCOUNTING_JS_TMPL . '/invoice.php', 'erp-ac-invoice-payment-pop' );
             erp_get_js_template( WPERP_ACCOUNTING_JS_TMPL . '/vendor.php', 'erp-ac-new-vendor-content-pop' );

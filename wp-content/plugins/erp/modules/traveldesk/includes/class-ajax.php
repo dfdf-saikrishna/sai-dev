@@ -33,12 +33,13 @@ class Ajax_Handler {
     }
     
         function traveldesk_request_create(){
+        ob_end_clean();
         global $wpdb;
         $compid = $_SESSION['compid'];
         $empuserid = $_SESSION['empuserid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
         
-        //$expenseLimit                           = 	$posted['expenseLimit'];
+        $expenseLimit                           = 	$posted['expenseLimit'];
         
         $selEmployees                           =	$_POST['hiddenEmp'];
         
@@ -87,7 +88,7 @@ class Ajax_Handler {
 	//$selCostCenter			=	$posted['selCostCenter'];
 	
 	$textBillNo				=	$posted['textBillNo'];
-	$expenseLimit                           =       "0";
+	//$expenseLimit                           =       "0";
 	
 	$count=count($txtCost);
        
@@ -123,7 +124,7 @@ class Ajax_Handler {
         if($comp=$wpdb->get_row("SELECT COM_Pretrv_POL_Id FROM company WHERE COM_Id='$compid'")){
 	
         switch ($addnewRequest){
-
+                
                 // individual without approval
                 case 1:
                 $reqtype=2; $reqstatus=2;
@@ -140,7 +141,7 @@ class Ajax_Handler {
                 break;
 
         }
-
+        
         $polid=$comp->COM_Pretrv_POL_Id;
         
         if($addnewRequest==2){
@@ -150,9 +151,9 @@ class Ajax_Handler {
 
         $type=0;
 
-
         switch ($polid)
         {
+            
                 //-------- employee -->  rep mngr  -->  finance
                 case 1:
                    
@@ -165,7 +166,7 @@ class Ajax_Handler {
                     if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
                     {
                             // insert into request
-                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id;
                             // insert into request_status
                             $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 2));
@@ -173,7 +174,7 @@ class Ajax_Handler {
                     }
                     else
                     {
-                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id; 
                             $type=2;
                     }       
@@ -191,7 +192,7 @@ class Ajax_Handler {
                         {
 
                                 // insert into request
-                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                                 $reqid=$wpdb->insert_id; 
 
                                 // insert into request_status
@@ -202,7 +203,7 @@ class Ajax_Handler {
                         }
                         else
                         {
-                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id;
                             $wpdb->insert('request_status', array('REQ_Id' => $reqid,'EMP_Id' => $empuserid,'REQ_Status' => 3,'RS_EmpType' => 3));
                             $type=4;
@@ -215,7 +216,7 @@ class Ajax_Handler {
 
                                 // insert into request
                                 
-                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                                $wpdb->insert('requests', array('REQ_Status' => 2,'POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                                 $reqid=$wpdb->insert_id; 
 
                                 // insert into request_status
@@ -228,7 +229,7 @@ class Ajax_Handler {
                         }
                         else
                         {
-                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id;
                             $type=4;    
                         }	
@@ -240,12 +241,12 @@ class Ajax_Handler {
                 case 2:
                 if($expenseLimit > 0){
                         
-                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                         $reqid=$wpdb->insert_id;
                         $type=6;
                 }   
                 else{
-                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                         $reqid=$wpdb->insert_id;
                         $type=6;
                 }
@@ -260,7 +261,7 @@ class Ajax_Handler {
                     {
 
                             // insert into request
-                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id;                           
 
                             // insert into request_status
@@ -269,13 +270,13 @@ class Ajax_Handler {
                     }
                     else
                     {
-                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));   
+                        $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));   
                         $reqid=$wpdb->insert_id;
                         $type=7;
                     }
                 }
                 else{
-                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                        $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                         $reqid=$wpdb->insert_id;
                         $type=7;
                 }				
@@ -363,29 +364,29 @@ class Ajax_Handler {
 
                         // GET  QUOTE
 
-                        if($addnewRequest==2){
-
-                                $explodeVal		=	explode(",", $hiddenAllPrefered[$i]);
-
-                                //$countExpldVal	=	count($explodeVal);
-
-
-                                if($sessionid[$i] && $hiddenPrefrdSelected[$i] && $hiddenAllPrefered[$i]){
-
-
-                                        foreach($explodeVal as $gqfid){
-
-                                                $pref=1;
-
-                                                if($gqfid==$hiddenPrefrdSelected[$i])
-                                                $pref=2;
-                                                $wpdb->insert('request_getquote', array('RD_Id' => $rdid,'RG_SessionId' => $sessionid[$i],'GQF_Id' => $gqfid,'RG_Pref' => $pref));
-
-                                        }
-
-                                }
-
-                        }
+//                        if($addnewRequest==2){
+//
+//                                $explodeVal		=	explode(",", $hiddenAllPrefered[$i]);
+//
+//                                //$countExpldVal	=	count($explodeVal);
+//
+//
+//                                if($sessionid[$i] && $hiddenPrefrdSelected[$i] && $hiddenAllPrefered[$i]){
+//
+//
+//                                        foreach($explodeVal as $gqfid){
+//
+//                                                $pref=1;
+//
+//                                                if($gqfid==$hiddenPrefrdSelected[$i])
+//                                                $pref=2;
+//                                                $wpdb->insert('request_getquote', array('RD_Id' => $rdid,'RG_SessionId' => $sessionid[$i],'GQF_Id' => $gqfid,'RG_Pref' => $pref));
+//
+//                                        }
+//
+//                                }
+//
+//                        }
 
 
 
@@ -518,16 +519,17 @@ class Ajax_Handler {
         } else {
 
                 //header("location:$filename?msg=7");exit;
-                $this->send_success("7");
+                $response = array('status'=>'failure','message'=>"Request Couldn\'t be added. Please try again");
+                $this->send_success($response);
 
         }
 
 
         //header("location:$filename?msg=1&reqid=$expreqcode");exit;    
-	$this->send_success("1");	
+	//$this->send_success("1");	
 			
-//        $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
-//        $this->send_success($response);
+        $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
+        $this->send_success($response);
         
     }
 }

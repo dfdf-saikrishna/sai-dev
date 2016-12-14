@@ -565,4 +565,5 @@ return array(
     'WeDevs\\ERP\\Traveldesk\\Companiestravel_List_Table' => $baseDir . '/modules/traveldesk/includes/class-companytravel-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Traveldesk_Claims_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-claims-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Request_WithoutAppr_List' => $baseDir . '/modules/traveldesk/includes/class-requestwithoutappr-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Request_WithAppr_List' => $baseDir . '/modules/traveldesk/includes/class-requestwithappr-table.php',
 );

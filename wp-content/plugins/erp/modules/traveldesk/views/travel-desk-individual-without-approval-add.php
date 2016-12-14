@@ -1,4 +1,5 @@
 <?php
+require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req.php';
 global $wpdb;
 global $empuserid;
 $compid = $_SESSION['compid'];
@@ -25,7 +26,7 @@ if(isset($_REQUEST['selEmployees'])){
                     <hr />
                     <div style="text-align: center">
                         
-                      <select id="select_emp">
+                      <select id="select_emp" class="erp-select2">
                           <option value="0">Select Employee</option>
                       <?php foreach($allemps as $value){?>
                       <option value="<?php echo $value->EMP_Id;?>" <?php echo ($empuserid==$value->EMP_Id) ? 'selected="selected"' : ''; ?>><?php echo $value->EMP_Code." - ".$value->EMP_Name; ?></option>
@@ -93,7 +94,7 @@ if(isset($_REQUEST['selEmployees'])){
                   <p id="p-info"></p>
               </div>
               <div style="margin-top:60px;">
-                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post">
+                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post" enctype="multipart/form-data">
                 <table class="wp-list-table widefat striped admins" border="0" id="traveldesk_request">
                       <thead class="cf">
                         <tr>
@@ -101,8 +102,8 @@ if(isset($_REQUEST['selEmployees'])){
                           <th class="column-primary">Expense Description</th>
                           <th class="column-primary" colspan="2">Expense Category</th>
                           <th class="column-primary" >Place</th>
-                          <th class="column-primary">Estimated Cost</th>
-                          <th class="column-primary">Get Quote</th>
+                          <th class="column-primary">Total Cost</th>
+                          <th class="column-primary">Bills / Tickets</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -138,7 +139,7 @@ if(isset($_REQUEST['selEmployees'])){
                             <input  name="to[]" id="to1" type="text" placeholder="To" class="">
                             </span></td>
                             <td data-title="Estimated Cost"><span id="cost1container">
-                            <input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
+                            <input type="text" class="" name="txtCost[]" id="txtCost" autocomplete="off" onkeyup="valPreCost(this.value,<?php echo $empuserid;?>);" onchange="valPreCost(this.value,<?php echo $empuserid;?>);"/>
                             </br><span class="red" id="show-exceed"></span>
                             <input type="hidden" value="1" name="ectype" id="ectype"/>
                             <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
@@ -147,10 +148,11 @@ if(isset($_REQUEST['selEmployees'])){
                             <input type="hidden" value="1" name="addnewrequest" id="addnewrequest" />
                             <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
                             </span></td>
-                          <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
+                            <td><input type='file' name='file[]' id="file1" multiple="true"></td>
                         </tr>
                       </tbody>
                     </table>
+                    <span id="totaltable"> </span>
                     <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-traveldesk-request" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                     <span id="totaltable"> </span>
                 </div>
@@ -162,7 +164,14 @@ if(isset($_REQUEST['selEmployees'])){
                 <button type="button" name="reset" id="reset" class="button">Reset</button>
                 </div>
                 </form>
-              
+                <div style="margin-top:60px" id="grade-limit" class="postbox leads-actions closed">
+                    <div class="handlediv" title="<?php _e( 'Click to toggle', 'erp' ); ?>"><br></div>
+                    <h3 class="hndle"><span><?php _e( 'Grade Limits', 'erp' ); ?></span></h3>
+                    <div class="inside">
+                       <!-- Grade Limits -->
+                       <?php _e(gradeLimits($empuserid));?>
+                    </div>
+                </div><!-- .postbox -->
               
         </div><?php } ?>
         </div>

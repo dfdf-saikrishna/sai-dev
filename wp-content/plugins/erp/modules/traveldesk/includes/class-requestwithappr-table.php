@@ -19,7 +19,7 @@ namespace WeDevs\ERP\Traveldesk;
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Request_WithoutAppr_List extends \WP_List_Table
+class Request_WithAppr_List extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -212,7 +212,7 @@ class Request_WithoutAppr_List extends \WP_List_Table
         
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'REQ_Id';
+        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'POL_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
 
         // [REQUIRED] define $items array
@@ -234,14 +234,14 @@ class Request_WithoutAppr_List extends \WP_List_Table
 				$i++;
 			}
                         // will be used in pagination settings
-                        $total_items = count($wpdb->get_results("SELECT * FROM requests ".$query." AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2"));
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests ".$query." AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                        $total_items = count($wpdb->get_results("SELECT * FROM requests ".$query." AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=3"));
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests ".$query." AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=3 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
                         // will be used in pagination settings
-                        $total_items = count($wpdb->get_results("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2"));
+                        $total_items = count($wpdb->get_results("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=3"));
 			//$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE WP_Status=0 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-                        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=2 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=3 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(

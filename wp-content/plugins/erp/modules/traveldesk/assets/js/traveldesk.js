@@ -16,7 +16,11 @@
 
             // Travel Desk
             $( 'body' ).on( 'change', '#select_emp', this.travelDesk.view );
+            $( 'body' ).on( 'change', '#select_emp_withappr', this.travelDesk.withApprView );
             $( '.travel-desk-request').on( 'submit', '#traveldesk_request', this.travelDesk.createRequest );
+            $( '.travel-desk-request').on( 'click', '#add-traveldesk-requestappr', this.travelDesk.addRowappr );
+            $( '.travel-desk-request').on( 'click', '#add-traveldesk-request', this.travelDesk.addRow );
+            $( 'body').on( 'click', 'span#remove-traveldesk-request', this.travelDesk.removeRow );
             
             
 
@@ -49,7 +53,7 @@
         },
         
         travelDesk : {
-            addRow: function(){
+            addRowappr: function(){
                 var optionsCat;
                 var optionsMode;
                  wp.ajax.send( 'get-exp-cat', {
@@ -67,8 +71,8 @@
                                 });
                                 var rowCount = $('#table-pre-travel tr').length;
                                 $('#hidrowno').val(rowCount);
-                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
-                                $('#table-pre-travel tr').last().after('<tr>\n\
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-traveldesk-request" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#traveldesk_request tr').last().after('<tr>\n\
                                 <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
                                 <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
@@ -94,6 +98,62 @@
                  
                  
             },
+            addRow: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#table-pre-travel tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-traveldesk-request" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#traveldesk_request tr').last().after('<tr>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td><input type="file" name="file[]" id="file" multiple="true"></td></tr>');
+                                $( '.erp-leave-date-field' ).datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 });
+                 
+                 
+            },
+            removeRow: function(){
+                var rowCount = $('#traveldesk_request tr').length;
+                if(rowCount==3){
+                    $('#traveldesk_request tr:last').remove();
+                    $('#removebuttoncontainer').html('');
+                }
+                else if(rowCount>2){
+                $('#traveldesk_request tr:last').remove();
+                }
+                
+            },
             view: function() {
                 var val = $(this).val();
                 if(val == 0){
@@ -102,6 +162,14 @@
                     window.location.replace("/wp-admin/admin.php?page=Request-Without-Approval&selEmployees="+val);
                 }
                 
+            },
+            withApprView: function() {
+                var val = $(this).val();
+                if(val == 0){
+                    $('#emp_details').slideUp();
+                }else{
+                    window.location.replace("/wp-admin/admin.php?page=Request-With-Approval&selEmployees="+val);
+                }
             },
            createRequest: function(e){
                alert("test saikrish");
