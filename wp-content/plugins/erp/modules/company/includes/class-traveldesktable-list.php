@@ -54,10 +54,7 @@ class TravelDesk_List_Table extends \WP_List_Table {
             'edit' => sprintf('<a href="?page=Mileage" data-id=%s">%s</a>', $item['TD_Id'], __('Edit', 'traveldesk_table_list')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['TD_Id'], __('Delete', 'traveldesk_table_list')),
         );
-        return sprintf('%s %s',
-            '<a href="'.erp_company_url_single_mileage( $item['TD_Id']).'"><strong>' . $item['TD_Username'] . '</strong></a>',
-            $this->row_actions($actions)
-       // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
+            return sprintf('%s %s', $item['TD_Username'], $this->row_actions($actions)
         );
     }
     function column_cb($item) {

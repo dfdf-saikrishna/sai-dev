@@ -324,7 +324,7 @@ function getGradeLimit($modeid, $empuserid, $filename)
 		}
 		
 	}
-	
+	   
 	$returnval=$ModLimitVal."###".$mode;
 		
 		return $returnval;
@@ -731,7 +731,9 @@ function editActions($et){
     global $wpdb;
     $reqid  =   $_GET['reqid'];
     $empuserid = $_SESSION['empuserid'];
+    
     $compid = $_SESSION['compid'];
+    //echo $compid
     $row = $wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
 //    $actionButtons='
 //	<div class="col-sm-3">

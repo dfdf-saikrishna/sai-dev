@@ -465,7 +465,7 @@ return array(
     'WeDevs\\ERP\\Company\\Companyview' => $baseDir . '/modules/company/includes/class-companyview.php',
     //'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employee.php',
     'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employeelist.php',
-    'WeDevs\\ERP\\Company\\Superadmin_List_Table' => $baseDir . '/modules/company/includes/class-superadmin-list-table.php',
+    'WeDevs\\ERP\\Company\\Company_List_Table' => $baseDir . '/modules/company/includes/class-companies-list-table.php',
     'WeDevs\\ERP\\Company\\Companies_List_Table' => $baseDir . '/modules/company/includes/class-company-list-table.php',
     'WeDevs\\ERP\\Company\\Expensecategory_List_Table' => $baseDir . '/modules/company/includes/class-expensecategory-list-table.php',
     'WeDevs\\ERP\\Company\\Companyexpensecategory_List_Table' => $baseDir . '/modules/company/includes/class-companyexpensecategory-list-table.php',

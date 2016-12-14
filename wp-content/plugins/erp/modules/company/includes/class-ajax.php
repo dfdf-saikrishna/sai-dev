@@ -89,6 +89,9 @@ use Hooker;
         //Travel DEsk
         $this->action('wp_ajax_traveldesk_create', 'traveldesk_create');
         $this->action('wp_ajax_traveldesk_get', 'traveldesk_get');
+        //limits
+        $this->action('wp_ajax_tolerance_limit_amount', 'tolerance_limit_amount');
+
         //Project Code
         $this->action('wp_ajax_projectcode_create', 'projectcode_create');
         $this->action('wp_ajax_projectcode_get', 'projectcode_get');
@@ -240,9 +243,69 @@ use Hooker;
         $this->send_success($response);
     }
 
+    public function tolerance_limit_amount() {
+         //$this->send_success('testing');
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+
+        $txtLimitPercentage = trim($data['txtLimitPercentage']);
+        //echo $txtLimitPercentage;die;
+        //$empid = $data['empid'];
+        $tlId = $data['tlId'];
+        
+        //$txtLimitPercentage ? $txtLimitPercentage = "'" . $txtLimitPercentage . "'" : $txtLimitPercentage = "0";
+
+        $row = $wpdb->get_results("SELECT * FROM  tolerance_limits WHERE COM_Id='$compid' AND TL_Status=1 AND TL_Active=1");
+   //print_r($rowtlid[0]->TL_Id);die;
+        foreach ($row as $rowtlid){
+        if (!empty($rowtlid->TL_Id)) {
+
+            if ($txtLimitPercentage == $rowtlid->TL_Percentage) {
+
+                $response = array('status' => 'info', 'message' => "Please choose a different percentage to update the tolerance limits");
+                $this->send_success($response);
+                exit;
+            } else {
+                if ($wpdb->update('tolerance_limits', array('TL_Status' => '2', 'TL_ClosedDate' => 'NOW()'), array('COM_Id' => $compid))) {
+
+                    if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
+
+                        $response = array('status' => 'info', 'message' => "Previous tolerance limit was closed and new tolerance limit added successfully");
+                        $this->send_success($response);
+                        exit;
+                    } else {
+                        $response = array('status' => 'failure', 'message' => "Error!! Please try again");
+                        $this->send_success($response);
+                        exit;
+                    }
+                } else {
+
+                    $response = array('status' => 'failure', 'message' => "Error!! Please try again");
+                    $this->send_success($response);
+                    exit;
+                }
+            }
+        } else {
+
+            if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
+                $response = array('status' => 'success', 'message' => "Tolerance limit added successfully");
+                $this->send_success($response);
+                exit;
+            } else {
+
+                $response = array('status' => 'failure', 'message' => "Error!! Please try again");
+                $this->send_success($response);
+                exit;
+            }
+        }
+        }
+    }
+
     //gradelimits functions
     public function gradelimits_create() {
-      
+
         $this->send_success("test123");
         $posted = array_map('strip_tags_deep', $_POST);
         $gradelimits = gradelimits_create($posted);
@@ -254,13 +317,12 @@ use Hooker;
         global $wpdb;
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
-        if(isset($_POST['id'])){
-        $id = $data['id'];
-        //$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-        $response = $wpdb->get_row("SELECT * FROM grade_limits WHERE GL_Id = '$id' ");
-        $this->send_success($response);
-        }
-        else{
+        if (isset($_POST['id'])) {
+            $id = $data['id'];
+            //$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+            $response = $wpdb->get_row("SELECT * FROM grade_limits WHERE GL_Id = '$id' ");
+            $this->send_success($response);
+        } else {
             $gradelimits = gradelimits_create($posted);
             //$gradelimitsdata = $posted;
             $this->send_success($gradelimits);

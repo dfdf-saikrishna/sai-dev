@@ -38,29 +38,7 @@ class TravelDesk_Tolerance_List_Table extends \WP_List_Table {
     }
  
                         
-    function extra_tablenav($which) {
-        $compid = $_SESSION['compid'];
-        global $wpdb;
-        if ($which != 'top') {
-            return;
-        }
-        //$selUsers = ( isset($_GET['filter_emp']) ) ? $_GET['filter_emp'] : '';
-        ?>
-        <div class="alignleft actions">
-            <label class="screen-reader-text">Limit Percentage</label>
-            <div>
-            <?php
-            $selsql = $wpdb->get_results("SELECT * FROM tolerance_limits WHERE COM_Id=$compid AND TL_Status=1 AND TL_Active=1");
-            if($selsql){
-            ?>
-            <input  value="<?php echo $selsql['0']->TL_Percentage ? $selsql['0']->TL_Percentage : NULL; ?>" type="digits" required="true" placeholder="digits only" />
-            <?php
-            $var= $selsql['0']->TL_Id ? 'Update' : 'Submit'; 
-            submit_button(__($var), 'button', '', false);
-            echo '</div>';
-            echo '</div>';
-            }
-        }
+ 
     function column_status($item) {
         if ($item['TL_Status'] == 1)
             return '<span class="status-2">Open</span>';

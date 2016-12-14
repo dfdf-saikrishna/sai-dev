@@ -85,9 +85,10 @@ class Mileage_List_Table extends \WP_List_Table {
             'edit' => sprintf('<a href="?page=Mileage" data-id=%s">%s</a>', $item['MIL_Id'], __('Edit', 'mileage_table_list')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['MIL_Id'], __('Delete', 'mileage_table_list')),
         );
-        return sprintf('%s %s',
-            '<a href="'.erp_company_url_single_mileage( $item['MIL_Id']).'"><strong>' . $item['MOD_Name'] . '</strong></a>',
-            $this->row_actions($actions)
+             return sprintf('%s %s',$item['MOD_Name'], $this->row_actions($actions)
+//        return sprintf('%s %s',
+//            '<a href="'.erp_company_url_single_mileage( $item['MIL_Id']).'"><strong>' . $item['MOD_Name'] . '</strong></a>',
+//            $this->row_actions($actions)
        // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
         );
     }

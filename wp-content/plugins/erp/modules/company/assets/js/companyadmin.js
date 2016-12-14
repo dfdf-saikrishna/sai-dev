@@ -76,6 +76,8 @@
             $('body').on('change', '#select-finance-approver', this.finance.setAmount);
             $('body').on('click', '#submit_app_limit', this.finance.subAmount);
             $('body').on('click', '#remove_finance', this.finance.removieFinance);
+            //Travel Desk Limits
+
 
             // Company Admin
             $('body').on('click', 'a#companyadmin-new', this.companyAdmin.create);
@@ -84,9 +86,14 @@
 
             $('.erp-company-traveldesk').on('click', 'a#erp-new-traveldesk', this.traveldesk.create);
             $('.erp-company-traveldesk').on('click', 'span.edit a', this.traveldesk.edit);
+
+
+            //$('.invoice').on('click', '', this.traveldeskclaims.view);
             //employee grade limits edit
             // $('body').on('click', 'span.edit a', this.gradelimits.create);
             $('.erp-company-gradelimits').on('click', 'span.edit a', this.gradelimits.edit);
+
+            $('body').on('click', '#submitToleranceLimits', this.traveldesklimits.update);
             this.initTipTip();
 
             // this.employee.addWorkExperience();
@@ -122,6 +129,54 @@
                 $('.erp-loader').show();
                 $('#crp_import_pdf').addClass('disabled');
             }
+        },
+
+        traveldesklimits: {
+             reload: function () {
+                $('.erp-company-traveldesklimits-wrap').load(window.location.href + ' .erp-company-traveldesklimits-wrap-inner');
+            },
+            update: function (e) {
+                //alert('jkjk');
+                wp.ajax.send('tolerance_limit_amount', {
+                    data: {
+                        txtLimitPercentage: $('#txtLimitPercentage').val(),
+                        tlId: $('#tlId').val(),
+                    },
+                    //alert())
+                    success: function (resp) {
+                        console.log(resp);
+                        WeDevs_ERP_COMPANY.traveldesklimits.reload();
+                        switch (resp.status) {
+                            case 'info':
+                                $('#p-info').html(resp.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(resp.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+
+
+                    },
+                    error: function (resp) {
+                        //leavetypewrap.html( wpErpHr.empty_entitlement_text ).hide().fadeIn();
+                        console.log(resp);
+                    }
+                });
+            },
         },
         //  *****************************
         //         gradelimits add
@@ -677,6 +732,29 @@
                             success: function (response) {
                                 console.log(response);
                                 WeDevs_ERP_COMPANY.grades.reload();
+                        switch (response.status) {
+                            case 'info':
+                                $('#p-info').html(response.message);
+                                $('#info').show();
+                                $("#info").delay(5000).slideUp(200);
+                                break;
+                            case 'notice':
+                                $('#p-notice').html(response.message);
+                                $('#notice').show();
+                                $("#notice").delay(5000).slideUp(200);
+                                break;
+                            case 'success':
+                                $('#p-success').html(response.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(response.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+
                                 modal.enableButton();
                                 modal.closeModal();
                             },

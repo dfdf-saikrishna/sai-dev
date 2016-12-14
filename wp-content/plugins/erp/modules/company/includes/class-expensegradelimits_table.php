@@ -60,103 +60,103 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
     }
 
     function column_bus($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Bus ? IND_money_format($rowsum[0]->GL_Bus) . ".00" : 0;
     }
 
     function column_Car($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Car ? IND_money_format($rowsum[0]->GL_Car) . ".00" : 0;
     }
 
     function column_other($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Others_Travels ? IND_money_format($rowsum[0]->GL_Others_Travels) . ".00" : 0;
     }
 
     function column_hotel($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Hotel ? IND_money_format($rowsum[0]->GL_Hotel) . ".00" : 0;
     }
 
     function column_self($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Self ? IND_money_format($rowsum[0]->GL_Self) . ".00" : 0;
     }
 
     function column_local($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Local_Conveyance ? IND_money_format($rowsum[0]->GL_Local_Conveyance) . ".00" : 0;
     }
 
     function column_mobile($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Mobile ? IND_money_format($rowsum[0]->GL_Mobile) . ".00" : 0;
     }
 
     function column_client($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_ClientMeeting ? IND_money_format($rowsum[0]->GL_ClientMeeting) . ".00" : 0;
     }
 
     function column_others($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Other_Te_Others ? IND_money_format($rowsum[0]->GL_Other_Te_Others) . ".00" : 0;
     }
 
     function column_halt($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Halt ? IND_money_format($rowsum[0]->GL_Halt) . ".00" : 0;
     }
 
     function column_Boarding($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Boarding ? IND_money_format($rowsum[0]->GL_Boarding) . ".00" : 0;
     }
 
     function column_others1($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Others_Other_te ? IND_money_format($rowsum[0]->GL_Others_Other_te) . ".00" : 0;
     }
 
     function column_Data($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_DataCard ? IND_money_format($rowsum[0]->GL_DataCard) . ".00" : 0;
     }
 
     function column_market($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Marketing ? IND_money_format($rowsum[0]->GL_Marketing) . ".00" : 0;
     }
 
     function column_internet($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Internet ? IND_money_format($rowsum[0]->GL_Internet) . ".00" : 0;
     }
 
     function column_two($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Twowheeler ? IND_money_format($rowsum[0]->GL_Twowheeler) . ".00" : 0;
     }
 
     function column_four($item) {
-           global $wpdb;
+        global $wpdb;
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Fourwheeler ? IND_money_format($rowsum[0]->GL_Fourwheeler) . ".00" : 0;
     }
@@ -197,12 +197,12 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
 
     function column_name($item) {
         global $wpdb;
-         $compid = $_SESSION['compid'];
+        $compid = $_SESSION['compid'];
         $actions = array(
             'edit' => sprintf('<a href="?page=gradeslimits" data-id=%s>%s</a>', $item['GL_Id'], __('Edit', 'expensegrade_table')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['GL_Id'], __('Delete', 'expensegrade_table')),
         );
-         $selcom=$wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
+        $selcom = $wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
         return sprintf('%s %s', $selcom->EG_Name, $this->row_actions($actions)
         );
     }
@@ -324,11 +324,10 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'GL_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-        $selcom=$wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
-         //print_r($selcom);die;
-         $egid=$selcom->EG_Id;
-        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM grade_limits WHERE EG_Id='$egid' AND GL_Status=1 ORDER BY  $orderby ", $per_page, $paged), ARRAY_A);
-//print_r($test);die;
+        $selcom = $wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
+        $egid = $selcom->EG_Id;
+        $total_items = count($this->items = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$egid' AND GL_Status=1 ORDER BY GL_Id"));
+        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM grade_limits WHERE EG_Id='$egid' AND GL_Status=1 ORDER BY  $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above
