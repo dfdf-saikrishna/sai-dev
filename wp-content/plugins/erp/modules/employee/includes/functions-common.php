@@ -1270,4 +1270,16 @@ function chat_box($rn_status,$reqtype){
     
 echo '</div>';
 }
+/*////////////////////////////////////////////////////
+              GET COMPANY POLICY TYPE       
+////////////////////////////////////////////////////*/
+
+function compPolicy($compid){
+
+    global $wpdb;
+    $selpolicy=$wpdb->get_row("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");
+	
+    return $selpolicy;
+
+}
 

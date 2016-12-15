@@ -78,7 +78,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   <p id="p-info"></p>
               </div>
               <div style="margin-top:60px;">
-                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post" enctype="multipart/form-data">
+                <form id="traveldesk_request_withoutappr" action="#" method="post" enctype="multipart/form-data">
                 <table class="wp-list-table widefat striped admins" border="0" id="traveldesk_request">
                       <thead class="cf">
                         <tr>
@@ -169,7 +169,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 </div>
                 <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
-                <input type="submit" name="submit" id="submit-traveldesk-request" class="button button-primary">
+                <input type="submit" name="update-traveldesk-request_withoutappr" id="update-traveldesk-request_withoutappr" class="button button-primary">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" name="reset" id="reset" class="button">Reset</button>

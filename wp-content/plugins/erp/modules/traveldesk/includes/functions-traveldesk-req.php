@@ -29,7 +29,7 @@ ob_start();
 			
 			currntModVal=parseInt(currntModVal);
 			
-			var ModLimitVal=getGradeLimitAmount(currntModVal,empId);
+			var ModLimitVal=getGradeLimitAmount(currntModVal);
 			
 			//alert(ModLimitVal);
 			
@@ -95,7 +95,7 @@ ob_start();
 	
 }
 
-function getGradeLimitAmount(mode,empId)
+function getGradeLimitAmount(mode)
 {
 	var ModLimitVal;
 	var _mode;
@@ -115,7 +115,7 @@ function getGradeLimitAmount(mode,empId)
                      $empid = $row->EMP_Id;
                  }
                  
-                 $mydetails=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
+                $mydetails=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
                 
                 
                 $selgrdLim=$wpdb->get_row("SELECT * FROM grade_limits WHERE EG_Id='$mydetails->EG_Id' AND GL_Status=1");
@@ -187,7 +187,6 @@ function indianRupeeFormat(x){
 	
 	return res;
 
-}
-    
+}    
 </script>
 

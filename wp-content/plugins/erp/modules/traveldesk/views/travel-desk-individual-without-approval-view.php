@@ -1,5 +1,5 @@
 <?php
-require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req.php';
+//require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req.php';
 global $wpdb;
 global $empuserid;
 global $totalcost;
@@ -96,7 +96,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           $cntRds	=	count($selsql);
 				
                           $j=1;
-
+                          $rows=1;
                           foreach($selsql as $rowsql){
 
 
@@ -297,7 +297,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 										
 						if($selrdbs->RD_Id && !$enableCanc){
 						?>
-                      <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);">
+                      <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);" enctype="multipart/form-data">
                         <input type="hidden" name="rdid1<?php echo $j; ?>" id="rdid1<?php echo $j; ?>" value="<?php echo $rowsql->RD_Id ?>" />
                         <input type="hidden" name="type1<?php echo $j; ?>" id="type1" value="2" />
                         <div id="cancelStatusContainer<?php echo $j; ?>">
@@ -310,15 +310,14 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 								
 								$doc=NULL;
 				
-								if($selrdcs->BA_Id==6){
-                                                                        
-									$seldocs=$wpdb->get_row("SELECT * FROM booking_documents WHERE BS_Id='$selrdcs->BS_Id'");
+								if($selrdcs->BA_Id==6){                                                                    
+									$seldocs=$wpdb->get_results("SELECT * FROM booking_documents WHERE BS_Id='$selrdcs->BS_Id'");
 																		
 									$f=1;
 										
 									foreach($seldocs as $docs){
 									
-										$doc.='<b>Uploaded File no. '.$f.': </b> <a href="download-file.php?file='.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
+										$doc.='<b>Uploaded File no. '.$f.': </b> <a href="'.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
 										
 										$f++;
 									}
@@ -384,21 +383,11 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                               </div>
                             </div>
                           </div>
-                          <div class="clearfix"></div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div>
-                                <button name="buttonUpdateStatusCanc" id="buttonUpdateStatusCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" type="submit" class="btn btn-link">Update</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div>
-                                <button name="buttonCancelCanc" id="buttonCancelCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" onClick="cancelCancstat(<?php echo $j; ?>)" type="button" class="btn btn-link">Cancel</button>
-                              </div>
-                            </div>
-                          </div>
+                          <input type="hidden" value="<?php echo $j; ?>" name="iteration">
+                                <button name="buttonUpdateStatusCanc" id="buttonUpdateStatusCanc<?php echo $j; ?>" style="display:none;" type="submit" value="<?php echo $j; ?>" class="button-primary">Update</button>
+                                
+                                <button name="buttonCancelCanc" id="buttonCancelCanc<?php echo $j; ?>" style="display:none;" onClick="cancelCancstat(<?php echo $j; ?>)" type="button" class="button erp-button-danger">Cancel</button>
+                              
                           <?Php		
 						  
 						  } else {
@@ -410,7 +399,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 						  		  
 					  } 
 					   ?>
-                        </div>
+                        
                       </form>
                       <?php 
 						  } else {
@@ -429,14 +418,14 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                             
                         </tr>
                         <?php 					
-                        //$totalcost+=$rowrequest->RD_Cost;
+                        $totalcost+=$rowsql->RD_Cost;
 
-                        //$rows++; 
+                        $rows++; 
 
                         } ?>
                       </tbody>
                     </table>
-<!--                    <span id="totaltable"> 
+                    <span id="totaltable"> 
                     <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
                         <tr>
                           <td align="right" width="85%">Total Cost</td>
@@ -444,7 +433,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <td align="right" width="10%"><?php echo IND_money_format($totalcost).".00"; ?></td>
                         </tr>
                     </table>
-                    </span>-->
+                    </span>
                 </div>
                 </form>
                 <!-- Notes -->
@@ -453,5 +442,80 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
         </div>
     </div>
 </div>
+<script>
+    function showHideCanc(flid, bookingActionval)
+    {
+	var cancAmntDiv		=	'cancAmntDiv'+flid;	
+	var txtCancAmnt		=	'txtCanAmount'+flid;
+	var ticketCancDiv	=	'ticketCancDiv'+flid;
+	var fileCanAttach	=	'fileCanAttach'+flid+'[]';
+	var bookingbutton	=	'buttonUpdateStatusCanc'+flid;
+	var cancelButton	=	'buttonCancelCanc'+flid;	
+	
+	//alert(bookingActionval);
+	
+	switch(bookingActionval){
+		
+		case '4': case '6':
+		document.getElementById(cancAmntDiv).style.display='inline';
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(txtCancAmnt).placeholder="Cancellation Amount";
+		document.getElementById(ticketCancDiv).style.display='inline';
+		document.getElementById(fileCanAttach).value=null;
+		break;
+				
+		case '5': case '7':
+		document.getElementById(txtCancAmnt).placeholder ="";
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(cancAmntDiv).style.display='none';
+		document.getElementById(fileCanAttach).value=null;		
+		document.getElementById(ticketCancDiv).style.display='none';
+		break;
+		
+		
+		default:
+		document.getElementById(cancAmntDiv).style.display='none';
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(ticketCancDiv).style.display='none';
+		document.getElementById(fileCanAttach).value=null;
+		document.getElementById(bookingbutton).style.display='none';
+		document.getElementById(cancelButton).style.display='none';
+		
+		
+	}
+	
+	if(bookingActionval){
+	
+		document.getElementById(bookingbutton).style.display='inline';
+		document.getElementById(cancelButton).style.display='inline';
+	
+	}
+    }
+    /*
+	
+    ---------- CANCELLATION REQUEST ---------------
 
+    */
+	
+	
+function cancelCancstat(buttonId)
+{	
+	var selCancActions	=	'selCancActions'+buttonId;
+	var cancAmntDiv		=	'cancAmntDiv'+buttonId;
+	var canAmnt			=	'txtCanAmount'+buttonId;
+	var bookingbutton	=	'buttonUpdateStatusCanc'+buttonId;
+	var cancelButton	=	'buttonCancelCanc'+buttonId;
+	var ticketcandiv	=	'ticketCancDiv'+buttonId;
+	var fileCanAttach	=	'fileCanAttach'+buttonId+'[]'
+	
+	//document.getElementById(selCancActions).value=null;
+	document.getElementById(cancAmntDiv).style.display='none';
+	document.getElementById(canAmnt).value=null;
+	document.getElementById(fileCanAttach).value=null;
+	document.getElementById(ticketcandiv).style.display='none';
+	document.getElementById(bookingbutton).style.display='none';
+	document.getElementById(cancelButton).style.display='none';
+	
+}
+</script>
 

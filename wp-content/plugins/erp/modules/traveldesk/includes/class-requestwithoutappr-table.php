@@ -89,6 +89,10 @@ class Request_WithoutAppr_List extends \WP_List_Table
         $totalcost = $wpdb->get_var("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id='$item[REQ_Id]' AND RD_Status=1");
         return IND_money_format($totalcost).".00";
     }
+    
+    function column_Actions($item){
+        return "<a href='/wp-admin/admin.php?page=Edit-Request&reqid=$item[REQ_Id]'><button type='button' value='' class='button button-default' name='deleteRowbutton' id='editRowbutton' title='Edit'><i class='dashicons dashicons-edit'></i></button></a>";
+    }
      
     function column_Claim_Status($item){
         global $wpdb;
@@ -130,6 +134,7 @@ class Request_WithoutAppr_List extends \WP_List_Table
             'Total_Cost' => __('Total Cost', 'emp_table_list'),
             'Request_Date' => __('Request Date', 'emp_table_list'),
             'Claim_Status' => __('Claim Status', 'emp_table_list'),
+            'Actions' => __('Actions', 'emp_table_list'),
         );
         return $columns;
     }
@@ -148,6 +153,7 @@ class Request_WithoutAppr_List extends \WP_List_Table
             'Total_Cost' => array('Total Cost', false),
             'Request_Date' => array('Request Date', false),
             'Claim_Status' => array('Claim Status', false),  
+            'Actions' => array('Actions', false), 
         );
         return $sortable_columns;
     }
