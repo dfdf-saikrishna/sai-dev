@@ -41,8 +41,8 @@ class Designation_List_Table extends \WP_List_Table {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $desid = $item['DES_Id'];
-        $count = $wpdb->get_results("SELECT * FROM employees WHERE EG_Id='$desid' AND EMP_Status=1 AND COM_Id=$compid");
-        return count($count);
+        $count = count($wpdb->get_results("SELECT * FROM employees WHERE EG_Id='$desid' AND EMP_Status=1 AND COM_Id=$compid"));
+         return "<a href='admin.php?page=menu&desId=$item[DES_Id]'>$count</a>";
     }
 
     function column_name($item) {

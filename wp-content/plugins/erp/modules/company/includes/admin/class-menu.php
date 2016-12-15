@@ -37,7 +37,7 @@ class Admin_Menu {
             $overview = add_submenu_page('menu', 'Overview', 'Overview', 'companyadmin', 'menu', array($this, 'employee_list'));
                 add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array($this, 'upload_employees'));
                 add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array($this, 'export_employees'));
-                add_submenu_page('menu', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
+                add_submenu_page('', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
                 add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeview_page'));
                 add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array($this, 'employeelogs_list'));
                 add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array($this, 'Grades'));
@@ -61,17 +61,17 @@ class Admin_Menu {
 
             add_menu_page('View/Edit/Delete Travel Desk', 'Travel Desk', 'companyadmin', 'Travel', array($this, 'TravelDesk'), 'dashicons-location');
             //add_submenu_page('Travel', 'Action', 'View/Edit/Delete Travel Desk', 'companyadmin', 'Action', 'TravelDesk');
-            add_submenu_page('Travel', 'Claims', 'Travel Desk Claims', 'companyadmin', 'Claims', array($this, 'TdInvoiceDisplay'));
+            add_submenu_page('', 'Claims', 'Travel Desk Claims', 'companyadmin', 'Claims', array($this, 'TdInvoiceDisplay'));
                 add_submenu_page('Travel', 'Invoice', 'Travel Desk Invoices', 'companyadmin', 'Invoice', array($this, 'TravelDesk_Invoice'));
                 add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', array($this, 'TravelDesk_Logs'));
                 add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', array($this, 'TravelDesk_Tolerance'));
 
             add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Expense-Requests', array($this, 'expense_requests'), 'dashicons-money');
-                add_submenu_page('Expense-Requests', 'Pre Travel', 'View Pre Travel Requests', 'companyadmin', 'pretravel', array($this, 'PreDisplay'));
-                add_submenu_page('Expense-Requests', 'Post Travel', 'View Post Travel Requests', 'companyadmin', 'posttravel', array($this, 'PostDisplay'));
-                add_submenu_page('Expense-Requests', 'Mileage Travel', 'View Mileage Travel Requests', 'companyadmin', 'mileage', array($this, 'MileageDisplay'));
-                add_submenu_page('Expense-Requests', 'Other Travel', 'View Other Travel Requests', 'companyadmin', 'Other', array($this, 'OtherDisplay'));      
-                add_submenu_page('Expense-Requests', 'Utility Travel', 'View Utility Travel Requests', 'companyadmin', 'utility', array($this, 'utilityDisplay'));
+                add_submenu_page('', 'Pre Travel', 'View Pre Travel Requests', 'companyadmin', 'pretravel', array($this, 'PreDisplay'));
+                add_submenu_page('', 'Post Travel', 'View Post Travel Requests', 'companyadmin', 'posttravel', array($this, 'PostDisplay'));
+                add_submenu_page('', 'Mileage Travel', 'View Mileage Travel Requests', 'companyadmin', 'mileage', array($this, 'MileageDisplay'));
+                add_submenu_page('', 'Other Travel', 'View Other Travel Requests', 'companyadmin', 'Other', array($this, 'OtherDisplay'));      
+                add_submenu_page('', 'Utility Travel', 'View Utility Travel Requests', 'companyadmin', 'utility', array($this, 'utilityDisplay'));
             add_menu_page('BudgetController', 'Budget Control', 'companyadmin', 'Budget', array($this, 'ProjectCode'), 'dashicons-portfolio');
                 //add_submenu_page('Budget', 'Project', 'Project Code', 'companyadmin', 'Project', 'BudgetController');
                 add_submenu_page('Budget', 'Center', 'Cost Center', 'companyadmin', 'Center', array($this, 'CostCenter'));

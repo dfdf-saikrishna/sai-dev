@@ -108,7 +108,7 @@ class Requests_List extends \WP_List_Table {
 
             switch ($item['RT_Id']) {
                 case 1:
-                    $href ="admin.php?page=pretravel";
+                    $href = "admin.php?page=pretravel";
                     break;
 
                 case 2:
@@ -172,7 +172,6 @@ class Requests_List extends \WP_List_Table {
                         break;
 
                     case 2: case 3:
-
 
                         $totalcost = $wpdb->get_row("SELECT SUM(ptac.PTAC_Cost) AS total FROM requests req, pre_travel_claim ptc, pre_travel_actual_cost ptac WHERE req.REQ_Id=$item[REQ_Id] AND req.REQ_Id=ptc.REQ_Id AND ptc.PTC_Id=ptac.PTC_Id AND ptac.PTAC_Status=1");
 
@@ -494,8 +493,7 @@ class Requests_List extends \WP_List_Table {
                 $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re  WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 " . $query));
 
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re  WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 " . $query . " ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-           // print_r($test);die;
-                
+                // print_r($test);die;
             }
             // [REQUIRED] configure pagination
             $this->set_pagination_args(array(

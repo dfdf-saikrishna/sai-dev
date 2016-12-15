@@ -16,7 +16,7 @@ function policy_process_import_export() {
     $adminid = $_SESSION['adminid'];
     $selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1");
     if (isset($_POST['crp_import_pdf'])) {
-        if ($_FILES['csv_file']['error'] == "0") {
+        //if ($_FILES['csv_file']['error'] == "0") {
             if ($selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1")) {
                 
                 $wpdb->update('travel_expense_policy_doc', array('TEPD_Id' => '$selpol->TEPD_Id'), array('UpdatedBy' => $adminid, 'TEPD_Status' => 2, 'UpdatedDate' => 'NOW()'));
@@ -53,8 +53,8 @@ function policy_process_import_export() {
                 $photoAllowed = 0;
             }
             if (!$photoAllowed) {
-                
-                echo "File uploading error. Please choose a appropriate file (.pdf)";
+                    header("location:/wp-admin/admin.php?page=expensemenu&status=failure");
+                //echo "File uploading error. Please choose a appropriate file (.pdf)";
                 exit;
             }
 
@@ -80,17 +80,15 @@ function policy_process_import_export() {
             $wpdb->insert('travel_expense_policy_doc', array('AddedBy' => $adminid, 'COM_Id' => $compid, 'TEPD_Filename' => $imagePath));
             $lastid = $wpdb->insert_id;
 
-            //$lastid = insert_query("travel_expense_policy_doc", "COM_Id,TEPD_Filename,AddedBy", "'$compid','$imagePath','$adminid'", $filename);
-
             if ($lastid) {
-                echo "Uploaded successfully.";
+                header("location:/wp-admin/admin.php?page=expensemenu&status=success");
+                //echo "Uploaded successfully.";
                 exit;
             } else {
-                echo "Uploading failed. Please try again.";
+                 header("location:/wp-admin/admin.php?page=expensemenu&status=failure");
+                //echo "Uploading failed. Please try again.";
                 exit;
             }
-        }
-    } else {
-        
-    }
+        //}
+    } 
 }

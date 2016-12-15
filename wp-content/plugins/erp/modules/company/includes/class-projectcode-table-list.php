@@ -48,8 +48,8 @@ class Projectcodes_List_Table extends \WP_List_Table {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $depid = $item['PC_Id'];
-        $count = $wpdb->get_results("SELECT * FROM employees WHERE PC_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid");
-        return count($count);
+        $count = count($wpdb->get_results("SELECT * FROM employees WHERE PC_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid"));
+        return$count;
     }
 
     function column_name($item) {

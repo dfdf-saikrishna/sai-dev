@@ -3,7 +3,6 @@ global $wpdb;
 $tdcid = $_GET['tdcid'];
 //echo $tdcid;die;
 $compid = $_SESSION['compid'];
-
 $rows = $wpdb->get_results("SELECT * FROM travel_desk_claims WHERE TDC_Id='$tdcid' AND COM_Id='$compid'");
 //print_r($rows);die;
 ?>
