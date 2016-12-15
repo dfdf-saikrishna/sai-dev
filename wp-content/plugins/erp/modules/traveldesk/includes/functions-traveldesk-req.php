@@ -107,7 +107,14 @@ function getGradeLimitAmount(mode,empId)
                 //$mydetails = myDetails(empId);
                 
                  $compid = $_SESSION['compid'];
+                 if(isset($_REQUEST['selEmployees'])){
                  $empid = $_REQUEST['selEmployees'];
+                 }else{
+                     $reqid = $_REQUEST['reqid'];
+                     $row = $wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Claim IS NULL and req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type=3 AND RE_Status=1");
+                     $empid = $row->EMP_Id;
+                 }
+                 
                  $mydetails=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Id='$empid' AND COM_Id='$compid' AND EMP_Status=1");
                 
                 

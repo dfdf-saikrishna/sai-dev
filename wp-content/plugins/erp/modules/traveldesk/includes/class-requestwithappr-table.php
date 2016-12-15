@@ -81,7 +81,7 @@ class Request_WithAppr_List extends \WP_List_Table
      */
     function column_Request_Code($item)
     {
-        return "<a href='#'>".$item['REQ_Code']."</a>";
+        return "<a href='/wp-admin/admin.php?page=Edit-Appr-Request&reqid=$item[REQ_Id]'>".$item['REQ_Code']."</a>";
     }
     
     function column_Total_Cost($item){

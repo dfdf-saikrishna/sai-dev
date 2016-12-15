@@ -69,7 +69,7 @@
                                     //console.log(value);
                                     optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
                                 });
-                                var rowCount = $('#table-pre-travel tr').length;
+                                var rowCount = $('#traveldesk_request tr').length;
                                 $('#hidrowno').val(rowCount);
                                 $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-traveldesk-request" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#traveldesk_request tr').last().after('<tr>\n\

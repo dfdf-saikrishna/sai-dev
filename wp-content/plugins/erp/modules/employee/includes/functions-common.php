@@ -926,17 +926,8 @@ function Actions($et){
 
 
     }
-    else{
-	
-	
-	
-
-
-    	
-
-
-        if($row)
-        {
+    if($row->EMP_Id==$empuserid)
+    {
             $editActbuttons='<br />
             <div id="my_centered_buttons">
                 <a href="/wp-admin/admin.php?page=Pre-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
@@ -1008,9 +999,8 @@ function Actions($et){
             }
 
         }
-    }
-
 }
+    
 function FinanceActions($et){
     global $wpdb;
     $reqid  =   $_GET['reqid'];
