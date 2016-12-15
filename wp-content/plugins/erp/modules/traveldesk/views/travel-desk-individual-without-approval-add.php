@@ -21,7 +21,7 @@ if(isset($_REQUEST['selEmployees'])){
             <div class="postbox">
                 
                 <div class="inside">
-                    <h2><?php _e( 'Individual Employee Request [ With Approval ]', 'traveldesk' ); ?></h2>
+                    <h2><?php _e( 'Individual Employee Request [ Without Approval ]', 'traveldesk' ); ?></h2>
                     <code>CREATE Request without approvals</code>
                     <hr />
                     <div style="text-align: center">
@@ -94,7 +94,7 @@ if(isset($_REQUEST['selEmployees'])){
                   <p id="p-info"></p>
               </div>
               <div style="margin-top:60px;">
-                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post" enctype="multipart/form-data">
+                <form id="traveldesk_request_withoutappr" action="#" method="post" enctype="multipart/form-data">
                 <table class="wp-list-table widefat striped admins" border="0" id="traveldesk_request">
                       <thead class="cf">
                         <tr>
@@ -148,7 +148,7 @@ if(isset($_REQUEST['selEmployees'])){
                             <input type="hidden" value="1" name="addnewrequest" id="addnewrequest" />
                             <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
                             </span></td>
-                            <td><input type='file' name='file[]' id="file1" multiple="true"></td>
+                            <td><input type='file' name='file1[]' id="file1" multiple="true"></td>
                         </tr>
                       </tbody>
                     </table>
@@ -158,7 +158,7 @@ if(isset($_REQUEST['selEmployees'])){
                 </div>
                 <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
-                <input type="submit" name="submit" id="submit-traveldesk-request" class="button button-primary">
+                <input type="submit" name="submit-traveldesk-request_withoutappr" id="submit-traveldesk-request_withoutappr" class="button button-primary">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" name="reset" id="reset" class="button">Reset</button>

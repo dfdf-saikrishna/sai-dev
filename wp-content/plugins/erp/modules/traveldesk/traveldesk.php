@@ -60,8 +60,9 @@ class Traveldesk {
      * @return void
      */
     private function includes() {
-       //require_once WPERP_TRAVELDESK_PATH . '/includes/functions-database.php';
+       require_once WPERP_TRAVELDESK_PATH . '/includes/actions-filters.php';
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-bank-details.php';
+       require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-requests.php';
 
     }
 

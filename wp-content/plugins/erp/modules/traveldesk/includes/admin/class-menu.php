@@ -49,6 +49,8 @@ class Admin_Menu {
         add_submenu_page('', 'Edit Appr Request', 'Edit Appr Request', 'traveldesk', 'Edit-Appr-Request', array( $this,'traveldeskrequest_edit_withapp'),'dashicons-admin-users');
         
         add_submenu_page('', 'View Appr Request', 'View Appr Request', 'traveldesk', 'View-Appr-Request', array( $this,'traveldeskrequest_withapp_view'),'dashicons-admin-users');
+        
+        add_submenu_page('', 'Download File', 'Download File', 'traveldesk', 'Download-File', array( $this,'download_file'),'dashicons-admin-users');
 //        add_menu_page('ExpenseManagment', 'Expense Managment', 'traveldesk', 'Expense', 'expense','dashicons-money');
 //        add_submenu_page('Expense', 'action', 'Expense Policy', 'traveldesk', 'ExpenseP', 'Expense');
 //        add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'traveldesk', 'Policy', 'Expense');
@@ -185,6 +187,9 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     }
     public function traveldeskrequest_withapp_view(){
         include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-with-approval-view.php';
+    }
+    public function download_file(){
+        include WPERP_TRAVELDESK_VIEWS . '/travel-desk-download-file.php';
     }
     public function traveldeskrequest_withoutapp_view(){
         include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-without-approval-view.php';

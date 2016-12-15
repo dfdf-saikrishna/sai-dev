@@ -1,40 +1,17 @@
 <?php
-namespace WeDevs\ERP\Traveldesk;
 
-use WeDevs\ERP\Framework\Traits\Ajax;
-use WeDevs\ERP\Framework\Traits\Hooker;
-use WeDevs\ERP\HRM\Models\Dependents;
-use WeDevs\ERP\HRM\Models\Education;
-use WeDevs\ERP\HRM\Models\Work_Experience;
-
-/**
- * Ajax handler
- *
- * @package WP-ERP
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-class Ajax_Handler {
 
-    use Ajax;
-    use Hooker;
-
-    /**
-     * Bind all the ajax event for HRM
-     *
-     * @since 0.1
-     *
-     * @return void
-     */
-    public function __construct() {
-        
-        //Travel Desk
-        $this->action( 'wp_ajax_traveldesk_request_create', 'traveldesk_request_create' );
-
-        
-    }
+function traveldesk_request_without_appr() {
     
-        function traveldesk_request_create(){
-        ob_end_clean();
+    if ( isset( $_POST['submit-traveldesk-request_withoutappr'] ) ) {
+        
         global $wpdb;
+        global $type;
         $compid = $_SESSION['compid'];
         $empuserid = $_POST['hiddenEmp'];
         $posted = array_map( 'strip_tags_deep', $_POST );
@@ -114,7 +91,7 @@ class Ajax_Handler {
 		}
                 if($checked){
                         $response = array('status'=>'notice','message'=>"Some fields went missing");
-                        $this->send_success($response);
+                        //$this->send_success($response);
 			exit;
 		}
                 
@@ -329,14 +306,14 @@ class Ajax_Handler {
     } else {
 
             //header("location:$filename?msg=2");exit;
-            $this->send_success("2");
+            //$this->send_success("2");
 
     }
 
     } else {
 
             //header("location:$filename?msg=2");exit;
-            $this->send_success("2");
+            //$this->send_success("2");
     }
 
     if($reqid)
@@ -345,19 +322,19 @@ class Ajax_Handler {
                 for($i=0;$i<$count;$i++)
                 {		
                         $dateformat=$date[$i];
-                        $dateformat=explode("/",$dateformat);
+                        $dateformat=explode("-",$dateformat);
                         $dateformat=$dateformat[2]."-".$dateformat[1]."-".$dateformat[0];
 
                         ($from[$i]=="n/a") ? $from[$i]="NULL" : $from[$i]="'".$from[$i]."'";
 
                         ($to[$i]=="n/a") ? $to[$i]="NULL" : $to[$i]="'".$to[$i]."'";
 
-                        ($selStayDur[$i]=="n/a") ? $selStayDur[$i]="NULL" : $selStayDur[$i]="'".$selStayDur[$i]."'";	
-
+                        //($selStayDur[$i]=="n/a") ? $selStayDur[$i]="NULL" : $selStayDur[$i]="'".$selStayDur[$i]."'";	
+                        $selStayDur[$i]="";
 
 
                         $desc	=	addslashes($txtaExpdesc[$i]);
-
+                        //commented by me
                         $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Cost' => $txtCost[$i],'RD_Type' => 2));
                         $rdid = $wpdb->insert_id;
 
@@ -393,6 +370,7 @@ class Ajax_Handler {
                         if($addnewRequest==1 || $addnewRequest==3){
 
                                 // insert into booking status
+                                // commented by me
                                 $wpdb->insert('booking_status', array('RD_Id' => $rdid,'BS_Status' => 1,'BS_TicketAmnt' => $txtCost[$i],'BA_Id' => 2,'BA_ActionDate' => "NOW()"));
                                 $bsid = $wpdb->insert_id;
 
@@ -400,7 +378,7 @@ class Ajax_Handler {
                                 $j=$i+1;
                                 $files=$_FILES['file'.$j]['name'];
                                 $countbills=count($files);
-
+                                
 
 
 
@@ -408,7 +386,7 @@ class Ajax_Handler {
                                 {			
                                         //Get the temp file path
                                         $tmpFilePath = $_FILES['file'.$j]['tmp_name'][$f];
-
+                                        
 
 
                                         //Make sure we have a filepath
@@ -420,8 +398,11 @@ class Ajax_Handler {
 
                                                 $filePath = md5(rand() * time()).".".$ext;
 
-                                                $newFilePath = "../company/upload/$compid/bills_tickets/";
-
+                                                //$newFilePath = "../company/upload/$compid/bills_tickets/";
+                                                $newFilePath = WPERP_TRAVELDESK_PATH . "/upload/$compid/bills_tickets/";
+                                                if (!file_exists($newFilePath)) {
+                                                    wp_mkdir_p($newFilePath);
+                                                }
                                                 $result    = move_uploaded_file($tmpFilePath, $newFilePath . $filePath);
 
                                                 //echo 'count='.$result;exit;
@@ -520,16 +501,16 @@ class Ajax_Handler {
 
                 //header("location:$filename?msg=7");exit;
                 $response = array('status'=>'failure','message'=>"Request Couldn\'t be added. Please try again");
-                $this->send_success($response);
+                //$this->send_success($response);
 
         }
 
 
-        //header("location:$filename?msg=1&reqid=$expreqcode");exit;    
+        header("location:/wp-admin/admin.php?page=View-Edit-Request");exit;    
 	//$this->send_success("1");	
 			
         $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
-        $this->send_success($response);
+        //$this->send_success($response);
         
     }
 }

@@ -170,7 +170,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                                                                                     //echo 'baid='.$selrdbs['BA_Id'];
 
-                                                                                    $imdir="../company/upload/$compid/bills_tickets/";
+                                                                                    $imdir=WPERP_TRAVELDESK_PATH . "/upload/$compid/bills_tickets/";
 
 
                                                                                     $doc=NULL;
@@ -185,7 +185,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                                                                                             //echo $imdir.$docs['BD_Filename']."<br>";
 
-                                                                                                    $doc.='<b>Uploaded File no. '.$f.': </b> <a href="download-file.php?file='.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
+                                                                                                    $doc.='<b>Uploaded File no. '.$f.': </b> <a href="/wp-admin/admin.php?page=Download-File&file='.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
 
                                                                                                     $f++;
                                                                                             }
