@@ -81,10 +81,14 @@ class Request_WithAppr_List extends \WP_List_Table
      */
     function column_Request_Code($item)
     {
-        return "<a href='/wp-admin/admin.php?page=Edit-Appr-Request&reqid=$item[REQ_Id]'>".$item['REQ_Code']."</a>";
+        return "<a href='/wp-admin/admin.php?page=View-Appr-Request&reqid=$item[REQ_Id]'>".$item['REQ_Code']."</a>";
     }
     
-    function column_Total_Cost($item){
+    function column_Actions($item){
+        return "<a href='/wp-admin/admin.php?page=Edit-Appr-Request&reqid=$item[REQ_Id]'><button type='button' value='' class='button button-default' name='deleteRowbutton' id='editRowbutton' title='Edit'><i class='dashicons dashicons-edit'></i></button></a>";
+    }
+    
+    function column_Estimated_Cost($item){
         global $wpdb;
         $totalcost = $wpdb->get_var("SELECT SUM(RD_Cost) AS total FROM request_details WHERE REQ_Id='$item[REQ_Id]' AND RD_Status=1");
         return IND_money_format($totalcost).".00";
@@ -114,7 +118,106 @@ class Request_WithAppr_List extends \WP_List_Table
 
         return date('d-M-y',strtotime($item['REQ_Date']));
     }
- function column_cb($item)
+    function column_skiplevel_manager_approval($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // skiplevel manager status
+            //var_dump($item['POL_Id']);
+            if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
+    }
+    function column_reporting_manager_approval($item){
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['POL_Id'] ==5){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // reporting manager status
+            
+            if($item['POL_Id'] !=4){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=1"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
+    }
+    
+    function column_finance_approval($item){
+
+        global $wpdb;
+        global $approvals;
+        
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4){
+            
+            $approvals=approvals(5);
+
+        } else {
+
+            // finance approver status
+            
+            if($item['POL_Id'] !=3){
+                
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=2"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
+    }
+    function column_cb($item)
     {
         return sprintf(
             '<input type="checkbox" name="id[]" value="%s" />',
@@ -127,9 +230,13 @@ class Request_WithAppr_List extends \WP_List_Table
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'Request_Code' => __('Request Code', 'emp_table_list'),
-            'Total_Cost' => __('Total Cost', 'emp_table_list'),
+            'Estimated_Cost' => __('Estimated Cost', 'emp_table_list'),
+            'reporting_manager_approval' => __('Reporting Manager Approval', 'emp_table_list'),
+            'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'emp_table_list'),
+            'finance_approval' => __('Finance Approval', 'emp_table_list'),
             'Request_Date' => __('Request Date', 'emp_table_list'),
             'Claim_Status' => __('Claim Status', 'emp_table_list'),
+            'Actions' => __('Actions', 'emp_table_list'),
         );
         return $columns;
     }
@@ -145,9 +252,13 @@ class Request_WithAppr_List extends \WP_List_Table
     {
         $sortable_columns = array(
             'Request_Code' => array('Request Code', true),
-            'Total_Cost' => array('Total Cost', false),
+            'Estimated_Cost' => array('Estimated Cost', false),
+            'reporting_manager_approval' => array('Reporting Manager Approval', false),
+            'skiplevel_manager_approval' => array('SkipLevel Manager Approval', false),
+            'finance_approval' => array('Finance Approval', false),
             'Request_Date' => array('Request Date', false),
-            'Claim_Status' => array('Claim Status', false),  
+            'Claim_Status' => array('Claim Status', false),
+            'Actions' => array('Actions', false), 
         );
         return $sortable_columns;
     }

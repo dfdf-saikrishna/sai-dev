@@ -1162,9 +1162,17 @@ function FinanceActions($et){
         }
 
 }
-function chat_box($rn_status){
+function chat_box($rn_status,$reqtype){
       global $wpdb;
-      $empuserid = $_SESSION['empuserid'];  
+      //$empuserid = $_SESSION['empuserid'];
+      if(isset($_SESSION['empuserid'])){
+        $empuserid = $_SESSION['empuserid'];
+        }else{
+            $compid = $_SESSION['compid'];
+            $reqid = $_REQUEST['reqid'];
+            $row = $wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Claim IS NULL and req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Active != 9 AND REQ_Type='$reqtype' AND RE_Status=1");
+            $empuserid = $row->EMP_Id;
+        }
       $reqid = $_GET['reqid'];
       global $date;
       global $content;

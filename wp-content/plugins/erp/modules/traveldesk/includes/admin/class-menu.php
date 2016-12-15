@@ -37,6 +37,8 @@ class Admin_Menu {
         
         add_submenu_page('', 'Edit Request', 'Edit Request', 'traveldesk', 'Edit-Request', array( $this,'traveldeskrequest_edit_withoutapp'),'dashicons-admin-users');
         
+        add_submenu_page('', 'View Request', 'View Request', 'traveldesk', 'View-Request', array( $this,'traveldeskrequest_withoutapp_view'),'dashicons-admin-users');
+        
         
         add_menu_page('View-Edit-appRequest', 'Request With Approval', 'traveldesk','View-Edit-appRequest', array( $this, 'view_req_withappr'),'dashicons-admin-users');
         
@@ -45,6 +47,8 @@ class Admin_Menu {
         add_submenu_page('View-Edit-appRequest', 'Create Request', 'Create Request', 'traveldesk', 'Request-With-Approval', array( $this,'traveldeskrequest_withapp'),'dashicons-admin-users');
  
         add_submenu_page('', 'Edit Appr Request', 'Edit Appr Request', 'traveldesk', 'Edit-Appr-Request', array( $this,'traveldeskrequest_edit_withapp'),'dashicons-admin-users');
+        
+        add_submenu_page('', 'View Appr Request', 'View Appr Request', 'traveldesk', 'View-Appr-Request', array( $this,'traveldeskrequest_withapp_view'),'dashicons-admin-users');
 //        add_menu_page('ExpenseManagment', 'Expense Managment', 'traveldesk', 'Expense', 'expense','dashicons-money');
 //        add_submenu_page('Expense', 'action', 'Expense Policy', 'traveldesk', 'ExpenseP', 'Expense');
 //        add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'traveldesk', 'Policy', 'Expense');
@@ -178,6 +182,12 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     }
     public function traveldeskrequest_edit_withapp(){
         include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-with-approval-edit.php';
+    }
+    public function traveldeskrequest_withapp_view(){
+        include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-with-approval-view.php';
+    }
+    public function traveldeskrequest_withoutapp_view(){
+        include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-without-approval-view.php';
     }
     public function traveldeskrequest_withapp() {
         include WPERP_TRAVELDESK_VIEWS . '/travel-desk-individual-with-approval-add.php';

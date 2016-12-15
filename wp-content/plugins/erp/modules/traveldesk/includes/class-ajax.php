@@ -158,7 +158,7 @@ class Ajax_Handler {
                 case 1:
                    
                 if($expenseLimit > 0){
-                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
+                            $wpdb->insert('requests', array('POL_Id' => 5,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter,'REQ_Type' => $reqtype));
                             $reqid=$wpdb->insert_id;
                             $type=2;
                 }

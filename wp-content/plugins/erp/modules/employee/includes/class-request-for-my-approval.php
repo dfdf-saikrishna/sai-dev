@@ -269,21 +269,21 @@ class Request_Travel_Expenses extends \WP_List_Table
                 
                 if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=4"))
                 {
-                    $approvalss=approvals($repmngrStatus->REQ_Status);
+                    $approvals=approvals($repmngrStatus->REQ_Status);
                 }
                 else
                 {
-                    $approvalss=approvals(1);
+                    $approvals=approvals(1);
                 }
 
             } else {
 
-                $approvalss=approvals(5);
+                $approvals=approvals(5);
 
             }
 
         }
-        return $approvalss;
+        return $approvals;
     }
 
     function get_columns()
