@@ -1,4 +1,4 @@
-<div class="wrap erp ta-bankdetailist">
+<div class="wrap erp-travelagentbankdetails" id="wp-erp">
 	<h2>
         <?php
         _e( 'Bank Accounts', 'erp' );
@@ -22,9 +22,8 @@
                 $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'custom_table_example'), count($_REQUEST['id'])) . '</p></div>';
             }
             ?>
-        <div class="wrap">
-
-            <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
+        <div class="list-table-wrap erp-travelagentbankdetails-wrap">
+        <div class="list-table-inner erp-travelagentbankdetails-wrap-inner">
 			 <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />

@@ -33,8 +33,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
             'plural' => 'travelagentclients',
         ));
     }
-    
-	/**
+/**
      * [REQUIRED] this is how checkbox column renders
      *
      * @param $item - row (key, value array)
@@ -53,12 +52,9 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
      */
 	function column_clientname($item)
     {
-		$actions = array(
-            'edit' => sprintf('<a href="?page=ClientM" data-id=%s>%s</a>', $item['COM_Id'], __('Edit', 'travelagentbankdetail_table_list')),
-			);
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',$this->row_actions($actions)
+            '<a href="'.erp_company_url_single_clientview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',''
         );
     }
 	/**
@@ -69,7 +65,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.travel_agent_request_listing( $item['COM_Id']).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],1).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -77,7 +73,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],2).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -85,7 +81,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],3).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -93,9 +89,10 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],4).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
         );
     }
+ 
     /**
      * [REQUIRED] This method return columns to display in table
      * @return array
@@ -158,8 +155,8 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT * FROM $table_name WHERE SUP_Id='$supid' AND COM_Status=0");
-
+        $total1_items = $wpdb->get_results("SELECT * FROM $table_name WHERE SUP_Id='$supid' AND COM_Status=0");
+        $total_items=count($total1_items);
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'COM_Name';

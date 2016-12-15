@@ -56,7 +56,7 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
         );
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['SUP_Id']).'"><strong>' . $item['SUP_Name'] . '&nbsp;(' . $item['SUP_Username'] . ')'.  '</strong></a>',
+            '<strong>' . $item['SUP_Name'] . '&nbsp;(' . $item['SUP_Username'] . ')'.  '</strong>',
             $this->row_actions($actions)
         );
         
@@ -96,7 +96,7 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
             'cb' =>'<input type="checkbox" />', //Render a checkbox instead of text
             'Name' => __('Name', 'travelagentuser_table_list'),
             'BranchNameCode' => __('Branch Name/Code', 'travelagentuser_table_list'),
-			'Total_Client' => __('Total Client', 'travelagentuser_table_list'),
+			//'Total_Client' => __('Total Client', 'travelagentuser_table_list'),
 			'Email' => __('Email', 'travelagentuser_table_list'),
 			'Contact' => __('Contact', 'travelagentuser_table_list'),
         );
@@ -116,7 +116,7 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
 			'cb' => array('', true),
             'Name' => __('Name',false),
             'BranchNameCode' => __('Branch Name/Code',true),
-			'Total_Client' => __('Total Client',false),
+			//'Total_Client' => __('Total Client',false),
 			'Email' => __('Email',true),
 			'Contact' => __('Contact',true ),
         );
@@ -155,7 +155,7 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
         if (!empty($ids)) {
 		$supid = $_SESSION['supid'];
 		$wpdb->query("UPDATE superadmin SET SUP_Status=9 WHERE SUP_Id IN($ids) AND SUP_Status=1 AND SUP_Refid='$supid'");
-        $wpdb->query("UPDATE assign_company SET AC_RemovedDate=NOW(),AC_Status=2,AC_Active=9 WHERE SUP_Id IN($ids) AND AC_Status=1");     
+        //$wpdb->query("UPDATE assign_company SET AC_RemovedDate=NOW(),AC_Status=2,AC_Active=9 WHERE SUP_Id IN($ids) AND AC_Status=1");     
             }
         }
     }
@@ -182,11 +182,14 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items1 = $wpdb->get_results("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+        /*$total_items1 = $wpdb->get_results("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
 						sup.SUP_Id,COUNT(DISTINCT ac.COM_Id) AS cntCom,GROUP_CONCAT(DISTINCT com.COM_Name) AS coms FROM superadmin sup
 						LEFT JOIN assign_company ac ON sup.SUP_Id = ac.SUP_Id AND SUP_Status = 1 AND SUP_Type = 4 AND ac.AC_Active = 1
 						INNER JOIN company com ON ac.COM_Id = com.COM_Id
-						WHERE sup.SUP_Refid = '$supid' GROUP BY sup.SUP_Id");
+						WHERE sup.SUP_Refid = '$supid' GROUP BY sup.SUP_Id");*/
+		$total_items1 = $wpdb->get_results("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+						sup.SUP_Id FROM superadmin sup WHERE SUP_Status = 1 AND SUP_Type = 4 
+						 AND sup.SUP_Refid = '$supid' GROUP BY sup.SUP_Id");
 						
 		$total_items=count($total_items1);
         // prepare query params, as usual current page, order by and order direction
@@ -213,20 +216,28 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+			/*$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
 						sup.SUP_Id,COUNT(DISTINCT ac.COM_Id) AS cntCom,GROUP_CONCAT(DISTINCT com.COM_Name) AS coms FROM superadmin sup
 						LEFT JOIN assign_company ac ON sup.SUP_Id = ac.SUP_Id AND SUP_Status = 1 AND SUP_Type = 4 AND ac.AC_Active = 1
 						INNER JOIN company com ON ac.COM_Id = com.COM_Id
 						WHERE SUP_Refid = '$supid'
-						GROUP BY sup.SUP_Id".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+						GROUP BY sup.SUP_Id".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);*/
+		$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+						sup.SUP_Id FROM superadmin sup WHERE SUP_Status = 1 AND SUP_Type = 4 
+						 AND sup.SUP_Refid = '$supid' GROUP BY sup.SUP_Id".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+		
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+			/*$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
 						sup.SUP_Id,COUNT(DISTINCT ac.COM_Id) AS cntCom,GROUP_CONCAT(DISTINCT com.COM_Name) AS coms FROM superadmin sup
 						LEFT JOIN assign_company ac ON sup.SUP_Id = ac.SUP_Id AND SUP_Status = 1 AND SUP_Type = 4 AND ac.AC_Active = 1
 						INNER JOIN company com ON ac.COM_Id = com.COM_Id
 						WHERE SUP_Refid = '$supid'
-						GROUP BY sup.SUP_Id ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+						GROUP BY sup.SUP_Id ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);*/
+		$this->items = $wpdb->get_results($wpdb->prepare("SELECT SUP_Username,SUP_AgencyName,SUP_AgencyCode,SUP_Name,SUP_Email,SUP_Contact,SUP_Address,SUP_Date,
+						sup.SUP_Id FROM superadmin sup WHERE SUP_Status = 1 AND SUP_Type = 4 
+						 AND sup.SUP_Refid = '$supid' GROUP BY sup.SUP_Id ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+		
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(

@@ -1,12 +1,20 @@
 <div class="erp-employee-form">
     <fieldset class="no-border">
-        <ol class="form-fields">
+	<input type="hidden" name="traveldesk[user_id]" value="{{data.user_id}}">
+	<input type="hidden" name="travelagentclient[user_id]" value="{{data.user_id}}">
+	<input type="hidden" name="travelagentclient[COM_Id]" value="{{data.COM_Id}}">
+	 <ol class="form-fields">
             <li>
-                <label for="full-name">Upload Client Logo</label>
+                <label for="full-name">Upload Client Photo</label>
                 <div class="photo-container">
-                    <input name="travelagentclient[photo_id]" id="emp-photo-id" value="0" type="hidden">
-                    
-                        <a href="#" id="erp-set-emp-photo" class="button button-small">Select File</a>
+                    <input name="travelagentclient[photo_id]" id="emp-photo-id" value="{{data.COM_PhotoId}}" type="hidden">
+                   
+                        <# if ( data.COM_Logo ) { #>
+                        <img src="{{ data.COM_Logo }}" alt="" />
+                        <a href="#" class="erp-remove-photo">&times;</a>
+                        <# } else { #>
+                            <a href="#" id="client-photo" class="button button-small">Select File</a>
+                        <# } #>
                     
                 </div>
             </li>
@@ -28,7 +36,7 @@
                         <li><label for="txtComplandline">Landline</label><input value="{{data.COM_Landline}}" name="travelagentclient[txtComplandline]" id="erp-hr-user-email"  type="text"></li>
 						<li class="erp-hr-js-department" data-selected="0">
                     <label for=""><span class="required">*</span>Address</label>
-                    <textarea name="travelagentclient[txtaCompaddr]" required value="{{data.COM_Address}}"></textarea>
+                    <textarea name="travelagentclient[txtaCompaddr]" required >{{data.COM_Address}}</textarea>
                 </li>
 					
 		</ol>
@@ -99,19 +107,94 @@
                 
             </ol>
         </fieldset>
-        
-		
+        <fieldset>
+            <legend>Service Pricing</legend>
+			     <ol class="form-fields ">
+				 <?php $markupdown = get_markupdown_list(); 
+                  $count = count($markupdown);
+                  ?>
+					<?php ?>	
+                <li class="erp-hr-js-department" data-selected="{{ data.MC_Id}}">
+                        <li>
+                            <span>Modes</span>
+                            <span>Tariff/fare Type</span>
+                            <span>Mark Up/Down</span>
+                            <span>Mark Tariff/fare</span>
+                        </li>
+						
+						<li>
+					<span>Flight</span>
+					<span><select name="selFlightTerms" id="selFlightTerms" class="form-control input-sm">
+					<option value="">Select</option>
+					<?php for($i=0; $i<$count; $i++){ ?>
+					<option value="<?php echo $markupdown[$i]->MC_Id; ?>"><?php echo $markupdown[$i]->MC_Name; ?></option>
+					<?php } ?>
+					</select></span>
+					<span><input type="radio" name="company_markups_markdowns[radioFlightMarkStatus]" class="radioFlightMarkStatus" value="1"  checked="checked"/>
+					Mark Up
+					<input type="radio" name="company_markups_markdowns[radioFlightMarkStatus]" class="radioFlightMarkStatus" value="2"  />
+					Mark Down 
+					<input type="text" name="company_markups_markdowns[txtFlightMarkFare]" id="txtFlightMarkFare" class="form-control"  maxlength="4" /></span>
+				</li>
+				<li>
+				<span>Bus</span>
+				<span><select name="company_markups_markdowns[selBusTerms]" id="selBusTerms" class="form-control input-sm" >
+				<option value="">Select</option>
+				<?php for($i=0; $i<$count; $i++){ ?>
+				<option value="<?php echo $markupdown[$i]->MC_Id; ?>"><?php echo $markupdown[$i]->MC_Name; ?></option>
+				<?php } ?>
+				</select></span>
+				<span><input type="radio" name="company_markups_markdowns[radioBusMarkStatus]" class="radioBusMarkStatus" value="1"  checked="checked"/>
+				Mark Up
+				<input type="radio" name="company_markups_markdowns[radioBusMarkStatus]" class="radioBusMarkStatus" value="2"  />
+				Mark Down 
+				<input type="text" name="company_markups_markdowns[txtBusMarkFare]" id="txtBusMarkFare" class="form-control"  maxlength="4"  /></span>
+				</li>
+				<li>
+				<span>Hotel</span>
+				<span><select name="selHotelTerms" id="selHotelTerms" class="form-control input-sm">
+				<option value="">Select</option>
+				<?php for($i=0; $i<$count; $i++){ ?>
+				<option value="<?php echo $markupdown[$i]->MC_Id; ?>"><?php echo $markupdown[$i]->MC_Name; ?></option>
+				<?php } ?>
+				</select></span>
+				<span><input type="radio" name="company_markups_markdowns[radioHotelMarkStatus]" class="radioHotelMarkStatus" value="1"  checked="checked"/>
+				Mark Up
+				<input type="radio" name="company_markups_markdowns[radioHotelMarkStatus]" class="radioHotelMarkStatus" value="2"  />
+				Mark Down 
+				<input type="text" name="company_markups_markdowns[txtHotelMarkFare]" id="txtHotelMarkFare" class="form-control"  maxlength="4"  /></span>
+				</li>
+                </li>
+            </ol>
+        </fieldset>
+		<fieldset>
+		<ol class="form-fields ">
+				 <?php $bankaccount = get_bankaccount_list(); 
+                  $count = count($bankaccount);
+                  ?>
+						
+                <li class="erp-hr-js-department" data-selected="0">
+					<span>Bank Account</span>
+					<span><select name="travelagentclient[selBankAccount]" id="travelagentclient[selBankAccount]" class="form-control input-sm">
+					<option value="">Select</option>
+					<?php for($i=0; $i<$count; $i++){ ?>
+					<option value="<?php echo $bankaccount[$i]->TDBA_Id; ?>"><?php echo $bankaccount[$i]->TDBA_BankName .'-'. $bankaccount[$i]->TDBA_BranchName .'-'. $bankaccount[$i]->TDBA_AccountNumber ; ?></option>
+					<?php } ?>
+					</select></span>
+				</li>
+            </ol>
+		</fieldset>
         <fieldset>
             <legend>Marketing/Sales Person's Comment</legend>
 
             <ol class="form-fields two-col">
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="">Marketing/Sales person's name</label>
-                    <input value="{{data.COM_Spname}}" name="travelagentclient[txtSalespersname]" id="personal[employee_id]" type="text">
+                    <input required value="{{data.COM_Spname}}" name="travelagentclient[txtSalespersname]" id="personal[employee_id]" type="text">
                 </li>
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="">Email-Id</label>
-                    <input value="{{data.COM_Spemail}}" name="travelagentclient[txtSalesperemail]" id="personal[employee_id]" type="text">
+                    <input required value="{{data.COM_Spemail}}" name="travelagentclient[txtSalesperemail]" id="personal[employee_id]" type="text">
                 </li>
                 <li class="erp-hr-js-department" data-selected="0">
                     <label for="">Contact Number</label>
@@ -124,7 +207,33 @@
                 <li>
             </ol>
         </fieldset>
-		
+		<fieldset>
+		<legend>Allocate Clients To Employees</legend>
+		<ol class="form-fields ">
+				 <?php $allocation = get_allocation_list(); 
+                  $count = count($allocation);
+                  ?>
+						
+                <li class="erp-hr-js-department" data-selected={{data.SUP_Id}}>
+					<span>Employees (Multi Selectable)</span>
+					<span><select required name="travelagentclient[selTrvAgntUser]" multiple="multiple id="selTrvAgntUser" class="form-control input-sm">
+					<option value="">Select</option>
+					<?php for($i=0; $i<$count; $i++){ ?>
+					<option value="<?php echo $allocation[$i]->SUP_Id; ?>"><?php echo $allocation[$i]->SUP_Name .'-'. $allocation[$i]->SUP_Username ; ?></option>
+					<?php } ?>
+					</select></span>
+				</li>
+            </ol>
+		</fieldset>
+		<fieldset>
+		<legend>Create Client/Account Travel Desk Login</legend>
+		<ol class="form-fields ">	
+                <li class="erp-hr-js-department" data-selected="0">
+                    <label for="traveldesk[txtComTrvDeskUsername]">Username</label>
+                    <input required value="{{data.COM_Spname}}" name="traveldesk[txtComTrvDeskUsername]" id="traveldesk[txtComTrvDeskUsername]" type="text">
+                </li>
+            </ol>
+		</fieldset>
         <?php wp_nonce_field( 'wp-erp-hr-employee-nonce' ); ?>
-        <input type="hidden" name="action" id="travelagentuser_create" value="travelagentuser_create">
+        <input type="hidden" name="action" id="travelagentclient_create" value="travelagentclient_create">
 </div>

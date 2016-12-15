@@ -59,7 +59,7 @@ class Travel_Agent_Bankdetails_List_Table extends \WP_List_Table
         );
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['TDBA_Id']).'"><strong>' . $item['TDBA_Fullname'] . '</strong></a>',$this->row_actions($actions)
+            '<strong>' . $item['TDBA_Fullname'] . '</strong>',$this->row_actions($actions)
         );
     }
 	/**
@@ -168,6 +168,7 @@ class Travel_Agent_Bankdetails_List_Table extends \WP_List_Table
 			'BankName' => __('Bank Name',true),
 			'BranchName' => __('Branch Name',true),
 			'BankIFSCCode' => __('Bank IFSC Code',true),
+			'AddedDate' => __('Added Date',true),
         );
         return $sortable_columns;
     }

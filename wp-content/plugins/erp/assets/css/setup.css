@@ -219,3 +219,25 @@ body {
   display: block;
   text-align: center;
 }
+
+a[data-toggle="collapse"] {
+  display: block;
+  padding: 10px 5px;
+  color: #999;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+a[data-toggle="collapse"] i {
+  width: 17px;
+  height: 17px;
+  text-align: center;
+  line-height: 17px;
+  margin-right: 3px;
+}
+
+a[data-toggle="collapse"] i.collapse-caret {
+  float: right;
+  margin-top: 3px;
+}

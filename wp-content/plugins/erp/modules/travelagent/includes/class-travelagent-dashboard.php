@@ -55,7 +55,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
     {
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',''
+            '<a href="'.erp_company_url_single_clientview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',''
         );
     }
 	/**
@@ -66,7 +66,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.travel_agent_request_listing( $item['COM_Id']).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],1).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -74,7 +74,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],2).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -82,7 +82,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],3).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -90,7 +90,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],4).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
         );
     }
     /**
@@ -100,7 +100,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
     function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
+           //'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'clientname' => __('Client Name', 'travelagentdashboard_table_list'),
             'bookingreq' => __('New <br> Booking Requests', 'travelagentdashboard_table_list'),
 			'cancelreq' => __('New <br> Cancellation Requets', 'travelagentdashboard_table_list'),

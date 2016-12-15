@@ -11,6 +11,7 @@ function travelagentclient_create( $args = array() ) {
      global $wpdb;
     $defaults = array(
         'travelagentclient'        => array(
+			'photo_id'        => 0,
             'user_id'         => 0,
             'txtCompname' => '',
 			'txtEmpCodePrefx' => '',
@@ -32,48 +33,66 @@ function travelagentclient_create( $args = array() ) {
 			'txtSalespercontno' => '',
 			'txtadescdeal' => '',
 			'selCT' => '',
-        )
+        ),
+		'assign_company'=> array(
+		 'user_id'         => 0,
+		 'selTrvAgntUser' => '',
+		),
+		'company_markups_markdowns'=> array(
+			 'user_id'         => 0,
+			 'selFlightTerms' => '',
+			'radioFlightMarkStatus' => '',
+			'txtFlightMarkFare' => '',
+			'selBusTerms' => '',
+			'radioBusMarkStatus' => '',
+			'txtBusMarkFare' => '',
+			'selHotelTerms' => '',
+			'radioHotelMarkStatus' => '',
+			'txtHotelMarkFare' => '',
+		),
+		'traveldesk'=> array(
+		 'user_id'         => 0,
+		 'txtComTrvDeskUsername' => '',
+		)
     );
 
     $posted = array_map( 'strip_tags_deep', $args );
 	
     $posted = array_map( 'trim_deep', $posted );
     $data   = erp_parse_args_recursive( $posted, $defaults );
-
+	$avatar_url = wp_get_attachment_url( $data['travelagentclient']['photo_id'] );
     // attempt to create the user
     $userdata = array(
-        'user_login'   => $data['travelagentclient']['txtCompemail'],
-        'user_email'   => $data['travelagentclient']['txtCompemail'],
-        'first_name'   => $data['travelagentclient']['txtCompname'],
-        'last_name'    => $data['travelagentclient']['txtCompname'],
-        'user_url'     => $data['travelagentclient']['user_url'],
-        'display_name' => $data['travelagentclient']['txtCompname'],
+        'user_login'   => $data['travelagentclient']['txtComTrvDeskUsername'],
+        'user_email'   => $data['travelagentclient']['txtSalesperemail'],
+        'first_name'   => $data['traveldesk']['txtComTrvDeskUsername'],
+        'last_name'    => $data['traveldesk']['txtComTrvDeskUsername'],
+        'user_url'     => $data['traveldesk']['user_url'],
+        'display_name' => $data['traveldesk']['txtComTrvDeskUsername'],
         );
 
     // if user id exists, do an update
-    $user_id = isset( $data['travelagentclient']['user_id'] ) ? intval( $data['travelagentclient']['user_id'] ) : 0;
+	$cmpid = $data['travelagentclient']['COM_Id'];
+    //$user_id = isset( $data['traveldesk']['user_id'] ) ? intval( $data['traveldesk']['user_id'] ) : 0;
     $update  = false;
 
-    if ( $user_id ) {
+	 if ( $cmpid ) {
         $update = true;
-        $userdata['ID'] = $user_id;
-
+		$travelagentclient_data['COM_Id'] = $cmpid;
     } else {
         // when creating a new user, assign role and passwords
         $userdata['user_pass'] = wp_generate_password( 12 );
-        $userdata['role'] = 'travelagentclient';
+        $userdata['role'] = 'traveldesk';
     }
 
     $userdata = apply_filters( 'erp_hr_travelagentclient_args', $userdata );
     if ( is_wp_error( $user_id ) ) {
         return $user_id;
     }
-	
 	$supid = $_SESSION['supid']; 
 	$travelagentclient_data = array(
-	'Name'=>'fghfgh',
         'COM_Name' =>$data['travelagentclient']['txtCompname'],
-		'COMp_Prefix' =>$data['travelagentclient']['txtEmpCodePrefx'],
+		'COM_Prefix' =>$data['travelagentclient']['txtEmpCodePrefx'],
 		'COM_Email' =>$data['travelagentclient']['txtCompemail'],
 		'COM_Mobile' =>$data['travelagentclient']['txtCompmob'],
 		'COM_Landline' =>$data['travelagentclient'][ 'txtComplandline'],
@@ -96,21 +115,72 @@ function travelagentclient_create( $args = array() ) {
 		'COM_Flight'=>'1',
 		'COM_Bus'=>'1',
 		'COM_Hotel'=>'1',
-		'COM_Logo'=>'url',
+		'COM_PhotoId'=>$data['travelagentclient']['photo_id'],
+		'COM_Logo' => $avatar_url,
     );
+	$clientassigncompany_data = array(
+	//$selTrvAgntUser = $data['assign_company']['selTrvAgntUser'],
+	//foreach ($selTrvAgntUser as $key => $user) {
+			'SUP_Id' =>$supid,
+			//}
+	);
+	$traveldesk_data = array(
+		'TD_Username' =>$data['traveldesk']['txtComTrvDeskUsername'],
+		'TD_Email' =>$data['travelagentclient']['txtSalesperemail'],
+		'TD_Addedby'=>'',
+		'TD_Type'=>'2',
+		'SUP_Id'=>$supid,
+		);
+		$clientcompanymarksup_data = array(
+		// insert flight mark ups	
+		//if (isset($data['company_markups_markdowns']['selFlightTerms']) && isset($data['company_markups_markdowns']['txtFlightMarkFare'])) {	
+		'MOD_Id'=>'1',
+		'MC_Id'=>$data['company_markups_markdowns']['selFlightTerms'],
+		'CMM_MarkFare' =>$data['company_markups_markdowns']['txtFlightMarkFare'],
+		'CMM_MarkStatus'=>$data['travelagentclient']['radioFlightMarkStatus'],
+		'CMM_Fromdate'=>'',
+		//}
+		// insert bus mark ups
+		//if ($data['company_markups_markdowns']['selBusTerms'] && $data['company_markups_markdowns']['txtBusMarkFare']) {
+		'MOD_Id'=>'2',
+		'MC_Id'=>$data['company_markups_markdowns']['selBusTerms'],
+		'CMM_MarkFare' =>$data['company_markups_markdowns']['txtBusMarkFare'],
+		'CMM_MarkStatus'=>$data['company_markups_markdowns']['radioBusMarkStatus'],
+		'CMM_Fromdate'=>'',			
+		//}			
+		 // insert hotel mark upds
+		//if(!empty($selHotelTerms && $txtHotelMarkFare)) {
+		'MOD_Id'=>'5',
+		'MC_Id'=>$data['company_markups_markdowns']['selHotelTerms'],
+		'CMM_MarkFare' =>$data['company_markups_markdowns']['txtHotelMarkFare'],
+		'CMM_MarkStatus'=>$data['company_markups_markdowns']['radioHotelMarkStatus'],
+		'CMM_Fromdate'=>'',	
+		//}
+		);
     if($update){
        $tablename = "company";
-       $travelagentclient_data['user_id'] = $user_id;
-       $wpdb->update( $tablename,$travelagentclient_data,array( 'user_id' => $user_id ));    
+	   $travelagentclient_data['COM_Id'] = $cmpid;
+       $wpdb->update( $tablename,$travelagentclient_data,array( 'COM_Id' => $cmpid ));
     }
     else{ 
     $user_id  = wp_insert_user( $userdata );
 	$tablename = "company";
-	$travelagentclient_data['user_id'] = $user_id;	
-	$wpdb->insert( $tablename, $travelagentclient_data);	
-    return $user_id;
+	$travelagentclient_data['user_id'] = $user_id;
+	$wpdb->insert( $tablename, $travelagentclient_data);
+	$cmpid = $wpdb->insert_id;
+	
+	if($cmpid){
+	$clientassigncompany_data['COM_Id'] = $cmpid;	
+	$wpdb->insert( 'assign_company', $clientassigncompany_data);	
+	$traveldesk_data['user_id'] = $user_id;
+	$traveldesk_data['COM_Id'] = $cmpid;
+	$wpdb->insert( 'travel_desk', $traveldesk_data);
+    
+	$clientcompanymarksup_data['COM_Id'] = $cmpid;
+	$wpdb->insert( 'company_markups_markdowns', $clientcompanymarksup_data);
+	return $user_id;
+	}
     }
-	return $travelagentclient_data;
 }	
 function get_markupdown_list(){
 	global $wpdb;
@@ -132,3 +202,31 @@ function get_allocation_list(){
 					  sup.SUP_Refid = $supid AND SUP_Status = 1 AND SUP_Type = 4 AND SUP_Access = 1 ORDER BY SUP_Name");
 	return $allocationlist;
 	}	
+	
+/*
+ * [erp_company_url_single_clientview description]
+ *
+ * @param  int  company id
+ *
+ * @return string  url of the companyview details page
+ */
+function erp_company_url_single_clientview($com_id) {
+
+    $url = admin_url( 'admin.php?page=Clientview&action=view&id=' . $com_id);
+
+    return apply_filters( 'erp_company_url_single_clientview', $url, $com_id );
+}
+
+/*
+ * [erp_company_url_single_clientview description]
+ *
+ * @param  int  company id
+ *
+ * @return string  url of the companyview details page
+ */
+function erp_travelagent_requestview($com_id,$selFilter) {
+
+    $url = admin_url( 'admin.php?page=requestview&action=view&id=' . $com_id .'&selFilter='.$selFilter);
+
+    return apply_filters( 'erp_travelagent_requestview', $url, $com_id,$selFilter);
+}

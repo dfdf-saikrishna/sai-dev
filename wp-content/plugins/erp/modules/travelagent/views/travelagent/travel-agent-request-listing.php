@@ -1,19 +1,13 @@
 <div class="wrap erp-travelagentclient">
 	<h2>
         <?php
-        _e( 'Account Overview', 'erp' );
-
-        if ( current_user_can( 'travelagent' ) ) {
-            ?>
-                <a href="#" id="erp-travelagentclient-new" class="add-new-h2"><?php _e( 'Add New', 'erp' ); ?></a>
-            <?php
-        }
+        _e( 'All Requests', 'erp' );
         ?>
     </h2>
 		<?php
 			global $wpdb;
 			
-            $table = new WeDevs\ERP\Travelagent\Travel_Agent_Client_List_Table();
+            $table = new WeDevs\ERP\Travelagent\Travel_Agent_Request_List_Table();
             $table->prepare_items();
 
             $message = '';
@@ -26,7 +20,7 @@
             <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />
-			  <?php $table->search_box('Search Client', 'search_id'); ?>
+			  <?php $table->search_box('Search', 'search_id'); ?>
 			</form>
 			
             <form method="GET">

@@ -1,4 +1,4 @@
-<div class="wrap erp-hr-travelagent" id="wp-erp">
+<div class="wrap erp-hr-travelagentuser" id="wp-erp">
 
     <h2>
         <?php
@@ -20,8 +20,8 @@
             }
                 ?>
 
-     <div class="list-table-wrap erp-hr-employees-wrap">
-        <div class="list-table-inner erp-hr-employees-wrap-inner">
+     <div class="list-table-wrap erp-hr-travelagentuser-wrap">
+        <div class="list-table-inner erp-hr-travelagentuser-wrap-inner">
             <?php echo $message;?>
 			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />

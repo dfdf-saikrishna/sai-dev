@@ -56,7 +56,7 @@ class Travel_Agent_Client_Allocation extends \WP_List_Table
         $totCnt = $wpdb->get_var("SELECT COUNT(AC_Id) as totCnt FROM $table_name WHERE COM_Id = $comId AND AC_Status = 1 AND AC_Active = 1");
          if($totCnt){
 		return sprintf('%s %s %s',
-           '', '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . $totCnt . '</strong></a>',
+           '', '<strong>' . $totCnt . '</strong>',
             ''
         );
 //travel_agent_client_allo_details		
