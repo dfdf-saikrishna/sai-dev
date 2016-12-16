@@ -343,10 +343,13 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
         $total_items = count($wpdb->get_results("SELECT * FROM employees emp, requests req, policy pol, request_employee re WHERE RT_Id=1 AND emp.EMP_Id ='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim)"));
 
         // prepare query params, as usual current page, order by and order direction
-        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
+        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'])) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'req.REQ_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-
+        if(!empty($paged) && !empty($per_page))
+          $offset=($paged-1)*$per_page;
+        else
+          $offset = 0;
         // [REQUIRED] define $items array
         // notice that last argument is ARRAY_A, so we will retrieve array
             if(!empty($_POST["s"])) {
@@ -365,10 +368,10 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET $offset", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET $offset", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
