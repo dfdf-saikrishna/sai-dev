@@ -343,10 +343,13 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
         $total_items = count($wpdb->get_results("SELECT * FROM employees emp, requests req, policy pol, request_employee re WHERE RT_Id=1 AND emp.EMP_Id ='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim)"));
 
         // prepare query params, as usual current page, order by and order direction
-        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
+        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'])) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'req.REQ_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-
+        if(!empty($paged) && !empty($per_page))
+          $offset=($paged-1)*$per_page;
+        else
+          $offset = 0;
         // [REQUIRED] define $items array
         // notice that last argument is ARRAY_A, so we will retrieve array
             if(!empty($_POST["s"])) {
@@ -365,10 +368,10 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re ".$query." AND RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET $offset", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, policy pol, request_employee re WHERE RT_Id=1 AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND REQ_Active != 9  AND re.EMP_Id='$empuserid' AND RE_Status=1 AND req.REQ_Id NOT IN (SELECT REQ_Id FROM pre_travel_claim) ORDER BY $orderby $order LIMIT %d OFFSET $offset", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
@@ -379,45 +382,3 @@ class My_Pre_Travel_Expenses extends \WP_List_Table
     }
 }
 
-/**
- * Simple function that validates data and retrieve bool on success
- * and error message(s) on error
- *
- * @param $item
- * @return bool|string
- */
-function custom_table_example_validate_person($item)
-{
-    $messages = array();
-
-    if (empty($item['name'])) $messages[] = __('Name is required', 'custom_table_example');
-    if (!empty($item['email']) && !is_email($item['email'])) $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
-    if (!ctype_digit($item['age'])) $messages[] = __('Age in wrong format', 'custom_table_example');
-    //if(!empty($item['age']) && !absint(intval($item['age'])))  $messages[] = __('Age can not be less than zero');
-    //if(!empty($item['age']) && !preg_match('/[0-9]+/', $item['age'])) $messages[] = __('Age must be number');
-    //...
-
-    if (empty($messages)) return true;
-    return implode('<br />', $messages);
-}
-
-/**
- * Do not forget about translating your plugin, use __('english string', 'your_uniq_plugin_name') to retrieve translated string
- * and _e('english string', 'your_uniq_plugin_name') to echo it
- * in this example plugin your_uniq_plugin_name == custom_table_example
- *
- * to create translation file, use poedit FileNew catalog...
- * Fill name of project, add "." to path (ENSURE that it was added - must be in list)
- * and on last tab add "__" and "_e"
- *
- * Name your file like this: [my_plugin]-[ru_RU].po
- *
- * http://codex.wordpress.org/Writing_a_Plugin#Internationalizing_Your_Plugin
- * http://codex.wordpress.org/I18n_for_WordPress_Developers
- */
-function custom_table_example_languages()
-{
-    load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
-}
-
-add_action('init', 'custom_table_example_languages');

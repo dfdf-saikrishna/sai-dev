@@ -46,6 +46,7 @@ class Admin_Menu {
         add_submenu_page('', 'Upload', 'View Request', 'employee', 'View-Request', array( $this, 'view_request'));
         add_submenu_page('', 'Upload', 'View Post Request', 'employee', 'View-Post-Request', array( $this, 'view_post_request'));
         add_submenu_page('', 'Upload', 'View Emp Requests', 'employee', 'View-Emp-Requests', array( $this, 'view_emp_request'));
+        add_submenu_page('', 'Upload', 'View My Requests', 'employee', 'View-My-Requests', array( $this, 'view_my_request'));
         if(current_user_can( 'finance' )){
              
         add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
@@ -163,6 +164,9 @@ class Admin_Menu {
     }
     public function view_emp_request(){
         include WPERP_EMPLOYEE_VIEWS . '/emp-requests-listing.php';
+    }
+    public function view_my_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/my-requests-listing.php';
     }
     public function view_accounts_request(){
         include WPERP_EMPLOYEE_VIEWS . '/finance-requests-details.php';
