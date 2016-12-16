@@ -465,5 +465,5 @@ $selsql = $wpdb->get_results("SELECT * FROM request_details rd, expense_category
 </div>
 </form>
 
-<?php _e(chat_box(2)); ?>  
+
 

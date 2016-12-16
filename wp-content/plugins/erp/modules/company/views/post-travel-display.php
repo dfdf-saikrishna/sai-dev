@@ -111,7 +111,7 @@ $row = $wpdb->get_results("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ
                 <br />
                 <?php
                 if ($row[0]->REQ_Type == 1 || $row[0]->REQ_Type == 2)
-                    _e(chat_box(2));   
+                    //_e(chat_box(2));   
                 ?>
                 <div class="col-sm-12 align-sm-center">
                     <?php

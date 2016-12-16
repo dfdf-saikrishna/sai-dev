@@ -12,9 +12,14 @@ function get_expense() {
 
 function policy_process_import_export() {
     global $wpdb;
-    $compid = $_SESSION['compid'];
+	if(isset( $_SESSION['compid']))
+	{
+		$compid = $_SESSION['compid'];
+		$selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1");
+	}
+	if(isset( $_SESSION['adminid']))
     $adminid = $_SESSION['adminid'];
-    $selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1");
+
     if (isset($_POST['crp_import_pdf'])) {
         //if ($_FILES['csv_file']['error'] == "0") {
             if ($selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1")) {

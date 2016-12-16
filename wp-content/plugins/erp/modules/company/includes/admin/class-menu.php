@@ -38,7 +38,7 @@ class Admin_Menu {
                 add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array($this, 'upload_employees'));
                 add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array($this, 'export_employees'));
                 add_submenu_page('', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
-                add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeview_page'));
+                //add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeview_page'));
                 add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array($this, 'employeelogs_list'));
                 add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array($this, 'Grades'));
                 add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', array($this, 'Designations'));
