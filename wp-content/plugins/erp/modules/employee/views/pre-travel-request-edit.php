@@ -226,7 +226,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 
             </div>
             <div id="my_centered_buttons">
-            <input type="submit" name="submit" id="submit-pre-travel-request" class="button button-primary">
+            <input type="submit" value="Update" name="submit" id="submit-pre-travel-request" class="button button-primary">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" name="reset" id="reset" class="button">Reset</button>
