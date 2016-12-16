@@ -63,7 +63,7 @@ class Admin_Menu {
                 //add_submenu_page('FinanceExpense', 'General', 'View General Expense', 'finance', 'General', array($this,'General_Request'));
                 //add_submenu_page('FinanceExpense', 'utility', 'View Utility Expense', 'finance', 'Utility', array($this,'Utility_Request'));
         }
-        add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
+        //add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
 
 //        add_submenu_page('employee-profile', ' Employement Details', ' Employement Details', 'employee',' Employement Details'.'/ Employement Details', 'employement_details');
 //        add_submenu_page('employee-profile', 'View / Edit emp Profile', ' View / Edit Profile', 'employee','View / Edit Profile'.'/ View / Edit Profile', 'employement_details');
@@ -94,17 +94,17 @@ class Admin_Menu {
 //        add_submenu_page('employee-profile', '  Driving License  ', '  Driving License ', 
 //        'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
 
-        add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'TravelExpense', 'travel_expense','dashicons-tickets');
-        $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', 'TravelExpense_init');
+        add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'TravelExpense', array($this, 'requests_overview'),'dashicons-tickets');
+        $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', array($this, 'requests_overview'));
         
             add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
             add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
             add_submenu_page('', 'Expense Request', ' Post Travel Edit', 'employee','Post-travel-edit', array($this, 'post_travel_request_edit'));
-            add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
-            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
+//            add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
+//            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
             add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post-travel', array($this, 'post_travel_request'));
-            add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
-            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
+//            add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
+//            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
 
         add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'Others_Request'),'dashicons-migrate');
             $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'Others_Request'),'GeneralExpense_init');
@@ -123,7 +123,7 @@ class Admin_Menu {
         //add_menu_page('Delegate', 'Delegate', 'employee', 'Delegate', 'delegate','dashicons-image-filter');
             //add_submenu_page('Delegate', 'Set Delegate', 'Set Delegate', 'employee','Set Delegate'.'/Set Delegate', 'delegate');
             //add_submenu_page('Delegate', 'View / Edit / Remove Delegate', 'View / Edit / Remove Delegate', 'employee','View / Edit / Remove Delegate'.'/View / Edit / Remove Delegate', 'delegate');
-        add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
+        //add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
        //}
     }
         
@@ -157,6 +157,9 @@ class Admin_Menu {
     }
     public function view_post_request(){
         include WPERP_EMPLOYEE_VIEWS . '/post-travel-request-details.php';
+    }
+    public function requests_overview(){
+        include WPERP_EMPLOYEE_VIEWS . '/view-all-request-details.php';
     }
     public function view_emp_request(){
         include WPERP_EMPLOYEE_VIEWS . '/emp-requests-listing.php';

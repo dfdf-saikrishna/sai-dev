@@ -231,7 +231,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <h3 class="hndle"><span><?php _e( 'Grade Limits', 'erp' ); ?></span></h3>
                 <div class="inside">
                    <!-- Grade Limits -->
-                   <?php _e(gradeLimits());?>
+                   <?php _e(gradeLimits(''));?>
                 </div>
             </div><!-- .postbox -->
         </div>
