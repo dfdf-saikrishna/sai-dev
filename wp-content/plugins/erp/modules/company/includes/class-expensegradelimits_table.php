@@ -42,6 +42,7 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
      * @return HTML
      */
     function column_default($item, $column_name) {
+        
     }
 
 //    function column_num($item)
@@ -53,153 +54,170 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
 //        }
 //    }
     function column_flight($item) {
-        $flight = $item['GL_Flight'];
-        return $flight;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Flight ? IND_money_format($rowsum[0]->GL_Flight) . ".00" : 0;
     }
 
     function column_bus($item) {
-        $bus = $item['GL_Bus'];
-        return $bus;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Bus ? IND_money_format($rowsum[0]->GL_Bus) . ".00" : 0;
     }
 
     function column_Car($item) {
-        $Car = $item['GL_Car'];
-        return $Car;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Car ? IND_money_format($rowsum[0]->GL_Car) . ".00" : 0;
     }
 
     function column_other($item) {
-        $other = $item['GL_Others_Travels'];
-        return $other;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Others_Travels ? IND_money_format($rowsum[0]->GL_Others_Travels) . ".00" : 0;
     }
 
     function column_hotel($item) {
-        $hotel = $item['GL_Hotel'];
-        return $hotel;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Hotel ? IND_money_format($rowsum[0]->GL_Hotel) . ".00" : 0;
     }
 
     function column_self($item) {
-        $expense = $item['GL_Self'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Self ? IND_money_format($rowsum[0]->GL_Self) . ".00" : 0;
     }
 
     function column_local($item) {
-        $expense = $item['GL_Local_Conveyance'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Local_Conveyance ? IND_money_format($rowsum[0]->GL_Local_Conveyance) . ".00" : 0;
     }
 
     function column_mobile($item) {
-        $expense = $item['GL_Mobile'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Mobile ? IND_money_format($rowsum[0]->GL_Mobile) . ".00" : 0;
     }
 
     function column_client($item) {
-        $expense = $item['GL_ClientMeeting'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_ClientMeeting ? IND_money_format($rowsum[0]->GL_ClientMeeting) . ".00" : 0;
     }
 
     function column_others($item) {
-        $expense = $item['GL_Other_Te_Others'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Other_Te_Others ? IND_money_format($rowsum[0]->GL_Other_Te_Others) . ".00" : 0;
     }
 
     function column_halt($item) {
-        $expense = $item['GL_Halt'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Halt ? IND_money_format($rowsum[0]->GL_Halt) . ".00" : 0;
     }
 
     function column_Boarding($item) {
-        $expense = $item['GL_Boarding'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Boarding ? IND_money_format($rowsum[0]->GL_Boarding) . ".00" : 0;
     }
 
     function column_others1($item) {
-        $expense = $item['GL_Others_Other_te'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Others_Other_te ? IND_money_format($rowsum[0]->GL_Others_Other_te) . ".00" : 0;
     }
 
     function column_Data($item) {
-        $expense = $item['GL_DataCard'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_DataCard ? IND_money_format($rowsum[0]->GL_DataCard) . ".00" : 0;
     }
 
     function column_market($item) {
-        $expense = $item['GL_Marketing'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Marketing ? IND_money_format($rowsum[0]->GL_Marketing) . ".00" : 0;
     }
 
     function column_internet($item) {
-        $expense = $item['GL_Internet'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Internet ? IND_money_format($rowsum[0]->GL_Internet) . ".00" : 0;
     }
 
     function column_two($item) {
-        $expense = $item['GL_Twowheeler'];
-        return $expense;
+        global $wpdb;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Twowheeler ? IND_money_format($rowsum[0]->GL_Twowheeler) . ".00" : 0;
     }
 
     function column_four($item) {
-        $expense = $item['GL_Fourwheeler'];
-        return $expense;
-    }
-
-    function column_grades($item) {
         global $wpdb;
-        $table_name = "employee_grades";
-        $comId = $item['COM_Id'];
-        //echo $comId;die;
-        $grades = $wpdb->get_var("SELECT * FROM $table_name WHERE COM_Id='$comId' AND EG_Status=1");
-        //echo $grades ['EG_Name'];die;
-//        if($admin_count == 0){
-//            return "nil";
-//        }
-//        else{
-//            return '(' . $admin_count . ')';
-//        }
-        $expense = $grades['EG_Name'];
-        //echo $expense;die;
-        return $expense;
+        $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
+        return $rowsum[0]->GL_Fourwheeler ? IND_money_format($rowsum[0]->GL_Fourwheeler) . ".00" : 0;
     }
 
-    /**
-     * [OPTIONAL] this is example, how to render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
+//    function column_grades($item) {
+//        global $wpdb;
+//        $table_name = "employee_grades";
+//        $compid = $_SESSION['compid'];
+//        $selcom = $wpdb->get_results("SELECT * FROM $table_name WHERE COM_Id='$compid' AND EG_Status=1");
+//        //$selcom = select_all("employee_grades", "*", "COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC", $filename, 0);
+//        $selmodes = $wpdb->get_results("SELECT * FROM mode WHERE COM_Id='0' AND MOD_Status='1'");
+//        foreach ($selmodes as $value) {
+//            return $value->MOD_Name;
+//        }
+//        foreach ($selcom as $rowcom) {
+//            return $rowcom['EG_Name'];
+//            $rowsum = $wpdb->get_results("SELECT * FROM grade_limits EG_Id='$rowcom[EG_Id]' AND GL_Status=1");
+//            return $rowsum['GL_Flight'] ? IND_money_format($rowsum['GL_Flight']) . ".00" : 0;
+//            return $rowsum['GL_Bus'] ? IND_money_format($rowsum['GL_Bus']) . ".00" : 0;
+//            return $rowsum['GL_Car'] ? IND_money_format($rowsum['GL_Car']) . ".00" : 0;
+//            return $rowsum['GL_Others_Travels'] ? IND_money_format($rowsum['GL_Others_Travels']) . ".00" : 0;
+//            return $rowsum['GL_Hotel'] ? IND_money_format($rowsum['GL_Hotel']) . ".00" : 0;
+//            return $rowsum['GL_Self'] ? IND_money_format($rowsum['GL_Self']) . ".00" : 0;
+//            return $rowsum['GL_Halt'] ? IND_money_format($rowsum['GL_Halt']) . ".00" : 0;
+//            return $rowsum['GL_Boarding'] ? IND_money_format($rowsum['GL_Boarding']) . ".00" : 0;
+//            return $rowsum['GL_Other_Te_Others'] ? IND_money_format($rowsum['GL_Other_Te_Others']) . ".00" : 0;
+//            return $rowsum['GL_Local_Conveyance'] ? IND_money_format($rowsum['GL_Local_Conveyance']) . ".00" : 0;
+//            return $rowsum['GL_Mobile'] ? IND_money_format($rowsum['GL_Mobile']) . ".00" : 0;
+//            return $rowsum['GL_ClientMeeting'] ? IND_money_format($rowsum['GL_ClientMeeting']) . ".00" : 0;
+//            return $rowsum['GL_Others_Other_te'] ? IND_money_format($rowsum['GL_Others_Other_te']) . ".00" : 0;
+//            return $rowsum['GL_DataCard'] ? IND_money_format($rowsum['GL_DataCard']) . ".00" : 0;
+//            return $rowsum['GL_Marketing'] ? IND_money_format($rowsum['GL_Marketing']) . ".00" : 0;
+//            return $rowsum['GL_Twowheeler'] ? IND_money_format($rowsum['GL_Twowheeler']) . ".00" : 0;
+//            return $rowsum['GL_Fourwheeler'] ? IND_money_format($rowsum['GL_Fourwheeler']) . ".00" : 0;
+//            return $rowsum['GL_Internet'] ? IND_money_format($rowsum['GL_Internet']) . ".00" : 0;
+//        }
+//    }
+
     function column_name($item) {
-        // links going to /admin.php?page=[your_plugin_page][&other_params]
+        global $wpdb;
+        $compid = $_SESSION['compid'];
         $actions = array(
-            'edit' => sprintf('<a href="?page=persons_form&id=%s">%s</a>', $item['EG_Id'],__('Edit', 'custom_table_example')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'],$item['EG_Id'], __('Delete', 'custom_table_example')),
+            'edit' => sprintf('<a href="?page=gradeslimits" data-id=%s>%s</a>', $item['GL_Id'], __('Edit', 'expensegrade_table')),
+            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['GL_Id'], __('Delete', 'expensegrade_table')),
         );
-        return sprintf('%s %s', $item['EG_Id'], $this->row_actions($actions)
+        $selcom = $wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
+        return sprintf('%s %s', $selcom->EG_Name, $this->row_actions($actions)
         );
     }
 
-    /**
-     * [REQUIRED] this is how checkbox column renders
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
     function column_cb($item) {
         return sprintf(
-                '<input type="checkbox" name="id[]" value="%s" />', $item['EG_Id']
+                '<input type="checkbox" name="id[]" value="%s" />', $item['GL_Id']
         );
     }
 
-    /**
-     * [REQUIRED] This method return columns to display in table
-     * you can skip columns that you do not want to show
-     * like content, or description
-     *
-     * @return array
-     */
     function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('ID', 'expensegrade_table'),
-            //'grades' => __('Grade', 'expensegrade_table'),
+            'name' => __('Grade', 'expensegrade_table'),
+            //'grades' => __('', 'expensegrade_table'),
             'flight' => __('Flight', 'expensegrade_table'),
             'bus' => __('Bus', 'expensegrade_table'),
             'car' => __('Car', 'expensegrade_table'),
@@ -231,9 +249,9 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
      */
     function get_sortable_columns() {
         $sortable_columns = array(
-            //'Company Name' => array('company_name', true),
-            //'Company Logo' => array('company_logo', false),
-            //'num' => array('Sl.No', true),
+//'Company Name' => array('company_name', true),
+//'Company Logo' => array('company_logo', false),
+//'num' => array('Sl.No', true),
 //            'code' => array('Employee Name & Employee Code', true),
 //            'grades' => array('Grade', true),
 //            'email' => array('Email & Contact NO.', true),
@@ -266,7 +284,7 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
      */
     function process_bulk_action() {
         global $wpdb;
-        //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+//$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
         $table_name = "grade_limits";
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
@@ -274,7 +292,7 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
                 $ids = implode(',', $ids);
 
             if (!empty($ids)) {
-                $wpdb->query("DELETE FROM $table_name WHERE EG_Id IN($ids)");
+                $wpdb->query("DELETE FROM $table_name WHERE GL_Id IN($ids)");
             }
         }
     }
@@ -287,32 +305,30 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
     function prepare_items() {
         global $wpdb;
         $table_name = 'grade_limits'; // do not forget about tables prefix
-
+        $compid = $_SESSION['compid'];
         $per_page = 5; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
         $hidden = array();
         $sortable = $this->get_sortable_columns();
 
-        // here we configure table headers, defined in our methods
+// here we configure table headers, defined in our methods
         $this->_column_headers = array($columns, $hidden, $sortable);
 
-        // [OPTIONAL] process bulk action if any
+// [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
 
-        // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(EG_Id) FROM $table_name");
-        // print_r($total_items);die;
-        // prepare query params, as usual current page, order by and order direction
+// will be used in pagination settings
+        $total_items = $wpdb->get_var("SELECT COUNT(GL_Id) FROM $table_name");
+
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : '';
-        //$order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-//        $comId = '55';
-        $egId = $wpdb->get_var("SELECT EG_Id FROM $table_name");
-        //print_r($egId);die;
-        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM `grade_limits` WHERE EG_Id='$egId' AND GL_Status=1 $orderby ", $per_page, $paged), ARRAY_A);
-     //print_r($test);die;
-        // [REQUIRED] configure pagination
+        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'GL_Id';
+        $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
+        $selcom = $wpdb->get_row("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Id DESC");
+        $egid = $selcom->EG_Id;
+        $total_items = count($this->items = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$egid' AND GL_Status=1 ORDER BY GL_Id"));
+        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM grade_limits WHERE EG_Id='$egid' AND GL_Status=1 ORDER BY  $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+// [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above
             'per_page' => $per_page, // per page constant defined at top of method
@@ -322,28 +338,6 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
 
 }
 
-/**
- * Simple function that validates data and retrieve bool on success
- * and error message(s) on error
- *
- * @param $item
- * @return bool|string
- */
-
-/**
- * Do not forget about translating your plugin, use __('english string', 'your_uniq_plugin_name') to retrieve translated string
- * and _e('english string', 'your_uniq_plugin_name') to echo it
- * in this example plugin your_uniq_plugin_name == custom_table_example
- *
- * to create translation file, use poedit FileNew catalog...
- * Fill name of project, add "." to path (ENSURE that it was added - must be in list)
- * and on last tab add "__" and "_e"
- *
- * Name your file like this: [my_plugin]-[ru_RU].po
- *
- * http://codex.wordpress.org/Writing_a_Plugin#Internationalizing_Your_Plugin
- * http://codex.wordpress.org/I18n_for_WordPress_Developers
- */
 function custom_table_example_languages() {
     load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
 }

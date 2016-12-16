@@ -59,8 +59,8 @@ class TravelDeskInvoice_List_Table extends \WP_List_Table {
     }
 
     function column_invoiceref($item) {
-        $href = "#";
-        return "<a href='<?php echo $href; ?>' >" . $item['TDC_ReferenceNo'] . "</a>";
+        //$href = "";
+        return "<a href= 'admin.php?page=Claims&tdcid=$item[TDC_Id]' >" . $item['TDC_ReferenceNo'] . "</a>";
         //return $item['TDC_ReferenceNo'];
     }
 

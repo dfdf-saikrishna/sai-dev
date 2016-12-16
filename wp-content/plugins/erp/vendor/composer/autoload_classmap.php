@@ -318,7 +318,7 @@ return array(
     'WeDevs\\ERP\\CRM\\Contact_List_Table' => $baseDir . '/modules/crm/includes/class-contact-list-table.php',
     'WeDevs\\ERP\\CRM\\Contact_Subscriber_List_Table' => $baseDir . '/modules/crm/includes/class-contact-subscriber-list-table.php',
     'WeDevs\\ERP\\CRM\\Customer_Relationship' => $baseDir . '/modules/crm/crm.php',
-    'WeDevs\\ERP\\CRM\\Emailer' => $baseDir . '/modules/crm/includes/class-emails.php', 
+    'WeDevs\\ERP\\CRM\\Emailer' => $baseDir . '/modules/crm/includes/class-emails.php',
     'WeDevs\\ERP\\CRM\\Emails\\New_Task_Assigned' => $baseDir . '/modules/crm/includes/emails/class-email-new-task-assigned.php',
     'WeDevs\\ERP\\CRM\\Form_Handler' => $baseDir . '/modules/crm/includes/class-form-handler.php',
     'WeDevs\\ERP\\CRM\\Models\\Activity' => $baseDir . '/modules/crm/includes/models/activity.php',
@@ -343,10 +343,10 @@ return array(
     'WeDevs\\ERP\\Framework\\Modules' => $baseDir . '/includes/framework/modules.php',
     'WeDevs\\ERP\\Framework\\Traits\\Ajax' => $baseDir . '/includes/framework/traits/Ajax.php',
     'WeDevs\\ERP\\Framework\\Traits\\Hooker' => $baseDir . '/includes/framework/traits/Hooker.php',
-    'WeDevs\\ERP\\HRM\\Admin\\Admin_Menu' => $baseDir . '/modules/hrm/includes/admin/class-menu.php',	
+    'WeDevs\\ERP\\HRM\\Admin\\Admin_Menu' => $baseDir . '/modules/hrm/includes/admin/class-menu.php',
     'WeDevs\\ERP\\HRM\\Admin\\User_Profile' => $baseDir . '/modules/hrm/includes/admin/class-user-profile.php',
-    'WeDevs\\ERP\\HRM\\Ajax_Handler' => $baseDir . '/modules/hrm/includes/class-ajax.php',  
-    'WeDevs\\ERP\\HRM\\Announcement' => $baseDir . '/modules/hrm/includes/class-announcement.php',   
+    'WeDevs\\ERP\\HRM\\Ajax_Handler' => $baseDir . '/modules/hrm/includes/class-ajax.php',
+    'WeDevs\\ERP\\HRM\\Announcement' => $baseDir . '/modules/hrm/includes/class-announcement.php',
     'WeDevs\\ERP\\HRM\\Department' => $baseDir . '/modules/hrm/includes/class-department.php',
     'WeDevs\\ERP\\HRM\\Department_List_Table' => $baseDir . '/modules/hrm/includes/class-department-list-table.php',
     'WeDevs\\ERP\\HRM\\Department_Walker' => $baseDir . '/modules/hrm/includes/class-walker-department.php',
@@ -355,7 +355,7 @@ return array(
     'WeDevs\\ERP\\HRM\\Emailer' => $baseDir . '/modules/hrm/includes/class-emails.php',
     'WeDevs\\ERP\\HRM\\Emails\\Approved_Leave_Request' => $baseDir . '/modules/hrm/includes/emails/class-email-approved-leave-request.php',
     'WeDevs\\ERP\\HRM\\Emails\\HR_Announcement_Email' => $baseDir . '/modules/hrm/includes/emails/class-email-hr-announcement.php',
-    'WeDevs\\ERP\\HRM\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/hrm/includes/emails/class-email-new-employee-welcome.php',   
+    'WeDevs\\ERP\\HRM\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/hrm/includes/emails/class-email-new-employee-welcome.php',
     'WeDevs\\ERP\\HRM\\Emails\\New_Leave_Request' => $baseDir . '/modules/hrm/includes/emails/class-email-new-leave-request.php',
     'WeDevs\\ERP\\HRM\\Emails\\Rejected_Leave_Request' => $baseDir . '/modules/hrm/includes/emails/class-email-rejected-leave-request.php',
     'WeDevs\\ERP\\HRM\\Employee' => $baseDir . '/modules/hrm/includes/class-employee.php',
@@ -403,15 +403,13 @@ return array(
     'WeDevs\\ORM\\WP\\PostMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/PostMeta.php',
     'WeDevs\\ORM\\WP\\User' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/User.php',
     'WeDevs\\ORM\\WP\\UserMeta' => $vendorDir . '/tareq1988/wp-eloquent/src/WP/UserMeta.php',
-    
-    /*****************************/
-    /** Corptne Module classes **/
-    /****************************/
+    /*     * ************************** */
+    /** Corptne Module classes * */
+    /*     * ************************* */
     'WeDevs\\ERP\\Corptne\\Travel_Agent_List_Table' => $baseDir . '/modules/corptne/includes/travel-agent-table-list.php',
     'WeDevs\\ERP\\Corptne\\TravelAgent' => $baseDir . '/modules/corptne/includes/claas-travelagent.php',
     'WeDevs\\ERP\\Corptne\\Models\\TravelAgentview' => $baseDir . '/modules/corptne/includes/models/travelagentview.php',
     'WeDevs\\ERP\\Corptne\\TravelAgentview' => $baseDir . '/modules/corptne/includes/class-travelagentview.php',
-    
     'WeDevs\\ERP\\Corptne\\Admin\\Admin_Menu' => $baseDir . '/modules/corptne/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Corptne\\Form_Handler' => $baseDir . '/modules/corptne/includes/class-form-handler.php',
     'WeDevs\\ERP\\Corptne\\Emailer' => $baseDir . '/modules/corptne/includes/class-emails.php',
@@ -421,29 +419,32 @@ return array(
     'WeDevs\\ERP\\Corptne\\Companyview' => $baseDir . '/modules/corptne/includes/class-companyview.php',
     'WeDevs\\ERP\\Corptne\\Employee' => $baseDir . '/modules/corptne/includes/class-employee.php',
     'WeDevs\\ERP\\Corptne\\Superadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-superadmin-list-table.php',
-    'WeDevs\\ERP\\Corptne\\Companies_List_Table' => $baseDir . '/modules/corptne/includes/class-company-list-table.php',	
+    'WeDevs\\ERP\\Corptne\\Companies_List_Table' => $baseDir . '/modules/corptne/includes/class-company-list-table.php',
     'WeDevs\\ERP\\Corptne\\Expensecategory_List_Table' => $baseDir . '/modules/corptne/includes/class-expensecategory-list-table.php',
-    'WeDevs\\ERP\\Corptne\\Companyexpensecategory_List_Table' => $baseDir . '/modules/corptne/includes/class-companyexpensecategory-list-table.php',    
+    'WeDevs\\ERP\\Corptne\\Companyexpensecategory_List_Table' => $baseDir . '/modules/corptne/includes/class-companyexpensecategory-list-table.php',
     'WeDevs\\ERP\\Corptne\\Corptne' => $baseDir . '/modules/corptne/corptne.php',
     'WeDevs\\ERP\\Corptne\\Models\\Companyview' => $baseDir . '/modules/corptne/includes/models/companyview.php',
     'WeDevs\\ERP\\Corptne\\Workflow_List_Table' => $baseDir . '/modules/corptne/includes/class-workflow-table.php',
     'WeDevs\\ERP\\Corptne\\Companiesadmin_List_Table' => $baseDir . '/modules/corptne/includes/class-companyadmin-list-table.php',
-	'WeDevs\\ERP\\Corptne\\Masteradmin_List_Table' => $baseDir . '/modules/corptne/includes/class-masteradmin-list-table.php',	
+    'WeDevs\\ERP\\Corptne\\Masteradmin_List_Table' => $baseDir . '/modules/corptne/includes/class-masteradmin-list-table.php',
     'WeDevs\\ERP\\Corptne\\Masteradmin' => $baseDir . '/modules/corptne/includes/class-masteradmin.php',
-	'WeDevs\\ERP\\Corptne\\Masteradminview' => $baseDir . '/modules/corptne/includes/class-masteradminview.php',
+    'WeDevs\\ERP\\Corptne\\Masteradminview' => $baseDir . '/modules/corptne/includes/class-masteradminview.php',
+    /*     * ************************** */
+    /** CompanyAdmin Module classes * */
+    /*     * ************************* */
 
-    /*****************************/
-    /** CompanyAdmin Module classes **/
-    /****************************/
-    
     //'WeDevs\\ERP\\Company\\PHPExcel' => $baseDir . '/modules/company/includes/class-PHPExcel.php',
+    'WeDevs\\ERP\\Company\\GradeLimits' => $baseDir . '/modules/company/includes/class-gradelimits.php',
     'WeDevs\\ERP\\Company\\Grades_List_Table' => $baseDir . '/modules/company/includes/class-gradestable-list.php',
     'WeDevs\\ERP\\Company\\Grades' => $baseDir . '/modules/company/includes/class-grades.php',
     'WeDevs\\ERP\\Company\\Designation_List_Table' => $baseDir . '/modules/company/includes/class-designation-table-list.php',
     'WeDevs\\ERP\\Company\\Designation' => $baseDir . '/modules/company/includes/class-designation.php',
     'WeDevs\\ERP\\Company\\Departments_List_Table' => $baseDir . '/modules/company/includes/class-deaprtment-table-list.php',
     'WeDevs\\ERP\\Company\\Departments' => $baseDir . '/modules/company/includes/class-departments.php',
-    
+    'WeDevs\\ERP\\Company\\CostCenter_List_Table' => $baseDir . '/modules/company/includes/class-cost-center-table-list.php',
+    'WeDevs\\ERP\\Company\\CostCenter' => $baseDir . '/modules/company/includes/class-costcenter.php',
+    'WeDevs\\ERP\\Company\\Projectcodes_List_Table' => $baseDir . '/modules/company/includes/class-projectcode-table-list.php',
+    'WeDevs\\ERP\\Company\\Projectcode' => $baseDir . '/modules/company/includes/class-projectcode.php',
     'WeDevs\\ERP\\Company\\ExpenseGrade_List_Table' => $baseDir . '/modules/company/includes/class-expensegradelimits_table.php',
     'WeDevs\\ERP\\Company\\Default_expense' => $baseDir . '/modules/company/includes/class-defaultexp-table.php',
     'WeDevs\\ERP\\Company\\Mileage_List_Table' => $baseDir . '/modules/company/includes/class-mileagetable-list.php',
@@ -452,9 +453,9 @@ return array(
     'WeDevs\\ERP\\Company\\TravelDesk' => $baseDir . '/modules/company/includes/class-traveldesk.php',
     'WeDevs\\ERP\\Company\\TravelDeskInvoice_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-invoicetable-list.php',
     'WeDevs\\ERP\\Company\\TravelDeskLogs_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-logstable-list.php',
-    'WeDevs\\ERP\\Company\\TravelDesk_Tolerance_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-tolerance-table-list.php',
-
+    'WeDevs\\ERP\\Company\\Reports_Graphs_List' => $baseDir . '/modules/company/includes/class-reports-graphs-table-list.php',
     
+    'WeDevs\\ERP\\Company\\TravelDesk_Tolerance_List_Table' => $baseDir . '/modules/company/includes/class-traveldesk-tolerance-table-list.php',
     'WeDevs\\ERP\\Company\\Admin\\Admin_Menu' => $baseDir . '/modules/company/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Company\\Form_Handler' => $baseDir . '/modules/company/includes/class-form-handler.php',
     'WeDevs\\ERP\\Company\\Emailer' => $baseDir . '/modules/company/includes/class-emails.php',
@@ -463,33 +464,29 @@ return array(
     'WeDevs\\ERP\\Company\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/company/includes/emails/class-email-new-employee-welcome.php',
     'WeDevs\\ERP\\Company\\Companyview' => $baseDir . '/modules/company/includes/class-companyview.php',
     //'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employee.php',
-	'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employeelist.php',
-    'WeDevs\\ERP\\Company\\Superadmin_List_Table' => $baseDir . '/modules/company/includes/class-superadmin-list-table.php',
-    'WeDevs\\ERP\\Company\\Companies_List_Table' => $baseDir . '/modules/company/includes/class-company-list-table.php',	
+    'WeDevs\\ERP\\Company\\Employee' => $baseDir . '/modules/company/includes/class-employeelist.php',
+    'WeDevs\\ERP\\Company\\Company_List_Table' => $baseDir . '/modules/company/includes/class-companies-list-table.php',
+    'WeDevs\\ERP\\Company\\Companies_List_Table' => $baseDir . '/modules/company/includes/class-company-list-table.php',
     'WeDevs\\ERP\\Company\\Expensecategory_List_Table' => $baseDir . '/modules/company/includes/class-expensecategory-list-table.php',
-    'WeDevs\\ERP\\Company\\Companyexpensecategory_List_Table' => $baseDir . '/modules/company/includes/class-companyexpensecategory-list-table.php',    
+    'WeDevs\\ERP\\Company\\Companyexpensecategory_List_Table' => $baseDir . '/modules/company/includes/class-companyexpensecategory-list-table.php',
     'WeDevs\\ERP\\Company\\Company' => $baseDir . '/modules/company/company.php',
     'WeDevs\\ERP\\Company\\Models\\Companyview' => $baseDir . '/modules/company/includes/models/companyview.php',
     'WeDevs\\ERP\\Company\\Workflow_List_Table' => $baseDir . '/modules/company/includes/class-workflow-table.php',
     'WeDevs\\ERP\\Company\\Requests_List' => $baseDir . '/modules/company/includes/class-requests-list-table.php',
     'WeDevs\\ERP\\Company\\Approval_Limits' => $baseDir . '/modules/company/includes/class-approval-limits.php',
     'WeDevs\\ERP\\Company\\Finance_Approvers_List' => $baseDir . '/modules/company/includes/class-finance-approver.php',
-	 'WeDevs\\ERP\\Company\\Employee_List_Table' => $baseDir . '/modules/company/includes/class-employee-list-table.php',
-	'WeDevs\\ERP\\Company\\Models\\Employeelist' => $baseDir . '/modules/company/includes/models/employeelist.php',
-	'WeDevs\\ERP\\Company\\Employeelist' => $baseDir . '/modules/company/includes/class-employeelist.php',
-	'WeDevs\\ERP\\Company\\Emails\\New_CompanyEmployee_Welcome' => $baseDir . '/modules/company/includes/emails/class-email-new-companyemployee-welcome.php',
+    'WeDevs\\ERP\\Company\\Employee_List_Table' => $baseDir . '/modules/company/includes/class-employee-list-table.php',
+    'WeDevs\\ERP\\Company\\Models\\Employeelist' => $baseDir . '/modules/company/includes/models/employeelist.php',
+    'WeDevs\\ERP\\Company\\Employeelist' => $baseDir . '/modules/company/includes/class-employeelist.php',
+    'WeDevs\\ERP\\Company\\Emails\\New_CompanyEmployee_Welcome' => $baseDir . '/modules/company/includes/emails/class-email-new-companyemployee-welcome.php',
     'WeDevs\\ERP\\Company\\Employeeview' => $baseDir . '/modules/company/includes/class-employeeview.php',
     'WeDevs\\ERP\\Company\\Models\\Employeeview' => $baseDir . '/modules/company/includes/models/employeeview.php',
-	'WeDevs\\ERP\\Company\\Employeelogs_List_Table' => $baseDir . '/modules/company/includes/class-employeelogs-list-table.php',
-	'WeDevs\\ERP\\Company\\Empdelegates_List_Table' => $baseDir . '/modules/company/includes/class-empdelegates-list-table.php',
+    'WeDevs\\ERP\\Company\\Employeelogs_List_Table' => $baseDir . '/modules/company/includes/class-employeelogs-list-table.php',
+    'WeDevs\\ERP\\Company\\Empdelegates_List_Table' => $baseDir . '/modules/company/includes/class-empdelegates-list-table.php',
     'WeDevs\\ERP\\Company\\Companydashboard_List_Table' => $baseDir . '/modules/company/includes/class-company-dashboard-table.php',
-	
-	
-	
-	/*****************************/
-    /** Employee Module classes **/
-    /****************************/
-    
+    /*     * ************************** */
+    /** Employee Module classes * */
+    /*     * ************************* */
     'WeDevs\\ERP\\Employee\\Request_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-request-for-my-approval.php',
     'WeDevs\\ERP\\Employee\\My_Pre_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-pre-travel-expenses.php',
     'WeDevs\\ERP\\Employee\\My_Post_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-post-travel-expenses.php',
@@ -498,8 +495,6 @@ return array(
     'WeDevs\\ERP\\Employee\\Others_Requests_List' => $baseDir . '/modules/employee/includes/class-others-request-table.php',
     'WeDevs\\ERP\\Employee\\Utility_Requests_List' => $baseDir . '/modules/employee/includes/class-utility-request-table.php',
     'WeDevs\\ERP\\Employee\\All_Expense_Requests_List' => $baseDir . '/modules/employee/includes/class-all-expense-request-table.php',
-
-    
     'WeDevs\\ERP\\Employee\\Admin\\Admin_Menu' => $baseDir . '/modules/employee/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Employee\\Form_Handler' => $baseDir . '/modules/employee/includes/class-form-handler.php',
     'WeDevs\\ERP\\Employee\\Emailer' => $baseDir . '/modules/employee/includes/class-emails.php',
@@ -508,36 +503,15 @@ return array(
     'WeDevs\\ERP\\Employee\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/employee/includes/emails/class-email-new-employee-welcome.php',
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/includes/class-employee.php',
     'WeDevs\\ERP\\Employee\\Superadmin_List_Table' => $baseDir . '/modules/employee/includes/class-superadmin-list-table.php',
-    'WeDevs\\ERP\\Employee\\Companies_List_Table' => $baseDir . '/modules/employee/includes/class-company-list-table.php',	
+    'WeDevs\\ERP\\Employee\\Companies_List_Table' => $baseDir . '/modules/employee/includes/class-company-list-table.php',
     'WeDevs\\ERP\\Employee\\Expensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-expensecategory-list-table.php',
-    'WeDevs\\ERP\\Employee\\Companyexpensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-  companyexpensecategory-list-table.php',    
+    'WeDevs\\ERP\\Employee\\Companyexpensecategory_List_Table' => $baseDir . '/modules/employee/includes/class-  companyexpensecategory-list-table.php',
     'WeDevs\\ERP\\Employee\\Employee' => $baseDir . '/modules/employee/employee.php',
     'WeDevs\\ERP\\Employee\\Models\\Companyview' => $baseDir . '/modules/employee/includes/models/companyview.php',
     'WeDevs\\ERP\\Employee\\Emp_Requests_List' => $baseDir . '/modules/employee/includes/class-emp-requests-list-table.php',
     'WeDevs\\ERP\\Employee\\My_Requests_List' => $baseDir . '/modules/employee/includes/class-my-requests-list-table.php',
     'WeDevs\\ERP\\Employee\\Finance_Requests_List' => $baseDir . '/modules/employee/includes/class-finance-requests-list-table.php',
 
-
-        /*****************************/
-    /** Travel Agent Module classes **/
-    /****************************/
-    'WeDevs\\ERP\\Travelagent\\Travelagent' => $baseDir . '/modules/travelagent/travelagent.php',
-    'WeDevs\\ERP\\Travelagent\\Admin\\Admin_Menu' => $baseDir . '/modules/travelagent/includes/admin/class-menu.php',
-    'WeDevs\\ERP\\Travelagent\\Ajax_Handler' => $baseDir . '/modules/travelagent/includes/class-ajax.php',
-    'WeDevs\\ERP\\Travelagent\\Form_Handler' => $baseDir . '/modules/travelagent/includes/class-form-handler.php',
-    'WeDevs\\ERP\\Travelagent\\Emailer' => $baseDir . '/modules/travelagent/includes/class-emails.php',
-    'WeDevs\\ERP\\Travelagent\\Travelagentdashboard_List_Table' => $baseDir . '/modules/travelagent/includes/class-travelagent-dashboard.php',
-    'WeDevs\\ERP\\Travelagent\\Travel_Agent_User_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-user-list-table.php',
-    'WeDevs\\ERP\\Travelagent\\Travelagentuser' => $baseDir . '/modules/travelagent/includes/class-travelagentuser.php',
-    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-list-table.php',
-    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Bankdetails_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-bankdetails-list-table.php',
-    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_Allocation' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-allocation.php',
-    'WeDevs\\ERP\\Travelagent\\Travelagentclient' => $baseDir . '/modules/travelagent/includes/class-travelagentclient.php',
-    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoice_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoice-table.php',
-	'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
-    'WeDevs\\ERP\\Travelagent\\Invoiceview' => $baseDir . '/modules/travelagent/includes/class-invoiceview.php',
-	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
-    
     /*****************************/
     /** Traveldesk Module classes **/
     /****************************/
@@ -572,9 +546,10 @@ return array(
     'WeDevs\\ERP\\Traveldesk\\TravelDesk_Bankdetails_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-bankdetails-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
     
-	/*****************************/
+    /*****************************/
     /** Travel Agent Module classes **/
     /****************************/
+    
     'WeDevs\\ERP\\Travelagent\\Travelagent' => $baseDir . '/modules/travelagent/travelagent.php',
     'WeDevs\\ERP\\Travelagent\\Admin\\Admin_Menu' => $baseDir . '/modules/travelagent/includes/admin/class-menu.php',
     'WeDevs\\ERP\\Travelagent\\Ajax_Handler' => $baseDir . '/modules/travelagent/includes/class-ajax.php',
@@ -588,13 +563,13 @@ return array(
     'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_Allocation' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-allocation.php',
     'WeDevs\\ERP\\Travelagent\\Travelagentclient' => $baseDir . '/modules/travelagent/includes/class-travelagentclient.php',
     'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoice_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoice-table.php',
-	'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
+    'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
     'WeDevs\\ERP\\Travelagent\\Invoiceview' => $baseDir . '/modules/travelagent/includes/class-invoiceview.php',
-	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
-	'WeDevs\\ERP\\Travelagent\\Riseinvoiceview' => $baseDir . '/modules/travelagent/includes/class-riseinvoiceview.php',
-	'WeDevs\\ERP\\Travelagent\\clientview' => $baseDir . '/modules/travelagent/includes/class-clientview.php',
-	'WeDevs\\ERP\\Travelagent\\requestview' => $baseDir . '/modules/travelagent/includes/class-requestview.php',
-	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Request_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-request-list-table.php',
-    
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
+    'WeDevs\\ERP\\Travelagent\\Riseinvoiceview' => $baseDir . '/modules/travelagent/includes/class-riseinvoiceview.php',
+    'WeDevs\\ERP\\Travelagent\\clientview' => $baseDir . '/modules/travelagent/includes/class-clientview.php',
+    'WeDevs\\ERP\\Travelagent\\requestview' => $baseDir . '/modules/travelagent/includes/class-requestview.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Request_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-request-list-table.php',
+
 	
-	);
+    );

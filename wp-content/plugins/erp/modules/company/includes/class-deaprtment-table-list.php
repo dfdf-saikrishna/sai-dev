@@ -41,8 +41,8 @@ class Departments_List_Table extends \WP_List_Table {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $depid = $item['DEP_Id'];
-        $count = $wpdb->get_results("SELECT * FROM employees WHERE DEP_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid");
-        return count($count);
+        $count = count($wpdb->get_results("SELECT * FROM employees WHERE DEP_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid"));
+         return "<a href='admin.php?page=menu&depId=$item[DEP_Id]'>$count</a>";
     }
 
     function column_name($item) {

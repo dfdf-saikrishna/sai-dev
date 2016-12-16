@@ -1,0 +1,35 @@
+<?php
+
+function gradelimits_create($posted) {
+    global $wpdb;
+    $compid = $_SESSION['compid'];
+    $adminid = $_SESSION['adminid'];
+    $glID = $posted['company']['glId'];
+    $company_data = array(
+        'COM_Id' => $compid,
+        // 'ADM_Id'=>$data['company']['adminid'],
+        'GL_Flight' => $posted['company']['txtflight'],
+        'GL_Bus' => $posted['company']['txtBus'],
+        'GL_Car' => $posted['company']['txtCar'],
+        'GL_Others_Travels' => $posted['company']['txtOthers1'],
+        'GL_Hotel' => $posted['company']['txtHotel'],
+        'GL_Self' => $posted['company']['txtSelf'],
+        'GL_Halt' => $posted['company']['txtHalt'],
+        'GL_Boarding' => $posted['company']['txtBoarding'],
+        'GL_Other_Te_Others' => $posted['company']['txtOthers'],
+        'GL_Local_Conveyance' => $posted['company']['txtLocal'],
+        'GL_Mobile' => $posted['company']['txtMobile'],
+        'GL_ClientMeeting' => $posted['company']['txtClient'],
+        'GL_Others_Other_te' => $posted['company']['txtOthers'],
+        'GL_DataCard' => $posted['company']['txtData'],
+        'GL_Marketing' => $posted['company']['txtMarketing'],
+        'GL_Twowheeler' => $posted['company']['txtTwo'],
+        'GL_Fourwheeler' => $posted['company']['txtFour'],
+        'GL_Internet' => $posted['company']['txtInternet'],
+    );
+        $tablename = "grade_limits";
+      
+        $company_data['GL_Id'] = $glID;
+        $wpdb->update($tablename, $company_data, array('GL_Id' => $glID));
+        return "success";
+}

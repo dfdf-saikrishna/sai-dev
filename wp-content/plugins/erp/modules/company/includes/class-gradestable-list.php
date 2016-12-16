@@ -24,6 +24,7 @@ namespace WeDevs\ERP\Company;
 class Grades_List_Table extends \WP_List_Table {
 
     private $page_status;
+
     /**
      * [REQUIRED] You must declare constructor and give some basic params
      */
@@ -53,22 +54,31 @@ class Grades_List_Table extends \WP_List_Table {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $egid = $item['EG_Id'];
-        $count = $wpdb->get_results("SELECT * FROM employees WHERE EG_Id='$egid' AND EMP_Status=1 AND COM_Id=$compid");
-        return count($count);
+        $count = count($wpdb->get_results("SELECT * FROM employees WHERE EG_Id='$egid' AND EMP_Status=1 AND COM_Id=$compid"));
+        //$gradeid=$_GET['filter_grade'];
+        //print_r($gradeid);
+        return "<a href='admin.php?page=menu&egId=$item[EG_Id]'>$count</a>";
     }
-    
 
     function column_name($item) {
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $egid = $item['EG_Id'];
+        $count = count($wpdb->get_results("SELECT * FROM employees WHERE EG_Id='$egid' AND EMP_Status=1 AND COM_Id=$compid"));
+        if ($count == 0) {
+            $delete = sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['EG_Id'], __('Delete', 'grades_table_list'));
+        }else{
+            $delete="";
+        }
         $actions = array(
             'edit' => sprintf('<a href="?page=grades" data-id=%s">%s</a>', $item['EG_Id'], __('Edit', 'grades_table_list')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['EG_Id'], __('Delete', 'grades_table_list')),
+            'delete' => sprintf($delete),
         );
-        return sprintf('%s %s',
-            '<a href="'.erp_company_url_single_gardes( $item['EG_Id']).'"><strong>' . $item['EG_Name'] . '</strong></a>',
-            $this->row_actions($actions)
-       // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
+        return sprintf('%s %s',  $item['EG_Name'], $this->row_actions($actions)
+                // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
         );
     }
+
     function column_cb($item) {
         return sprintf(
                 '<input type="checkbox" name="id[]" value="%s" />', $item['EG_Id']
@@ -108,7 +118,7 @@ class Grades_List_Table extends \WP_List_Table {
     function process_bulk_action() {
         global $wpdb;
         //$_SESSION['adminid'] = $result->ADM_Id;
-          $adminid = $_SESSION['adminid'];
+        $adminid = $_SESSION['adminid'];
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
         $table_name = "employee_grades";
         if ('delete' === $this->current_action()) {
@@ -119,7 +129,7 @@ class Grades_List_Table extends \WP_List_Table {
 //            if (!empty($ids)) {
 //                $wpdb->query("DELETE FROM $table_name WHERE EG_Id IN($ids)");
 //            }
-             if (!empty($ids)) {
+            if (!empty($ids)) {
                 $wpdb->query("UPDATE employee_grades SET EG_Status=9 AND EG_UpdatedBy='$adminid' AND EG_UpdatedDate=NOW() WHERE EG_Id IN($ids)");
             }
         }
@@ -144,16 +154,16 @@ class Grades_List_Table extends \WP_List_Table {
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
-        
+
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'EG_Name';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-       
+
         $total_items = count($wpdb->get_results("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY EG_Name ASC"));
 
-       $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-      //print_r($test);die;
+        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM employee_grades WHERE COM_Id='$compid' AND EG_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+        //print_r($test);die;
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above

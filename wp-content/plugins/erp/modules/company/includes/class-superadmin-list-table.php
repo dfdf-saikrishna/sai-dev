@@ -1,25 +1,7 @@
 <?php
 namespace WeDevs\ERP\Corptne;
-/**
- * PART 2. Defining Custom Table List
- * ============================================================================
- *
- * In this part you are going to define custom table list class,
- * that will display your database records in nice looking table
- *
- * http://codex.wordpress.org/Class_Reference/WP_List_Table
- * http://wordpress.org/extend/plugins/custom-list-table-example/
- */
 
-//if (!class_exists('WP_List_Table')) {
-    //require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-//}
-
-/**
- * Custom_Table_Example_List_Table class that will display our custom table
- * records in nice table
- */
-class Superadmin_List_Table extends \WP_List_Table
+class Company_List_Table extends \WP_List_Table
 {
     /**
      * [REQUIRED] You must declare constructor and give some basic params
@@ -43,28 +25,9 @@ class Superadmin_List_Table extends \WP_List_Table
      */
     function column_default($item, $column_name)
     {
-        //switch ( $column_name ) {
-        //case 'address':
-        //}
         return $item['user_email'];
     }
-    
-    /*function column_your_image_column_name($item)
-    {
-        return sprintf(
-            '<img src="%s" />',
-            $item['your_image_column_name']
-        );
-    }*/
-
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
+  
     function column_age($item)
     {
         return '<em>' . $item['user_nicename'] . '</em>';
@@ -74,29 +37,19 @@ class Superadmin_List_Table extends \WP_List_Table
         return $item['user_registered'];
     }
 
-    /**
-     * [OPTIONAL] this is example, how to render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_name($item)
-    {
-        // links going to /admin.php?page=[your_plugin_page][&other_params]
-        // notice how we used $_REQUEST['page'], so action will be done on curren page
-        // also notice how we use $this->_args['singular'] so in this example it will
-        // be something like &person=2
-        $actions = array(
-            'edit' => sprintf('<a href="?page=persons_form&id=%s">%s</a>', $item['ID'], __('Edit', 'custom_table_example')),
-            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['ID'], __('Delete', 'custom_table_example')),
-        );
-
-        return sprintf('%s %s',
-            $item['user_login'],
-            $this->row_actions($actions)
-        );
-    }
+//    function column_name($item)
+//    {
+//   
+//        $actions = array(
+//            'edit' => sprintf('<a href="?page=persons_form&id=%s">%s</a>', $item['ID'], __('Edit', 'custom_table_example')),
+//            'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['ID'], __('Delete', 'custom_table_example')),
+//        );
+//
+//        return sprintf('%s %s',
+//            $item['user_login'],
+//            $this->row_actions($actions)
+//        );
+//    }
 
     /**
      * [REQUIRED] this is how checkbox column renders
@@ -123,7 +76,7 @@ class Superadmin_List_Table extends \WP_List_Table
     {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'name' => __('Name', 'custom_table_example'),
+           // 'name' => __('Name', 'custom_table_example'),
             'email' => __('E-Mail', 'custom_table_example'),
             'age' => __('Age', 'custom_table_example'),
             'gender' => __('Gender', 'custom_table_example'),

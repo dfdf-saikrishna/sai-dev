@@ -74,6 +74,10 @@ class Company {
         require_once WPERP_COMPANY_PATH . '/includes/function-grades.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-designation.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-departments.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-projectcode.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-costcenter.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-gradelimits.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-reportsgraphs.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-leave.php';
@@ -154,27 +158,29 @@ class Company {
         $localize_script = apply_filters('erp_hr_localize_script', array(
             'nonce' => wp_create_nonce('wp-erp-hr-nonce'),
             'popup' => array(
-                //Mileage
+                'gradelimits_edit' => __('Grade Limits For', 'erp'),
                 'mileage_title' => __('Add Mileage Details', 'erp'),
                 'mileage_submit' => __('Submit', 'erp'),
                 'mileage_edit' => __('Edit Mileage Details', 'erp'),
-                'mileage_update' => __('Update', 'erp'),
                 'gardes_title' => __('Add Grades Details', 'erp'),
                 'gardes_submit' => __('Submit', 'erp'),
                 'gardes_edit' => __('Edit Grades Details', 'erp'),
-                'grades_update' => __('Update', 'erp'),
                 'designation_title' => __('Add Designation Details', 'erp'),
                 'designation_submit' => __('Submit', 'erp'),
                 'designation_edit' => __('Edit Designation Details', 'erp'),
-                'designation_update' => __('Update', 'erp'),
                 'departments_title' => __('Add Departments Details', 'erp'),
                 'departments_submit' => __('Submit', 'erp'),
                 'departments_edit' => __('Edit Departments Details', 'erp'),
-                'departments_update' => __('Update', 'erp'),
+                'update' => __('Update', 'erp'),
                 'traveldesk_title' => __('Add Travel Desk Details', 'erp'),
                 'traveldesk_submit' => __('Submit', 'erp'),
                 'traveldesk_edit' => __('Edit Travel Desk Details', 'erp'),
-                'traveldesk_update' => __('Update', 'erp'),
+                'costcenter_title' => __('Add Projectcode Details', 'erp'),
+                'costcenter_submit' => __('Submit', 'erp'),
+                'costcenter_edit' => __('Edit Projectcode Details', 'erp'),
+                'projectcode_title' => __('Add Projectcode Details', 'erp'),
+                'projectcode_submit' => __('Submit', 'erp'),
+                'projectcode_edit' => __('Edit Projectcode Details', 'erp'),
                 'companyemployee_title' => __('New Employee', 'erp'),
                 'companyemployee_update' => __('Update Employee', 'erp'),
                 'dept_title' => __('New Department', 'erp'),
@@ -217,7 +223,7 @@ class Company {
             'employee_exit' => __('This employee already exists', 'erp'),
             'employee_created' => __('Employee successfully created', 'erp'),
             'create_employee_text' => __('Click to create employee', 'erp'),
-            'empty_entitlement_text' => sprintf('<span>%s <a href="%s" title="%s">%s</a></span>', __('Please create entitlement first', 'erp'), add_query_arg([ 'page' => 'erp-leave-assign', 'tab' => 'assignment'], admin_url('admin.php')), __('Create Entitlement', 'erp'), __('Create Entitlement', 'erp')),
+            'empty_entitlement_text' => sprintf('<span>%s <a href="%s" title="%s">%s</a></span>', __('Please create entitlement first', 'erp'), add_query_arg(['page' => 'erp-leave-assign', 'tab' => 'assignment'], admin_url('admin.php')), __('Create Entitlement', 'erp'), __('Create Entitlement', 'erp')),
         ));
 
         //Mileage Page
@@ -240,7 +246,7 @@ class Company {
             $designation = new Designation();
             $localize_script['designation_empty'] = $designation->designation_array();
         }
-        if ('management_page_Dep' == $hook) {
+        if ('employee-management_page_Dep' == $hook) {
             wp_enqueue_script('post');
             $departments = new Departments();
             $localize_script['departments_empty'] = $departments->departments_array();
@@ -250,6 +256,24 @@ class Company {
             $traveldesk = new TravelDesk();
             $localize_script['traveldesk_empty'] = $traveldesk->to_array();
         }
+        if ('toplevel_page_Budget' == $hook) {
+            wp_enqueue_script('post');
+            $projectcode = new Projectcode();
+            $localize_script['projectcode_empty'] = $projectcode->projectcode_array();
+        }
+        if ('budget-control_page_Center' == $hook) {
+            //var_dump('inside');
+            wp_enqueue_script('post');
+            $costcenter = new CostCenter();
+            $localize_script['costcenter_empty'] = $costcenter->costcenter_array();
+        }
+        if ('expense-managment_page_gradeslimits' == $hook) {
+            //var_dump('inside');
+            wp_enqueue_script('post');
+            $gradelimits = new GradeLimits();
+            $localize_script['gradelimits_empty'] = $gradelimits->gradelimits_array();
+        }
+
 
         // if its an employee page
         if ('toplevel_page_menu' == $hook) {
@@ -284,7 +308,7 @@ class Company {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump( $current_screen->base );
+        //var_dump($current_screen->base);
         switch ($current_screen->base) {
             case 'expense-managment_page_Mileage':
                 //var_dump('inside');
@@ -295,12 +319,22 @@ class Company {
             case 'employee-management_page_Des':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/designation-create.php', 'designation-create');
-            case 'management_page_Dep':
+            case 'employee-management_page_Dep':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/department-create.php', 'department-create');
 
             case 'toplevel_page_Travel':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/traveldesk-create.php', 'traveldesk-create');
+
+            case 'toplevel_page_Budget':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/project-create.php', 'project-create');
+
+            case 'expense-managment_page_gradeslimits':
+                //var_dump('inside');
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-limits.php', 'grade-limits');
+            case 'budget-control_page_Center':
+                //var_dump('inside');
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/costcenter-create.php', 'costcenter-create');
 
             case 'companies_page_companies-admin':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create');

@@ -85,29 +85,34 @@ class Requests_List extends \WP_List_Table {
                 foreach ($selsql as $rowemp) {
                     ?>
                     <option value="<?php echo $rowemp->EMP_Id; ?>" <?php if ($emp == $rowemp->EMP_Id) echo 'selected="selected"'; ?> ><?php echo $rowemp->EMP_Code . " - " . $rowemp->EMP_Name; ?></option>
-                    <?php } ?>
-                </select>
-                <?php
-                submit_button(__('Search'), 'button', 'filter_employee', false);
-                echo '</div>';
+                <?php } ?>
+            </select>
+            <?php
+            submit_button(__('Search'), 'button', 'filter_employee', false);
+            echo '</div>';
             //}
         }
 
         function column_default($item, $column_name) {
+            
+        }
 
+        public function view_request() {
+            include WPERP_Company_VIEWS . '/pre-travel-display.php';
         }
 
         function column_request_code($item) {
             //return "request_code";die;
             global $type;
             global $href;
+
             switch ($item['RT_Id']) {
                 case 1:
-                    $href = "admin-employee-pre-travel-request-details.php";
+                    $href = "admin.php?page=pretravel";
                     break;
 
                 case 2:
-                    $href = "admin-employee-post-travel-request-details.php";
+                    $href = "admin.php?page=posttravel";
                     break;
 
                 case 3:
@@ -115,7 +120,7 @@ class Requests_List extends \WP_List_Table {
                     break;
 
                 case 5:
-                    $href = "admin-employee-mileage-expense-details.php";
+                    $href = "admin.php?page=mileage";
                     break;
 
                 case 6:
@@ -151,7 +156,7 @@ class Requests_List extends \WP_List_Table {
                     break;
             }
 
-            return "<a href='$href?reqid=$item[REQ_Id]'>$item[REQ_Code]</a>&nbsp;$type";
+            return "<a href='$href&reqid=$item[REQ_Id]'>$item[REQ_Code]</a>&nbsp;$type";
         }
 
         function column_total_cost($item) {
@@ -167,7 +172,6 @@ class Requests_List extends \WP_List_Table {
                         break;
 
                     case 2: case 3:
-
 
                         $totalcost = $wpdb->get_row("SELECT SUM(ptac.PTAC_Cost) AS total FROM requests req, pre_travel_claim ptc, pre_travel_actual_cost ptac WHERE req.REQ_Id=$item[REQ_Id] AND req.REQ_Id=ptc.REQ_Id AND ptc.PTC_Id=ptac.PTC_Id AND ptac.PTAC_Status=1");
 
@@ -489,6 +493,7 @@ class Requests_List extends \WP_List_Table {
                 $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re  WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 " . $query));
 
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re  WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 " . $query . " ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+                // print_r($test);die;
             }
             // [REQUIRED] configure pagination
             $this->set_pagination_args(array(

@@ -1,7 +1,7 @@
 <?php 
 
 ?>
-<div class="wrap erp-hr-employees" id="wp-erp">
+<div class="wrap erp-company-gradelimits" id="wp-erp">
     <!--<h2>DashBoard</h2>-->
     <h2><?php _e( ' Employee Grade Limits', 'company' ); ?></h2>
         <?php
@@ -17,13 +17,13 @@
 //                $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'companies_table_list'), count($_REQUEST['id'])) . '</p></div>';
 //            }
             ?>
-<!--        <div class="list-table-wrap erp-hr-employees-wrap">
-        <div class="list-table-inner erp-hr-employees-wrap-inner">-->
+        <div class="list-table-wrap erp-company-gradelimits-wrap">
+        <div class="list-table-inner erp-company-gradelimits-wrap-inner">
             
-<!--			<form method="post">
+			<form method="post">
 			  <input type="hidden" name="page" value="my_list_test" />
 			
-			</form>-->
+			</form>
 			
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>

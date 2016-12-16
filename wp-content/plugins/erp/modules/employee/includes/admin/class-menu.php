@@ -184,6 +184,7 @@ class Admin_Menu {
      function Travel_Requests(){
         include WPERP_EMPLOYEE_VIEWS . '/Travel_Requests.php';
     }
+  
     /**
      * Handles HR calendar script
      *

@@ -82,19 +82,7 @@ class Finance_Approvers_List extends \WP_List_Table
         );
     }*/
 
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_age($item)
-    {
-        return '<em>' . $item['user_nicename'] . '</em>';
-    }
-    
+
     function column_Username($item){
         $username =  $item['ADM_Username']; 
         return $username;
@@ -148,7 +136,9 @@ class Finance_Approvers_List extends \WP_List_Table
        
         return sprintf('%s %s',
            // $image,
-            $active.$acc.'<a href="admin-employees-display.php?empid=$item[EMP_Id]">'.$item['EMP_Name'].'</a></br>'.$item['EMP_Code'],
+
+            $active.$acc."<a href='admin.php?page=Employeesdisplay&empid=$item[EMP_Id]'>".$item['EMP_Name']."</a></br>".$item['EMP_Code'],
+
             $this->row_actions($actions)
         );
     }

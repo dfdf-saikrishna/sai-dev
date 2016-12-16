@@ -95,7 +95,7 @@ class Departments{
     public function departments_array() {
         global $wpdb;
         $compid = $_SESSION['compid'];
-        echo $compid;die;
+        //echo $compid;die;
        $adminid=$_SESSION['adminid'];
         $defaults = array(
             'ADM_Id'=> $adminid,
