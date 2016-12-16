@@ -938,6 +938,16 @@ function Actions($et){
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
             </div>';
+            $editActbuttonspost='<br />
+            <div id="my_centered_buttons">
+                <a href="/wp-admin/admin.php?page=Post-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+            </div>';
 
 
             // checking if the any details in this request has gone for booking tickets, then disable the 
@@ -995,6 +1005,9 @@ function Actions($et){
 
             if($edit)
             {
+                    if($et==2)
+                    echo $editActbuttonspost;
+                    else
                     echo $editActbuttons;
             }
 

@@ -44,6 +44,7 @@ class Admin_Menu {
            
         add_menu_page( __( 'Employee Dashboard', 'employee' ), __( 'Employee Dashboard', 'employee' ), 'employee', 'employee', array($this,'employee_Dashboard'),'dashicons-admin-users');
         add_submenu_page('', 'Upload', 'View Request', 'employee', 'View-Request', array( $this, 'view_request'));
+        add_submenu_page('', 'Upload', 'View Post Request', 'employee', 'View-Post-Request', array( $this, 'view_post_request'));
         add_submenu_page('', 'Upload', 'View Emp Requests', 'employee', 'View-Emp-Requests', array( $this, 'view_emp_request'));
         if(current_user_can( 'finance' )){
              
@@ -98,9 +99,10 @@ class Admin_Menu {
         
             add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
             add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
+            add_submenu_page('', 'Expense Request', ' Post Travel Edit', 'employee','Post-travel-edit', array($this, 'post_travel_request_edit'));
             add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
             add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
-            add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post Travel'.'/Post Travel', 'clivern_render_about_page');
+            add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post-travel', array($this, 'post_travel_request'));
             add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
             add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
 
@@ -144,8 +146,17 @@ class Admin_Menu {
     function pre_travel_request_edit(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-edit.php';
     }
+    function post_travel_request_edit(){
+        include WPERP_EMPLOYEE_VIEWS . '/post-travel-request-edit.php';
+    }
+    public function post_travel_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/post-travel-request.php';
+    }
     public function view_request(){
         include WPERP_EMPLOYEE_VIEWS . '/pre-travel-request-details.php';
+    }
+    public function view_post_request(){
+        include WPERP_EMPLOYEE_VIEWS . '/post-travel-request-details.php';
     }
     public function view_emp_request(){
         include WPERP_EMPLOYEE_VIEWS . '/emp-requests-listing.php';

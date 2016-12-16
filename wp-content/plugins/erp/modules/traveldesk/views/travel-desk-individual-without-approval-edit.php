@@ -143,8 +143,23 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                             <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" />
                             <input type="hidden" value="<?php echo $empuserid ?>" name="selEmployees" id="selEmployees" />
                             <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
-                            </span></td>
-                            <td><input type='file' name='file[]' id="file<?php echo $rows; ?>" multiple="true"></td>
+                            </span></td><?php
+                            
+                            $seluplfiles=$wpdb->get_results("SELECT BD_Id, BD_Filename FROM booking_status bs, booking_documents bd WHERE bs.RD_Id='$rowrequest->RD_Id' AND bs.BS_Id=bd.BS_Id AND BS_Active=1 AND BD_Status=1");
+					
+					$j=1;					
+					foreach($seluplfiles as $rowuplfiles){
+						
+						$temp=explode(".",$rowuplfiles->BD_Filename);
+						$ext=end($temp);
+						
+						$fileurl="/company/upload/".$compid."/bills_tickets/".$rowuplfiles->BD_Filename;
+						
+					?>
+                        <td><span id="reqfilesid<?php echo $j.$rows; ?>"> <?php echo $j.") "; ?> <a href="/wp-admin/admin.php?page=Download-File&file=<?php echo WPERP_TRAVELDESK_ASSETS.$fileurl; ?>"><?php echo 'file'.$j.".".$ext;  ?></a> &nbsp; <a onclick="return delFile(<?php echo $rowuplfiles->BD_Id; ?>,'reqfilesid<?php echo $j.$rows; ?>')" onmouseover="this.style.cursor='pointer'"><i class="fa fa-times" title="delete"></i></a> </span> <br />
+                        <?php $j++; } ?>
+                            
+                            <input type='file' name='file[]' id="file<?php echo $rows; ?>" multiple="true"></td>
                             <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row" <?php if($cntRds == 1) echo 'disabled="disabled"'; ?>><i class="fa fa-times"></i></button></td>
                         </tr>
                         <?php 					

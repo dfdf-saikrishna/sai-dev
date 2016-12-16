@@ -492,6 +492,7 @@ return array(
     
     'WeDevs\\ERP\\Employee\\Request_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-request-for-my-approval.php',
     'WeDevs\\ERP\\Employee\\My_Pre_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-pre-travel-expenses.php',
+    'WeDevs\\ERP\\Employee\\My_Post_Travel_Expenses' => $baseDir . '/modules/employee/includes/class-post-travel-expenses.php',
     'WeDevs\\ERP\\Employee\\Travel_Requests_List' => $baseDir . '/modules/employee/includes/class-travel-expense-request-table.php',
     'WeDevs\\ERP\\Employee\\Mileage_Requests_List' => $baseDir . '/modules/employee/includes/class-mileage-request-table.php',
     'WeDevs\\ERP\\Employee\\Others_Requests_List' => $baseDir . '/modules/employee/includes/class-others-request-table.php',
