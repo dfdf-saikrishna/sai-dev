@@ -958,20 +958,15 @@ function Actions($et){
 
             if($cntSel){
 
-                    $editActbuttons='<br />
-                    <div class="row">
-                    <div class="col-sm-3">
-                    </div>
-                      <div class="col-sm-3">
-                      <div class="form-group">
-                            <button name="buttnEdit" class="btn btn-theme" type="button" onclick="editTravelExpense('.$et.','.$reqid.');">EDIT</button>
-                            </div>
-                      </div>
-                      <div class="col-sm-3">
-                       <div class="form-group">
-                            <button class="btn btn-info btn-transparent"  type="button" onClick="window.history.back();">BACK</button>
-                            </div>
-                      </div>
+                     $editActbuttons='<br />
+                    <div id="my_centered_buttons">
+                        <a href="/wp-admin/admin.php?page=Pre-travel-edit&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
                     </div>';
 
             }
