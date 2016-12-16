@@ -4,7 +4,7 @@ namespace WeDevs\ERP\Travelagent;
 /**
  * Employee Class
  */
-class Invoiceview {
+class Riseinvoiceview {
     /**
      * array for lazy loading data from ERP table
      *
@@ -12,25 +12,19 @@ class Invoiceview {
      * @var array
      */
     private $erp_rows = array(
-			'TD_Id',
-  'SUP_Id',
-  'COM_Id',
-  'TDC_ReferenceNo',
-  'TDC_InvoiceNo',
-  'TDBA_Id',
-  'TDC_Filename',
-  'TDC_Remarks',
-  'TDC_Quantity',
-  'TDC_Amount',
-  'TDC_PaidAmount',
-  'TDC_Arrears',
-  'TDC_ServiceTax',
-  'TDC_ServiceCharges',
-  'TDC_Level',
-  'TDC_LevelDate',
-  'TDC_Status',
-  'TDC_Date',
-  'TDC_Type', 
+			'TDBA_Id',
+			'REQ_Code',
+            'REQ_Id',
+			'SUP_Id',
+			'COM_Id',
+			'REQ_Date',
+			'EC_Name',
+			'MOD_Name',
+			'RD_Cityfrom',
+			'RD_Cityto',
+			'SD_Name',
+			'RD_Cost',
+			'BS_Date',
     );
 
     /**
@@ -38,10 +32,14 @@ class Invoiceview {
      *
      * @param int|WP_User|email user id or WP_User object or user email
      */
-    public function __construct( $invoiceview = null ) {
+    public function __construct( $riseinvoiceview = null ) {
 
-        $this->id   = $_GET['tdcid'];
-		$this->cmpid   = $_GET['cmpid'];
+        $this->id   = $_GET['id'];
+		 $this->cmpid   = $_GET['cmpid'];
+		//$this->id = isset( $_POST['employee_id'] ) && $_POST['employee_id'] ? intval( $_POST['employee_id'] ) : false;
+
+        //$this->user = new \stdClass();
+        //$this->erp  = new \stdClass();
     }
 
     /**
@@ -53,6 +51,7 @@ class Invoiceview {
      */
     public function __get( $key ) {
 
+	
         // lazy loading
         // if we are requesting any data from ERP table,
         // only then query to get those row
@@ -76,27 +75,22 @@ class Invoiceview {
      */
     public function to_array() {
 	        $fields = array(
-  'TD_Id'  => '',
-  'SUP_Id'=> '',
-  'COM_Id' => '',
-  'TDC_ReferenceNo' => '',
-  'TDC_InvoiceNo'=> '',
-  'TDBA_Id'=> '',
-  'TDC_Filename' => '',
-  'TDC_Remarks' => '',
-  'TDC_Quantity' => '',
-  'TDC_Amount' => '',
-  'TDC_PaidAmount' => '',
-  'TDC_Arrears' => '',
-  'TDC_ServiceTax'=> '',
-  'TDC_ServiceCharges' => '',
-  'TDC_Level' => '',
-  'TDC_LevelDate' => '',
-  'TDC_Status'=> '',
-  'TDC_Date' => '',
-  'TDC_Type'=> '', 
+			'TDBA_Id',
+			'REQ_Code',
+            'REQ_Id',
+			'SUP_Id',
+			'COM_Id',
+			'REQ_Date',
+			'EC_Name',
+			'MOD_Name',
+			'RD_Cityfrom',
+			'RD_Cityto',
+			'SD_Name',
+			'RD_Cost',
+			'BS_Date',
         );
-        return apply_filters( 'erp_hr_get_companyview_fields', $fields, $this->id);
+
+        return apply_filters( 'erp_hr_get_riseinvoiceview_fields', $fields, $this->id);
     }
 
     /**
@@ -106,18 +100,16 @@ class Invoiceview {
      *
      * @return object the wpdb row object
      */
-    private function get_erp_row( $force = false ) {
+    private function get_erp_row() {
         global $wpdb;
-
-        global $wpdb;
-
+		$supid = $_SESSION['supid'];
+		$cmpid = $this->cmpid;
         if ( $this->id ) {
-            $cache_key = 'erp-comv-' . $this->id;
+            $cache_key = 'erp-empv-' . $this->id;
             $row       = wp_cache_get( $cache_key, 'erp');
-			$cmpid=$this->cmpid;
             if ( false === $row ) {
-                $query = "SELECT * FROM travel_desk_claims 
-                    WHERE TDC_Id = %d AND COM_Id='$cmpid'";
+                $query = "SELECT tdc.TDC_Id FROM travel_desk_claims tdc,travel_desk_claim_requests tdcr WHERE tdc.SUP_Id = '$supid' AND tdc.COM_Id = '$cmpid' AND tdcr.REQ_Id IN ($id) AND tdc.TDC_Id = tdcr.TDC_Id AND TDCR_Status = 1 
+";
                 $row   = $wpdb->get_row( $wpdb->prepare( $query, $this->id ) );
                 wp_cache_set( $cache_key, $row, 'erp' );
             }
@@ -126,15 +118,14 @@ class Invoiceview {
 
         return false;
     }
-
-    /**
+ /**
      * Get single employee page view url
      *
      * @return string the url
      */
     public function get_details_url() {
         if ( $this->id ) {
-            return admin_url( 'admin.php?page=mastercompaniesview&action=view&id=' . $this->id );
+            return admin_url( 'admin.php?page=Profile&action=view&id=' . $this->id );
         }
     }
 
@@ -146,5 +137,6 @@ class Invoiceview {
     public function get_link() {
         return sprintf( '<a href="%s">%s</a>', $this->get_details_url(), $this->get_full_name() );
     }
+   
 
 }

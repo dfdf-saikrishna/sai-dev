@@ -77,7 +77,7 @@ global $wpdb;
                 <div class="inside">
                     <h2>My Pre Travel Expense Requests</h2>
                     <?php
-                    $table = new WeDevs\ERP\Employee\My_Pre_Travel_Expenses();
+                    $table = new WeDevs\ERP\Traveldesk\Traveldeskdashboard_List_Table();
                     $table->prepare_items();
 
                     $message = '';

@@ -202,3 +202,31 @@ function get_allocation_list(){
 					  sup.SUP_Refid = $supid AND SUP_Status = 1 AND SUP_Type = 4 AND SUP_Access = 1 ORDER BY SUP_Name");
 	return $allocationlist;
 	}	
+	
+/*
+ * [erp_company_url_single_clientview description]
+ *
+ * @param  int  company id
+ *
+ * @return string  url of the companyview details page
+ */
+function erp_company_url_single_clientview($com_id) {
+
+    $url = admin_url( 'admin.php?page=Clientview&action=view&id=' . $com_id);
+
+    return apply_filters( 'erp_company_url_single_clientview', $url, $com_id );
+}
+
+/*
+ * [erp_company_url_single_clientview description]
+ *
+ * @param  int  company id
+ *
+ * @return string  url of the companyview details page
+ */
+function erp_travelagent_requestview($com_id,$selFilter) {
+
+    $url = admin_url( 'admin.php?page=requestview&action=view&id=' . $com_id .'&selFilter='.$selFilter);
+
+    return apply_filters( 'erp_travelagent_requestview', $url, $com_id,$selFilter);
+}

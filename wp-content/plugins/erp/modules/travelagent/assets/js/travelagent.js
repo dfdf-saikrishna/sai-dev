@@ -16,13 +16,16 @@
             $( '.erp-hr-travelagentuser' ).on( 'click', 'span.edit a', this.travelagentUser.edit );
 			$( '.erp-travelagentclient' ).on( 'click', 'a#erp-travelagentclient-new', this.travelagentClient.create );
 			$('.erp-travelagentclient').on('click', 'span.edit a', this.travelagentClient.edit);
-			  $('body').on('click', 'a#client-photo ', this.travelagentClient.setPhoto);
+			$('body').on('click', 'a#client-photo ', this.travelagentClient.setPhoto);
             $( '.erp-invoice-management' ).on( 'change', '#Companyinvoice', this.travelagentInvoice.view );
 			$( '.erp-travelagentbankdetails' ).on( 'click', 'a#erp-travelagentbankdetails-new', this.travelagentBankdetails.create );
 			$( '.erp-travelagentbankdetails' ).on( 'click', 'span.edit a', this.travelagentBankdetails.edit );
 			$( '.companyinvoicearrow' ).on( 'click', '', this.travelagentcompanyinvoicearw.view);
+			$('body').on('click', '#rise_invoice', this.travelagentRiseinvoice.riseInvoice);
+			$('body').on('submit', '#invoiceForm', this.travelagentClaims.sendclaims);
 			
 			this.initTipTip();
+
         },
 
         initTipTip: function() {
@@ -31,7 +34,64 @@
                 fadeIn: 100,
                 fadeOut: 100
             } );
-        },	
+        },
+
+		 travelagentRiseinvoice: {
+            reload: function () {
+                $('.erp-companyinvoicecreate-wrap').load(window.location.href + ' .erp-companyinvoicecreate-wrap-inner');
+            },
+			riseInvoice: function (e) {
+                e.preventDefault();
+				var cmpid = $('#filter_cmp').val();
+				alert(cmpid);
+                var values = new Array();
+                $.each($("input[name='reqid[]']:checked"), function () {
+                    values.push($(this).val());
+                });
+                if(values!=""){
+					window.location.replace("http://localhost/wp-admin/admin.php?page=RiseInvoice&action=view&cmpid=" + cmpid +"&id=" + values);
+					}
+
+            },
+        },
+		
+		travelagentClaims:{
+			
+			/* Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-companyinvoicecreate-wrap' ).load( window.location.href + ' .erp-companyinvoicecreate-wrap-inner' );
+            }, 
+			
+			  /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+             sendclaims: function(e) {
+				 e.preventDefault();
+                alert("test");
+				
+					/**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                        wp.ajax.send( 'travelagentclaims_create', {
+                            data: $(this).serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_TRAVELAGENT.travelagentClaims.reload();
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                   
+            },	 
+		},
 		
 	travelagentUser: {
                 
@@ -327,7 +387,7 @@
             },
 			
 		},
-				
+			
 	travelagentBankdetails: {
                 
 			 /**
@@ -428,15 +488,31 @@
                 });
             },
         },
+	
 		
 		travelagentcompanyinvoicearw:{
 			
 			view: function(e) {
-				 alert("test");
-				 //$(".hide-table").not($(this)).hide('slow');
-				 $(this).closest('tr').hide('slow');
-				 //$(".hide-table").hide('slow');
-				 //$(this).find('.hide-table').hide();
+					 var self = $(this);
+					 var id = self.data('id')
+					 //var state = $('.hide-table' + id).attr('class').split(' ')[1];
+					 var state = $('.hide-table' + id).hasClass( "collapse" );
+					 var caret = $(this).find(".collapse-caret");
+					 if(state){
+						 $('.hide-table' + id).removeClass('collapse');
+						 $('.hide-table' + id).removeClass('init-invoice');
+						 $('.hide-table' + id).slideDown();
+						 caret.removeClass("fa-angle-down").addClass( "fa-angle-up" );
+					 }
+					 else{
+					 //$(".hide-table").not($(this)).hide('slow');
+					 //$(this).closest('tr').hide('slow');
+					 $('.hide-table' + id).addClass('collapse');
+					 $('.hide-table' + id).addClass('init-invoice');
+					 $('.hide-table' + id).slideUp();
+					 caret.removeClass("fa-angle-up").addClass( "fa-angle-down" );
+					 //$(this).find('.hide-table').hide();
+					 }
                 },
 			
 		},

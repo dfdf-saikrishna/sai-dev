@@ -145,6 +145,7 @@ class Travelagent {
             'travelagentclient_update'    => __( 'Edit Travel Agent Client', 'erp' ),
 			'travelagentbankdetails_title'    => __( 'Create Travel Agent Bank Details', 'erp' ),
 			'travelagentbankdetails_update'    => __( 'Edit Travel Agent Bank Details', 'erp' ),
+			'travelagentclaims_create'=> __( 'Send Claims', 'erp' ),
             'update' => __( 'Update', 'erp' )
               ),
        ) );
@@ -218,7 +219,6 @@ class Travelagent {
 			case 'toplevel_page_BankM':
                 erp_get_js_template( WPERP_TRAVELAGENT_JS_TMPL . '/travelagentbankdetails-create.php', 'travelagentbankdetails-create' );
                 break;	
-				
             default:
                 # code...
                 break;

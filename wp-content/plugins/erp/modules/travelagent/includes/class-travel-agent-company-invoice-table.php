@@ -55,7 +55,7 @@ class Travel_Agent_Company_Invoice_Table extends \WP_List_Table {
         ?>
         <div class="alignleft actions">
             <label class="screen-reader-text" for="new_role"><?php _e('Filter by company', 'erp') ?></label>
-            <select name="filter_cmp" id="filter_cmp">
+            <select name="filter_cmp" id="filter_cmp" class="erp-select2">
                 <option value="">- All -</option>
                 <?php				   
                 $selsql = $wpdb->get_results("SELECT com.COM_Id,com.COM_Name FROM company com WHERE com.SUP_Id = $supid AND com.COM_Status = 0 ORDER BY 2");
@@ -64,18 +64,10 @@ class Travel_Agent_Company_Invoice_Table extends \WP_List_Table {
                     <option value="<?php echo $rowcom->COM_Id; ?>" <?php if ($cmp == $rowcom->COM_Id) echo 'selected="selected"'; ?> ><?php echo $rowcom->COM_Name; ?></option>
                     <?php } ?>
                 </select>
-			<!--<label class="screen-reader-text" for="new_role"><?php _e('Filter by Designation', 'erp') ?></label>
-             <select name="selFilter" id="selFilter">
-                    <option value="">All</option>
-                    <option value="1" <?php if ($type == 1) echo 'selected="selected"'; ?> >Pending Booking Requests</option>
-                    <option value="2" <?php if ($type == 2) echo 'selected="selected"'; ?>>Pending Cancellation Requests</option>
-                    <option value="3" <?php if ($type == 3) echo 'selected="selected"'; ?>>All Booking Requests</option>
-                    <option value="4" <?php if ($type == 4) echo 'selected="selected"'; ?>>All Cancellation Requests</option>
-                    </select>-->
+			
                 <?php
                 submit_button(__('Search'), 'button', 'filter_company', false);
                 echo '</div>';
-            //}
         }
 
         function column_SlNo($item) {
@@ -222,7 +214,7 @@ function IND_money_format($money){
             // filter company		
             if (isset($_REQUEST['filter_cmp']) && $_REQUEST['filter_cmp']) {
                 $cmp = $_REQUEST['filter_cmp'];
-                $query.="WHERE COM_Id='$cmp'";
+                //$query.="WHERE COM_Id='$cmp'";
             }
 		
             // will be used in pagination settings
@@ -254,14 +246,14 @@ function IND_money_format($money){
                     $i++;
                 }
                 $total_items = count($wpdb->get_var("SELECT tdc.TDC_Id, TDC_ReferenceNo, TDC_PaidAmount,TDC_Arrears,TDC_Status,TDC_Date,TDC_ServiceCharges, TDC_ServiceTax,COUNT(DISTINCT tdcr.TDCR_Id) AS cntReqs,SUM(tdcr.TDCR_Quantity) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalQty,
-				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id)" . $query. "GROUP BY tdcr.TDC_Id"));
+				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id) WHERE COM_Id='$cmp'" . $query. "GROUP BY tdcr.TDC_Id"));
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT tdc.TDC_Id, TDC_ReferenceNo, TDC_PaidAmount,TDC_Arrears,TDC_Status,TDC_Date,TDC_ServiceCharges, TDC_ServiceTax,COUNT(DISTINCT tdcr.TDCR_Id) AS cntReqs,SUM(tdcr.TDCR_Quantity) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalQty,
-				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id)" . $query . "GROUP BY tdcr.TDC_Id  ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id) WHERE COM_Id='$cmp'" . $query . "GROUP BY tdcr.TDC_Id  ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
             } else {
                 $total_items = count($wpdb->get_results("SELECT tdc.TDC_Id, TDC_ReferenceNo, TDC_PaidAmount,TDC_Arrears,TDC_Status,TDC_Date,TDC_ServiceCharges, TDC_ServiceTax,COUNT(DISTINCT tdcr.TDCR_Id) AS cntReqs,SUM(tdcr.TDCR_Quantity) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalQty,
-				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id)" . $query." GROUP BY tdcr.TDC_Id"));
+				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id) WHERE COM_Id='$cmp'" . $query." GROUP BY tdcr.TDC_Id"));
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT tdc.TDC_Id, TDC_ReferenceNo, TDC_PaidAmount,TDC_Arrears,TDC_Status,TDC_Date,TDC_ServiceCharges, TDC_ServiceTax,COUNT(DISTINCT tdcr.TDCR_Id) AS cntReqs,SUM(tdcr.TDCR_Quantity) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalQty,
-				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id)" . $query . " GROUP BY tdcr.TDC_Id ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+				SUM(tdcr.TDCR_Amount) * COUNT(DISTINCT tdcr.TDCR_Id) / COUNT(*) AS totalAmnt FROM travel_desk_claims tdc INNER JOIN travel_desk_claim_requests tdcr USING(TDC_Id) WHERE COM_Id='$cmp' " . $query . " GROUP BY tdcr.TDC_Id ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 			
 				
 			}

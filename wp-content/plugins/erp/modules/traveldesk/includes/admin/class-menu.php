@@ -95,9 +95,9 @@ add_menu_page   ('Group Request', 'Group Request', 'traveldesk', ' Group Request
 add_submenu_page('Group Request', 'Create Request', 'Create Request', 'traveldesk','Create Request'.'/ Create Request', 'Create Request');
 add_submenu_page('Group Request', 'View / Edit Request', 'View / Edit Request', 'traveldesk','View / Edit Request'.'/ View / Edit Request', 'View / Edit Request');
 
-add_menu_page('claims', 'claims', 'traveldesk', 'claims', 'claims','dashicons-media-spreadsheet');
+add_menu_page('claims', 'claims', 'traveldesk', 'claims', array( $this, 'traveldeskClaims'),'dashicons-media-spreadsheet');
 add_submenu_page('claims', 'View Invoices', 'View Invoices', 'traveldesk','View Invoices'.'/ View Invoices',array( $this, 'traveldeskClaims'));
-add_submenu_page('claims', 'Bank Details', 'Bank Details', 'traveldesk','Bank Details'.'/ Bank Details', array( $this, 'traveldeskBankDetails'));
+add_submenu_page('claims', 'Bank Details', 'Bank Details', 'traveldesk','Bankdetails', array( $this, 'traveldeskBankDetails'));
 
 add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'setting','dashicons-admin-generic');
 add_submenu_page('Settings', 'Change Password', 'Change Password', 'traveldesk','Change Password'.'/Change Password', 'setting');

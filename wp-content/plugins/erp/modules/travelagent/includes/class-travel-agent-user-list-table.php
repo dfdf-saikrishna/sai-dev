@@ -56,7 +56,7 @@ class Travel_Agent_User_List_Table extends \WP_List_Table
         );
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['SUP_Id']).'"><strong>' . $item['SUP_Name'] . '&nbsp;(' . $item['SUP_Username'] . ')'.  '</strong></a>',
+            '<strong>' . $item['SUP_Name'] . '&nbsp;(' . $item['SUP_Username'] . ')'.  '</strong>',
             $this->row_actions($actions)
         );
         

@@ -28,10 +28,25 @@ class Ajax_Handler {
         
         //Travel Desk
         $this->action( 'wp_ajax_traveldesk_request_create', 'traveldesk_request_create' );
+		$this->action( 'wp_ajax_traveldeskbankdetails_create', 'traveldeskbankdetails_create' );
+        $this->action( 'wp_ajax_traveldeskbankdetails_get', 'traveldeskbankdetails_get' );
+    }
+	
+	/*** Create/update an travelagentbankdetails */
 
-        
+    public function traveldeskbankdetails_create() {
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $traveldeskbankdetails_id  = traveldeskbankdetails_create( $posted );
+        $data = $posted;
+        $this->send_success( $data );
     }
     
+	public function traveldeskbankdetails_get() {
+        global $wpdb;
+        $id = $_REQUEST['id']; 
+        $response = $wpdb->get_row("SELECT * FROM travel_desk_bank_account WHERE TDBA_Id = '$id' AND TDBA_Status=1");
+        $this->send_success( $response );
+    }
         function traveldesk_request_create(){
         ob_end_clean();
         global $wpdb;

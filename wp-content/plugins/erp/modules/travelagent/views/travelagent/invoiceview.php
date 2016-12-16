@@ -6,7 +6,7 @@ $comname = $wpdb->get_results("SELECT COM_Name FROM company WHERE COM_Id = '". $
  ?>
 <div class="wrap erp erp-hr-employees erp-employee-single">
 
-    <h2 class="erp-hide-print"><?php _e( 'Invoice Details ', 'erp' );?> </h2>
+   <!-- <h2 class="erp-hide-print"><?php _e( 'Invoice Details ', 'erp' );?> </h2>-->
     <div class="erp-single-container erp-hr-employees-wrap" id="erp-single-container-wrap">
         <div class="erp-area-left full-width erp-hr-employees-wrap-inner">
             <div id="erp-area-left-inner">
@@ -165,7 +165,7 @@ $comname = $wpdb->get_results("SELECT COM_Name FROM company WHERE COM_Id = '". $
                           <td width="10%" style="text-align:center;"><?php echo count($getvals);  ?></td>
                           <td width="35%" style="text-align:center; padding-left:30px;"><?php  echo date('d-M-Y', strtotime($rowsql->REQ_Date)) ?></td>
                           <td width="20%" style="text-align:center;"><?php echo IND_money_format($totalcosts). ".00"; $totalcosts = NULL ; ?></td>
-                          <td><a data-toggle="collapse" href="#collapse<?php echo $i; ?>"><i class="collapse-caret fa fa-angle-down"></i> </a> </td>
+                          <td><a data-toggle="collapse" href="#collapse"><i class="collapse-caret fa fa-angle-down"></i> </a> </td>
                         </tr>
                       </table>
                     </div>
@@ -173,8 +173,8 @@ $comname = $wpdb->get_results("SELECT COM_Name FROM company WHERE COM_Id = '". $
                   <div id="collapse<?php echo $i; ?>" class="panel-collapse collapse" >
                     <div class="panel-body">
                       <div class="table-responsive">
-                        <table class="wp-list-table widefat striped admins" style="font-size:11px;border-color: rgba(228, 225, 225, 0.35) !important ;" border="1">
-                          <thead>
+					  <table class="hide-table<?php echo $rowsql->REQ_Id; ?> init-invoice wp-list-table widefat fixed striped collapse"  style="font-size:11px;">
+                         <thead>
                             <tr>
                               <th width="10%">Date</th>
                               <th width="20%">Expense<br />

@@ -34,8 +34,25 @@ class Ajax_Handler {
 		
 		$this->action( 'wp_ajax_travelagentbankdetails_create', 'travelagentbankdetails_create' );
 		$this->action( 'wp_ajax_travelagentbankdetails_get', 'travelagentbankdetails_get' );
-		
+		$this->action( 'wp_ajax_travelagentclaims_create', 'travelagentclaims_create' );
+
     }
+	
+	 public function rise_invoice() {
+        global $wpdb;
+         $supid = $_SESSION['supid']; 
+		 $cmpid = '52';
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        $array = $data['select'];
+        foreach ($array as $value) {
+          //$response = $wpdb->get_results("SELECT tdc.TDC_Id FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE
+	 // tdc.SUP_Id = '$supid' AND tdc.COM_Id = '$cmpid' AND tdcr.REQ_Id IN ($value) AND tdc.TDC_Id = tdcr.TDC_Id AND TDCR_Status = 1"); 
+		 $response = $wpdb->get_row("SELECT TDBA_Id, TDBA_AccountNumber FROM travel_desk_bank_account WHERE SUP_Id = '$supid' AND  TDBA_Status=1 AND TDBA_Type = 2");
+	      $this->send_success($response);
+        }
+    }
+	
 	
 /*** Create/update an travelagentuser */
 
@@ -66,7 +83,13 @@ class Ajax_Handler {
         $this->send_success( $response );
     }
 	
-	
+	public function travelagentclaims_create() {
+		
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $travelagentclaims_id  = travelagentclaims_create( $posted );
+        $data = $posted;
+        $this->send_success( $data );
+    }
 	/*** Create/update an travelagentclient */
 
     public function travelagentclient_create() {
@@ -116,6 +139,7 @@ class Ajax_Handler {
         $response = $wpdb->get_row("SELECT * FROM travel_desk_bank_account WHERE TDBA_Id = '$id' AND SUP_Id='$supid' AND TDBA_Status=1");
         $this->send_success( $response );
     }
+	
 	  /**
      * Gets the leave dates
      *

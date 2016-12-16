@@ -21,11 +21,13 @@
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-requestappr', this.travelDesk.addRowappr );
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-request', this.travelDesk.addRow );
             $( 'body').on( 'click', 'span#remove-traveldesk-request', this.travelDesk.removeRow );
-            
-            
+            $( '.traveldeskrequestarrow' ).on( 'click', '', this.traveldeskrequestarrow.view);
+            $( '.erp-traveldeskbankdetails' ).on( 'click', 'a#erp-traveldeskbankdetails-new', this.traveldeskBankdetails.create );
+			$( '.erp-traveldeskbankdetails' ).on( 'click', 'span.edit a', this.traveldeskBankdetails.edit );
+			
 
             this.initTipTip();
-
+		
             // this.employee.addWorkExperience();
         },
 
@@ -52,6 +54,106 @@
             } );
         },
         
+			traveldeskBankdetails: {
+                
+			 /**
+             * Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-traveldeskbankdetails-wrap' ).load( window.location.href + ' .erp-traveldeskbankdetails-wrap-inner' );
+            },
+			
+            /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+            create: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    //e.preventDefault();
+                }
+
+                if ( typeof wpErpTd.traveldeskbankdetails_empty === 'undefined' ) {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpTd.popup.traveldeskbankdetails_title,
+                    button: wpErpTd.popup.traveldeskbankdetails_create,
+                    id: "erp-new-traveldeskbankdetails-popup",
+					//content:"<h1>Test</h1>",
+                   content: wperp.template('traveldeskbankdetails-create')( wpErpTd.traveldeskbankdetails_empty ).trim(),
+                    /**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                    onSubmit: function(modal) {
+                        $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
+                        wp.ajax.send( 'traveldeskbankdetails_create', {
+                            data: this.serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_TRAVELDESK.traveldeskBankdetails.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+				$('.erp-modal-backdrop, .erp-modal' ).find( '.erp-loader' ).addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+			edit: function(e) {
+                e.preventDefault();
+                var self = $(this);
+                $.erpPopup({
+                    title: wpErpTd.popup.traveldeskbankdetails_update,
+                    button: wpErpTd.popup.update,
+                    id: 'erp-traveldeskbankdetails-edit',
+                    onReady: function() {
+                        var modal = this;
+                        $( 'header', modal).after( $('<div class="loader"></div>').show() );
+                        wp.ajax.send('traveldeskbankdetails_get', {
+                            data: {
+                                id: self.data('id'),
+                               // _wpnonce: wpErpTa.nonce
+                            },
+                            success: function(response) {
+                                //console.log(response);
+                              var html = wp.template('traveldeskbankdetails-create')( response );
+                                $( '.content', modal ).html( html );
+                                $( '.loader', modal).remove();
+                                // disable current one
+                                }
+                        });
+                    },
+                    onSubmit: function(modal) {
+                        modal.disableButton();
+
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function(response) {
+                                WeDevs_ERP_TRAVELDESK.traveldeskBankdetails.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function(error) {
+                                modal.enableButton();
+                                modal.showError( error );
+								console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+        },
+	
         travelDesk : {
             addRowappr: function(){
                 var optionsCat;
@@ -213,9 +315,42 @@
                 });
            },
         },
+		
+		traveldeskrequestarrow:{
+			
+			view: function(e) {
+					 var self = $(this);
+					 var id = self.data('id')
+					 //var state = $('.hide-table' + id).attr('class').split(' ')[1];
+					 var state = $('.hide-table' + id).hasClass( "collapse" );
+					 var caret = $(this).find(".collapse-caret");
+					 if(state){
+						 $('.hide-table' + id).removeClass('collapse');
+						 $('.hide-table' + id).removeClass('init-invoice');
+						 $('.hide-table' + id).slideDown();
+						 caret.removeClass("fa-angle-down").addClass( "fa-angle-up" );
+					 }
+					 else{
+					 //$(".hide-table").not($(this)).hide('slow');
+					 //$(this).closest('tr').hide('slow');
+					 $('.hide-table' + id).addClass('collapse');
+					 $('.hide-table' + id).addClass('init-invoice');
+					 $('.hide-table' + id).slideUp();
+					 caret.removeClass("fa-angle-up").addClass( "fa-angle-down" );
+					 //$(this).find('.hide-table').hide();
+					 }
+                },
+			
+		},
+		
   
     };
-
+	$( '.txtIssuedAt').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+0',
+            });
     $(function() {
         WeDevs_ERP_TRAVELDESK.initialize();
     });

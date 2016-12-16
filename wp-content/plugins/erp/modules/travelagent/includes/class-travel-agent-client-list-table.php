@@ -58,7 +58,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
 			);
 		return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',$this->row_actions($actions)
+            '<a href="'.erp_company_url_single_clientview( $item['COM_Id']).'"><strong>' . $item['COM_Name'] . '</strong></a>',$this->row_actions($actions)
         );
     }
 	/**
@@ -69,7 +69,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.travel_agent_request_listing( $item['COM_Id']).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],1).'"><strong>' . getCountRequests(1, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -77,7 +77,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],2).'"><strong>' . getCountRequests(2, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -85,7 +85,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],3).'"><strong>' . getCountRequests(3, $item['COM_Id']) . '</strong></a>',''
         );
     }
 	
@@ -93,7 +93,7 @@ class Travel_Agent_Client_List_Table extends \WP_List_Table
         global $wpdb;
         return sprintf('%s %s %s',
             '',
-            '<a href="'.erp_company_url_single_companyview( $item['COM_Id']).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
+            '<a href="'.erp_travelagent_requestview( $item['COM_Id'],4).'"><strong>' . getCountRequests(4, $item['COM_Id']) . '</strong></a>',''
         );
     }
     /**

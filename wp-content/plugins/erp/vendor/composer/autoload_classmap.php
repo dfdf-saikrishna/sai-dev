@@ -567,4 +567,33 @@ return array(
     'WeDevs\\ERP\\Traveldesk\\Traveldesk_Claims_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-claims-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Request_WithoutAppr_List' => $baseDir . '/modules/traveldesk/includes/class-requestwithoutappr-table.php',
     'WeDevs\\ERP\\Traveldesk\\Request_WithAppr_List' => $baseDir . '/modules/traveldesk/includes/class-requestwithappr-table.php',
-);
+	'WeDevs\\ERP\\Traveldesk\\Traveldeskdashboard_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-dashboard.php',
+    'WeDevs\\ERP\\Traveldesk\\TravelDesk_Bankdetails_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-bankdetails-list-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
+    
+	/*****************************/
+    /** Travel Agent Module classes **/
+    /****************************/
+    'WeDevs\\ERP\\Travelagent\\Travelagent' => $baseDir . '/modules/travelagent/travelagent.php',
+    'WeDevs\\ERP\\Travelagent\\Admin\\Admin_Menu' => $baseDir . '/modules/travelagent/includes/admin/class-menu.php',
+    'WeDevs\\ERP\\Travelagent\\Ajax_Handler' => $baseDir . '/modules/travelagent/includes/class-ajax.php',
+    'WeDevs\\ERP\\Travelagent\\Form_Handler' => $baseDir . '/modules/travelagent/includes/class-form-handler.php',
+    'WeDevs\\ERP\\Travelagent\\Emailer' => $baseDir . '/modules/travelagent/includes/class-emails.php',
+    'WeDevs\\ERP\\Travelagent\\Travelagentdashboard_List_Table' => $baseDir . '/modules/travelagent/includes/class-travelagent-dashboard.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_User_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-user-list-table.php',
+    'WeDevs\\ERP\\Travelagent\\Travelagentuser' => $baseDir . '/modules/travelagent/includes/class-travelagentuser.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-list-table.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Bankdetails_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-bankdetails-list-table.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Client_Allocation' => $baseDir . '/modules/travelagent/includes/class-travel-agent-client-allocation.php',
+    'WeDevs\\ERP\\Travelagent\\Travelagentclient' => $baseDir . '/modules/travelagent/includes/class-travelagentclient.php',
+    'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoice_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoice-table.php',
+	'WeDevs\\ERP\\Travelagent\\Travelagentbankdetails' => $baseDir . '/modules/travelagent/includes/class-travelagentbankdetails.php',
+    'WeDevs\\ERP\\Travelagent\\Invoiceview' => $baseDir . '/modules/travelagent/includes/class-invoiceview.php',
+	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Company_Invoicecreate_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-company-invoicecreate-table.php',
+	'WeDevs\\ERP\\Travelagent\\Riseinvoiceview' => $baseDir . '/modules/travelagent/includes/class-riseinvoiceview.php',
+	'WeDevs\\ERP\\Travelagent\\clientview' => $baseDir . '/modules/travelagent/includes/class-clientview.php',
+	'WeDevs\\ERP\\Travelagent\\requestview' => $baseDir . '/modules/travelagent/includes/class-requestview.php',
+	'WeDevs\\ERP\\Travelagent\\Travel_Agent_Request_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-request-list-table.php',
+    
+	
+	);

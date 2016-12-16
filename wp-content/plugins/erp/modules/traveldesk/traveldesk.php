@@ -63,6 +63,8 @@ class Traveldesk {
        require_once WPERP_TRAVELDESK_PATH . '/includes/actions-filters.php';
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-bank-details.php';
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-requests.php';
+	   require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldeskbankdetails.php';
+       
 
     }
 
@@ -184,6 +186,15 @@ class Traveldesk {
             'empty_entitlement_text' => sprintf( '<span>%s <a href="%s" title="%s">%s</a></span>', __( 'Please create entitlement first', 'erp' ), add_query_arg( [ 'page' => 'erp-leave-assign', 'tab' => 'assignment' ], admin_url( 'admin.php' ) ), __( 'Create Entitlement', 'erp' ), __( 'Create Entitlement', 'erp' ) ),
         ) );
 
+		
+		// if its an Bank Details page
+         if ( 'claims_page_Bankdetails' == $hook ) {
+            wp_enqueue_script( 'post' );
+
+            $traveldeskbankdetails                          = new Traveldeskbankdetails();
+            $localize_script['traveldeskbankdetails_empty'] = $traveldeskbankdetails->to_array();
+        } 
+		
         // if its an employee page
         if ( 'toplevel_page_companiesmenu' == $hook ) {
             wp_enqueue_script( 'post' );
@@ -229,6 +240,9 @@ class Traveldesk {
             
              case 'toplevel_page_travel-dashboard':
                 erp_get_js_template( WPERP_TRAVELDESK_JS_TMPL . '/travelcompany-create.php', 'travelcompany-create' );
+                break;
+			 case 'claims_page_Bankdetails':
+                erp_get_js_template( WPERP_TRAVELDESK_JS_TMPL . '/traveldeskbankdetails-create.php', 'traveldeskbankdetails-create' );
                 break;
             case 'companies_page_companies-admin':
                 erp_get_js_template( WPERP_TRAVELDESK_JS_TMPL . '/companyadmin-create.php', 'companyadmin-create' );

@@ -1,11 +1,16 @@
 <div class="wrap erp-companyinvoicecreate" id="wp-erp">
 
-<h2>
+ <h2>
         <?php
-        _e( 'COMPANY Invoice', 'erp' );
+        _e( 'Company Invoice', 'erp' );
+
+       /* if ( current_user_can( 'travelagent' ) ) {
+            ?>
+                <a href="#" id="erp-travelagentriseinvoice-new" class="add-new-h2"><?php _e( 'Rise Invoice', 'erp' ); ?></a>
+            <?php
+        }*/
         ?>
     </h2>
-
 	<?php
         $companyinvoice_table = new \WeDevs\ERP\Travelagent\Travel_Agent_Company_Invoicecreate_Table();
         $companyinvoice_table->prepare_items();
