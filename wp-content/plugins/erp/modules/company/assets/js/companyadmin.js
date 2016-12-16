@@ -24,13 +24,13 @@
             $('ul.erp-dashboard-announcement').on('click', 'a.view-full', this.dashboard.viewAnnouncement);
             $('ul.erp-dashboard-announcement').on('click', '.announcement-title a', this.dashboard.viewAnnouncementTitle);
 
-            $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
-            $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
-            //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
-            $('.erp-hr-company').on('click', 'span.edit a', this.companyEmployee.edit);
-            $('body').on('click', 'a#company-emp-photo ', this.companyEmployee.setPhoto);
-            //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
-            $('.erp-hr-company').on('click', 'a#erp-employee-print', this.companyEmployee.printData);
+//            $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
+//            $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
+//            //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
+//            $('.erp-hr-company').on('click', 'span.edit a', this.companyEmployee.edit);
+//            //$('body').on('click', 'a#company-emp-photo ', this.companyEmployee.setPhoto);
+//            //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
+//            $('.erp-hr-company').on('click', 'a#erp-employee-print', this.companyEmployee.printData);
 
             //Mileage
             //$('body').on('click', 'a#erp-new-mileage', this.mileage.create);
@@ -1937,6 +1937,7 @@
                         wp.ajax.send({
                             data: this.serialize(),
                             success: function (response) {
+                                console.log(response);
                                 WeDevs_ERP_COMPANY.companyEmployee.reload();
                                 modal.enableButton();
                                 modal.closeModal();

@@ -56,6 +56,7 @@ function companyemployee_create( $args = array() ) {
         'last_name'    => $data['companyemployee']['txtEmpname'],
         'user_url'     => $data['companyemployee']['user_url'],
         'display_name' => $data['companyemployee']['txtEmpname'],
+        'ID' => $data['companyemployee']['user_id'],
         );
 
     // if user id exists, do an update
