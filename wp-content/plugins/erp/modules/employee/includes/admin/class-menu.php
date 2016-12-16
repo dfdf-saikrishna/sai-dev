@@ -109,9 +109,13 @@ class Admin_Menu {
 
         add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'Others_Request'),'dashicons-migrate');
             $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'Others_Request'),'GeneralExpense_init');
-            add_submenu_page('GeneralExpense', ' Mileage ', 'View / Edit / Delete Mileage', 'employee','Mileage'.'/Mileage', array($this,'Mileage_Request'));
-            add_submenu_page('GeneralExpense', 'Utilities', 'View / Edit / Delete Utilities', 'employee','Utilities'.'/Utilities',array($this,'Utility_Request'));
-            add_submenu_page('GeneralExpense', 'others', 'View / Edit / Delete others', 'employee','others'.'/others', array($this,'Others_Request'));
+            add_submenu_page('GeneralExpense', ' Mileage ', 'Mileage Request', 'employee','Mileage', array($this,'Mileage_Request'));
+            add_submenu_page('GeneralExpense', 'Utilities', 'Utility Request', 'employee','Utilities',array($this,'Utility_Request'));
+            add_submenu_page('GeneralExpense', 'others', 'Others Request', 'employee','others', array($this,'Others_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','create-mileage', array($this,'create_mileage_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','create-utility', array($this,'create_utility_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','create-others', array($this,'create_others_Request'));
+            
 
         //add_menu_page(' Reports', ' Reports', 'employee', ' Reports', 'reports','dashicons-media-spreadsheet');
 
@@ -134,6 +138,15 @@ class Admin_Menu {
     }
     function Others_Request(){
         include WPERP_EMPLOYEE_VIEWS . '/Others_Request.php';
+    }
+    function create_mileage_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Create_Mileage_Request.php';
+    }
+    function create_utility_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Create_Utility_Request.php';
+    }
+    function create_others_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/Create_Others_Request.php';
     }
     function Utility_Request(){
         include WPERP_EMPLOYEE_VIEWS . '/Utility-Request.php';

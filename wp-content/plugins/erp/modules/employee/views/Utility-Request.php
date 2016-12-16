@@ -1,6 +1,7 @@
 <div class="wrap erp-hr-companyadmin" id="wp-erp">
-    <h2><?php _e( 'Utility Expense Requests Listing', 'mileage' ); ?></h2>
-    <code>Total Requests</code>
+    <h2><?php _e('Utility Expense Requests Listing', 'employee'); ?>
+        <a href="/wp-admin/admin.php?page=create-utility" id="erp-new-designations" class="add-new-h2" data-single="1"><?php _e('Create Utility Request', 'erp'); ?></a></h2> 
+
         <?php
         //require '/../includes/class_table_view.php';
 
