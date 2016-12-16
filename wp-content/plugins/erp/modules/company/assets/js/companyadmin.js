@@ -1937,7 +1937,6 @@
                         wp.ajax.send({
                             data: this.serialize(),
                             success: function (response) {
-                                console.log(response);
                                 WeDevs_ERP_COMPANY.companyEmployee.reload();
                                 modal.enableButton();
                                 modal.closeModal();
