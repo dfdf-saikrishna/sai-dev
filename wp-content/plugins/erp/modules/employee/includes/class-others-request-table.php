@@ -93,6 +93,40 @@ class Others_Requests_List extends \WP_List_Table
         return $approvals;
     }
     
+    function column_skiplevel_manager_approval($item){
+
+        global $wpdb;
+        global $approvals;
+
+        if($item['REQ_Type']==2 || $item['REQ_Type']==4 || $item['REQ_Type']==3){
+
+            $approvals=approvals(5);
+
+        } else {
+
+            // skiplevel manager status
+            //var_dump($item['POL_Id']);
+            if($item['POL_Id'] !=3 && $item['POL_Id'] !=4 && $item['POL_Id'] !=2 && $item['POL_Id'] !=1){
+
+                if($repmngrStatus=$wpdb->get_row("SELECT REQ_Status FROM request_status WHERE REQ_Id='$item[REQ_Id]' AND RS_Status=1 AND RS_EmpType=5"))
+                {
+                    $approvals=approvals($repmngrStatus->REQ_Status);
+                }
+                else
+                {
+                    $approvals=approvals(1);
+                }
+
+            } else {
+
+                $approvals=approvals(5);
+
+            }
+
+        }
+        return $approvals;
+    }
+    
     function column_finance_approval($item){
 
         global $wpdb;
@@ -167,6 +201,7 @@ class Others_Requests_List extends \WP_List_Table
             'request_code' => __('Request Code', 'companiesadmin_table_list'),
             'estimated_cost' => __('Total Cost', 'companiesadmin_table_list'),
             'reporting_manager_approval' => __('Reporting Manager Approval', 'companiesadmin_table_list'),
+            'skiplevel_manager_approval' => __('SkipLevel Manager Approval', 'emp_req_table_list'),
             'finance_approval' => __('Finance Approval', 'companiesadmin_table_list'),
             'request_date' => __('Request Date', 'companiesadmin_table_list'),
             'status'=>__('Claim Status', 'companiesadmin_table_list'),
@@ -187,6 +222,7 @@ class Others_Requests_List extends \WP_List_Table
             'request_code' => array('Request Code', true),
             'estimated_cost' => array('Total Cost', false),
             'reporting_manager_approval' => array('Reporting Manager Approval', false),
+            'skiplevel_manager_approval' => array('SkipLevel Manager Approval', true),
             'finance_approval' => array('Finance Approval', false),
             'request_date' => array('Request Date', false),
             'status'=>array('Status', false),
@@ -252,29 +288,3 @@ class Others_Requests_List extends \WP_List_Table
         ));
     }
 }
-
-/**
- * Simple function that validates data and retrieve bool on success
- * and error message(s) on error
- *
- * @param $item
- * @return bool|string
- */
-function custom_table_example_validate_person($item)
-{
-    $messages = array();
-
-    if (empty($item['name'])) $messages[] = __('Name is required', 'custom_table_example');
-    if (!empty($item['email']) && !is_email($item['email'])) $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
-    if (!ctype_digit($item['age'])) $messages[] = __('Age in wrong format', 'custom_table_example');
-
-    if (empty($messages)) return true;
-    return implode('<br />', $messages);
-}
-
-function custom_table_example_languages()
-{
-    load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
-}
-
-add_action('init', 'custom_table_example_languages');

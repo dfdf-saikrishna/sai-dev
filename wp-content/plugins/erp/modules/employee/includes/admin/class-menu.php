@@ -107,8 +107,8 @@ class Admin_Menu {
 //            add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
 //            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
 
-        add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'Others_Request'),'dashicons-migrate');
-            $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'Others_Request'),'GeneralExpense_init');
+        add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'general_expense'),'dashicons-migrate');
+            $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'general_expense'));
             add_submenu_page('GeneralExpense', ' Mileage ', 'Mileage Request', 'employee','Mileage', array($this,'Mileage_Request'));
             add_submenu_page('GeneralExpense', 'Utilities', 'Utility Request', 'employee','Utilities',array($this,'Utility_Request'));
             add_submenu_page('GeneralExpense', 'others', 'Others Request', 'employee','others', array($this,'Others_Request'));
@@ -132,6 +132,9 @@ class Admin_Menu {
        //}
     }
         
+    }
+    function general_expense(){
+        include WPERP_EMPLOYEE_VIEWS . '/general_expeses.php';
     }
     function All_Expense_Request(){
         include WPERP_EMPLOYEE_VIEWS . '/All_Expense_Request.php';
