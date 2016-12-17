@@ -233,7 +233,7 @@
                     button: wpErpCompany.popup.update,
                     id: 'erp-gradelimits-edit',
                     //extraClass: 'smaller',
-                    //content: wperp.template('gradelimits-create')().trim(),
+                    //content:'<h1>test</h1>',
                     onReady: function () {
                         //alert('dfhdvj');
                         var modal = this;

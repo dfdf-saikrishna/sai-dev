@@ -22,13 +22,13 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
                         Added on:<?php echo date('d-M-Y', strtotime($rowcomp[0]->EMP_Regdate)); ?>
                     </span>
                 </div>
-                <form class="form-horizontal" method="post" id="Employeenew" name="Employeenew" action="admin-employees-edit.php?empid=<?php echo $empid; ?>" data-collabel="3" data-alignlabel="left" parsley-validate enctype="multipart/form-data">
+                <form class="form-horizontal" method="post" id="Employeenew" name="Employeenew" action="#?empid=<?php echo $empid; ?>" data-collabel="3" data-alignlabel="left" parsley-validate enctype="multipart/form-data">
                     <div class="postbox" >
                         <?php
                         if ($rowcomp[0]->EMP_Photo)
-                            $src = '<img src=' . $rowcomp[0]->EMP_Photo . ' alt="" class="avatar avatar-150 photo" height="150" width="150">';
+                            $src = '' . $rowcomp[0]->EMP_Photo . ' " class="avatar avatar-150 photo" height="150" width="150"';
                         else
-                            $src =  '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-150 photo"height="150" width="150">';
+                            $src =  'alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-150 photo"height="150" width="150"';
                         //echo $src;
                         ?>
                         <div class="inside">
@@ -139,3 +139,4 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
     <!-- //content-->
     </div>
 
+                                    <?Php }?>
