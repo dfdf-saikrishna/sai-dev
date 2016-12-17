@@ -26,6 +26,7 @@
 			
             // employee
             $( 'body' ).on( 'click', 'a#erp-company-new', this.employee.create );
+            $( 'body' ).on( 'click', 'a#erp-set-emp-photo', this.employee.setPhoto );
             $( '.erp-hr-employees' ).on( 'click', 'a#erp-employee-new', this.employee.create );
             $( '.erp-hr-employees' ).on( 'click', 'span.edit a', this.employee.edit );
             $( '.erp-hr-employees' ).on( 'click', 'a.submitdelete', this.employee.remove );
@@ -120,7 +121,7 @@
                      * @param  {modal}
                      */
                     onSubmit: function(modal) {
-                        alert("submit");
+                        //alert("submit");
                         $( 'button[type=submit]', '.erp-modal' ).attr( 'disabled', 'disabled' );
                         wp.ajax.send( 'erp-hr-travelagent-new', {
                             data: this.serialize(),

@@ -3,38 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/company/company.php</file>
             <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/company/assets/js/companyadmin.js</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/includes/class-ajax.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/assets/js/employee.js</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/views/pre-travel-request.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/views/employee-dashboard.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/views/superadmin/masteradmin_list.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/includes/class-pre-travel-expenses.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/company/views/upload-employees.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/views/finance-requests-details.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/views/emp-requests-listing.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/includes/class-emp-requests-list-table.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/includes/admin/class-menu.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/includes/class-masteradmin-list-table.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/includes/admin/class-menu.php</file>
             <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/vendor/composer/autoload_classmap.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/employee/includes/functions-common.php</file>
-            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/corptne.php</file>
-=======
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/includes/admin/class-menu.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/employee/views/employee-dashboard.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/includes/class-ajax.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/includes/function_expenses.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/includes/class-employee-list-table.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/views/company/dashboard.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/includes/class-gradestable-list.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/assets/js/companyadmin.js</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/views/employee-display.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/company.php</file>
-            <file>file:/E:/xampp/htdocs/wordpress/wp-content/plugins/erp/modules/company/views/company/ExpenseManagment.php</file>
->>>>>>> lakshmi-3-12
+            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/traveldesk/traveldesk.php</file>
+            <file>file:/C:/wamp/www/wordpress/wp-content/plugins/erp/modules/corptne/assets/js/corptne.js</file>
         </group>
     </open-files>
 </project-private>
