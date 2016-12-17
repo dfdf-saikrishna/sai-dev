@@ -5,7 +5,7 @@ $et = 1;
 $row = $wpdb->get_results("SELECT * FROM requests WHERE COM_Id='$compid' AND REQ_Id='$reqid' AND RT_Id IN (1,2) AND REQ_Active != 9");
 
 $showProCode = 1;
-$finance=0;
+
 if(!$finance){
 ?>
 

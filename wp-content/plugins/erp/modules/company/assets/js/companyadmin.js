@@ -18,12 +18,6 @@
             $('body').on('click', '#crp_import_excel', this.Emp.import);
             $('body').on('click', '#crp_import_pdf', this.gradelimitsupload.download);
 
-            // Dasboard Overview
-
-            $('ul.erp-dashboard-announcement').on('click', 'a.mark-read', this.dashboard.markAnnouncementRead);
-            $('ul.erp-dashboard-announcement').on('click', 'a.view-full', this.dashboard.viewAnnouncement);
-            $('ul.erp-dashboard-announcement').on('click', '.announcement-title a', this.dashboard.viewAnnouncementTitle);
-
             $('.erp-hr-company').on('click', 'a#erp-companyemployee-new', this.companyEmployee.create);
             $('.erp-hr-company').on('change', '#selectEmployee', this.companyEmployee.view);
             //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
@@ -185,43 +179,6 @@
             reload: function () {
                 $('.erp-company-gradelimits-wrap').load(window.location.href + ' .erp-company-gradelimits-wrap-inner');
             },
-//             create: function (e) {
-//                //alert('test');
-//                if (typeof e !== 'undefined') {
-//                    //e.preventDefault();
-//                }
-//                if (typeof wpErpCompany.gradelimits_empty === 'undefined') {
-//                    //return;
-//                }
-//                $.erpPopup({
-//                    title: wpErpCompany.popup.gradelimits_title,
-//                    button: wpErpCompany.popup.gradelimits_submit,
-//                    id: "erp-new-gradelimits-popup",
-//                   // extraClass: 'smaller',
-//                    content: wperp.template('grade-limits')(wpErpCompany.gradelimits_empty).trim(),
-//                    //content: '<h1>Test</h1>',
-//                    /**
-//                     * Handle the onsubmit function
-//                     */
-//                    onSubmit: function (modal) {
-//                        $('button[type=submit]', '.erp-modal').attr('disabled', 'disabled');
-//                        wp.ajax.send('gradelimits_create', {
-//                            data: this.serialize(),
-//                            success: function (response) {
-//                                console.log(response);
-//                                modal.enableButton();
-//                                modal.closeModal();
-//                            },
-//                            error: function (error) {
-//                                modal.enableButton();
-//                                $('.erp-modal-backdrop, .erp-modal').find('.erp-loader').addClass('erp-hide');
-//                                modal.showError(error);
-//                                console.log(error);
-//                            }
-//                        });
-//                    }
-//                });
-//            },
             edit: function (e) {
                 e.preventDefault();
                 var self = $(this);
@@ -1362,157 +1319,7 @@
                 });
             }
         },
-        department: {
-            /**
-             * After create new department
-             *
-             * @return {void}
-             */
-            afterNew: function (e, res) {
-                var selectdrop = $('.erp-hr-dept-drop-down');
-                wperp.scriptReload('erp_hr_script_reload', 'tmpl-erp-new-employee');
-                selectdrop.append('<option selected="selected" value="' + res.id + '">' + res.title + '</option>');
-                selectdrop.select2().select2("val", res.id);
-            },
-            /**
-             * Reload the department area
-             *
-             * @return {void}
-             */
-            reload: function () {
-                $('#erp-dept-table-wrap').load(window.location.href + ' #erp-dept-table-wrap');
-            },
-            /**
-             * Template reload after insert, edit, delete
-             *
-             * @return {void}
-             */
-            tempReload: function () {
-                wperp.scriptReload('erp_hr_new_dept_tmp_reload', 'tmpl-erp-new-dept');
-            },
-            /**
-             * Create new department
-             *
-             * @param  {event}
-             */
-            create: function (e) {
-                e.preventDefault();
-                var self = $(this),
-                        is_single = self.data('single');
-
-                $.erpPopup({
-                    title: wpErpHr.popup.dept_title,
-                    button: wpErpHr.popup.dept_submit,
-                    id: 'erp-hr-new-department',
-                    content: wperp.template('erp-new-dept')().trim(),
-                    extraClass: 'smaller',
-                    onSubmit: function (modal) {
-                        wp.ajax.send({
-                            data: this.serialize(),
-                            success: function (res) {
-                                WeDevs_ERP_COMPANY.department.reload();
-
-                                if (is_single != '1') {
-                                    $('body').trigger('erp-hr-after-new-dept', [res]);
-                                } else {
-                                    WeDevs_ERP_COMPANY.department.tempReload();
-                                }
-
-                                modal.closeModal();
-                            },
-                            error: function (error) {
-                                modal.showError(error);
-                            }
-                        });
-                    }
-                }); //popup
-            },
-            /**
-             * Edit a department in popup
-             *
-             * @param  {event}
-             */
-            edit: function (e) {
-                e.preventDefault();
-
-                var self = $(this);
-
-                $.erpPopup({
-                    title: wpErpHr.popup.dept_update,
-                    button: wpErpHr.popup.dept_update,
-                    id: 'erp-hr-new-department',
-                    content: wp.template('erp-new-dept')().trim(),
-                    extraClass: 'smaller',
-                    onReady: function () {
-                        var modal = this;
-
-                        $('header', modal).after($('<div class="loader"></div>').show());
-
-                        wp.ajax.send('erp-hr-get-dept', {
-                            data: {
-                                id: self.data('id'),
-                                _wpnonce: wpErpHr.nonce
-                            },
-                            success: function (response) {
-                                $('.loader', modal).remove();
-
-                                $('#dept-title', modal).val(response.name);
-                                $('#dept-desc', modal).val(response.data.description);
-                                $('#dept-parent', modal).val(response.data.parent);
-                                $('#dept-lead', modal).val(response.data.lead);
-                                $('#dept-id', modal).val(response.id);
-                                $('#dept-action', modal).val('erp-hr-update-dept');
-
-                                // disable current one
-                                $('#dept-parent option[value="' + self.data('id') + '"]', modal).attr('disabled', 'disabled');
-
-                            }
-                        });
-                    },
-                    onSubmit: function (modal) {
-                        wp.ajax.send({
-                            data: this.serialize(),
-                            success: function () {
-                                WeDevs_ERP_COMPANY.department.reload();
-                                WeDevs_ERP_COMPANY.department.tempReload();
-                                modal.closeModal();
-                            },
-                            error: function (error) {
-                                modal.showError(error);
-                            }
-                        });
-                    }
-                });
-            },
-            /**
-             * Delete a department
-             *
-             * @param  {event}
-             */
-            remove: function (e) {
-                e.preventDefault();
-
-                var self = $(this);
-
-                if (confirm(wpErpHr.delConfirmDept)) {
-                    wp.ajax.send('erp-hr-del-dept', {
-                        data: {
-                            '_wpnonce': wpErpHr.nonce,
-                            id: self.data('id')
-                        },
-                        success: function () {
-                            self.closest('tr').fadeOut('fast', function () {
-                                $(this).remove();
-                                WeDevs_ERP_COMPANY.department.tempReload();
-                            });
-                        },
-                        error: function (response) {
-                            alert(response);
-                        }
-                    });
-                }
-            },
-        },
+      
         companyAdmin: {
             reload: function () {
                 $('.erp-hr-employees-wrap').load(window.location.href + ' .erp-hr-employees-wrap-inner');

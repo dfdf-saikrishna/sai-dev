@@ -4,7 +4,6 @@
     <div class="erp-single-container erp-hr-employees-wrap" id="erp-single-container-wrap">
         <div class="erp-area-left full-width erp-hr-employees-wrap-inner">
             <div id="erp-area-left-inner">
-
                 <script type="text/javascript">
                     window.wpErpCurrentCompanyview = <?php echo json_encode( $companyview->to_array() ); ?>
                 </script>

@@ -63,63 +63,7 @@ class Approval_Limits extends \WP_List_Table
 //        }
         //return $item['COM_Name'];
     }
-    
-    /*function column_your_image_column_name($item)
-    {
-        return sprintf(
-            '<img src="%s" />',
-            $item['your_image_column_name']
-        );
-    }*/
 
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-    function column_age($item)
-    {
-        return '<em>' . $item['user_nicename'] . '</em>';
-    }
-    
-    function column_Username($item){
-        $username =  $item['ADM_Username']; 
-        return $username;
-    }
-    
-    function column_Email($item){
-$email =  $item['ADM_Email']; 
-        return $email;
-    }
-    
-    function column_Contact($item){
-        $contact =  $item['ADM_Cont']; 
-        return $contact;
-    }
-    
-    function column_Created_Date($item){
-
-        return date('d/M/Y', strtotime($item['ADM_Regdate'])) . date('h:i a', strtotime($item['ADM_Regdate']));
-    }
-    
-    // function column_Tot_Requests($item){
-        // global $wpdb;
-        // $table_name = "requests";
-        // $comId = $item['COM_Id'];
-        // $req_count = $wpdb->get_var("SELECT COUNT(REQ_Id) FROM $table_name WHERE COM_Id=$comId");
-        // return $req_count;
-    // }
-
-    /**
-     * [OPTIONAL] this is example, how to render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
     function column_employee($item)
     {
         return "<a href='admin-employees-display.php?empid=$item[EMP_Id]'>$item[EMP_Code]</a><br />$item[EMP_Name]";

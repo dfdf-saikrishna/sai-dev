@@ -45,7 +45,7 @@ class Admin_Menu {
            add_menu_page( 'Travelagents', 'Travelagents', 'superadmin', 'travelagentsmenu',array( $this, 'travelagent_create'),'dashicons-building');
 		   //$overview = add_submenu_page( 'travelagentsmenu', 'Overview', 'Overview', 'superadmin', 'travelagentsmenu','travelagentsmenu_init',array( $this, 'travelagent_create'));
 		   //add_submenu_page( 'travelagentsmenu', 'Add Travel Agents', 'Add Travel Agents', 'superadmin', 'superadmintravelagentsadd', 'superadmintravelagentsadd');
-           add_submenu_page( 'travelagentsmenu', 'travelagentadd', 'View / Edit / Delete Travel Agents ', 'superadmin', 'travelagents',array( $this, 'travelagentsview_page' ));
+           add_submenu_page( '', 'travelagentadd', 'View / Edit / Delete Travel Agents ', 'superadmin', 'travelagents',array( $this, 'travelagentsview_page' ));
            //add_submenu_page( 'travelagentsmenu', 'Travel Desk Logs', 'Travel Desk Logs', 'superadmin', 'superadmintravelagentslogs', 'superadmintravelagentslogs');
 
            add_menu_page(__( 'WorkFlow', 'superadmin' ), __( 'WorkFlow', 'superadmin' ),  'superadmin', 'workflowsmenu', array( $this, 'workflow'),'dashicons-products' );

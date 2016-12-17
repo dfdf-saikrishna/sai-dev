@@ -18,6 +18,7 @@ $workflow = $wpdb->get_results("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, CO
 		$repmngr_block='<td width="20%">Reporting Manager Approval</td>
 					<td width="5%">:</td>
 					<td width="25%">';
+                
 		$fin_block='<td width="20%">Finance Approval</td>
 					<td width="5%">:</td>
 					<td width="25%">';			

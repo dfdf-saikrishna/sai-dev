@@ -1,5 +1,7 @@
 <?php
+
 namespace WeDevs\ERP\Corptne;
+
 /**
  * PART 2. Defining Custom Table List
  * ============================================================================
@@ -10,22 +12,20 @@ namespace WeDevs\ERP\Corptne;
  * http://codex.wordpress.org/Class_Reference/WP_List_Table
  * http://wordpress.org/extend/plugins/custom-list-table-example/
  */
-
 //if (!class_exists('WP_List_Table')) {
-    //require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+//require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 //}
 
 /**
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Travel_Agent_List_Table extends \WP_List_Table
-{
+class Travel_Agent_List_Table extends \WP_List_Table {
+
     /**
      * [REQUIRED] You must declare constructor and give some basic params
      */
-    function __construct()
-    {
+    function __construct() {
         global $status, $page;
 
         parent::__construct(array(
@@ -34,57 +34,60 @@ class Travel_Agent_List_Table extends \WP_List_Table
         ));
     }
 
-    function column_default($item, $column_name)
-    {
+    function column_default($item, $column_name) {
+        
     }
+
 //    function column_supname($item)
 //    {
 //        return '<em>' . $item['SUP_Username'] . '</em>';
 //    }
 //    
-    function column_contact($item){
-        $contact = $item['SUP_Contact']; 
+    function column_contact($item) {
+        $contact = $item['SUP_Contact'];
         return $contact;
     }
-     function column_sname($item){
-        $sname = $item['SUP_Name']; 
+
+    function column_sname($item) {
+        $sname = $item['SUP_Name'];
         return $sname;
     }
-    function column_email($item){
-        $email = $item['SUP_Email']; 
+
+    function column_email($item) {
+        $email = $item['SUP_Email'];
         return $email;
     }
-    function column_agency($item){
-         $agency = $item['SUP_AgencyName']; 
+
+    function column_agency($item) {
+        $agency = $item['SUP_AgencyName'];
         return $agency;
     }
-    
-    function column_Tot_Logs($item){
+
+    function column_Tot_Logs($item) {
         global $wpdb;
         $table_name = "super_admin_logs";
         $supId = $item['SUP_Id'];
         $logcount = $wpdb->get_var("SELECT SAL_In FROM $table_name WHERE SUP_Id=$supId");
-        if($logcount == 0){
+        if ($logcount == 0) {
             return "nil";
-        }
-        else{
-        $count= "_(".$wpdb->get_var("SELECT COUNT(SAL_In) FROM $table_name WHERE SUP_Id=$supId").")";
+        } else {
+            $count = "_(" . $wpdb->get_var("SELECT COUNT(SAL_In) FROM $table_name WHERE SUP_Id=$supId") . ")";
 
-            return $logcount.$count;
+            return $logcount . $count;
         }
     }
-    function column_address($item){
-         $contact = $item['SUP_Address']; 
+
+    function column_address($item) {
+        $contact = $item['SUP_Address'];
         return $contact;
     }
-    
-    function column_Created_Date($item){
+
+    function column_Created_Date($item) {
 
         return date('d/M/Y', strtotime($item['SUP_Date']));
     }
- 
-    function column_name($item)
-    {
+
+    function column_name($item) {
         // links going to /admin.php?page=[your_plugin_page][&other_params]
         // notice how we used $_REQUEST['page'], so action will be done on curren page
         // also notice how we use $this->_args['singular'] so in this example it will
@@ -100,27 +103,22 @@ class Travel_Agent_List_Table extends \WP_List_Table
 //            $image = '<img alt="" src="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=32&amp;d=mm&amp;r=g" srcset="http://1.gravatar.com/avatar/19227018b81eea78a037d9d4719f68cd?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" height="32" width="32">';
 //        }
         /* return sprintf('%s %s %s',
-            $image,
-            '<a href="#"><strong>' . $item['COM_Name'] . '</strong></a>',
-            $this->row_actions($actions)
-        ); */
-		return sprintf('%s %s',
-            '<a href="'.erp_company_url_single_travelagents( $item['SUP_Id']).'"><strong>' . $item['SUP_Name'] . '</strong></a>',
-            $this->row_actions($actions)
+          $image,
+          '<a href="#"><strong>' . $item['COM_Name'] . '</strong></a>',
+          $this->row_actions($actions)
+          ); */
+        return sprintf('%s %s', '<a href="' . erp_company_url_single_travelagents($item['SUP_Id']) . '"><strong>' . $item['SUP_Name'] . '</strong></a>', $this->row_actions($actions)
 //                    return $emp_count;
         );
     }
 
-    function column_cb($item)
-    {
+    function column_cb($item) {
         return sprintf(
-            '<input type="checkbox" name="id[]" value="%s" />',
-            $item['SUP_Id']
+                '<input type="checkbox" name="id[]" value="%s" />', $item['SUP_Id']
         );
     }
 
-    function get_columns()
-    {
+    function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'name' => __('Username', 'travelagent-table-list'),
@@ -131,7 +129,6 @@ class Travel_Agent_List_Table extends \WP_List_Table
             'Tot_Logs' => __('Last Login Total Logins', 'travelagent-table-list'),
             'address' => __('Address', 'travelagent-table-list'),
             'Created_Date' => __('Added On', 'travelagent-table-list'),
-            
         );
         return $columns;
     }
@@ -143,16 +140,15 @@ class Travel_Agent_List_Table extends \WP_List_Table
      *
      * @return array
      */
-    function get_sortable_columns()
-    {
+    function get_sortable_columns() {
         $sortable_columns = array(
             'agency' => array('agency', true),
-            //'Company Logo' => array('company_logo', false),
-            //'Contact' => array('contact', false),
-           // 'Tot. Admins' => array('admins', false),
-            //'Tot. Employees' => array('employees', false),
-            //'Tot. Requests' => array('requests', false),
-            //'Created Date' => array('date', false),
+                //'Company Logo' => array('company_logo', false),
+                //'Contact' => array('contact', false),
+                // 'Tot. Admins' => array('admins', false),
+                //'Tot. Employees' => array('employees', false),
+                //'Tot. Requests' => array('requests', false),
+                //'Created Date' => array('date', false),
         );
         return $sortable_columns;
     }
@@ -162,8 +158,7 @@ class Travel_Agent_List_Table extends \WP_List_Table
      *
      * @return array
      */
-    function get_bulk_actions()
-    {
+    function get_bulk_actions() {
         $actions = array(
             'delete' => 'Delete'
         );
@@ -177,14 +172,14 @@ class Travel_Agent_List_Table extends \WP_List_Table
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
      */
-    function process_bulk_action()
-    {
+    function process_bulk_action() {
         global $wpdb;
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
         $table_name = "superadmin";
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
+            if (is_array($ids))
+                $ids = implode(',', $ids);
 
             if (!empty($ids)) {
                 $wpdb->query("DELETE FROM $table_name WHERE SUP_Id IN($ids)");
@@ -197,8 +192,7 @@ class Travel_Agent_List_Table extends \WP_List_Table
      *
      * It will get rows from database and prepare them to be showed in table
      */
-    function prepare_items()
-    {
+    function prepare_items() {
         global $wpdb;
         $table_name = 'superadmin'; // do not forget about tables prefix
 
@@ -213,10 +207,10 @@ class Travel_Agent_List_Table extends \WP_List_Table
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
+        $total_items = count($this->items = $wpdb->get_results("SELECT * FROM superadmin WHERE SUP_Status=1 AND SUP_Type=3 ORDER BY SUP_Id"));
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(SUP_Id) FROM $table_name");
-
+        //$total_items = $wpdb->get_var("SELECT COUNT(SUP_Id) FROM $table_name");
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'SUP_Id';
@@ -224,28 +218,31 @@ class Travel_Agent_List_Table extends \WP_List_Table
 
         // [REQUIRED] define $items array
         // notice that last argument is ARRAY_A, so we will retrieve array
-		if(!empty($_POST["s"])) {
+        if (!empty($_POST["s"])) {
             $search = $_POST["s"];
-			$query="";
-			$searchcol= array(
-			'user_login',
-			'user_email'
-			);
-			$i =0;
-			foreach( $searchcol as $col) {
-				if($i==0) {
-					$sqlterm = 'WHERE';
-				} else {
-					$sqlterm = 'OR';
-				}
-				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
-				$i++;
-			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE SUP_Status=1 AND SUP_Type=3".$query."ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-		}
-		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE SUP_Status=1 AND SUP_Type=3 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-		}
+            $query = "";
+            $searchcol = array(
+                'SUP_Name',
+                'SUP_Email'
+            );
+            $i = 0;
+            foreach ($searchcol as $col) {
+                if ($i == 0) {
+                    $sqlterm = 'WHERE';
+                } else {
+                    $sqlterm = 'OR';
+                }
+                if (!empty($_REQUEST["s"])) {
+                    $query .= ' ' . $sqlterm . ' ' . $col . ' LIKE "' . $search . '"';
+                }
+                $i++;
+            }
+
+
+            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM superadmin WHERE SUP_Status=1 AND SUP_Type=3 " . $query . " ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+        } else {
+            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM superadmin WHERE SUP_Status=1 AND SUP_Type=3 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+        }
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above
@@ -253,6 +250,7 @@ class Travel_Agent_List_Table extends \WP_List_Table
             'total_pages' => ceil($total_items / $per_page) // calculate pages count
         ));
     }
+
 }
 
 /**
@@ -262,18 +260,21 @@ class Travel_Agent_List_Table extends \WP_List_Table
  * @param $item
  * @return bool|string
  */
-function custom_table_example_validate_person($item)
-{
+function custom_table_example_validate_person($item) {
     $messages = array();
 
-    if (empty($item['name'])) $messages[] = __('Name is required', 'custom_table_example');
-    if (!empty($item['email']) && !is_email($item['email'])) $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
-    if (!ctype_digit($item['age'])) $messages[] = __('Age in wrong format', 'custom_table_example');
+    if (empty($item['name']))
+        $messages[] = __('Name is required', 'custom_table_example');
+    if (!empty($item['email']) && !is_email($item['email']))
+        $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
+    if (!ctype_digit($item['age']))
+        $messages[] = __('Age in wrong format', 'custom_table_example');
     //if(!empty($item['age']) && !absint(intval($item['age'])))  $messages[] = __('Age can not be less than zero');
     //if(!empty($item['age']) && !preg_match('/[0-9]+/', $item['age'])) $messages[] = __('Age must be number');
     //...
 
-    if (empty($messages)) return true;
+    if (empty($messages))
+        return true;
     return implode('<br />', $messages);
 }
 
@@ -291,8 +292,7 @@ function custom_table_example_validate_person($item)
  * http://codex.wordpress.org/Writing_a_Plugin#Internationalizing_Your_Plugin
  * http://codex.wordpress.org/I18n_for_WordPress_Developers
  */
-function custom_table_example_languages()
-{
+function custom_table_example_languages() {
     load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
 }
 

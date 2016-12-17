@@ -3,6 +3,9 @@
     <div class="erp-single-container erp-hr-employees-wrap" id="erp-single-container-wrap">
         <div class="erp-area-left full-width erp-hr-employees-wrap-inner">
             <div id="erp-area-left-inner">
+                 <script type="text/javascript">
+                    window.wpErpCurrentEmployeeview = <?php echo json_encode($employeeview->to_array() ); ?>
+                </script>
 			<div class="postbox">
 			<div class="inside">
 		<ul class="form-fields two-col">
@@ -106,9 +109,9 @@
                                 if ( current_user_can( 'companyadmin', $employeeview->id )) {
                                     ?>
                                     <span class="edit">
-									<a class="button button-primary" href="?page=menu" data-id="<?php echo $employeeview->id; ?>"><?php _e( 'Edit', 'employees_table_list' ); ?></a></span>
-									<?php	
-                                }
+                                        <a class="button button-primary" href="?page=Employeesdisplay" data-single="true"  data-id="<?php echo $employeeview->id; ?>"><?php _e('Edit', 'employees_table_list'); ?></a></span>
+                                        <?php
+                                    }
                                 ?>
                                    <a class="button" id="erp-employee-print" href="#"><?php _e( 'Print', 'employees_table_list' ); ?></a>
                             </div>

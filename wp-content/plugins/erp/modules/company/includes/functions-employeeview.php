@@ -7,13 +7,12 @@
  * @return string  url of the companyview details page
  */
 
-/**
- * Create a new employee
- *
- * @param  array  arguments
- *
- * @return int  employee id
- */
+function erp_company_url_single_employeesProfile($empid) {
+
+    $url = admin_url( 'admin.php?page=Profile=view&id=' . $empid);
+
+    return apply_filters( 'erp_company_url_single_Profile', $url, $empid );
+}
 function employeeview_create( $args = array() ) {
     global $wpdb;
     $defaults = array(

@@ -24,7 +24,7 @@ class Employee_List_Table extends \WP_List_Table {
             return;
         }
         //echo '<div margin :60px>';
-       // $selected_request = ( isset($_GET['filter_request']) ) ? $_GET['filter_request'] : 0;
+        // $selected_request = ( isset($_GET['filter_request']) ) ? $_GET['filter_request'] : 0;
         $selected_status = ( isset($_GET['filter_status']) ) ? $_GET['filter_status'] : 0;
         $dep = ( isset($_GET['depId']) ) ? $_GET['depId'] : '';
         $grade = ( isset($_GET['egId']) ) ? $_GET['egId'] : '';
@@ -57,7 +57,7 @@ class Employee_List_Table extends \WP_List_Table {
 
             <label class="screen-reader-text" for="new_role"><?php _e('Filter by status', 'erp') ?></label>
             <select name="filter_status" id="filter_status">
-              <option value="">All</option>
+                <option value="">All</option>
                 <option value="2" <?php if ($selected_status == 1) echo 'selected="selected"'; ?> >Allowed</option>
                 <option value="1" <?php if ($selected_status == 2) echo 'selected="selected"'; ?> >Blocked</option>
             </select>
@@ -73,8 +73,7 @@ class Employee_List_Table extends \WP_List_Table {
             global $wpdb;
             $found = 0;
             if ($selrepmng = $wpdb->get_results("SELECT * FROM employees WHERE EMP_Code='" . $item['EMP_Reprtnmngrcode'] . "'"))
-                ;
-            {
+                ; {
                 if (count($selrepmng) != 0) {
                     $repMngid = $selrepmng[0]->EMP_Id;
                     $repMngName = $selrepmng[0]->EMP_Name;
@@ -97,8 +96,7 @@ class Employee_List_Table extends \WP_List_Table {
             //$comId ='56';
             $found = 0;
             if ($selfrepmng = $wpdb->get_results("SELECT * FROM employees WHERE EMP_Code='" . $item['EMP_Funcrepmngrcode'] . "'"))
-                ;
-            {
+                ; {
                 if (count($selfrepmng) != 0) {
                     $repMngid = $selfrepmng[0]->EMP_Id;
                     $repMngName = $selfrepmng[0]->EMP_Name;
@@ -142,15 +140,15 @@ class Employee_List_Table extends \WP_List_Table {
             $count_pending = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='" . $item['EMP_Id'] . "' AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
             $count_rejected = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id='" . $item['EMP_Id'] . "' AND req.REQ_Id=re.REQ_Id   AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1 AND REQ_Type !=5"));
 
-            $count_total = sprintf('%s %s %s', '',  "<a href='admin.php?page=Expense-Requests&filter_emp=$item[EMP_Id]'>" . $count_total. "</a>",''
+            $count_total = sprintf('%s %s %s', '', "<a href='admin.php?page=Expense-Requests&filter_emp=$item[EMP_Id]'>" . $count_total . "</a>", ''
             );
 
-            $count_approved = sprintf('%s %s %s', '',  "<a href='admin.php?page=Expense-Requests&filter_status=2&filter_emp=$item[EMP_Id]'>" . $count_approved. "</a>",''
+            $count_approved = sprintf('%s %s %s', '', "<a href='admin.php?page=Expense-Requests&filter_status=2&filter_emp=$item[EMP_Id]'>" . $count_approved . "</a>", ''
             );
 
-            $count_pending = sprintf('%s %s %s', '',  "<a href='admin.php?page=Expense-Requests&filter_status=1&filter_emp=$item[EMP_Id]'>" . $count_pending. "</a>",''
+            $count_pending = sprintf('%s %s %s', '', "<a href='admin.php?page=Expense-Requests&filter_status=1&filter_emp=$item[EMP_Id]'>" . $count_pending . "</a>", ''
             );
-            $count_rejected = sprintf('%s %s %s', '', "<a href='admin.php?page=Expense-Requests&filter_status=3&filter_emp=$item[EMP_Id]'>" . $count_rejected. "</a>",''
+            $count_rejected = sprintf('%s %s %s', '', "<a href='admin.php?page=Expense-Requests&filter_status=3&filter_emp=$item[EMP_Id]'>" . $count_rejected . "</a>", ''
             );
 
             return $count_total . '/' . $count_approved . '/' . $count_pending . '/' . $count_rejected;
@@ -178,6 +176,9 @@ class Employee_List_Table extends \WP_List_Table {
             // return sprintf( '%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s',$image,$item['EMP_Name'], $this->row_actions($actions), erp_company_url_single_employeeview(''),'');
             return sprintf('%s %s %s', $image, "<a href='admin.php?page=Employeesdisplay&empid=$item[EMP_Id]'>" . $item['EMP_Name'] . "</a>", $this->row_actions($actions)
             );
+//            return sprintf('%s %s', '<a href="' . erp_company_url_single_employeesProfile($item['EMP_Id']) . '"><strong>' . $item['EMP_Name'] . '</strong></a>', $this->row_actions($actions)
+//                    // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
+//            );
         }
 
         /**
@@ -310,10 +311,15 @@ class Employee_List_Table extends \WP_List_Table {
                 $egid = $_REQUEST['egId'];
                 $query.=" AND emp.EG_Id='$egid'";
             }
-             //filter Desgination
+            //filter Desgination
             if (isset($_REQUEST['desId']) && $_REQUEST['desId']) {
                 $desid = $_REQUEST['desId'];
                 $query.=" AND emp.DES_Id='$desid'";
+            }
+            //account approver
+             if (isset($_REQUEST['desId']) && $_REQUEST['desId']) {
+                $accapprvr = $_REQUEST['accountapprover'];
+                $query.=" AND emp.EMP_AccountsApprover='$accapprvr'";
             }
 
 
@@ -323,7 +329,7 @@ class Employee_List_Table extends \WP_List_Table {
             //$companyid ='56';
             // will be used in pagination settings
             $total_items = count($wpdb->get_results("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$companyid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 "));
-           
+
             // prepare query params, as usual current page, order by and order direction
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'EMP_Id';

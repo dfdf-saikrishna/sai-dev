@@ -24,10 +24,7 @@
         <div class="list-table-inner erp-hr-employees-wrap-inner">
             <?php echo $message;?>
             <?php //$table->views(); ?>
-			<form method="post">
-			  <input type="hidden" name="page" value="Requests" />
-			  <?php $table->search_box('Search Request Code', 'search_id'); ?>
-			</form>
+			
 			
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
