@@ -20,11 +20,11 @@
 			</li>                       
 			<li>
 				<label for="txtEmail">Employee Email-Id </label>
-				<input value="{{ data.SUP_Email }}" name="travelagentuser[txtEmail]" id="txtEmail"  type="text">
+				<input required  value="{{ data.SUP_Email }}" name="travelagentuser[txtEmail]" id="txtEmail"  type="email">
 			</li>
 			<li>
 				<label for="txtPhn">Employee Phone No </label>
-				<input value="{{ data.SUP_Contact }}" name="travelagentuser[txtPhn]" id="txtPhn"  type="text">
+				<input required  value="{{ data.SUP_Contact }}" name="travelagentuser[txtPhn]" id="txtPhn"  type="number">
 			</li>
 		</ol>
     </fieldset>  

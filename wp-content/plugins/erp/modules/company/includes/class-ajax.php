@@ -512,12 +512,14 @@ use Hooker;
             }
             
         }
-        if($blocked)
+        if($blocked){
         $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
-        else
+        $this->send_success($response);
+        }
+        else{
         $response = array('status' => 'success', 'message' => "Employee removed as finance approver successfully");
         $this->send_success($response);
-        exit;
+        }
     }
     
     public function allow_access(){

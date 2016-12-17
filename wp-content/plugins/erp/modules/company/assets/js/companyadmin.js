@@ -62,10 +62,11 @@
             //$( '.erp-hr-company' ).on( 'click', '#employeesubmit', this.companyEmployee.view );
             $('.erp-hr-company').on('click', 'span.edit a', this.companyEmployee.edit);
             $('body').on('click', 'a#company-emp-photo ', this.companyEmployee.setPhoto);
-            //$( '.erp-hr-company' ).on( 'click', 'a.submitdelete', this.companyEmployee.remove );
+            $('body').on( 'click', '.erp-remove-photo', this.companyEmployee.removePhoto );
             $('.erp-hr-company').on('click', 'a#erp-employee-print', this.companyEmployee.printData);
             $('body').on('click', '#allow_access', this.companyEmployee.allowAccess);
             $('body').on('click', '#remove_access', this.companyEmployee.removeAccess);
+            
 
             // Workflow
             $('.workflow-update').on('click', '#selPreTrvPol-update', this.workflow.PreTrvPol);

@@ -35,7 +35,7 @@ class Travelagent {
         $this->init_actions();
 
         // Initialize the filter hooks
-        $this->init_filters();
+       // $this->init_filters();
 
         do_action( 'erp_hrm_loaded' );
     }
@@ -78,14 +78,7 @@ class Travelagent {
         $this->action( 'admin_footer', 'admin_js_templates' );
     }
 
-    /**
-     * Initialize WordPress filter hooks
-     *
-     * @return void
-     */
-    private function init_filters() {
-        add_filter( 'erp_settings_pages', array( $this, 'add_settings_page' ) );
-    }
+    
 
     /**
      * Init classes
@@ -102,18 +95,7 @@ class Travelagent {
         new Emailer();
     }
 
-    /**
-     * Register HR settings page
-     *
-     * @param array
-     */
-    public function add_settings_page( $settings = [] ) {
-
-        $settings[] = include __DIR__ . '/includes/class-settings.php';
-
-        return $settings;
-    }
-
+    
     /**
      * Load admin scripts and styles
      *

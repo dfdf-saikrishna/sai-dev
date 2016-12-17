@@ -43,13 +43,13 @@
 			riseInvoice: function (e) {
                 e.preventDefault();
 				var cmpid = $('#filter_cmp').val();
-				alert(cmpid);
+				//alert(cmpid);
                 var values = new Array();
                 $.each($("input[name='reqid[]']:checked"), function () {
                     values.push($(this).val());
                 });
                 if(values!=""){
-					window.location.replace("http://localhost/wp-admin/admin.php?page=RiseInvoice&action=view&cmpid=" + cmpid +"&id=" + values);
+					window.location.replace("/wp-admin/admin.php?page=RiseInvoice&action=view&cmpid=" + cmpid +"&id=" + values);
 					}
 
             },

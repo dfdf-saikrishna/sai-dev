@@ -47,10 +47,10 @@ function crp_process_import_export() {
                 $rowData[0] = array_combine($headings[0], $rowData[0]);
                 //print_r($rowData[0]);
                 //echo $rowData[0]['Employee Code'];
-                $selEmpcode = $wpdb->get_row("SELECT * FROM COMPANY WHERE COM_Id='$compid'");
+                $selEmpcode = $wpdb->get_row("SELECT * FROM company WHERE COM_Id='$compid'");
                 $empcode=$rowData[0]['Employee Code'];
                 $prefix = $username = NULL;
-                $getPrefix=$wpdb->get_row("SELECT COM_Prefix FROM COMPANY WHERE COM_Id='$compid'");
+                $getPrefix=$wpdb->get_row("SELECT COM_Prefix FROM company WHERE COM_Id='$compid'");
                 $prefix=$getPrefix->COM_Prefix;
                 $username=$prefix."-".$empcode;
                 

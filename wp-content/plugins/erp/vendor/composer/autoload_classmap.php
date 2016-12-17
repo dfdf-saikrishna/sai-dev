@@ -570,6 +570,7 @@ return array(
     'WeDevs\\ERP\\Travelagent\\clientview' => $baseDir . '/modules/travelagent/includes/class-clientview.php',
     'WeDevs\\ERP\\Travelagent\\requestview' => $baseDir . '/modules/travelagent/includes/class-requestview.php',
     'WeDevs\\ERP\\Travelagent\\Travel_Agent_Request_List_Table' => $baseDir . '/modules/travelagent/includes/class-travel-agent-request-list-table.php',
-
+'WeDevs\\ERP\\Travelagent\\Emails\\New_Employee_Welcome' => $baseDir . '/modules/travelagent/includes/emails/class-email-new-employee-welcome.php',   
+    
 	
     );

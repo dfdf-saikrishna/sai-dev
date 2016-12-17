@@ -35,7 +35,7 @@
     </br>
     <div id="approvers_limit" style="display:none;text-align: center">
     <input type="hidden" id="aplId">
-    <input type="text" value="" id="limit_amount">
+    <input value="" id="limit_amount" type="number">
     <input type="submit" class="button button-primary" id="submit_app_limit">
     </div>
         <?php
@@ -52,11 +52,7 @@
         <div class="list-table-wrap erp-hr-employees-wrap">
         <div class="list-table-inner erp-hr-employees-wrap-inner">
             <?php //$table->views(); ?>
-			<form method="post">
-			  <input type="hidden" name="page" value="Requests" />
-			  <?php $table->search_box('Search Employee Code', 'search_id'); ?>
-			</form>
-			
+						
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                 <?php $table->display() ?>

@@ -289,7 +289,7 @@ class Finance_Approvers_List extends \WP_List_Table
         global $wpdb;
         global $blocked;
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-        $table_name = "requests";
+        $table_name = "employees";
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
             if (is_array($ids)) $ids = implode(',', $ids);
@@ -351,7 +351,7 @@ class Finance_Approvers_List extends \WP_List_Table
 				$i++;
 			}
             
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re".$query."AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg".$query."AND emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
 			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);  
