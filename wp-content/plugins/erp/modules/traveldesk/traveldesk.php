@@ -194,21 +194,6 @@ class Traveldesk {
             $traveldeskbankdetails                          = new Traveldeskbankdetails();
             $localize_script['traveldeskbankdetails_empty'] = $traveldeskbankdetails->to_array();
         } 
-		
-        // if its an employee page
-        if ( 'toplevel_page_companiesmenu' == $hook ) {
-            wp_enqueue_script( 'post' );
-
-            $employee                          = new Employee();
-            $localize_script['employee_empty'] = $employee->to_array();
-        }
-        //if its an companyadmin page
-        if ( 'companies_page_companies-admin' == $hook ) {
-            wp_enqueue_script( 'post' );
-
-            $employee                          = new Employee();
-            $localize_script['employee_empty'] = $employee->companyadmin_array();
-        }
         wp_localize_script( 'wp-erp-traveldesk', 'wpErpTd', $localize_script );
 
         wp_enqueue_style( 'wp-color-picker' );
