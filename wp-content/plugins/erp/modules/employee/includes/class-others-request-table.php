@@ -214,7 +214,7 @@ class Others_Requests_List extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = count($wpdb->get_results("SELECT * FROM requests req, request_employee re, policy pol WHERE req.COM_Id='$compid' AND req.RT_Id=6 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1"));
+        $total_items = count($wpdb->get_results("SELECT * FROM requests req, request_employee re, policy pol WHERE req.COM_Id='$compid' AND req.RT_Id=3 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
@@ -239,10 +239,10 @@ class Others_Requests_List extends \WP_List_Table
 				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
 				$i++;
 			}
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, request_employee re, policy pol WHERE ".$query." req.COM_Id='$compid' AND req.RT_Id=6 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, request_employee re, policy pol WHERE ".$query." req.COM_Id='$compid' AND req.RT_Id=3 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
 		else{
-			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, request_employee re, policy pol WHERE req.COM_Id='$compid' AND req.RT_Id=6 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM requests req, request_employee re, policy pol WHERE req.COM_Id='$compid' AND req.RT_Id=3 AND re.EMP_Id='$empuserid' AND req.POL_Id=pol.POL_Id AND req.REQ_Id=re.REQ_Id AND req.REQ_Active=1 AND re.RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 		}
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(

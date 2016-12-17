@@ -175,7 +175,7 @@ function post_travel_request(){
 //                    }
                 }
                 else{
-                    if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                    if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                     {
                             // insert into request
                             $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
@@ -199,7 +199,7 @@ function post_travel_request(){
                 case 3:
 
                 if($expenseLimit > 0){
-                        if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                        if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                         {
 
                                 // insert into request
@@ -265,7 +265,7 @@ function post_travel_request(){
                 case 4:
                 if($expenseLimit > 0){
                    //-------- employee -->  2nd level manager  -->  finance
-                   if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                   if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                     {
 
                             // insert into request
@@ -326,7 +326,7 @@ function post_travel_request(){
                         } else {
 
                                 $startdate=$txtStartDate[$i];
-                                $startdate=explode("/",$startdate);
+                                $startdate=explode("-",$startdate);
                                 $startdate=$startdate[2]."-".$startdate[1]."-".$startdate[0];				
 
                         }
@@ -338,7 +338,7 @@ function post_travel_request(){
                         } else {
 
                                 $enddate=$txtEndDate[$i];
-                                $enddate=explode("/",$enddate);
+                                $enddate=explode("-",$enddate);
                                 $enddate=$enddate[2]."-".$enddate[1]."-".$enddate[0];				
 
                         }
@@ -471,7 +471,15 @@ function post_travel_request(){
 		
 		}
 		
-			
+                    if($etype==5){
+                        header('Location: /wp-admin/admin.php?page=Mileage');
+                    }
+                    else if($etype==6){
+                        header('Location: /wp-admin/admin.php?page=Utilities');
+                    }
+                    else if($etype==3){
+                        header('Location: /wp-admin/admin.php?page=others');
+                    }
                     $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
                     //$this->send_success($response);
     }

@@ -96,7 +96,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   </thead>
                   <tbody>
                     <tr>
-                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="startdate " placeholder="dd/mm/yyyy"  />
+                      <input type="hidden" value="3" name="ectype"/>
+                      <input type="hidden" value="0" name="expenseLimit">
+                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="startdate erp-leave-date-field" placeholder="dd/mm/yyyy"  />
                         <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="display:none;" value="n/a"/></td>

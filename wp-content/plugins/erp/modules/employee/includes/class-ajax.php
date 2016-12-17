@@ -634,7 +634,7 @@ class Ajax_Handler {
 //                    }
                 }
                 else{
-                    if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                    if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                     {
                             // insert into request
                             $wpdb->insert('requests', array('POL_Id' => $polid,'REQ_Code' => $expreqcode,'COM_Id' => $compid,'RT_Id' => $etype,'PC_Id' => $selProjectCode,'CC_Id' => $selCostCenter));
@@ -658,7 +658,7 @@ class Ajax_Handler {
                 case 3:
 
                 if($expenseLimit > 0){
-                        if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                        if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                         {
 
                                 // insert into request
@@ -724,7 +724,7 @@ class Ajax_Handler {
                 case 4:
                 if($expenseLimit > 0){
                    //-------- employee -->  2nd level manager  -->  finance
-                   if($mydetails->EMP_Code==$mydetails->EMP_Funcreprtnmngrcode)
+                   if($mydetails->EMP_Code==$mydetails->EMP_Funcrepmngrcode)
                     {
 
                             // insert into request

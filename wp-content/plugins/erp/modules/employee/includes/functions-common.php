@@ -279,7 +279,7 @@ function genExpreqcode($n, $f=false){
 	$m=date('m');
 	$y=date('y');
 	
-	$code=$wpdb->get_row("SELECT * FROM CODE");
+	$code=$wpdb->get_row("SELECT * FROM code");
 	
 	
 	if($tnetype)	

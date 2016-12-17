@@ -112,12 +112,16 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   </thead>
                   <tbody>
                     <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
-                      <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
-                      <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
-                      </td>
-                      <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="">
+                      <input type="hidden" value="5" name="ectype"/>
+                      <input type="hidden" value="0" name="expenseLimit">
+                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd-mm-yyyy" autocomplete="off"/><input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
+                        <input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
+                        <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="display:none;" value="n/a"/></td>
+                      <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea>
+                        <select name="selExpcat[]" id="selExpcat1" class="" style="display:none;">
+                          <option value="5">select</option>
+                        </select></td>
+                      <td data-title="Category"><select name="selModeofTransp[]" id="selModeofTransp1" class="" onchange="return getAmount(this.value, 1);">
                           <option value="">Select</option>
                           <?php 
 					  
@@ -137,20 +141,17 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 					  ?>
                           <option value="<?php echo $rowsql->MOD_Id; ?>" <?php echo $readonly; ?>><?php echo $rowsql->MOD_Name; ?></option>
                           <?php } ?>
+                        </select>
+                      </td>
+                      <td data-title="City/Location"><span id="city1container">
+                        <input  name="from[]" id="from1" type="text" placeholder="From" class=""  autocomplete="off">
+                        <input  name="to[]" id="to1" type="text" placeholder="To" class=""  autocomplete="off">
+                        </span><select name="selStayDur[]" class="" style="display:none;">
+                          <option value="n/a">Select</option>
                         </select></td>
-                        <td data-title="Place"><span id="city1container">
-                        <input  name="from[]" id="from1" type="text" placeholder="From" class="">
-                        <input  name="to[]" id="to1" type="text" placeholder="To" class="">
-                        </span></td>
-                        <td data-title="Estimated Cost"><span id="cost1container">
-                        <input type="text" class="" name="txtdist[]" id="txtdist" autocomplete="off"/>
-                        </br><span class="red" id="show-exceed"></span>
-                        <input type="hidden" value="2" name="ectype" id="ectype"/>
-                        <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
-                        <input type="hidden" name="action" id="send_post_travel_request" value="send_post_travel_request">
-                        </span></td>
-                        <td data-title="Total Cost"> <input type="text" class="form-control" name="txtCost[]" id="txtCost1" readonly="readonly"  autocomplete="off"/></td>
-                        <td><input type='file' name='file1[]' id="file1" multiple="true"></td>
+                      <td data-title="Distance (in km)"><input type="text" class="" name="txtdist[]"  id="txtdist1" onkeyup="return mileageAmount(this.value, 1);" autocomplete="off"/></td>
+                      <td data-title="Total Cost"> <input type="text" class="" name="txtCost[]" id="txtCost1" readonly="readonly"  autocomplete="off"/></td>
+                      <td data-title="Upload bills / tickets"><input type='file' name='file1[]' id="file1[]" multiple="true" onchange="Validate(this.id);"></td>
                     </tr>
                   </tbody>
                 </table>
