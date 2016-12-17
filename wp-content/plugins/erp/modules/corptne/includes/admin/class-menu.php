@@ -32,25 +32,25 @@ class Admin_Menu {
            //add_menu_page( 'Master Admin Menu', 'Master Admin', 'superadmin', 'masteradminmenu', 'masteradminmenu_init', array( $this, 'masteradmin_list'),'dashicons-building' );
           add_menu_page( __( 'Master Admin Menu', 'superadmin' ), __( 'Master Admin', 'superadmin' ), 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'),'dashicons-building' );
 		   $overview = add_submenu_page( 'masteradminmenu', 'Overview', 'Overview', 'superadmin', 'masteradminmenu', array( $this, 'masteradmin_list'));
-		   add_submenu_page( 'masteradminmenu', 'Add Master Admin', 'Add Master Admin', 'superadmin', 'masteradminadd', 'masteradminadd');
-           add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'masteradminview', array( $this, 'masteradminview_page'));
+		   //add_submenu_page( 'masteradminmenu', 'Add Master Admin', 'Add Master Admin', 'superadmin', 'masteradminadd', 'masteradminadd');
+           //add_submenu_page( 'masteradminmenu', 'View / Edit / Delete Master Admin', 'View / Edit / Delete Master Admin', 'superadmin', 'masteradminview', array( $this, 'masteradminview_page'));
 
            add_menu_page( __( 'Companies', 'superadmin' ), __( 'Companies', 'superadmin' ), 'superadmin', 'companiesmenu', array( $this, 'companies_list'),'dashicons-building' );
            $overview = add_submenu_page('companiesmenu', 'Overview', 'Overview', 'superadmin', 'companiesmenu', array( $this, 'companies_list'));
 
-           add_submenu_page( 'companiesmenu', 'Create Company', 'Create Company', 'superadmin', 'mastercompaniesnew', 'mastercompaniesnew');
-           add_submenu_page( 'companiesmenu', 'View / Edit Company', 'View / Edit Company', 'superadmin', 'mastercompaniesview',array( $this, 'companyview_page' ));
+           //add_submenu_page( 'companiesmenu', 'Create Company', 'Create Company', 'superadmin', 'mastercompaniesnew', 'mastercompaniesnew');
+           //add_submenu_page( 'companiesmenu', 'View / Edit Company', 'View / Edit Company', 'superadmin', 'mastercompaniesview',array( $this, 'companyview_page' ));
            add_submenu_page( 'companiesmenu', 'Company Admins', 'Company Admins', 'superadmin', 'companies-admin',  array( $this, 'companiesadmin')); 
 
            add_menu_page( 'Travelagents', 'Travelagents', 'superadmin', 'travelagentsmenu',array( $this, 'travelagent_create'),'dashicons-building');
 		   //$overview = add_submenu_page( 'travelagentsmenu', 'Overview', 'Overview', 'superadmin', 'travelagentsmenu','travelagentsmenu_init',array( $this, 'travelagent_create'));
 		   //add_submenu_page( 'travelagentsmenu', 'Add Travel Agents', 'Add Travel Agents', 'superadmin', 'superadmintravelagentsadd', 'superadmintravelagentsadd');
-           add_submenu_page( 'travelagentsmenu', 'travelagentadd', 'View / Edit / Delete Travel Agents ', 'superadmin', 'travelagents',array( $this, 'travelagentsview_page' ));
+           //add_submenu_page( 'travelagentsmenu', 'travelagentadd', 'View / Edit / Delete Travel Agents ', 'superadmin', 'travelagents',array( $this, 'travelagentsview_page' ));
            //add_submenu_page( 'travelagentsmenu', 'Travel Desk Logs', 'Travel Desk Logs', 'superadmin', 'superadmintravelagentslogs', 'superadmintravelagentslogs');
 
            add_menu_page(__( 'WorkFlow', 'superadmin' ), __( 'WorkFlow', 'superadmin' ),  'superadmin', 'workflowsmenu', array( $this, 'workflow'),'dashicons-products' );
            $overview = add_submenu_page( 'workflowsmenu', 'Overview', 'Overview', 'superadmin', 'workflowsmenu', array( $this, 'workflow'));
-		   add_submenu_page( 'workflowsmenu', 'Add / Edit / Delete Workflow', 'Add / Edit / Delete Workflow', 'superadmin', 'mastercompaniesworkflow', 'mastercompaniesworkflow');
+		   //add_submenu_page( 'workflowsmenu', 'Add / Edit / Delete Workflow', 'Add / Edit / Delete Workflow', 'superadmin', 'mastercompaniesworkflow', 'mastercompaniesworkflow');
 
 //           add_menu_page( 'reportscharts Menu', 'Reports & Charts', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init','dashicons-chart-bar');
 //           $overview = add_submenu_page( 'reportschartsmenu', 'Overview', 'Overview', 'superadmin', 'reportschartsmenu', 'reportschartsmenu_init');
