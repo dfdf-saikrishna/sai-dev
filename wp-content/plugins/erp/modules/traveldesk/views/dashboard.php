@@ -85,8 +85,8 @@ global $wpdb;
                         $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'companies_table_list'), count($_REQUEST['id'])) . '</p></div>';
                     }
                     ?>
-                <div class="list-table-wrap erp-hr-employees-wrap">
-                    <div class="list-table-inner erp-hr-employees-wrap-inner">
+                <div class="list-table-wrap erp-traveldesk-wrap">
+                    <div class="list-table-inner erp-traveldesk-inner">
                         <?php echo $message;?>
                         <?php //$table->views(); ?>
                         <form method="post">

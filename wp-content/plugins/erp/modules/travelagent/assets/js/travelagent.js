@@ -72,8 +72,6 @@
              */
              sendclaims: function(e) {
 				 e.preventDefault();
-                alert("test");
-				
 					/**
                      * Handle the onsubmit function
                      *

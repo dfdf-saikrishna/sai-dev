@@ -545,6 +545,8 @@ return array(
 	'WeDevs\\ERP\\Traveldesk\\Traveldeskdashboard_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-dashboard.php',
     'WeDevs\\ERP\\Traveldesk\\TravelDesk_Bankdetails_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-bankdetails-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
+    'WeDevs\\ERP\\Traveldesk\\TDRiseinvoiceview' => $baseDir . '/modules/traveldesk/includes/class-tdriseinvoiceview.php',
+   'WeDevs\\ERP\\Traveldesk\\Claimsview' => $baseDir . '/modules/traveldesk/includes/class-claimsview.php',
     
     /*****************************/
     /** Travel Agent Module classes **/

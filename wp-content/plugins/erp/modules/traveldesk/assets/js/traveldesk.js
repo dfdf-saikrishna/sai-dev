@@ -24,8 +24,9 @@
             $( '.traveldeskrequestarrow' ).on( 'click', '', this.traveldeskrequestarrow.view);
             $( '.erp-traveldeskbankdetails' ).on( 'click', 'a#erp-traveldeskbankdetails-new', this.traveldeskBankdetails.create );
 			$( '.erp-traveldeskbankdetails' ).on( 'click', 'span.edit a', this.traveldeskBankdetails.edit );
-			
-
+			$('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
+			$('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
+			$('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
             this.initTipTip();
 		
             // this.employee.addWorkExperience();
@@ -53,7 +54,8 @@
                 $('.select2').select2();
             } );
         },
-        
+      
+		
 			traveldeskBankdetails: {
                 
 			 /**
@@ -342,15 +344,115 @@
                 },
 			
 		},
+		  
+	traveldeskRiseinvoice: {
+			
+			indianRupeeFormat: function(x){
+	
+				x=x.toString();
+				var lastThree = x.substring(x.length-3);
+				var otherNumbers = x.substring(0,x.length-3);
+				if(otherNumbers != '')
+					lastThree = ',' + lastThree;
+				var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+				
+				//res=parseInt(res);
+				
+				return res;
+
+			},
+		
+            reload: function () {
+                $('.erp-traveldesk-wrap').load(window.location.href + ' .erp-traveldesk-wrap-inner');
+            },
+			traveldeskInvoice: function (e) {
+                e.preventDefault();
+                var values = new Array();
+                $.each($("input[name='reqid[]']:checked"), function () {
+                    values.push($(this).val());
+                });
+                if(values!=""){
+					window.location.replace("/wp-admin/admin.php?page=RiseInvoice&action=view&reqid=" + values);
+					}
+
+            },
+			buttonCalculate:function (e) {
+				var servTax		=	$("#txtServiceTax").val();
+				var servChrg	=	$("#txtServiceChrgs").val();
+				var totalAmnt=$("#totalAmount").val();
+				var calc;
+				var totalAmntFrmtd;
+				var nooftickets=$('#hiddenTickets').val();
+				if(servTax || servChrg){
+					if(servTax){
+						calc=nooftickets * (servChrg * (servTax / 100));
+						calc=calc.toFixed();
+						var calcText	=	WeDevs_ERP_TRAVELDESK.traveldeskRiseinvoice.indianRupeeFormat(calc);
+						//alert('CalculatedAmnt='+calc);
+						$("#servicetaxlistid").css('display', 'block');
+						$("#servicetaxid").text(calcText);
+						totalAmnt=parseInt(totalAmnt)+parseInt(calc);
+					}
+					if(servChrg){
+						servChrg	=	parseInt(servChrg) * parseInt(nooftickets);
+						$("#serviceamntlistid").css('display', 'block');
+						$("#servicechargesid").text(servChrg);
+						//alert(totalAmnt);
+						totalAmnt=parseInt(totalAmnt) + parseInt(servChrg);
+					}
+					//alert('Total Amnt='+totalAmnt);
+					totalAmntFrmtd= WeDevs_ERP_TRAVELDESK.traveldeskRiseinvoice.indianRupeeFormat(totalAmnt)+'.00';
+					$("#totalamountid").text(totalAmntFrmtd);
+					//$("#totalAmount").val(totalAmnt);
+				} else {
+					totalAmntFrmtd= WeDevs_ERP_TRAVELDESK.traveldeskRiseinvoice.indianRupeeFormat(totalAmnt)+'.00';
+					$("#totalamountid").text(totalAmntFrmtd);
+					if(!servTax)
+					$("#servicetaxlistid").css('display', 'none'); 
+					if(!servChrg)
+					$("#serviceamntlistid").css('display', 'none');	
+				}
+			},
+        },
+		traveldeskClaims:{
+			
+			/* Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-traveldeskclaims-wrap' ).load( window.location.href + ' .erp-traveldeskclaims-wrap-inner' );
+            }, 
+			
+			  /**
+             * Create a new employee modal
+             *
+             * @param  {event}
+             */
+             sendclaims: function(e) {
+				 e.preventDefault();
+					/**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                        wp.ajax.send( 'traveldeskclaims_create', {
+                            data: $(this).serialize(),
+                            success: function(response) {
+                                console.log(response);
+                                WeDevs_ERP_TRAVELDESK.traveldeskClaims.reload();
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                   
+            },	 
+		},
+		
 		
   
     };
-	$( '.txtIssuedAt').datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '-100:+0',
-            });
     $(function() {
         WeDevs_ERP_TRAVELDESK.initialize();
     });

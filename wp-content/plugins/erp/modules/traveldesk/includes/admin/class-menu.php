@@ -1,6 +1,8 @@
 <?php
 namespace WeDevs\ERP\Traveldesk\Admin;
 use WeDevs\ERP\Traveldesk\Traveldeskview;
+use WeDevs\ERP\Traveldesk\TDRiseinvoiceview;
+use WeDevs\ERP\Traveldesk\Claimsview;
 
 /**
  * Admin Menu
@@ -28,7 +30,10 @@ class Admin_Menu {
         *  **********************************/
        if ( current_user_can( 'traveldesk' ) ) {
         add_menu_page(__( 'Dashboard', 'traveldesk' ), __( 'Dashboard', 'traveldesk' ), 'traveldesk','traveldesk-dashboard', array( $this, 'traveldesk_dashboard'),'dashicons-dashboard');
-
+		//add_submenu_page('', 'RiseInv', 'RiseInvoice', 'traveldesk', 'RiseInvoiceTd',  array( $this, 'tdriseinvoiceview_page' ));
+		//add_submenu_page('RiseInv', 'RiseInv', 'RiseInvoice', 'traveldesk', 'RiseInvoiceTd', array( $this,'tdriseinvoiceview_page'),'dashicons-admin-users');
+        add_submenu_page('', 'RiseInv', 'RiseInvoice', 'traveldesk', 'RiseInvoice',  array( $this, 'tdriseinvoiceview_page' ));
+       
         add_menu_page('View-Edit-Request', 'Request Without Approval', 'traveldesk','View-Edit-Request', array( $this, 'view_req_withoutappr'),'dashicons-admin-users');
         
         $overview = add_submenu_page('View-Edit-Request', 'Overview', 'Overview', 'traveldesk', 'View-Edit-Request', array( $this,'view_req_withoutappr'));
@@ -96,7 +101,10 @@ add_submenu_page('Group Request', 'Create Request', 'Create Request', 'traveldes
 add_submenu_page('Group Request', 'View / Edit Request', 'View / Edit Request', 'traveldesk','View / Edit Request'.'/ View / Edit Request', 'View / Edit Request');
 
 add_menu_page('claims', 'claims', 'traveldesk', 'claims', array( $this, 'traveldeskClaims'),'dashicons-media-spreadsheet');
-add_submenu_page('claims', 'View Invoices', 'View Invoices', 'traveldesk','View Invoices'.'/ View Invoices',array( $this, 'traveldeskClaims'));
+$overview = add_submenu_page('claims', 'Overview', 'Overview', 'traveldesk', 'claims', array( $this,'traveldeskClaims'));
+ add_submenu_page('', 'ViewClaims', 'View Claims ', 'traveldesk', 'ViewClaims', array( $this,'traveldesk_claim_details'));
+       
+//add_submenu_page('claims', 'View Invoices', 'View Invoices', 'traveldesk','View Invoices'.'/ View Invoices',array( $this, 'traveldeskClaims'));
 add_submenu_page('claims', 'Bank Details', 'Bank Details', 'traveldesk','Bankdetails', array( $this, 'traveldeskBankDetails'));
 
 add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'setting','dashicons-admin-generic');
@@ -108,6 +116,36 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
        }
     }
 
+	
+	/**
+     * Handles the dashboard page
+     *
+     * @return void
+     */
+    public function traveldesk_claim_details() {
+         $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+         $id     = isset( $_GET['tdcid'] ) ? intval( $_GET['tdcid'] ) : 0;
+		
+        switch ($action) {
+            case 'view':
+                $claimsview = new Claimsview( $id );
+                if ( !$id ) {
+                    wp_die( __( 'Invoice id not found!', 'erp' ) );
+                }  
+                $template = WPERP_TRAVELDESK_VIEWS . '/tdclaimsview.php';
+                break;
+
+            default:
+                $template = WPERP_TRAVELDESK_VIEWS . '/tdclaimsview.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_traveldesk_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
     /**
      * Handles HR calendar script
      *
@@ -119,6 +157,35 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
         wp_enqueue_style( 'erp-fullcalendar' );
     }
 
+			/**
+     * Handles the employeeview page
+     *
+     * @return void
+     */
+    public function tdriseinvoiceview_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'view';
+	    $id     = $_GET['reqid'];
+		 switch ($action) {
+            case 'view':
+                $tdriseinvoiceview = new TDRiseinvoiceview($id);
+                 if ( !$id ) {
+                    wp_die( __( 'not found!', 'erp' ) );
+                }
+			
+                $template = WPERP_TRAVELDESK_VIEWS . '/traveldeskriseinvoice-create.php';
+                break;
+            default:
+            $template = WPERP_TRAVELDESK_VIEWS . '/traveldeskriseinvoice-create.php';
+                break;
+        }
+
+        $template = apply_filters( 'erp_traveldesk_templates', $template, $action, $id );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+	
     /**
      * Handles the dashboard page
      *
@@ -127,7 +194,8 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     public function dashboard_page() {
         include WPERP_CORPTNE_VIEWS . '/dashboard.php';
     }
-    
+	
+	 
     public function travel_dashboard() {
         include WPERP_COMPANY_VIEWS . '/traveldashboard.php';
     }
