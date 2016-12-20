@@ -279,7 +279,10 @@ class Finance_Approvers_List extends \WP_List_Table {
         global $wpdb;
         global $blocked;
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
-        $table_name = "company";
+
+
+        $table_name = "employees";
+
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
             if (is_array($ids))
@@ -320,31 +323,32 @@ class Finance_Approvers_List extends \WP_List_Table {
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'emp.EMP_Name';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'ASC';
-//
-//        // [REQUIRED] define $items array
-//        // notice that last argument is ARRAY_A, so we will retrieve array
-//        if (!empty($_POST["s"])) {
-//            $query = "";
-//            $search = trim($_POST["s"]);
-//            $searchcol = array(
-//                'REQ_Code'
-//            );
-//            $i = 0;
-//            foreach ($searchcol as $col) {
-//                if ($i == 0) {
-//                    $sqlterm = 'WHERE';
-//                } else {
-//                    $sqlterm = 'OR';
-//                }
-//                if (!empty($_REQUEST["s"])) {
-//                    $query .= ' ' . $sqlterm . ' ' . $col . ' LIKE "' . $search . '"';
-//                }
-//                $i++;
-//            }
-//            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-//        } else {
-            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-       // }
+
+        // [REQUIRED] define $items array
+        // notice that last argument is ARRAY_A, so we will retrieve array
+		if(!empty($_POST["s"])) {
+            $query = "";
+            $search = trim($_POST["s"]);
+			$searchcol= array(
+			'REQ_Code'
+			);
+			$i =0;
+			foreach( $searchcol as $col) {
+				if($i==0) {
+					$sqlterm = 'WHERE';
+				} else {
+					$sqlterm = 'OR';
+				}
+				if(!empty($_REQUEST["s"])) {$query .=  ' '.$sqlterm.' '.$col.' LIKE "'.$search.'"';}
+				$i++;
+			}
+            
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg".$query."AND emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+		}
+		else{
+			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);  
+		}
+
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above

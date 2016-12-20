@@ -51,7 +51,7 @@ if ($selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE 
                                                 <a href='javascript:upload()'><img src="<?php echo WPERP_COMPANY_ASSETS ?>/img/pdf-doc.png" title="click to upload new document" /> </a>
                                                 <?php
                                             }    ?>
-                                            <input type="file" name="csv_file" id="csv_file" />
+                                            <input type="hidden" name="csv_file" id="csv_file" />
                                     <?php  }}else {
                                             ?>
                                         

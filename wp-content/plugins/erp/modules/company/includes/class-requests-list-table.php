@@ -459,7 +459,9 @@ class Requests_List extends \WP_List_Table {
                     }
                     $i++;
                 }
+
                 $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re" . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY req.REQ_Id"));
+
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re" . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
             } else {
                 $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re  WHERE req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 " . $query));

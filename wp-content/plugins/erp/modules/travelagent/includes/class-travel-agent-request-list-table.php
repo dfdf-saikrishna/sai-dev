@@ -134,10 +134,10 @@ class Travel_Agent_Request_List_Table extends \WP_List_Table
 								
 								$icon=1;
 							}
-							
+							if(!empty($selclmreqid)){
 							if($selclmreqid[0]->TDC_Status==2)
 							$icon=2;
-					
+					}
 					
 							
 						}
@@ -254,10 +254,10 @@ return '<span  width="15%" title="'. $title .'">'. $reqcode . '</span>';
 								
 								$icon=1;
 							}
-							
+							if(!empty($selclmreqid)){
 							if($selclmreqid[0]->TDC_Status==2)
 							$icon=2;
-					
+					}
 					
 							
 						}
@@ -358,10 +358,10 @@ return '<span  width="15%" title="'. $title .'">'. $reqcode . '</span>';
 								
 								$icon=1;
 							}
-							
+							if(!empty($selclmreqid)){
 							if($selclmreqid[0]->TDC_Status==2)
 							$icon=2;
-					
+					}
 					
 							
 						}
@@ -461,10 +461,10 @@ return '<span  width="15%" title="'. $title .'">'. $reqcode . '</span>';
 								
 								$icon=1;
 							}
-							
+							if(!empty($selclmreqid)){
 							if($selclmreqid[0]->TDC_Status==2)
 							$icon=2;
-					
+					}
 					
 							
 						}

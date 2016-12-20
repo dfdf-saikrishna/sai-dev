@@ -47,11 +47,12 @@ class Traveldesk_Claims_List_Table extends \WP_List_Table
         return '<em>' . $item['COM_Id'] . '</em>';
     }
     
-    function column_ref_no($item)
-    {
-        return '<em>' . $item['TDC_ReferenceNo'] . '</em>';
-     
-    }
+	
+	function column_ref_no($item) {
+		 $compid = $_SESSION['compid']; 
+			 return sprintf( '%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s',$item['TDC_ReferenceNo'], '', erp_travel_desk_claim_details_view( $item['TDC_Id'],$compid),'');
+        }
+   
     
     function column_requests($item) {
        global $wpdb;
@@ -90,11 +91,11 @@ class Traveldesk_Claims_List_Table extends \WP_List_Table
     }
     
     function column_approval_status($item){       
-       return $item['TDC_Level'];
+       return tdclaimapprovals($item['TDC_Level']);
     }
     
      function column_claim_status($item){       
-       return $item['TDC_Status'];
+       return approvals($item['TDC_Status']);
     }
     
     function column_invoice_date($item){       
@@ -111,7 +112,6 @@ class Traveldesk_Claims_List_Table extends \WP_List_Table
     function get_columns()
     {
         $columns = array(
-            'slno' => __('SL.No.', 'expensecategory_table_list'),
             'ref_no' => __('Reference No.', 'expensecategory_table_list'),
             'requests' => __('Requests', 'expensecategory_table_list'),
             'quantity' => __('Quantity', 'expensecategory_table_list'),
@@ -150,7 +150,7 @@ class Traveldesk_Claims_List_Table extends \WP_List_Table
         global $wpdb;
         $table_name = 'travel_desk_claims'; // do not forget about tables prefix
 
-        $per_page = 5; // constant, how much records will be shown per page
+        $per_page = 15; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -161,9 +161,9 @@ class Traveldesk_Claims_List_Table extends \WP_List_Table
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
-
+		$compid = $_SESSION['compid'];
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(COM_Id) FROM $table_name");
+        $total_items = count($wpdb->get_results("SELECT COM_Id='$compid' FROM $table_name"));
 
         // prepare query params, as usual current page, order by and order direction
         $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;

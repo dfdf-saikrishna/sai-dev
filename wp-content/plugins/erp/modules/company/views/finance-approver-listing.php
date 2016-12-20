@@ -1,4 +1,4 @@
-<div class="wrap erp-hr-companyadmin" id="wp-erp">
+<div class="wrap finance-approver-listing" id="wp-erp">
     <h2><?php _e( 'Finance Approver Listing', 'superadmin' ); ?></h2>
     <!-- Messages -->
     <div style="display:none" id="failure" class="notice notice-error is-dismissible">
@@ -24,8 +24,6 @@
         <div class="list-table-inner erp-hr-employees-wrap-inner">
             <?php echo $message;?>
             <?php //$table->views(); ?>
-			
-			
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                 <?php $table->display() ?>

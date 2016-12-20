@@ -36,7 +36,7 @@ class Traveldesk {
         $this->init_actions();
 
         // Initialize the filter hooks
-        $this->init_filters();
+       // $this->init_filters();
 
         do_action( 'erp_hrm_loaded' );
     }
@@ -64,7 +64,7 @@ class Traveldesk {
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-bank-details.php';
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-requests.php';
 	   require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldeskbankdetails.php';
-       
+       require_once WPERP_TRAVELDESK_PATH . '/includes/functions-tdinvoice.php';
 
     }
 
@@ -100,18 +100,6 @@ class Traveldesk {
         //new Admin\User_Profile();
         //new Hr_Log();
         new Emailer();
-    }
-
-    /**
-     * Register HR settings page
-     *
-     * @param array
-     */
-    public function add_settings_page( $settings = [] ) {
-
-        $settings[] = include __DIR__ . '/includes/class-settings.php';
-
-        return $settings;
     }
 
     /**

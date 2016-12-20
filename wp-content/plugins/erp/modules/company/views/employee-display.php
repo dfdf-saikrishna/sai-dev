@@ -9,7 +9,7 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
 <div class="postbox">
     <div class="inside">
         <h2><?php _e('Employees Profile Display', 'employee'); ?></h2>
-        <code>View EMPLOYEE DETAILS </code>
+        <code>VIEW EMPLOYEE DETAILS </code>
         <div class="wrap pre-travel-request" id="wp-erp">
             <div style="margin-top:30px;">
                
@@ -139,5 +139,5 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
 
     <!-- //content-->
     </div>
+    <?Php }?>
 
-                                    <?Php }?>

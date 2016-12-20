@@ -140,7 +140,7 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
 		$supid = $_SESSION['supid'];
         $table_name = 'company'; // do not forget about tables prefix
 
-        $per_page = 5; // constant, how much records will be shown per page
+        $per_page = 10; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -153,10 +153,10 @@ class Travelagentdashboard_List_Table extends \WP_List_Table
         $this->process_bulk_action();
 
         // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT * FROM $table_name WHERE SUP_Id='$supid' AND COM_Status=0");
+        $total_items = count($wpdb->get_results("SELECT * FROM $table_name WHERE SUP_Id='$supid' AND COM_Status=0"));
 
         // prepare query params, as usual current page, order by and order direction
-        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
+        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'])-1) : 0;
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'COM_Name';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
 
