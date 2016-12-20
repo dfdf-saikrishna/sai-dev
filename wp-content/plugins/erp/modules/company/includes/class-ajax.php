@@ -255,24 +255,25 @@ use Hooker;
         $data = $posted;
 
         $txtLimitPercentage = trim($data['txtLimitPercentage']);
-        //echo $txtLimitPercentage;die;
-        //$empid = $data['empid'];
         $tlId = $data['tlId'];
         
         //$txtLimitPercentage ? $txtLimitPercentage = "'" . $txtLimitPercentage . "'" : $txtLimitPercentage = "0";
 
         $row = $wpdb->get_results("SELECT * FROM  tolerance_limits WHERE COM_Id='$compid' AND TL_Status=1 AND TL_Active=1");
-   //print_r($rowtlid[0]->TL_Id);die;
-        foreach ($row as $rowtlid){
-        if (!empty($rowtlid->TL_Id)) {
-
-            if ($txtLimitPercentage == $rowtlid->TL_Percentage) {
+//print_r($row[0]->TL_Id);die;
+        //foreach ($row as $rowtlid){
+//        if (!empty($rowtlid !=->TL_Id)) {
+            if ($row[0]->TL_Id != "") {
+            if ($txtLimitPercentage == $row[0]->TL_Percentage) {
 
                 $response = array('status' => 'info', 'message' => "Please choose a different percentage to update the tolerance limits");
                 $this->send_success($response);
                 exit;
             } else {
-                if ($wpdb->update('tolerance_limits', array('TL_Status' => '2', 'TL_ClosedDate' => 'NOW()'), array('COM_Id' => $compid))) {
+                date_default_timezone_set('Asia/Kolkata');
+                $date=date('y-m-d  h:i:s');
+                
+                if ($wpdb->update('tolerance_limits', array('TL_Status' => '2', 'TL_ClosedDate' => $date), array('COM_Id' => $compid))) {
 
                     if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
 
@@ -291,8 +292,7 @@ use Hooker;
                     exit;
                 }
             }
-        } else {
-
+        }  else {
             if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
                 $response = array('status' => 'success', 'message' => "Tolerance limit added successfully");
                 $this->send_success($response);
@@ -304,7 +304,7 @@ use Hooker;
                 exit;
             }
         }
-        }
+        //}
     }
 
     //gradelimits functions
@@ -2119,7 +2119,7 @@ use Hooker;
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
 
-        $response = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Id = '$data[id]'");
+        $response = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Id = '$data[id]','$data[val]'");
 
         $this->send_success($response);
         //$this->send_success( array( 'id' => $id));

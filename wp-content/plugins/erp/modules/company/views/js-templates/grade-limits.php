@@ -4,7 +4,8 @@ $compid = $_SESSION['compid'];?>
 <div class="erp-employee-form">
     <fieldset class="no-border">
         <input type="hidden" value="{{data.COM_Id}}" name="company[compid]" id="compid">
-         <input type="hidden" value="{{data.GL_Id}}" name="company[glId]" id="glId">
+         <input type="hidden" value="{{data.EG_Id}}" name="company[egId]" id="egId">
+          <input type="hidden" value="{{data.GL_Id}}" name="company[glId]" id="glId">
         <div class="row">
         <?php erp_html_form_label( __( 'Flight', 'erp' ), 'grades-title', true ); ?>
         <span class="field">

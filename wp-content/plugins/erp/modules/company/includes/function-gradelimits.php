@@ -5,6 +5,7 @@ function gradelimits_create($posted) {
     $compid = $_SESSION['compid'];
     $adminid = $_SESSION['adminid'];
     $glID = $posted['company']['glId'];
+    $egId = $posted['company']['egId'];
     $company_data = array(
         'COM_Id' => $compid,
         // 'ADM_Id'=>$data['company']['adminid'],

@@ -40,7 +40,9 @@ if(!$finance){
       <td>:</td> 
          
       <?php 
+     
       $code=$empdetails[0]->EMP_Reprtnmngrcode;
+    
 					$repmngname=$wpdb->get_results("SELECT EMP_Name FROM employees WHERE EMP_Code='$code' AND COM_Id='$compid'");
                                     // Print_r($repmngname);DIE;
 					?>
