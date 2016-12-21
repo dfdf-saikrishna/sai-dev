@@ -85,7 +85,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
                 <form name="post-travel-req-form" action="#" method="post" enctype="multipart/form-data">
-            <table class="wp-list-table widefat striped admins" border="0" id="table1">
+            <table class="wp-list-table widefat striped admins" border="0" id="table-others-travel">
                   <thead class="cf">
                     <tr>
                       <th width="16%">Date</th>
@@ -99,7 +99,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     <tr>
                       <input type="hidden" value="3" name="ectype"/>
                       <input type="hidden" value="0" name="expenseLimit">
-                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="startdate erp-leave-date-field" placeholder="dd/mm/yyyy"  />
+                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="posttraveldate" placeholder="dd/mm/yyyy"  />
                         <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="display:none;" value="n/a"/></td>
@@ -132,6 +132,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     </tr>
                   </tbody>
                 </table>
+                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-others" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">

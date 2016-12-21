@@ -111,19 +111,19 @@ class Finance_Requests_List extends \WP_List_Table {
                     break;
 
                 case 2:
-                    $href = "/wp-admin/admin.php?page=View-Post-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=View-Post-Accounts-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 3:
-                    $href = "/wp-admin/admin.php?page=View-other-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=View-Others-Accounts-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 5:
-                    $href = "/wp-admin/admin.php?page=View-Mileage-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=View-Mileage-Accounts-Request&reqid=".$item['REQ_Id'];
                     break;
 
                 case 6:
-                    $href = "/wp-admin/admin.php?page=View-Utility-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=View-Utility-Accounts-Request&reqid=".$item['REQ_Id'];
                     break;
             }
             switch ($item['REQ_Type']) {

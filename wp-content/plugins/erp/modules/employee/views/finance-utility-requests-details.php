@@ -5,8 +5,8 @@ global $wpdb;
 global $totalcost;
 $paytotd=0;
 $reqid = $_GET['reqid'];
+$row=$wpdb->get_row("SELECT * FROM requests req, request_employee re, employees emp WHERE req.REQ_Id='$reqid' AND RT_Id=6 AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND REQ_Active=1 AND re.RE_Status=1");
 $compid = $_SESSION['compid'];
-$row=$wpdb->get_row("SELECT * FROM requests req, request_employee re, employees emp WHERE req.REQ_Id='$reqid' AND req.COM_Id=$compid AND req.COM_Id=emp.COM_Id AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND req.REQ_Active=1 AND re.RE_Status=1");
 $empuserid = $_SESSION['empuserid'];
 $empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
 $repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
@@ -19,7 +19,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 <div class="postbox">
     <div class="inside">
         <div class="wrap pre-travel-request erp" id="wp-erp">
-            <h2><?php _e( 'Others Expense Request', 'employee' ); ?></h2>
+            <h2><?php _e( 'Utility Expense Request', 'employee' ); ?></h2>
             <code class="description">View Request</code>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
@@ -73,7 +73,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
             <!-- Request Details -->
-            <?php _e(requestDetails(3));?>
+            <?php _e(requestDetails(6));?>
             </div>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
@@ -97,12 +97,13 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <table class="wp-list-table widefat striped admins" border="0" id="table1">
                   <thead class="cf">
                     <tr>
-                       <th>Date</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
                       <th>Expense Description</th>
-                      <th>Expense Category</th>
-                      <th>Upload
-                        bills / tickets</th>
-                      <th>Total Cost</th>
+                      <th>Expense Type</th>
+                      <th>Bill Number</th>
+                      <th>Upload bills</th>
+                      <th>Bill Amount (Rs)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -112,29 +113,44 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         foreach($selsql as $rowsql){
                         ?>
                     <tr>
-                      <input type="hidden" id="et" value="3">
+                      <input type="hidden" id="et" value="6">
                       <input type="hidden" value="<?php echo $reqid; ?>" name="req_id" id="req_id"/>
                       <input type="hidden" name="reqcode" id="reqcode" value="<?php echo $row->REQ_Code?>" />
-                      <td data-title="Date"><?php echo date('d-M-Y',strtotime($rowsql->RD_Dateoftravel));?></td>
-                      <td data-title="Description"><p style="height:20px; overflow:auto;"><?php echo stripslashes($rowsql->RD_Description); ?></p></td>
+                      <td align="center" data-title="Start Date" class="scrollmsg"><?php echo date('d/M/Y',strtotime($rowsql->RD_StartDate));?></td>
+                      <td align="center" data-title="End Date" class="scrollmsg"><?php echo date('d-M-Y',strtotime($rowsql->RD_EndDate));?></td>
+                      <td data-title="Description"><div style="height:40px; overflow:auto;"><?php echo stripslashes($rowsql->RD_Description); ?></div></td>
                       <td data-title="Category"><?php echo $rowsql->MOD_Name; ?></td>
-                      <td data-title="Upload Bills / Tickets"><?php 
-						
-						$j=1;
+                      <td data-title="Bill Number"><b><?php echo $rowsql->RD_BillNumber;?></b></td>
+                      <td data-title="Upload bills"><?php 	
                                                 
-						$selsql=$wpdb->get_results("SELECT * FROM requests_files WHERE RD_Id=$rowsql->RD_Id");
+						$selfiles=$wpdb->get_results("SELECT * FROM requests_files WHERE RD_Id='$rowsql->RD_Id'");
 						
-						foreach($selsql as $rowfiles)
-						{
-							$temp=explode(".",$rowfiles->RF_Name);
-							$ext=end($temp);
-							
-							$fileurl="/erp/modules/company/upload/".$compid."/bills_tickets/".$rowfiles->RF_Name;
-						?>
+						if(count($selfiles)){
+						
+							$j=1;						
+							foreach($selfiles as $rowfiles)
+							{
+								$temp=explode(".",$rowfiles->RF_Name);
+								$ext=end($temp);
+								
+								$fileurl="/erp/modules/company/upload/".$compid."/bills_tickets/".$rowfiles->RF_Name;
+								
+							?>
                         <?php echo $j.") "; ?><a href="<?php echo WPERP_COMPANY_DOWNLOADS ?><?php echo $fileurl; ?>"><?php echo 'file'.$j.".".$ext;  ?></a><br />
-                        <?php $j++; } ?>
+                        <?php 
+							
+							$j++;
+							}
+						
+						} else {
+						
+							echo approvals(5);
+						
+						}
+						
+						 ?>
                       </td>
-                      <td data-title="Total Cost"><?php echo IND_money_format($rowsql->RD_Cost).".00"; ?></td>
+                      <td align="right" data-title="Bill Amount (Rs)"><?php echo IND_money_format($rowsql->RD_Cost).".00"; ?></td>
                     </tr>
                     <?php  
 					
@@ -148,12 +164,12 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   <tr>
                     <td align="right" width="85%">Claim Amount</td>
                     <td align="center" width="5%">:</td>
-                    <td align="right"><?php echo IND_money_format($totalcost).".00"; ?></td>
+                    <td align="right" ><?php echo IND_money_format($totalcost).".00"; ?></td>
                   </tr>
                 </table>
             </div>
             <!-- Edit Buttons -->
-            <?php _e(Actions(3));?>
+            <?php _e(FinanceActions(6));?>
             </form>
         </div>
     </div>

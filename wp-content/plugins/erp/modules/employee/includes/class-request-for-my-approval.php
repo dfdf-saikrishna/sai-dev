@@ -218,15 +218,42 @@ class Request_Travel_Expenses extends \WP_List_Table
      */
     function column_request_code($item)
     {
-        if($item['REQ_Type']==1){
-
+        
+        switch ($item['RT_Id']) 
+        {
+                case 1:
                 $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+                break;
 
-        } else {
+                case 2:
+                $href="/wp-admin/admin.php?page=View-Post-Accounts-Request&reqid=".$item['REQ_Id'];
+                break;
 
-                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+                case 3:
+                $href="/wp-admin/admin.php?page=View-Others-Accounts-Request&reqid=".$item['REQ_Id'];
+                break;
 
+                case 5:
+                $href="/wp-admin/admin.php?page=View-Mileage-Accounts-Request&reqid=".$item['REQ_Id'];
+                break;
+
+                case 6:
+                $href="/wp-admin/admin.php?page=View-Utility-Accounts-Request&reqid=".$item['REQ_Id'];
+                break;
         }
+        
+//        if($item['REQ_Type']==1){
+//            
+//                if($item['RT_Id']==1)
+//                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+//                if($item['RT_Id']==2)
+//                $href="/wp-admin/admin.php?page=View-Post-Accounts-Request&reqid=".$item['REQ_Id'];
+//
+//        } else {
+//
+//                $href="/wp-admin/admin.php?page=View-Accounts-Request&reqid=".$item['REQ_Id'];
+//
+//        }
 
         $type=NULL;
 

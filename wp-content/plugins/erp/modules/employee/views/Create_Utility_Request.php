@@ -85,7 +85,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
                 <form name="post-travel-req-form" action="#" method="post" enctype="multipart/form-data">
-            <table class="wp-list-table widefat striped admins" border="0" id="table1">
+            <table class="wp-list-table widefat striped admins" border="0" id="table-utility-travel">
                   <thead class="cf">
                     <tr>
                       <th>Start Date</th>
@@ -101,15 +101,15 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     <tr>
                       <input type="hidden" value="6" name="ectype"/>
                       <input type="hidden" value="0" name="expenseLimit">
-                      <td style="text-align:center;" data-title="Start Date" class="scrollmsg"><input name="txtStartDate[]" id="txtStartDate1" class="startdate erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
+                      <td style="text-align:center;" data-title="Start Date" class="scrollmsg"><input name="txtStartDate[]" id="txtStartDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
                         <input name="txtDate[]" id="txtDate1" class="" placeholder="dd/mm/yyyy" style="display:none;" value="n/a"/></td>
-                      <td style="text-align:center;" data-title="End Date" class="scrollmsg"><input name="txtEndDate[]" id="txtEndDate1" class="startdate erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/></td>
+                      <td style="text-align:center;" data-title="End Date" class="scrollmsg"><input name="txtEndDate[]" id="txtEndDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/></td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea>
                         <select name="selExpcat[]" id="selExpcat1" class="" style="display:none;">
                           <option value="6">select</option>
                         </select></td>
                       <td data-title="Category"><span id="modeoftr1acontent">
-                        <select name="selModeofTransp[]" id="selModeofTransp1" class="" style="width:110px;" onchange="return setFromTo(this.value, 1);">
+                        <select name="selModeofTransp[]" id="selModeofTransp1" class="" onchange="return setFromTo(this.value, 1);">
                           <option value="">Select</option>
                           <?php 
 					  
@@ -136,6 +136,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     </tr>
                   </tbody>
                 </table>
+                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-utility" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">

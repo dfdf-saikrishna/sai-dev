@@ -71,6 +71,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
               </tr>
             </table>
             </div>
+            <div style="margin-top:60px;">
+            <!-- Request Details -->
+            <?php _e(requestDetails(5));?>
+            </div>      
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -124,6 +128,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         foreach($selsql as $rowsql){
                         ?>
                     <tr>
+                      <input type="hidden" id="et" value="5">
+                      <input type="hidden" value="<?php echo $reqid; ?>" name="req_id" id="req_id"/>
+                      <input type="hidden" name="reqcode" id="reqcode" value="<?php echo $row->REQ_Code?>" />
                       <td align="center" data-title="Date"><?php echo date('d/M/Y',strtotime($rowsql->RD_Dateoftravel));?></td>
                       <td data-title="Description"><div style="height:40px; overflow:auto;"><?php echo stripslashes($rowsql->RD_Description); ?></div></td>
                       <td data-title="Category"><?php echo $rowsql->EC_Name; ?></td>
@@ -180,7 +187,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   <tr>
                     <td align="right" width="85%">Claim Amount</td>
                     <td align="center" width="5%">:</td>
-                    <td align="right" ><?php echo IND_money_format($totalcost-$paytotd).".00"; ?></td>
+                    <td align="right"><?php echo IND_money_format($totalcost-$paytotd).".00"; ?></td>
                   </tr>
                 </table>
             </div>

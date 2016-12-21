@@ -115,15 +115,15 @@ class Emp_Requests_List extends \WP_List_Table {
                     break;
 
                 case 3:
-                    $href = "/wp-admin/admin.php?page=View-other-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=view-others&reqid=".$item['REQ_Id'];
                     break;
 
                 case 5:
-                    $href = "/wp-admin/admin.php?page=View-Mileage-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=view-mileage&reqid=".$item['REQ_Id'];
                     break;
 
                 case 6:
-                    $href = "/wp-admin/admin.php?page=View-Utility-Request&reqid=".$item['REQ_Id'];
+                    $href = "/wp-admin/admin.php?page=view-utility&reqid=".$item['REQ_Id'];
                     break;
             }
             switch ($item['REQ_Type']) {

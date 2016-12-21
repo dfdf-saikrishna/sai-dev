@@ -40,6 +40,9 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_get-mileage', 'get_mileage' );
         $this->action( 'wp_ajax_get-file-extensions', 'get_file_extensions' );
         $this->action( 'wp_ajax_delete-files', 'delete_files' );
+        $this->action( 'wp_ajax_get-mode-mileage', 'get_mode_mileage' );
+        $this->action( 'wp_ajax_get-mode-utility', 'get_mode_utility' );
+        $this->action( 'wp_ajax_get-mode-others', 'get_mode_others' );
         
         
         
@@ -1443,7 +1446,27 @@ class Ajax_Handler {
         $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
         $this->send_success($selmode);
     }
-
+    
+    function get_mode_mileage(){
+        global $wpdb;
+        $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id=5 AND MOD_Status=1");
+        $this->send_success($selmode);
+    }
+    
+    function get_mode_utility(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id=6 AND COM_Id IN (0, '$compid') AND MOD_Status=1");
+        $this->send_success($selmode);
+    }
+    
+    function get_mode_others(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id=3 AND COM_Id IN (0, '$compid') AND MOD_Status=1");
+        $this->send_success($selmode);
+    }
+    
     function leave_reject() {
         $this->verify_nonce( 'wp-erp-hr-nonce' );
 

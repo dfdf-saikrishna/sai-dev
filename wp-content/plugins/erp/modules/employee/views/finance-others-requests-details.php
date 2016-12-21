@@ -146,14 +146,14 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 </table>
                 <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
                   <tr>
-                    <td align="right" width="85%">Claim Amount</td>
-                    <td align="center" width="5%">:</td>
-                    <td align="right"><?php echo IND_money_format($totalcost).".00"; ?></td>
+                    <td>Claim Amount</td>
+                    <td>:</td>
+                    <td><?php echo IND_money_format($totalcost).".00"; ?></td>
                   </tr>
                 </table>
             </div>
             <!-- Edit Buttons -->
-            <?php _e(Actions(3));?>
+            <?php _e(FinanceActions(3));?>
             </form>
         </div>
     </div>

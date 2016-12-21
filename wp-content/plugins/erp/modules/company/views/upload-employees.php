@@ -21,7 +21,10 @@
                             <p class="description"><?php _e( 'Upload a Excel file.', 'crp' ); ?></p>
                             <p id="download_sample_wrap">
                                 <input type="hidden" value="" />
-                                <a href="https://expirebox.com/files/8087511b301a051a8372d124d7d5c1e2.xls">Download Sample Excel</a>
+                                <?php
+                                $fileurl="/erp/modules/company/upload/file_format.xls";
+                                ?>
+                                <a href="<?php echo WPERP_COMPANY_DOWNLOADS ?><?php echo $fileurl; ?>" download="File Format">Download Sample Excel</a>
                             </p>
                         </td>
                     </tr>
@@ -40,4 +43,3 @@
         </form>
     </div><!-- .inside -->
 </div><!-- .postbox -->
-
