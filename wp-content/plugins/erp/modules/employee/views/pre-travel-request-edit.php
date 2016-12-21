@@ -1,4 +1,5 @@
 <?php
+$etEdit = 1;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 $compid = $_SESSION['compid'];
@@ -168,13 +169,13 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 
                         ?>
                     <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="" readonly="readonly"' : 'class="erp-leave-date-field"'; ?> class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
-                      <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
+                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" <?php echo $disabled ? 'class="" readonly="readonly"' : 'class="pretraveldate"'; ?> class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"/>
+                      <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
                       <input type="text" name="textBillNo[]" id="textBillNo<?php echo $rows; ?>" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" <?php echo $disabled ? 'readonly="readonly"':'';?> id="txtaExpdesc<?php echo $rows; ?>" class="" autocomplete="off"><?php echo stripslashes($rowrequest->RD_Description); ?></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><input type="hidden" <?php if($disabled){?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" value="<?php echo $rowrequest->EC_Id?>" <?php } ?>/>
-                          <select <?php if($disabled){?> disabled="disabled" <?php } else ?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" class="">
+                      <td data-title="Category"><input type="hidden" <?php if($disabled){?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" value="<?php echo $rowrequest->EC_Id?>" onchange="javascript:getMotPreTravel(this.value,1)"  <?php } ?>/>
+                          <select <?php if($disabled){?> disabled="disabled" <?php } else ?> name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" onchange="javascript:getMotPreTravel(this.value,<?php echo $rows; ?>)" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selexpcat as $rowexpcat)
@@ -184,7 +185,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                          
                         </select></td>
-                      <td data-title="Category"><input type="hidden" <?php if($disabled){ ?> name="selModeofTransp[]" id="selModeofTransp<?php echo $rows; ?>" value="<?php echo $rowrequest->MOD_Id; ?>" <?php } ?> />
+                      <td data-title="Category"><span id="modeoftr<?php echo $rows; ?>acontent"><input type="hidden" <?php if($disabled){ ?> name="selModeofTransp[]" id="selModeofTransp<?php echo $rows; ?>" value="<?php echo $rowrequest->MOD_Id; ?>" <?php } ?> />
                         <span id="modeoftr<?php echo $rows; ?>1acontent">
                         <select <?php if($disabled){ ?> disabled="disabled" <?php } else ?> name="selModeofTransp[]"  id="selModeofTransp<?php echo $rows; ?>" class="">
                           <option value="">Select</option>
@@ -196,7 +197,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                         </select>
                         </span></td>
-                      <td data-title="Place"><span id="city<?php echo $rows; ?>container">
+                        <td data-title="Place"><span id="city<?php echo $rows; ?>container">
                         <input  name="from[]" id="from<?php echo $rows; ?>" type="text" placeholder="From" value="<?php echo $rowrequest->RD_Cityfrom?>" <?php echo ($disabled) ? 'readonly="readonly"': ''; ?>>
                         <input  name="to[]" id="to<?php echo $rows; ?>" <?php if($rowrequest->EC_Id==2 || $rowrequest->EC_Id==4){ echo 'value="n/a" style="display:none;"'; } else { echo 'value="'.$rowrequest->RD_Cityto.'"'; } ?> <?php echo ($disabled) ? 'readonly="readonly"': ''; ?> type="text" placeholder="To" class="">
                         </span></td>
@@ -210,7 +211,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" id="reqid"/>
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)" <?php echo ($disabled) ? 'disabled="disabled" ' : ' title="Get Quote"'; ?>>Get Quote</button></td>
-                      <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row" <?php echo ($disabled) ? 'disabled="disabled" ' : ' title="delete row"'; ?> ><i class="fa fa-times"></i></button></td>
+                      <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row" <?php echo ($disabled) ? 'disabled="disabled" ' : ' onclick="return checkDeletRow();" title="delete row"'; ?> ><i class="fa fa-times"></i></button></td>
                     </tr>
                     <?php 
                     $rows++; 
@@ -221,7 +222,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   </tbody>
                 </table>
                 <input type="hidden" id="hidrowno" name="hidrowno" value="<?php echo $rows-1; ?>" />
-                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
+                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel-edit" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
                 
             </div>

@@ -167,7 +167,7 @@ class Others_Requests_List extends \WP_List_Table
      */
     function column_request_code($item)
     {
-      $href="";
+      $href="/wp-admin/admin.php?page=view-others&reqid=".$item['REQ_Id'];
 
         $type=NULL;
 
@@ -190,7 +190,7 @@ class Others_Requests_List extends \WP_List_Table
                 break;
 
           }
-          return "<a href='<?php echo $href; ?>' >".$item['REQ_Code']."</a>".$type;
+          return "<a href='$href' >".$item['REQ_Code']."</a>".$type;
     }
 
 

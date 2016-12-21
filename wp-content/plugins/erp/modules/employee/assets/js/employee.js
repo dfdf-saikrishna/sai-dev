@@ -21,10 +21,17 @@
             $( '.pre-travel-request').on( 'submit', '#request_edit_form', this.travelRequest.edit );
             $( '.pre-travel-request').on( 'click', '#deleteRowbutton', this.travelRequest.delete );
             $( 'body').on( 'click', '#post-emp-chat', this.travelRequest.createChatMsg );
+            $( 'body').on( 'click', 'span#add-row-pretravel-edit', this.travelRequest.addRowEdit );
             $( 'body').on( 'click', 'span#add-row-pretravel', this.travelRequest.addRow );
+            $( 'body').on( 'click', 'span#add-row-posttravel', this.travelRequest.addRowPost );
             $( 'body').on( 'click', 'span#remove-row-pretravel', this.travelRequest.removeRow );
             $( 'body').on( 'click', 'a#subApprove', this.travelRequest.subApprove );
             $( 'body').on( 'click', 'a#submitApprove', this.travelRequest.submitApprove );
+            
+            //Booking
+            $( 'body').on( 'click', '#bookTickets', this.booking.tickets );
+            $( 'body').on( 'click', '#buttonSelfbooking', this.booking.selfBooking );
+            $( 'body').on( 'click', '#cancelTickets', this.booking.cancelBooking );
 
             // handle postbox toggle
             $('body').on( 'click', 'div.handlediv', this.handleToggle );
@@ -100,7 +107,63 @@
                 $('.select2').select2();
             } );
         },
-        
+        booking : {
+            selfBooking: function(){
+                var atLeastOneIsChecked = $('input[name="rdid[]"]:checked').length > 0;
+	
+                if(!atLeastOneIsChecked)
+                {
+                        alert("Please check atlease one ticket to set as self book.");
+                        return false;
+                }
+                else{
+
+                        if(confirm("If these details has been sent to travel desk for booking & not yet cancelled, then tickets will be automatically cancelled and these details will be duplicated & updated with self booking.")){
+                                return true;	
+                        }else{
+                                return false;	
+                        }
+
+
+                }
+            },
+            tickets: function() {
+                var atLeastOneIsChecked = $('input[name="rdid[]"]:checked').length > 0;
+
+                if(!atLeastOneIsChecked)
+                {
+                    alert("Please check atlease one ticket to book.");
+                    return false;
+                }
+                if(confirm("Are you sure want the travel desk to book the tickets ?"))
+                    return true;
+                else
+                    return false;
+                
+            },
+            cancelBooking: function() {
+                var atLeastOneIsChecked = $('input[name="rdid[]"]:checked').length > 0;
+	
+                if(!atLeastOneIsChecked)
+                {
+                        alert("Please check atlease one ticket to cancel");
+                        return false;
+                        }
+                        else
+                        {
+                                var rdids = [];
+                                $("input[name='rdid[]']:checked").each(function() {
+                                  rdids.push($(this).val());
+                                });
+                        }									
+
+
+                if(confirm("Are you sure to cancel these tickets"))
+                return true;
+                else 
+                return false;
+            }
+        },
         travelRequest : {
            
             reset: function() {
@@ -163,6 +226,49 @@
               
               //alert(reqid);
             },
+            addRowEdit: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#table-pre-travel tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#table-pre-travel tr').last().after('<tr>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off"><input name="txtStartDate[]" id="txtStartDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /></td>\n\
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist'+rowCount+'" autocomplete="off" style="display:none;" value="n/a"/><input type="text" name="textBillNo[]" id="textBillNo'+rowCount+'" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]" onchange="javascript:getMotPreTravel(this.value,'+rowCount+')" id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><span id="modeoftr'+rowCount+'acontent"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><span id="city'+rowCount+'container"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></span></td>\n\
+                                <td data-title="Estimated Cost"><span id="cost'+rowCount+'container"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\
+                                <td><button type="button" value="" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-trash-o"></i></button></td></tr>');
+                                $('.pretraveldate').datepicker({
+                                    dateFormat: "dd-mm-yy",
+                                    minDate: 0,
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 });   
+            },
             addRow: function(){
                 var optionsCat;
                 var optionsMode;
@@ -183,18 +289,61 @@
                                 $('#hidrowno').val(rowCount);
                                 $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
                                 $('#table-pre-travel tr').last().after('<tr>\n\
-                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off"><input name="txtStartDate[]" id="txtStartDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /></td>\n\
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist'+rowCount+'" autocomplete="off" style="display:none;" value="n/a"/><input type="text" name="textBillNo[]" id="textBillNo'+rowCount+'" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]" onchange="javascript:getMotPreTravel(this.value,'+rowCount+')" id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><span id="modeoftr'+rowCount+'acontent"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><span id="city'+rowCount+'container"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></span></td>\n\
+                                <td data-title="Estimated Cost"><span id="cost'+rowCount+'container"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
+                                $('.pretraveldate').datepicker({
+                                    dateFormat: "dd-mm-yy",
+                                    minDate: 0,
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 });
+                 
+                 
+            },
+            addRowPost: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#table-post-travel tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-row-pretravel" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#table-post-travel tr').last().after('<tr>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="posttraveldate" placeholder="dd/mm/yyyy" autocomplete="off"><input name="txtStartDate[]" id="txtStartDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate'+rowCount+'" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input type="text" name="textBillNo[]" id="textBillNo'+rowCount+'" autocomplete="off"  class="" style="display:none;" value="n/a"/><input type="text" class="" name="txtdist[]" id="txtdist'+rowCount+'" autocomplete="off" style="display:none;" value="n/a"/></td>\n\
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
-                                <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
-                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
-                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]" onchange="javascript:getMotPosttravel(this.value,'+rowCount+')" id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><span id="modeoftr'+rowCount+'acontent"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><span id="city'+rowCount+'container"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
                                 <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
-                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\
-                                <td><button type="button" value="" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-times"></i></button></td></tr>');
-                                $( '.erp-leave-date-field' ).datepicker({
-                                    dateFormat: 'dd-mm-yy',
-                                    changeMonth: true,
-                                    changeYear: true
+                                <td><input type="file" name="file'+rowCount+'[]" id="file'+rowCount+'[]" multiple="true"></td>\n\
+                                <td><button type="button" value="" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-trash-o"></i></button></td></tr>');
+                                $('.posttraveldate').datepicker({
+                                    dateFormat: "dd-mm-yy",
+                                    maxDate: 'today',
                                 });
                             },
                             error: function(error) {

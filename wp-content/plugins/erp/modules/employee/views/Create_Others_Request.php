@@ -1,4 +1,5 @@
 <?php
+global $etEdit;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 $compid = $_SESSION['compid'];

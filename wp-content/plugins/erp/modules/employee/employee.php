@@ -60,6 +60,7 @@ class Employee {
      */
     private function includes() {
         require_once WPERP_EMPLOYEE_PATH . '/includes/actions-filters.php';
+        require_once WPERP_EMPLOYEE_PATH . '/includes/layout-functions.php';
         require_once WPERP_EMPLOYEE_PATH . '/includes/functions-common.php';
         require_once WPERP_EMPLOYEE_PATH . '/includes/functions-employee-requests.php';
         

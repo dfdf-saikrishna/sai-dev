@@ -117,7 +117,7 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
                                     <?php erp_html_form_label(__('Reporting Functional Manager Name', 'erp'), 'emp-title', true); ?>
                                     <span class="field">
                                         <?php
-                                        $code = $rowcomp[0]->EMP_Reprtnmngrcode;
+                                        $code = $rowcomp[0]->EMP_Funcrepmngrcode;
                                         if ($rowsql = $wpdb->get_results("SELECT EMP_Name FROM employees WHERE EMP_Code='$code'")) {
                                             ?>
                                             <input value="<?php echo $rowcomp[0]->EMP_Name; ?>"  required readonly class="regular-text" style="margin:0 0 0 133px;width:25%;">
