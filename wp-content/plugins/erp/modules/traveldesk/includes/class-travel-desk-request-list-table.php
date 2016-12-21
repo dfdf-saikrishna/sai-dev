@@ -221,8 +221,14 @@ return '<a style="padding-left:25px;" href="'.$href.'">'. $item['REQ_Code'] .'</
 
 function column_Total_Cost($item) {
 global $wpdb;
-$totalcost=$wpdb->get_results("SELECT RD_Cost FROM request_details WHERE REQ_Id='".$item['REQ_Id']."'");
-return  IND_money_format($totalcost[0]->RD_Cost).".00";
+$totalcost=$wpdb->get_row("SELECT RD_Cost FROM request_details WHERE REQ_Id='".$item['REQ_Id']."'");
+if(!empty($totalcost)){
+ $cost = $totalcost->RD_Cost;
+}else{
+	$cost = "";
+}
+return  IND_money_format($cost).".00";
+
 
 }
 

@@ -113,12 +113,12 @@ add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'setting','dashi
 add_submenu_page('Settings', 'Change Password', 'Change Password', 'traveldesk','Change Password'.'/Change Password', 'setting');
 add_submenu_page('Settings', 'Always Left menu', 'Always Left menu', 'traveldesk','Always Left menu'.'/Always Left menu', 'setting');
 add_submenu_page('Settings', 'Show & Hide Left menu', 'Show & Hide Left menu', 'traveldesk','Show & Hide Left menu'.'/Show & Hide Left menu', 'setting');
- global $wpdb;
-		$compid = $_SESSION['compid'];
-		if($selpol=$wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1"))
-	 {
+		//global $wpdb;
+		//$compid = $_SESSION['compid'];
+		//if($selpol=$wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE COM_Id='$compid' AND TEPD_Status=1"))
+	 //{
 add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'traveldesk', 'Download_Company_Expense_Policy', array( $this, 'Download_Company_Expense'));
-	 }
+	 //}
        }
     }
 
