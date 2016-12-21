@@ -41,11 +41,7 @@ $count_rejected = count($wpdb->get_results("SELECT REQ_Id FROM  requests WHERE C
             </div><!-- .badge-wrap -->
             <div class="badge-wrap badge-aqua">
                 <div class="badge-inner">
-<<<<<<< HEAD
                     <h3><?php echo $accgadmins ?></h3>
-=======
-                    <h3><?php echo $accgadmins  ?></h3>
->>>>>>> 44b983a4747d6b0919636ffaec26c30b5bb3fe78
                     <p>TOTAL <b>TRAVEL DESK USERS</b></p>
                 </div>
                 <div class="badge-footer wp-ui-highlight">

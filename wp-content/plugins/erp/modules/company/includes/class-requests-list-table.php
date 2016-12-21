@@ -59,8 +59,10 @@ class Requests_List extends \WP_List_Table {
                     <option value="<?php echo $rowemp->EMP_Id; ?>" <?php if ($emp == $rowemp->EMP_Id) echo 'selected="selected"'; ?> ><?php echo $rowemp->EMP_Code . " - " . $rowemp->EMP_Name; ?></option>
                 <?php } ?>
             </select>
+<!--              <input type = "submit" class = "button" name = "erp-leave-date-field">-->
             <?php
             submit_button(__('Search'), 'button', 'filter_employee', false);
+          
             echo '</div>';
             //}
         }
