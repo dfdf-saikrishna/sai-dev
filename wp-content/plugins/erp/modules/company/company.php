@@ -53,7 +53,7 @@ class Company {
         define('WPERP_COMPANY_VIEWS', dirname(__FILE__) . '/views');
         define('WPERP_COMPANY_JS_TMPL', WPERP_COMPANY_VIEWS . '/js-templates');
         define('WPERP_COMPANY_ASSETS', plugins_url('/assets', __FILE__));
-        define('WPERP_COMPANY_DOWNLOADS', plugins_url());
+		define('WPERP_COMPANY_DOWNLOADS', plugins_url());
         define('COMPANY_UPLOADS', WPERP_COMPANY_PATH . '\upload');
     }
 

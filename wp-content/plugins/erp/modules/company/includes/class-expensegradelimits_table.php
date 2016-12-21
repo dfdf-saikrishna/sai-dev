@@ -136,6 +136,7 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
         $rowsum = $wpdb->get_results("SELECT * FROM grade_limits WHERE EG_Id='$item[EG_Id]' AND GL_Status=1");
         return $rowsum[0]->GL_Fourwheeler ? IND_money_format($rowsum[0]->GL_Fourwheeler) . ".00" : 0;
     }
+
 //    function column_grades($item) {
 //        global $wpdb;
 //        $table_name = "employee_grades";
@@ -168,7 +169,9 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
 //            return $rowsum['GL_Fourwheeler'] ? IND_money_format($rowsum['GL_Fourwheeler']) . ".00" : 0;
 //            return $rowsum['GL_Internet'] ? IND_money_format($rowsum['GL_Internet']) . ".00" : 0;
 //        }
-//    }
+
+    //}
+
     function column_name($item) {
         global $wpdb;
         $compid = $_SESSION['compid'];
@@ -186,11 +189,12 @@ class ExpenseGrade_List_Table extends \WP_List_Table {
                 '<input type="checkbox" name="id[]" value="%s" />', $item['GL_Id']
         );
     }
+
     function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'name' => __('Grade', 'expensegrade_table'),
-            //'grades' => __('', 'expensegrade_table'),
+            //'grades' => __('2dgdg', 'expensegrade_table'),
             'flight' => __('Flight', 'expensegrade_table'),
             'bus' => __('Bus', 'expensegrade_table'),
             'car' => __('Car', 'expensegrade_table'),

@@ -548,6 +548,8 @@ return array(
     'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
     'WeDevs\\ERP\\Traveldesk\\TDRiseinvoiceview' => $baseDir . '/modules/traveldesk/includes/class-tdriseinvoiceview.php',
    'WeDevs\\ERP\\Traveldesk\\Claimsview' => $baseDir . '/modules/traveldesk/includes/class-claimsview.php',
+    'WeDevs\\ERP\\Traveldesk\\Travel_Desk_Cancellation_Request_List_Table' => $baseDir . '/modules/traveldesk/includes/class-travel-desk-cancellation-request-list-table.php',
+    'WeDevs\\ERP\\Traveldesk\\Travel_Desk_Request_List_Table' => $baseDir . '/modules/traveldesk/includes/class-travel-desk-request-list-table.php',
     
     /*****************************/
     /** Travel Agent Module classes **/
