@@ -11,7 +11,9 @@ $showProCode = 1;
 $curDate = date('Y-m-d');
 
 $empdetails = $wpdb->get_results("SELECT * FROM employees emp, company com, department dep, designation des,requests req, request_employee re, employee_grades eg WHERE req.REQ_Id='$reqid'  AND req.REQ_Id=re.REQ_Id AND emp.EMP_Id=re.EMP_Id  AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND req.REQ_Active=1 AND re.RE_Status=1");
+if (isset($empdetails)){
 $code = $empdetails[0]->EMP_Reprtnmngrcode;
+}
 $repmngname = $wpdb->get_results("SELECT EMP_Name FROM employees WHERE EMP_Code='$code' AND COM_Id='$compid'");
 
 $workflow = $wpdb->get_results("SELECT COM_Pretrv_POL_Id, COM_Posttrv_POL_Id, COM_Othertrv_POL_Id, COM_Mileage_POL_Id, COM_Utility_POL_Id FROM company WHERE COM_Id='$compid'");

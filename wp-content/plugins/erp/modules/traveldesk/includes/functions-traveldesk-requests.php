@@ -13,13 +13,14 @@ function traveldesk_request_without_appr() {
         global $wpdb;
         global $type;
         $compid = $_SESSION['compid'];
+        if(isset($_POST['hiddenEmp']))
         $empuserid = $_POST['hiddenEmp'];
         $posted = array_map( 'strip_tags_deep', $_POST );
         
         $expenseLimit                           = 	$posted['expenseLimit'];
-        
+        if(isset($_POST['hiddenEmp']))
         $selEmployees                           =	$_POST['hiddenEmp'];
-        
+        if(isset($_POST['hiddenDraft']))
         $hiddenDraft                            =	$_POST['hiddenDraft'];
 
 	$etype					=	$posted['ectype'];
@@ -29,9 +30,9 @@ function traveldesk_request_without_appr() {
 	$expreqcode				=	genExpreqcode(4); // 4 is for creating requests with TRA
 		
 	$date					=	$posted['txtDate'];
-	
+	if(isset($_POST['txtStartDate']))
 	$txtStartDate                           =	$posted['txtStartDate'];
-	
+	if(isset($_POST['txtEndDate']))
 	$txtEndDate				=	$posted['txtEndDate'];
 	
 	$txtaExpdesc                            =	$posted['txtaExpdesc'];
@@ -45,7 +46,6 @@ function traveldesk_request_without_appr() {
 	$to					=	$posted['to'];
 	
 	//$selStayDur				=	$posted['selStayDur'];
-	
 	$txtdist				=	$posted['txtdist'];
 	
 	$txtCost				=	$posted['txtCost'];
@@ -63,7 +63,7 @@ function traveldesk_request_without_appr() {
         $selProjectCode                         =	"0";
 	$selCostCenter                          =	"0";
 	//$selCostCenter			=	$posted['selCostCenter'];
-	
+	if(isset($_POST['textBillNo']))
 	$textBillNo				=	$posted['textBillNo'];
 	//$expenseLimit                           =       "0";
 	
@@ -80,12 +80,12 @@ function traveldesk_request_without_appr() {
 		
 		for($i=0;$i<$count;$i++){
 						
-			if($date[$i]=="" || $txtaExpdesc[$i]=="" || $selExpcat[$i]=="" || $selModeofTransp[$i]=="" || $txtdist[$i]=="" || $textBillNo[$i]=="" || $txtCost[$i]=="" || $txtStartDate[$i]=="" || $txtEndDate[$i]==""){
-                                
-				$checked=true;
-				break;
-			
-			}
+//			if($date[$i]=="" || $txtaExpdesc[$i]=="" || $selExpcat[$i]=="" || $selModeofTransp[$i]=="" || $txtdist[$i]=="" || $textBillNo[$i]=="" || $txtCost[$i]=="" || $txtStartDate[$i]=="" || $txtEndDate[$i]==""){
+//                                
+//				$checked=true;
+//				break;
+//			
+//			}
                         
 		
 		}

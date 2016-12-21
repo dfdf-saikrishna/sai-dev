@@ -36,6 +36,13 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_approve-request', 'approve_request' );
         $this->action( 'wp_ajax_approve-finance-request', 'approve_finance_request' );
         
+        // Other Requests
+        $this->action( 'wp_ajax_get-mileage', 'get_mileage' );
+        $this->action( 'wp_ajax_get-file-extensions', 'get_file_extensions' );
+        $this->action( 'wp_ajax_delete-files', 'delete_files' );
+        
+        
+        
         // Department
         $this->action( 'wp_ajax_erp-hr-new-dept', 'department_create' );
         $this->action( 'wp_ajax_erp-hr-del-dept', 'department_delete' );
@@ -117,6 +124,44 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp_hr_script_reload', 'employee_template_refresh' );
         $this->action( 'wp_ajax_erp_hr_new_dept_tmp_reload', 'new_dept_tmp_reload' );
         $this->action( 'wp_ajax_erp-hr-holiday-delete', 'holiday_remove' );
+    }
+    
+    function delete_files(){
+        global $wpdb;
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $rfid = $posted['rfid'];
+        if($rfid){           
+            $update=$wpdb->update( 'requests_files', array( 'RF_Status' => 9, 'RF_UpdatedDate' => "NOW()" ), array( 'RF_Id' => $rfid,'RF_Status' => 1));
+            $this->send_success(1);
+        }
+        else
+        {
+            $this->send_success(0);
+        }
+    }
+    
+    function get_file_extensions(){
+        global $wpdb;
+        $rowsql=$wpdb->get_results("SELECT * FROM file_extensions");
+        foreach($rowsql as $values){
+                $fileextensions.= $values->FE_Name.",";
+        }
+        $fileextensions=rtrim($fileextensions,",");
+        $fileextensions = explode(',',$fileextensions);
+        $this->send_success($fileextensions);
+    }
+    
+    function get_mileage(){
+        global $wpdb;
+        $compid = $_SESSION['compid'];
+        $empuserid = $_SESSION['empuserid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $modeid = $posted['modeid'];
+        if($modeid && ($modeid == 31 || $modeid==32) && is_numeric($modeid)){
+            //$this->send_success($modeid);
+            $selamnt = $wpdb->get_row("SELECT MIL_Amount FROM mileage WHERE COM_Id='$compid' AND MOD_Id='$modeid' AND MIL_Status=1 AND MIL_Active=1");
+            $this->send_success($selamnt->MIL_Amount);  
+        }
     }
     
     function approve_request(){
@@ -531,7 +576,6 @@ class Ajax_Handler {
 		for($i=0;$i<$count;$i++){
 						
 			if($date[$i]=="" || $txtaExpdesc[$i]=="" || $selExpcat[$i]=="" || $selModeofTransp[$i]=="" || $txtdist[$i]=="" || $textBillNo[$i]=="" || $txtCost[$i]=="" || $txtStartDate[$i]=="" || $txtEndDate[$i]==""){
-                                
 				$checked=true;
 				break;
 			

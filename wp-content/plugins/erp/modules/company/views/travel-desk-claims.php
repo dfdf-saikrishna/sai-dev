@@ -321,7 +321,7 @@ $rows = $wpdb->get_results("SELECT * FROM travel_desk_claims WHERE TDC_Id='$tdci
             <br>
             <br>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="postbox">
                     <!--<div class="align-lg-left"> 795 Park Ave, Suite 120 <br>
                       San Francisco, CA 94107 <br>
                       P: (234) 145-1810 <br>

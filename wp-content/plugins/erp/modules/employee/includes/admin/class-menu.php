@@ -115,6 +115,12 @@ class Admin_Menu {
             add_submenu_page('', 'others', 'Others Request', 'employee','create-mileage', array($this,'create_mileage_Request'));
             add_submenu_page('', 'others', 'Others Request', 'employee','create-utility', array($this,'create_utility_Request'));
             add_submenu_page('', 'others', 'Others Request', 'employee','create-others', array($this,'create_others_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','view-mileage', array($this,'view_mileage_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','view-utility', array($this,'view_utility_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','view-others', array($this,'view_others_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','edit-mileage', array($this,'edit_mileage_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','edit-utility', array($this,'edit_utility_Request'));
+            add_submenu_page('', 'others', 'Others Request', 'employee','edit-others', array($this,'edit_others_Request'));
             
 
         //add_menu_page(' Reports', ' Reports', 'employee', ' Reports', 'reports','dashicons-media-spreadsheet');
@@ -132,6 +138,24 @@ class Admin_Menu {
        //}
     }
         
+    }
+    function edit_mileage_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/edit_mileage_Request.php';
+    }
+    function edit_utility_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/edit_utility_Request.php';
+    }
+    function edit_others_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/edit_others_Request.php';
+    }
+    function view_mileage_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/view_mileage_Request.php';
+    }
+    function view_utility_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/view_utility_Request.php';
+    }
+    function view_others_Request(){
+        include WPERP_EMPLOYEE_VIEWS . '/view_others_Request.php';
     }
     function general_expense(){
         include WPERP_EMPLOYEE_VIEWS . '/general_expeses.php';

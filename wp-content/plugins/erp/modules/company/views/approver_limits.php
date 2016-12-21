@@ -32,10 +32,11 @@
     <?php } ?>
     </select>
     </div>
-    </br>
+ 
     <div id="approvers_limit" style="display:none;text-align: center">
     <input type="hidden" id="aplId">
-    <input value="" id="limit_amount" type="number">
+
+    <input  value="" id="limit_amount" type="number">
     <input type="submit" class="button button-primary" id="submit_app_limit">
     </div>
         <?php
@@ -52,7 +53,11 @@
         <div class="list-table-wrap erp-hr-employees-wrap">
         <div class="list-table-inner erp-hr-employees-wrap-inner">
             <?php //$table->views(); ?>
+<<<<<<< HEAD
+			
+=======
 						
+>>>>>>> 44b983a4747d6b0919636ffaec26c30b5bb3fe78
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                 <?php $table->display() ?>

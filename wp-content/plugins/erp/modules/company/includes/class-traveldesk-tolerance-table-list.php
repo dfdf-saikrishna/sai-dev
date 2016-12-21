@@ -36,9 +36,7 @@ class TravelDesk_Tolerance_List_Table extends \WP_List_Table {
             'plural' => 'limits',
         ));
     }
- 
-                        
- 
+
     function column_status($item) {
         if ($item['TL_Status'] == 1)
             return '<span class="status-2">Open</span>';
@@ -55,7 +53,7 @@ class TravelDesk_Tolerance_List_Table extends \WP_List_Table {
 
     function column_Closed_Date($item) {
         if ($item['TL_ClosedDate'])
-            return date('d-m-y h:i a', strtotime($item['TL_ClosedDate']));
+            return date('d-m-y h:i ', strtotime($item['TL_ClosedDate']));
         else
             return approvals(5);
         //return $date;
@@ -66,18 +64,16 @@ class TravelDesk_Tolerance_List_Table extends \WP_List_Table {
             //'edit' => sprintf('<a href="?page=Mileage" data-id=%s">%s</a>', $item['TD_Id'], __('Edit', 'tolerance_limits_table')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['TL_Id'], __('Delete', 'tolerance_limits_table')),
         );
-        return sprintf('%s', $item['TL_Percentage'] , 
-                $this->row_actions($actions)
+        return sprintf('%s %s', $item['TL_Percentage'], $this->row_actions($actions)
                 // return sprintf('%s %s', $item['MOD_Name'], $this->row_actions($actions)
         );
     }
 
-     function column_cb($item) {
-            return sprintf(
-                    '<input type="checkbox" name="id[]" value="%s" />', $item['TL_Id']
-            );
-        }
-
+    function column_cb($item) {
+        return sprintf(
+                '<input type="checkbox" name="id[]" value="%s" />', $item['TL_Id']
+        );
+    }
 
     function no_items() {
         _e('No requests found.', 'erp');

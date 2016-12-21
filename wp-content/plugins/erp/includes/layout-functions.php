@@ -113,6 +113,7 @@
             global $wpdb;
                 if ( is_user_logged_in() ) {
                     $user = wp_get_current_user();
+                   // var_dump($user);
                     if($result=$wpdb->get_row("SELECT * FROM admin WHERE user_id='$user->ID'")){
                         $_SESSION['adminid'] = $result->ADM_Id;
                         $_SESSION['compid'] = $result->COM_Id;
