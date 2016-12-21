@@ -229,22 +229,25 @@ function getAmount(val, iteration){
 		
 		if(distnce){
 		
-			var Url="getMileage.php?modeid="+val;
-		
-			//$.ajax({url: Url, success: function(result){
-					
-				//alert(result);
-					
-				//var mileamount=parseFloat(result) * distnce;
-				var mileamount=parseFloat(123) * distnce;
-				//alert(mileamount);
-				
+			//var Url="getMileage.php?modeid="+val;
+                        
+                        wp.ajax.send( 'get-mileage', {
+                            data: {
+                                modeid : val,
+                            },
+                            success: function(resp) {
+                                console.log(resp);
+                                var mileamount=parseFloat(resp) * distnce;
+                                
 				mileamount	=	parseInt(parseFloat(mileamount));
 				
 				j("#txtCost"+iteration).val(mileamount);
-				
-			//}});
-		
+
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                        });
 		}
 		
 	} else {
@@ -270,10 +273,10 @@ function setFromTo(modeval, rownumber){
 	//alert(cityCont)
 	
 		
-	var htmlCont='<input type="text" class="form-control" name="txtCost[]" id="+txtcost+" onkeyup="valCost(this.value);" autocomplete="off" style="width:110px;"/><input  name="from[]" id="'+from+'" type="text" placeholder="From" class="form-control" style="width:130px; display:none;" value="n/a" ><input name="to[]" id="'+to+'" type="text" placeholder="To" class="form-control" style="width:130px; display:none;" value="n/a"><input type="text" class="form-control" name="txtdist[]" id="'+costIt+'" autocomplete="off" style="display:none;" value="n/a"/><select name="selStayDur[]" class="form-control" style="display:none;"><option value="n/a">Select</option></select>';
+	var htmlCont='<input type="text" class="form-control" name="txtCost[]" id="'+txtcost+'" onkeyup="valCost(this.value);" autocomplete="off" style="width:110px;"/><input  name="from[]" id="'+from+'" type="text" placeholder="From" class="form-control" style="width:130px; display:none;" value="n/a" ><input name="to[]" id="'+to+'" type="text" placeholder="To" class="form-control" style="width:130px; display:none;" value="n/a"><input type="text" class="form-control" name="txtdist[]" id="'+costIt+'" autocomplete="off" style="display:none;" value="n/a"/><select name="selStayDur[]" class="form-control" style="display:none;"><option value="n/a">Select</option></select>';
 
 
-	j(cityCont).html(htmlCont);
+	//j(cityCont).html(htmlCont);
 									
 }
 function valCost(costval)
@@ -375,6 +378,445 @@ function valCost(costval)
 		getTotal();
 	 
 	}
+}
+function getMotPreTravel(n,rownumber)
+{
+	//alert(rownumber);
+	<?php 
+        global $wpdb;
+        $compid =  $_SESSION['compid'];
+        ?>
+	var smotid		=	'selModeofTransp'+rownumber;
+	var selfromIt           =	"from"+rownumber;
+	var seltoIt		=	"to"+rownumber;
+	var	stayDur		=	"selStayDur"+rownumber;	
+	
+	var costIt		=	"txtdist"+rownumber;
+		
+	if(n==1)
+	{
+		
+		content='<select name="selModeofTransp[]" id="'+smotid+'" onchange="chkCost(this.value, '+rownumber+');enbDisGetQuote(this.value,'+rownumber+');emptyQuote('+rownumber+');setFromTo(this.value, '+rownumber+');" class="form-control"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=1 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';
+
+		
+		citycontent='<input  name="from[]"  autocomplete="off" id="'+selfromIt+'" type="text" placeholder="From" class="form-control"><input name="to[]" id="'+seltoIt+'" type="text" placeholder="To" class="form-control"  autocomplete="off"><select name="selStayDur[]" id="'+stayDur+'" class="form-control" style="display:none;"><option value="n/a">Select</option></select>';
+		
+		
+	}
+	else if(n==2)
+	{
+				
+		content='<select name="selModeofTransp[]" id="'+smotid+'"  onchange="chkCost(this.value, '+rownumber+');enbDisGetQuote(this.value,'+rownumber+');emptyQuote('+rownumber+');setFromTo(this.value, '+rownumber+');" class="form-control"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=2 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';
+		
+		
+		citycontent='<input autocomplete="off" name="from[]" id="'+selfromIt+'" type="text" placeholder="Location" class="form-control"><input  name="to[]" id="'+seltoIt+'" type="text" placeholder="To" class="form-control" value="n/a" style="display:none;"><select name="selStayDur[]" id="'+stayDur+'" class="form-control" onchange="chkND(this.value, '+rownumber+');"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT SD_Id, SD_Name FROM stay_duration"); foreach($selsql as $rowsql){?><option value="<?php echo $rowsql->SD_Id;?>"><?php echo $rowsql->SD_Name;?></option><?php } ?></select>';
+		
+		
+		
+		//alert(citycontent);
+		
+	} else if(n==4){
+	
+		<?php if(!$etEdit){?>
+		document.getElementById('getQuote'+rownumber).disabled=true;
+		<?php } ?>
+		
+		content='<select name="selModeofTransp[]" id="'+smotid+'" onchange="chkCost(this.value, '+rownumber+'); emptyQuote('+rownumber+');" class="form-control" style="width:110px;"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=4 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';
+		
+		
+			
+		citycontent='<input autocomplete="off" name="from[]" id="'+selfromIt+'" type="text" placeholder="Location" class="form-control"><input  name="to[]" id="'+seltoIt+'" type="text" placeholder="To" class="form-control" value="n/a" style="display:none;"><select name="selStayDur[]" id="'+stayDur+'" class="form-control" style="display:none;"><option value="n/a">Select</option></select>';
+	
+	
+	}
+	
+	
+	
+	
+	if(n){
+	
+		modeoftranporid="modeoftr"+rownumber+"acontent";
+		cityfromtoid="city"+rownumber+"container";
+		
+		//alert(modeoftranporid);
+		
+		document.getElementById(modeoftranporid).innerHTML=content;
+		document.getElementById(cityfromtoid).innerHTML=citycontent;
+	}
+	
+	var j = jQuery.noConflict();
+	j("#field"+rownumber).html(null);
+	
+	j("#sessionid"+rownumber).val(null);
+	j("#hiddenPrefrdSelected"+rownumber).val(null);
+	j("#hiddenAllPrefered"+rownumber).val(null);
+	  
+	j("#txtCost"+rownumber).val(null);
+	  
+	
+}
+function getMotPosttravel(n,rownumber)
+{
+	
+	//alert(n+","+rownumber);
+	
+	var selfromIt	="from"+rownumber;
+	var seltoIt		="to"+rownumber;		
+	var	stayDur		="selStayDur"+rownumber;
+	var costIt		="txtdist"+rownumber;
+	
+	if(n==1)
+	{		
+		content='<select name="selModeofTransp[]" onchange="setFromTo(this.value, '+rownumber+');"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=1 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';
+		
+		
+		
+		citycontent='<input  name="from[]" id="'+selfromIt+'" type="text" placeholder="From" autocomplete="off"><input  name="to[]" id="'+seltoIt+'" type="text" placeholder="To" autocomplete="off"><select name="selStayDur[]" id="'+stayDur+'" style="display:none;"><option value="n/a">Select</option></select>';		
+		
+	}
+	else if(n==2)
+	{
+		
+		
+		content='<select name="selModeofTransp[]" onchange="chkCostPost(this.value, '+rownumber+');"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=2 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';		
+		
+		citycontent='<input  name="from[]" id="'+selfromIt+'" type="text" placeholder="Location" autocomplete="off"><input  name="to[]" id="'+seltoIt+'" type="text" placeholder="To" value="n/a" style="display:none;"><select name="selStayDur[]" id="'+stayDur+'" onchange="chkNDPost(this.value, '+rownumber+');"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT SD_Id, SD_Name FROM stay_duration"); foreach($selsql as $rowsql){?><option value="<?php echo $rowsql->SD_Id;?>"><?php echo $rowsql->SD_Name;?></option><?php } ?></select>';
+		
+		
+		
+	}
+	else if(n==4)
+	{
+		content='<select name="selModeofTransp[]"><option value="">Select</option><?php $selsql=$wpdb->get_results("SELECT MOD_Id, MOD_Name FROM mode WHERE EC_Id=4 AND COM_Id IN (0, '$compid') AND MOD_Status=1"); foreach($selsql as $rowsql){ ?><option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option><?php } ?></select>';
+		
+		
+		citycontent='<input  name="from[]" id="'+selfromIt+'" type="text" placeholder="Location" autocomplete="off"><input  name="to[]" id="'+seltoIt+'" type="text" style="display:none;" placeholder="To" value="n/a"><select name="selStayDur[]" id="'+stayDur+'" style="display:none;"><option value="n/a">Select</option></select>';	
+	
+	}
+	
+	if(n){
+	
+		modeoftranporid="modeoftr"+rownumber+"acontent"
+		cityfromtoid="city"+rownumber+"container";
+		
+		//alert(cityfromtoid);
+		
+		document.getElementById(modeoftranporid).innerHTML=content;
+		document.getElementById(cityfromtoid).innerHTML=citycontent;
+		
+	}
+}
+function chkCost(modeValue, rowno)
+{
+	
+	//alert("Mode="+modeValue+" rows="+rowno);
+	
+	var rowno=rowno-1;
+	
+	var chks=document.getElementsByName('txtCost[]'); 
+	
+	if(chks[rowno].value){
+	
+	var currntModVal=parseInt(modeValue);
+	
+	var ModLimitVal=getGradeLimitAmount(currntModVal);
+	
+	var ModLimitVal_0=parseInt(ModLimitVal[0]);
+	
+	//alert(ModLimitVal_0);
+	
+	///alert(chks[rowno].value);
+	
+	if(ModLimitVal_0!=0){
+	
+		if(currntModVal==5 || currntModVal==6){
+					
+			var stayDur		=	document.getElementsByName('selStayDur[]');
+			
+			var stayDurNos	=	parseInt(stayDur[rowno].value);
+		
+			var estCost		=	parseInt(chks[rowno].value)/stayDurNos;
+		
+		}
+	
+		if(estCost	>	ModLimitVal_0){
+			
+			alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis.");
+	
+			chks[rowno].value="";
+			chks[rowno].focus();
+			return false;
+		
+		}
+	
+	}
+		
+	}
+	
+}
+function enbDisGetQuote(modevals,i)
+{
+	//alert(modevals+'--'+i);
+	
+	if(modevals==1 || modevals==2 || modevals==5){
+	
+		document.getElementById('getQuote'+i).disabled=false;
+	
+	}else{
+	
+		document.getElementById('getQuote'+i).disabled=true;
+	}
+	
+	
+}
+function emptyQuote(iter){
+
+	//alert(iter);
+        var j = jQuery.noConflict();
+	j("#field"+iter).html(null);
+	
+	j("#sessionid"+iter).val(null);
+	j("#hiddenPrefrdSelected"+iter).val(null);
+	j("#hiddenAllPrefered"+iter).val(null);
+	
+	
+	j("#txtCost"+iter).val(null);
+
+}
+function checkDeletRow()
+{
+	if(confirm("Are you sure want to delete this request details"))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	
+}
+function chkCostPost(modeValue, rowno)
+{
+	
+	//alert("Mode="+modeValue+" rows="+rowno);
+	
+	var rowno=rowno-1;
+	
+	var chks=document.getElementsByName('txtCost[]'); 
+	
+	if(chks[rowno].value){
+	
+		var currntModVal=parseInt(modeValue);
+		
+		var ModLimitVal=getGradeLimitAmount(currntModVal);
+		
+		var ModLimitVal_0=parseInt(ModLimitVal[0]);
+		
+		//alert(ModLimitVal_0);
+		
+		///alert(chks[rowno].value);
+		
+		if(ModLimitVal_0!=0){
+		
+			if(currntModVal==5 || currntModVal==6){
+						
+				var stayDur		=	document.getElementsByName('selStayDur[]');
+				
+				var stayDurNos	=	parseInt(stayDur[rowno].value);
+			
+				var estCost		=	parseInt(chks[rowno].value)/stayDurNos;
+			
+			}
+		
+			if(estCost	>	ModLimitVal_0){
+				
+				
+				var limitval="Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis";
+						
+				$("#sms").val(limitval);
+				
+				var nclick=$(this), data=nclick.data();
+				data.verticalEdge=data.vertical || 'right';
+				data.horizontalEdge=data.horizontal  || 'top';
+				$.notific8($("#sms").val(), data)	;
+				
+				/*alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis.");
+		
+				chks[rowno].value="";
+				chks[rowno].focus();*/
+				return false;
+			
+			}
+		
+		}
+		
+	}
+	
+}
+// on changing the stay duration check the grade limit amount
+
+function chkNDPost(stayDurNos, rowno)
+{
+	
+	//alert("Mode="+modeValue+" rows="+rowno);
+	
+	var rowno=rowno-1;
+	
+	var chks		=	document.getElementsByName('txtCost[]'); 
+	
+	var selexpcat	=	document.getElementsByName('selExpcat[]'); 
+	
+	var modeval		=	document.getElementsByName('selModeofTransp[]');
+	
+	if(chks[rowno].value){
+	
+		var currntModVal=parseInt(modeval[rowno].value.trim());
+		
+		//alert('Mode Val='+currntModVal);
+		
+		var ModLimitVal=getGradeLimitAmount(currntModVal);
+		
+		var ModLimitVal_0=parseInt(ModLimitVal[0]);
+		
+		//alert('mode limit 0th='+ModLimitVal_0);
+		
+		//alert('Cost='+chks[rowno].value);
+		
+		if(ModLimitVal_0!=0){
+		
+			if(currntModVal==5 || currntModVal==6)
+			var estCost		=	parseInt(chks[rowno].value) / parseInt(stayDurNos);
+			
+			//alert('Estimated Cost='+estCost);
+		
+			if(estCost	>	ModLimitVal_0){
+				
+				var limitval="Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis";
+						
+				$("#sms").val(limitval);
+				
+				var nclick=$(this), data=nclick.data();
+				data.verticalEdge=data.vertical || 'right';
+				data.horizontalEdge=data.horizontal  || 'top';
+				$.notific8($("#sms").val(), data)	;
+				
+				/*alert("Your "+ModLimitVal[1]+" expense limit is upto "+ModLimitVal_0+" on per day basis.");
+		
+				chks[rowno].value="";
+				chks[rowno].focus();*/
+				return false;
+			
+			}
+		
+		}
+		
+	}
+	
+}
+function delFile(rfid,spanid){
+
+//alert(rfid);
+        var j = jQuery.noConflict();
+	if(confirm("Are you sure want to delete this file"))
+	{
+		var filename=j('#filename').val();
+		
+		//alert(filename);
+		
+		//var Url="delRequestfiles.php";
+		//Url=Url+"&rfid="+rfid;
+		
+                wp.ajax.send( 'delete-files', {
+                    data: {
+                        rfid : rfid,
+                    },
+                    success: function(msg) {
+                        if(msg==1)
+                         {
+                                 j("#"+spanid).html("<font color='red'>file deleted</font>");
+                                 j("#"+spanid).fadeOut(3000);
+                         }else{
+                                 alert("file could not be deleted. please contact your admin.");
+                         }
+                       
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                });
+                
+	}
+	else
+	{
+		return false;
+	}
+
+}
+function Validate(flname) {
+	
+	//alert(flname);
+	
+	var files = document.getElementById(flname).files;
+	
+	var flag=0;
+       
+        wp.ajax.send( 'get-file-extensions', {
+            data: {},
+            success: function(resp) {
+                //console.log(resp);
+                var _validFileExtensions = resp;
+                for (var i = 0; i < files.length; i++)
+                {		
+		
+		fileName=files[i].name;
+		
+		//alert(fileName);
+		
+		fileSplit=fileName.split(".");
+				
+		var blnValid = false;
+
+		for (var j = 0; j < _validFileExtensions.length; j++) 
+		{
+						
+			var sCurExtension = _validFileExtensions[j];
+			
+			filena="."+fileSplit[1].toLowerCase();
+			
+			
+			if ( filena== sCurExtension.toLowerCase()) 
+			{
+				blnValid = true;
+				sFileName=fileName;
+				break;
+			}
+			else
+			{
+				sFileName=fileName;
+			}
+			
+	
+		}
+			
+			if (blnValid==false) {
+				alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+				flag=1;
+				document.getElementById(flname).value="";
+				document.getElementById(flname).focus();
+				return flag;
+				break;
+			}
+		
+		
+	
+                }
+
+                return flag;
+            },
+            error: function(error) {
+                console.log( error );
+            }
+        });
 }
 </script>
 

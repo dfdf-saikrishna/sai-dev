@@ -421,7 +421,7 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
         
         
         <!-- Notes -->
-        <?php _e(chat_box(2));?>  
+        <?php _e(chat_box(2,''));?>  
     </div>
 <!--    <div id="my_centered_buttons">
     <button type="button" name="submit" id="submit-pre-travel-request" class="button button-primary">Submit</button>

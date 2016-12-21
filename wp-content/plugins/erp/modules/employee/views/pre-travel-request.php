@@ -1,4 +1,5 @@
 <?php
+global $etEdit;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 $compid = $_SESSION['compid'];
@@ -84,7 +85,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             </div>
             <div style="margin-top:60px;">
             <form id="request_form" name="input" action="#" method="post">
-            <table class="wp-list-table widefat striped admins" border="0" id="table1">
+            <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
                   <thead class="cf">
                     <tr>
                       <th class="column-primary">Date</th>
@@ -96,13 +97,16 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     </tr>
                   </thead>
                   <tbody>
+                      <?php 
+                        $rows=1;
+                        ?>
                     <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
-                      <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
-                      <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
+                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off"/>
+                      <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
+                      <input type="text" name="textBillNo[]" id="textBillNo<?php echo $rows; ?>" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
                       </td>
-                      <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="">
+                      <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc<?php echo $rows; ?>" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
+                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" onchange="javascript:getMotPreTravel(this.value,1)" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selexpcat as $rowexpcat)
@@ -112,8 +116,8 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                          
                         </select></td>
-                      <td data-title="Category"><span id="modeoftr1acontent">
-                        <select name="selModeofTransp[]"  id="selModeofTransp1" class="">
+                      <td data-title="Category"><span id="modeoftr<?php echo $rows; ?>acontent">
+                        <select name="selModeofTransp[]"  id="selModeofTransp<?php echo $rows; ?>" class="">
                           <option value="">Select</option>
                           <?php
                           foreach($selmode as $rowsql)
@@ -123,12 +127,12 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                         </select>
                         </span></td>
-                        <td data-title="Place"><span id="city1container">
-                        <input  name="from[]" id="from1" type="text" placeholder="From" class="">
-                        <input  name="to[]" id="to1" type="text" placeholder="To" class="">
+                        <td data-title="Place"><span id="city<?php echo $rows; ?>container">
+                        <input  name="from[]" id="from<?php echo $rows; ?>" type="text" placeholder="From" class="">
+                        <input  name="to[]" id="to<?php echo $rows; ?>" type="text" placeholder="To" class="">
                         </span></td>
-                        <td data-title="Estimated Cost"><span id="cost1container">
-                        <input type="text" class="" name="txtCost[]" id="txtCost" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
+                        <td data-title="Estimated Cost"><span id="cost<?php echo $rows; ?>container">
+                        <input type="text" class="" name="txtCost[]" id="txtCost<?php echo $rows; ?>" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
                         </br><span class="red" id="show-exceed"></span>
                         <input type="hidden" value="1" name="ectype" id="ectype"/>
                         <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
@@ -136,8 +140,12 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </span></td>
                       <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
                     </tr>
+                    <?php 
+                    $rows++;
+                    ?>
                   </tbody>
                 </table>
+                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">

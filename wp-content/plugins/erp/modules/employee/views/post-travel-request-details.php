@@ -145,10 +145,10 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
                                         $temp=explode(".",$rowfiles->RF_Name);
                                         $ext=end($temp);
 
-                                        $fileurl="company/upload/".$compid."/bills_tickets/".$rowfiles->RF_Name;
+                                        $fileurl="/erp/modules/company/upload/".$compid."/bills_tickets/".$rowfiles->RF_Name;
 
                         ?>
-                        <?php echo $j.") "; ?><a href="download-file.php?file=<?php echo $fileurl; ?>"><?php echo 'file'.$j.".".$ext;  ?></a><br />
+                        <?php echo $j.") "; ?><a href="<?php echo WPERP_COMPANY_DOWNLOADS ?><?php echo $fileurl; ?>" download="file-name"><?php echo 'file'.$j.".".$ext;  ?></a><br />
                         <?php 
 							
                                 $j++;

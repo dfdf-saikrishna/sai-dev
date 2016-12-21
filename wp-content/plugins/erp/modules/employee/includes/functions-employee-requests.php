@@ -35,7 +35,7 @@ function post_travel_request(){
 	
 	$to					=	$posted['to'];
 	
-	//$selStayDur				=	$posted['selStayDur'];
+	$selStayDur				=	$posted['selStayDur'];
 	
 	$txtdist				=	$posted['txtdist'];
 	
@@ -347,16 +347,16 @@ function post_travel_request(){
 
                         if($to[$i]=="n/a")	$to[$i]=NULL;
 
-                        //if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
+                        if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
 
                         if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
 
 
                         $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
 
-                        //$selStayDur[$i] ? $selStayDur[$i]="'".$selStayDur[$i]."'" : $selStayDur[$i]="NULL";
+                        $selStayDur[$i] ? $selStayDur[$i]="".$selStayDur[$i]."" : $selStayDur[$i]="NULL";
                         
-                        $selStayDur[$i]="NULL";
+                        //$selStayDur[$i]="NULL";
 
                         $txtdist[$i] ? $txtdist[$i]="'".$txtdist[$i]."'" : $txtdist[$i]="NULL";
 
@@ -380,8 +380,6 @@ function post_travel_request(){
 
 
                         }
-
-
                         //$rate ? $rate="'".$rate."'" : $rate="NULL";	
                         
                         $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
@@ -414,7 +412,7 @@ function post_travel_request(){
 
                                 $filePath = md5(rand() * time()).".".$ext;
 
-                                $newFilePath = WPERP_TRAVELDESK_PATH . "/upload/$compid/bills_tickets/";
+                                $newFilePath = WPERP_COMPANY_PATH . "/upload/$compid/bills_tickets/";
                                 if (!file_exists($newFilePath)) {
                                     wp_mkdir_p($newFilePath);
                                 }
@@ -514,7 +512,7 @@ function post_travel_request(){
         
         $hidrowno                               =	$_POST['hidrowno'];
 	
-	//$selStayDur				=	$posted['selStayDur'];
+	$selStayDur				=	$posted['selStayDur'];
 	
 	$txtdist				=	$posted['txtdist'];
 	
@@ -640,8 +638,8 @@ function post_travel_request(){
                         if($to[$i]=="n/a")	
                         $to[$i]=NULL;
 
-                        //if($selStayDur[$i]=="n/a")	
-                        //$selStayDur[$i]=NULL;
+                        if($selStayDur[$i]=="n/a")	
+                        $selStayDur[$i]=NULL;
 
                         if($txtdist[$i]=="n/a")	
                         $txtdist[$i]=NULL;
@@ -649,12 +647,12 @@ function post_travel_request(){
 
                         $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
 
-                        //$selStayDur[$i] ? $selStayDur[$i]="".$selStayDur[$i]."" : $selStayDur[$i]="NULL";
+                        $selStayDur[$i] ? $selStayDur[$i]="".$selStayDur[$i]."" : $selStayDur[$i]="NULL";
 
                         $txtdist[$i] ? $txtdist[$i]="".$txtdist[$i]."" : $txtdist[$i]="NULL";
 
                         $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
-                        $selStayDur=NULL;
+                        //$selStayDur=NULL;
                         
                         if($etype==5){
                                                         
@@ -688,8 +686,10 @@ function post_travel_request(){
                           if ($tmpFilePath != ""){
                                 //Setup our new file path
 
-                                if(!(file_exists("company/upload/$compid/bills_tickets")))
-                                mkdir("company/upload/$compid/bills_tickets");
+                                $newFilePath = WPERP_COMPANY_PATH . "/upload/$compid/bills_tickets/";
+                                if (!file_exists($newFilePath)) {
+                                    wp_mkdir_p($newFilePath);
+                                }
 
 
                                 $ext = substr(strrchr($files[$f], "."), 1); //echo $ext;
@@ -698,7 +698,7 @@ function post_travel_request(){
 
                                 $filePath = md5(rand() * time()).".".$ext;
 
-                                $newFilePath = WPERP_EMPLOYEE_PATH . "/upload/$compid/bills_tickets/";
+                                $newFilePath = WPERP_COMPANY_PATH . "/upload/$compid/bills_tickets/";
                                 if (!file_exists($newFilePath)) {
                                     wp_mkdir_p($newFilePath);
                                 }
@@ -707,7 +707,7 @@ function post_travel_request(){
 
                                 //Upload the file into the temp dir
                                 if($result) {
-
+                                  $rdid=$rdids[$i];
                                   $wpdb->insert( 'requests_files', array( 'RD_Id' => $rdid, 'RF_Name' => $filePath ));
                                   $lastinsertid = $wpdb->insert_id;
                                 }
@@ -829,18 +829,19 @@ function post_travel_request(){
                       //Make sure we have a filepath
                       if ($tmpFilePath != ""){
                             //Setup our new file path
-
-                            if(!(file_exists("company/upload/$compid/bills_tickets")))
-                            mkdir("company/upload/$compid/bills_tickets");
-
-
+                            
+                            $newFilePath = WPERP_COMPANY_PATH . "/upload/$compid/bills_tickets/";
+                            if (!file_exists($newFilePath)) {
+                                wp_mkdir_p($newFilePath);
+                            }
+   
                             $ext = substr(strrchr($files[$f], "."), 1); //echo $ext;
                             // generate a random new file name to avoid name conflict
                             // then save the image under the new file name
 
                             $filePath = md5(rand() * time()).".".$ext;
 
-                            $newFilePath = WPERP_EMPLOYEE_PATH . "/upload/$compid/bills_tickets/";
+                            $newFilePath = WPERP_COMPANY_PATH . "/upload/$compid/bills_tickets/";
                             if (!file_exists($newFilePath)) {
                                 wp_mkdir_p($newFilePath);
                             }
@@ -988,5 +989,496 @@ function post_travel_request(){
 		$response = array('status'=>'success','message'=>"You have successfully update this Request");
                 //$this->send_success($response);
      }
+     /**
+    * BOOKING REQUEST
+    *
+    */
+
+    if(isset($_POST['bookTickets']))
+    {
+            global $wpdb;
+            global $booking_rdids;
+            $reqid		=	$_POST['reqid'];
+
+            $rdid		=	$_POST['rdid'];
+
+            $rdids		=	join(",",$rdid);
+
+            $actionButton	=	$_POST['bookTickets'];
+
+            $selreqcode		=	$_POST['reqcode'];
+
+             $a=0; 
+             $c=0; // check for cancellation
+             $b=0;
+             $d=0; // duplicate rows
+             $m=0;
+             $s=0;
+             $p=0;
+             $h=0;
+             $f=0;
+             
+             $add_booking_request=0;
+
+            foreach($rdid as $values){
+
+                    // if booking request raised by employee
+                            
+                    if($selrdbs=$wpdb->get_row("SELECT RD_Id, BA_Id FROM booking_status WHERE RD_Id='$values' AND BS_Status=1 AND BS_Active=1")){ 
+
+
+                            switch ($selrdbs->BA_Id){
+
+                            // case 1 pending
+
+                            // case 2 booked
+
+                                    case 1: case 2:
+                                            $a++; 
+                                            $c=1;
+                                    break;
+
+
+                                    case 3:
+                                            $f++; // failed to book
+                                            $c=0;
+                                    break;
+
+                            }
+
+
+                            if($c){
+
+                                    // check for cancellation
+                                               
+                                    if($selrdcn=$wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id = '$values' AND BS_Status = 3 AND BS_Active = 1")){
+
+                                            if ($selrdcn->BA_Id==5){
+
+                                                    // update the bs to history
+                                                    $wpdb->update( 'booking_status', array( 'BS_Active' => '2', 'BS_HistoryDate' => "NOW()" ), array( 'BS_Id' => $selrdcn->BS_Id ));
+
+                                                    // insert a new booking request 
+                                                    $wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 1, 'BA_Id' => 1 ));
+
+                                                    $b++;
+
+                                                    $booking_rdids.=$values.",";
+
+                                            } else {
+                                                           
+                                                    if($oldrd=$wpdb->get_row("SELECT * FROM request_details WHERE RD_Id='$values' AND RD_Status=1")){
+                                                            
+                                                                    
+                                                            if(!$selquery=$wpdb->get_row("SELECT RD_Id FROM request_details WHERE RD_Duplicate='$oldrd->RD_Id' AND RD_Status=1")){
+
+                                                                    $wpdb->insert( 'request_details', array( 'RD_Id' => $oldrd->REQ_Id, 'RD_Dateoftravel' => $oldrd->RD_Dateoftravel, 'RD_Description' => $oldrd->RD_Description, 'EC_Id' => $oldrd->EC_Id, 'MOD_Id' => $oldrd->MOD_Id, 'RD_Cityfrom' => $oldrd->RD_Cityfrom, 'RD_Cityto' => $oldrd->RD_Cityto, 'SD_Id' => $oldrd->SD_Id, 'RD_Cost' => $oldrd->RD_Cost, 'RD_Duplicate' => $oldrd->RD_Id ));
+                                                                    $lastid = $wpdb->insert_id;
+
+                                                                    $d++; // duplicated the row
+
+                                                                    $wpdb->insert( 'booking_status', array( 'RD_Id' => $lastid, 'BS_Status' => 1, 'BA_Id' => 1 ));
+
+                                                                    $booking_rdids.=$lastid.",";
+
+
+                                                            }
+
+                                                    }
+
+                                            }
+
+
+
+                                    } // end of if cancellation with no cancellation charges condition and no cancellation request sent
+
+
+                            }  else { 
+
+                                    $add_booking_request=1;
+
+
+                            }// end of c if else condition
+
+
+                    } else {
+
+                            $add_booking_request=1;
+
+                    } // end of first if else condition
+
+
+
+                    if($add_booking_request){
+
+                            // if self booking is done, history them
+                            
+                            if($selfb=$wpdb->get_row("SELECT RD_Id, BS_Id FROM booking_status WHERE RD_Id='$values' AND BS_Status IN (1,2) AND BS_Active=1")){
+                                    $wpdb->query("UPDATE booking_status SET BS_Active=2, BS_HistoryDate=NOW() WHERE RD_Id='$values' AND BS_Status IN (1,2) AND BS_Active=1");
+
+                            }
+
+                            // insert a new booking request 
+                            $wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 1, 'BA_Id' => 1 ));
+
+                            $b++;
+
+                            $booking_rdids.=$values.",";
+
+                    }
+
+
+
+            } // end of for loop
+
+
+            if($b){
+
+                    $rdids=rtrim($booking_rdids,",");
+
+                    $actionButton=1;
+
+                    //require("book-now-details.php");
+
+                    //travelBooking($message_body, 1);
+
+            }
+
+
+            $msg=7;
+            
+            header("location:/wp-admin/admin.php?page=View-Request&reqid=$reqid&msg=$msg&a=$a&b=$b&d=$d&m=$m&c=$c&s=$s&p=$p&h=$h&f=$f");exit;
+
+    }
+    if(isset($_POST['buttonSelfbooking']))
+    {	
+	global $wpdb;
+        global $cancel_ids;
+	$reqid			=	$_POST['reqid'];
+	
+	$rdid			=	$_POST['rdid'];
+	
+	$rdids			=	join(",",$rdid);
+	
+	$actionButton           =	$_POST['buttonSelfbooking'];
+	
+	$selreqcode		=	$_POST['reqcode'];
+
+			
+	$s=0; $a=0; $pb=0; $f=0; $c=0; $d=0;$c=0;$b=0;$d=0;$p=0;$h=0;$f=0; $cancel_duplicate=0;
+
+	foreach($rdid as $values){
+                
+		if(!$selrdbs=$wpdb->get_row("SELECT RD_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1")){
+			
+			$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 2));
+			
+			$s++; // inserted successfully
+		
+		} else {
+                        
+			if($selrdbs=$wpdb->get_row("SELECT RD_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=2")){
+		
+				$a++; 
+				
+				/*
+				this detail was already set as self booking
+				*/
+		
+		
+			} else {
+			
+				
+				
+				// if booking request raised by employee
+                                
+				if($selrdbs=$wpdb->get_row("SELECT RD_Id, BA_Id, BS_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=1")){ 
+				
+				
+					switch ($selrdbs->BA_Id){
+					
+					// case 1 pending
+					
+					// case 2 booked
+					
+						case 1: case 2:
+							$pb++; 
+							$c=1;
+						break;
+						
+						
+						case 3:
+							$f++; // failed to book
+							$c=0;
+						break;
+					
+					}
+					
+					
+					if($c){
+					
+					
+						// check for cancellation
+						
+						if($selrdcn=$wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=3")){
+						
+						
+							if ($selrdcn->BA_Id==5){
+							
+								// update the bs to history
+                                                                
+								$wpdb->update( 'booking_status', array( 'BS_Active' => '2', 'BS_HistoryDate' => "NOW()" ), array( 'BS_Id' => $selrdcn->BS_Id, 'BS_Active' => 1 ));
+								
+								
+								// insert a new self booking request 
+								
+								$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 2, 'BA_Id' => 1 ));
+								
+								$s++;
+																
+							} else {
+							
+								// do the cancellation and then duplicate the value
+							
+								$cancel_duplicate=1;
+							
+							}
+						
+							
+						
+						}  else  { 
+						
+						// do the cancellation and then duplicate the value
+						
+						
+							$cancel_duplicate=1;
+													
+						
+						}// end of if else cancellation with no cancellation charges condition
+						
+												
+						
+						// cancellation and duplication of the requst
+						
+						if($cancel_duplicate){
+                                                        
+							$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 3, 'BA_Id' => 1 ));
+							
+                                                                    
+							if($oldrd=$wpdb->get_row("SELECT * FROM request_details WHERE RD_Id='$values' AND RD_Status=1")){
+                                                                
+								$wpdb->insert('request_details', array('REQ_Id' => $oldrd->REQ_Id,'RD_Dateoftravel' => $oldrd->RD_Dateoftravel,'RD_Description' => $oldrd->RD_Description,'EC_Id' => $oldrd->EC_Id,'MOD_Id' => $oldrd->MOD_Id,'RD_Cityfrom' => $oldrd->RD_Cityfrom,'RD_Cityto' => $oldrd->RD_Cityto,'SD_Id' => $oldrd->SD_Id,'RD_Cost' => $oldrd->RD_Cost,'RD_Duplicate' => $oldrd->RD_Id));
+								$lastid = $wpdb->insert_id;
+								$d++; // duplicated the row
+								
+								$wpdb->insert( 'booking_status', array( 'RD_Id' => $lastid, 'BS_Status' => 2));
+								
+								$s++;
+								
+								$cancel_ids.=$values.",";
+																
+							} // end of if request details condition
+						
+						} // end of if cancel duplication condition
+						
+						
+					}  else {
+					
+						if($f){
+													
+						// update the bs to history
+                                                       
+							 $wpdb->update( 'booking_status', array( 'BS_Active' => '2', 'BS_HistoryDate' => "NOW()" ), array( 'BS_Id' => $selrdbs->BS_Id, 'BS_Active' => 1 ));
+							
+							
+							// insert a new self booking request 
+							
+							$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 2));
+							
+							$s++;
+						
+						}
+					
+					}// end of c if condition
+					
+					
+				} // end of if booking request raised by employee
+					
+					
+			
+			} // end of if else  condition of self booking
+		
+		
+		} // end of if else condition if row is there			
+	
+	} // end of for loop
+
+	
+	
+	
+	if($d){
+	
+		$rdids=rtrim($cancel_ids,",");
+		
+		$actionButton=3;
+		
+		// these ids need to be cancelled bcoz employee going to self book it.
+		
+		//require("book-now-details.php");
+		
+		//travelBooking($message_body, 2);
+	
+	}
+
+
+	$msg=8;
+
+    //$s=0; $a=0; $pb=0; $f=0; $c=0; $d=0; $cancel_duplicate=0;
+    header("location:/wp-admin/admin.php?page=View-Request&reqid=$reqid&msg=$msg&s=$s&a=$a&c=$c&b=$b&d=$d&p=$p&h=$h&f=$f");exit;   
+    }
+    if(isset($_POST['cancelTickets']))
+    {
+	global $wpdb;
+	
+	$reqid			=	$_POST['reqid'];
+	
+	$rdid			=	$_POST['rdid'];
+	
+	$rdids			=	join(",",$rdid);
+		
+	$selreqcode		=	$_POST['reqcode'];
+	
+	
+	$h=0; $p=0; $c=0; $f=0; $b=0;$s=0; $a=0; $f=0; $c=0; $d=0;
+	
+	
+	foreach($rdid as $values){
+	
+		
+		
+		
+	
+		// checking first row is present or not
+                            
+		if(!$selrdbs=$wpdb->get_row("SELECT RD_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1")){ 
+						
+				$h++;
+				
+				/*
+					you haven't booked those details to cancel
+				*/
+				
+				
+			
+		} else {
+                        
+			if($selrdbs=$wpdb->get_row("SELECT RD_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=2")){
+		
+				$h++;
+				
+				/*
+						you haven't booked those details to cancel
+					*/
+					
+			
+			} else {			
+                                
+				if($selrdbs=$wpdb->get_row("SELECT BS_Id, RD_Id, BA_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=3")){
+				
+										
+					switch($selrdbs->BA_Id){
+					
+					case 1:
+						$p++;
+						
+						/*
+							your cancellation request is under processing from the travel desk, please wait for the acknowledgement
+						*/
+					break;
+					
+					
+					case 2:
+						$b++;
+                                                
+						$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 3, 'BA_Id' => 1));
+						/*
+						ticket was booked, but employee raised cancellation
+						*/
+					break;
+					
+					
+					case 3:
+						$f++;
+						
+						/*
+						this ticket was failed to book by the travel desk, so it is already cancelled, 
+						if you want the travel desk to try booking it again, please book it.
+						*/
+					break;
+					
+					
+					case 4: case 5:
+					
+						$c++;
+						
+						/*
+						Already been cancelled somehow either from employee or travel desk tickets
+						*/
+					
+					break;
+					
+					}
+					
+				} else {
+				
+                                    
+					if($selrdbs=$wpdb->get_row("SELECT BS_Id, RD_Id, BA_Id FROM booking_status WHERE RD_Id='$values' AND BS_Active=1 AND BS_Status=1")){
+									
+						switch ($selrdbs[BA_Id]){
+						
+							case 1: case 2:
+								$b++;
+                                                            
+								$wpdb->insert( 'booking_status', array( 'RD_Id' => $values, 'BS_Status' => 3, 'BA_Id' => 1));
+								
+								/*
+								 not yet requested for cancellation but now sent to travel desk
+								*/
+								
+							break;
+							
+							case 3:
+							
+								$f++;
+							break;
+						
+						}
+					
+					} 
+										
+					
+				}
+			
+			}
+			
+		}
+		
+	}
+					
+	if($b){
+							
+		$actionButton=3;
+		
+		//require("book-now-details.php");
+		
+		//travelBooking($message_body, 8);
+	
+	}
+	
+	$msg=9;
+
+	
+	header("location:/wp-admin/admin.php?page=View-Request&reqid=$reqid&msg=$msg&h=$h&p=$p&f=$f&b=$b&c=$c&s=$s&a=$a&d=$d");exit;		
+    }
 }
 

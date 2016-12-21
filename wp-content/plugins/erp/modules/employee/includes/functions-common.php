@@ -218,7 +218,7 @@ switch($status)
 	break;
 	
 	case 8:
-	$getapprov='<span class="label label-primary">Self Booking</span>';
+	$getapprov='<span class="status-2">Self Booking</span>';
 	break;
 	
 	case 9:
@@ -950,6 +950,36 @@ function Actions($et){
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
             </div>';
+            $editActbuttonsmileage='<br />
+            <div id="my_centered_buttons">
+                <a href="/wp-admin/admin.php?page=edit-mileage&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+            </div>';
+            $editActbuttonsutility='<br />
+            <div id="my_centered_buttons">
+                <a href="/wp-admin/admin.php?page=edit-utility&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+            </div>';
+            $editActbuttonsothers='<br />
+            <div id="my_centered_buttons">
+                <a href="/wp-admin/admin.php?page=edit-others&reqid='.$reqid.'" class="button button-primary">EDIT</a> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" class="button erp-button-danger">Delete</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" name="reset" id="reset" onClick="window.history.back();" class="button">Back</button>
+            </div>';
 
 
             // checking if the any details in this request has gone for booking tickets, then disable the 
@@ -998,14 +1028,19 @@ function Actions($et){
 
             }
 
-
-
             if($edit)
             {
+                    if($et==3)
+                    $editActbuttonsothers;
+                    if($et==6)
+                    $editActbuttonsutility;
+                    if($et==5)
+                    $editActbuttonsmileage;
                     if($et==2)
                     echo $editActbuttonspost;
-                    else
+                    else{
                     echo $editActbuttons;
+                    }
             }
 
         }
@@ -1292,4 +1327,87 @@ function compPolicy($compid){
     return $selpolicy;
 
 }
+/** 
+*  Function:   convert_number 
+*
+*  Description: 
+*  Converts a given integer (in range [0..1T-1], inclusive) into 
+*  alphabetical format ("one", "two", etc.)
+*
+*  @int
+*
+*  @return string
+*
+*/ 
+function convert_number($number) 
+{ 
+    if (($number < 0) || ($number > 999999999)) 
+    { 
+    throw new Exception("Number is out of range");
+    } 
+
+    $Gn = floor($number / 1000000);  /* Millions (giga) */ 
+    $number -= $Gn * 1000000; 
+    $kn = floor($number / 1000);     /* Thousands (kilo) */ 
+    $number -= $kn * 1000; 
+    $Hn = floor($number / 100);      /* Hundreds (hecto) */ 
+    $number -= $Hn * 100; 
+    $Dn = floor($number / 10);       /* Tens (deca) */ 
+    $n = $number % 10;               /* Ones */ 
+
+    $res = ""; 
+
+    if ($Gn) 
+    { 
+        $res .= convert_number($Gn) . " Million"; 
+    } 
+
+    if ($kn) 
+    { 
+        $res .= (empty($res) ? "" : " ") . 
+            convert_number($kn) . " Thousand"; 
+    } 
+
+    if ($Hn) 
+    { 
+        $res .= (empty($res) ? "" : " ") . 
+            convert_number($Hn) . " Hundred"; 
+    } 
+
+    $ones = array("", "One", "Two", "Three", "Four", "Five", "Six", 
+        "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", 
+        "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eightteen", 
+        "Nineteen"); 
+    $tens = array("", "", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", 
+        "Seventy", "Eigthy", "Ninety"); 
+
+    if ($Dn || $n) 
+    { 
+        if (!empty($res)) 
+        { 
+            $res .= " and "; 
+        } 
+
+        if ($Dn < 2) 
+        { 
+            $res .= $ones[$Dn * 10 + $n]; 
+        } 
+        else 
+        { 
+            $res .= $tens[$Dn]; 
+
+            if ($n) 
+            { 
+                $res .= "-" . $ones[$n]; 
+            } 
+        } 
+    } 
+
+    if (empty($res)) 
+    { 
+        $res = "zero"; 
+    } 
+
+    return $res; 
+} 
 

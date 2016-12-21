@@ -41,6 +41,16 @@
                 changeMonth: true,
                 changeYear: true
             });
+            
+            $('.pretraveldate').datepicker({
+                dateFormat: "dd-mm-yy",
+                minDate: 0,
+            });
+            
+            $('.posttraveldate').datepicker({
+                dateFormat: "dd-mm-yy",
+                maxDate: 'today',
+            });
 
             $( ".erp-leave-date-picker-from" ).datepicker({
                 dateFormat: 'yy-mm-dd',

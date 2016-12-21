@@ -91,7 +91,7 @@ class Admin_Menu {
 //        add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'Settings','dashicons-menu');
 //        add_submenu_page('Settings', 'Always', 'Always Left menu', 'traveldesk', 'Always', 'Settings');
 //        add_submenu_page('Settings', 'Show', 'Show & Hide Left menu', 'traveldesk', 'Show', 'Settings');
-add_menu_page   ('Group Request', 'Group Request', 'traveldesk', ' Group Request', 'Group Request','dashicons-migrate');
+add_menu_page   ('Group Request', 'Group Request', 'traveldesk', 'Group-Request', array( $this, 'group_request'),'dashicons-migrate');
 add_submenu_page('Group Request', 'Create Request', 'Create Request', 'traveldesk','Create Request'.'/ Create Request', 'Create Request');
 add_submenu_page('Group Request', 'View / Edit Request', 'View / Edit Request', 'traveldesk','View / Edit Request'.'/ View / Edit Request', 'View / Edit Request');
 
@@ -217,6 +217,9 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     
     public function traveldeskBankDetails() {
         include WPERP_TRAVELDESK_VIEWS . '/traveldesk_bank_details.php';
+    }
+    public function group_request(){
+        include WPERP_TRAVELDESK_VIEWS . '/create_group_requests.php';
     }
     
     /**
