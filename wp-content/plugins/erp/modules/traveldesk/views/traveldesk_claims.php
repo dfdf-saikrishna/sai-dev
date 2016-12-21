@@ -1,24 +1,36 @@
-<div class="wrap erp-hr-employees" id="wp-erp">
+<div class="wrap erp-traveldeskclaims" id="wp-erp">
+	<h2>
+        <?php
+        _e( 'Travel Desk Claims', 'erp' );
+		
+        ?>
+    </h2>
+	<code>All Claim Invoices</code>
+	    <div class="erp-single-container">
+		<?php
+			global $wpdb;
+			
+            $traveldeskclaim_table = new WeDevs\ERP\Traveldesk\Traveldesk_Claims_List_Table();
+            $traveldeskclaim_table->prepare_items();
 
-    <div class="list-table-wrap erp-hr-employees-wrap">
-        <div class="list-table-inner erp-hr-employees-wrap-inner">
-
-            <form method="get">
-                <input type="hidden" name="page" value="erp-hr-employee">
-                <?php
-                $traveldeskclaim_table = new \WeDevs\ERP\Traveldesk\Traveldesk_Claims_List_Table();
-                $traveldeskclaim_table->prepare_items();
-                $traveldeskclaim_table->search_box( __( 'Search Employee', 'erp' ), 'erp-employee-search' );
-
-//                if ( current_user_can( erp_hr_get_manager_role() ) ) {
-//                    $employee_table->views();
-//                }
-
-                $traveldeskclaim_table->display();
-                ?>
+            $message = '';
+            if ('delete' === $traveldeskclaim_table->current_action()) {
+                $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'custom_table_example'), count($_REQUEST['id'])) . '</p></div>';
+            }
+            ?>
+        <div class="list-table-wrap erp--wrap">
+        <div class="list-table-inner erp--wrap-inner">
+			 <?php echo $message;?>
+			<form method="post">
+			  <input type="hidden" name="page" value="my_list_test" />
+			</form>
+			
+            <form id="persons-table" method="GET">
+                <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
+                <?php $traveldeskclaim_table->display() ?>
             </form>
 
-        </div><!-- .list-table-inner -->
-    </div><!-- .list-table-wrap -->
-
+        </div>	
+    </div>
+    
 </div>

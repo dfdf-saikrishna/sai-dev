@@ -46,15 +46,18 @@ class Company_List_Table extends \WP_List_Table {
         $compid = $_SESSION['compid'];
         $depid = $item['DEP_Id'];
         $count = count($wpdb->get_results("SELECT DISTINCT(EMP_Reprtnmngrcode) AS mangercode FROM employees WHERE DEP_Id='$depid'"));
-        return $count;
+
+        return "<a href= 'admin.php?page=Department&filter_depid=$item[DEP_Id]' >" . $count . "</a>";
+        //print_r($count);die;
     }
 
     function column_total($item) {
         global $wpdb;
         $compid = $_SESSION['compid'];
         $depid = $item['DEP_Id'];
-        $count = $wpdb->get_results("SELECT EMP_Id FROM employees WHERE DEP_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid");
-        return count($count);
+        $emp = $wpdb->get_results("SELECT EMP_Id FROM employees WHERE DEP_Id='$depid'  AND EMP_Status=1 AND COM_Id=$compid");
+        $count = count($emp);
+        return "<a href= 'admin.php?page=menu&depId=$item[DEP_Id]'>" . $count . "</a>";
     }
 
     function get_columns() {
@@ -68,9 +71,9 @@ class Company_List_Table extends \WP_List_Table {
 
     function get_sortable_columns() {
         $sortable_columns = array(
-               'department' => array('MOD_Name', true),
-                'total' => array('MOD_Name', true),
-                'rpcmgr' => array('EC_Name', true),
+            'department' => array('MOD_Name', true),
+            'total' => array('MOD_Name', true),
+            'rpcmgr' => array('EC_Name', true),
         );
         return $sortable_columns;
     }

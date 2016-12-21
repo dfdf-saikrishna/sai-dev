@@ -234,7 +234,7 @@
                     button: wpErpCompany.popup.update,
                     id: 'erp-gradelimits-edit',
                     //extraClass: 'smaller',
-                    //content: wperp.template('gradelimits-create')().trim(),
+                    //content:'<h1>test</h1>',
                     onReady: function () {
                         //alert('dfhdvj');
                         var modal = this;
@@ -1954,11 +1954,14 @@
                 e.preventDefault();
                 var self = $(this);
                 var selectEmployee = $('#selectEmployee').val();
+                var profilemanage = $('#profilemanage').val();
+                alert(profilemanage);
                 var tabkey = $('#key').val();
                 //alert(selectEmployee);
                 wp.ajax.send('companyemployee_view', {
                     data: {
                         id: selectEmployee,
+                        val:profilemanage,
                         //_wpnonce: wpErpCompany.nonce
                     },
                     success: function (response) {
@@ -1979,11 +1982,6 @@
                         $('#EMP_Id').val(response.EMP_Id);
                         $('#EMP_Code').html(response.EMP_Code);
                         $('#EMP_Email').html(response.EMP_Email);
-                        $('#EMP_Funcrepmngrcode').html(response.EMP_Funcrepmngrcode);
-                        $('#EMP_Phonenumber').html(response.EMP_Phonenumber);
-                        $('#EMP_Phonenumber2').html(response.EMP_Phonenumber2);
-                        $('#EMP_Reprtnmngrcode').html(response.EMP_Reprtnmngrcode);
-                        $("#tabs").attr("href", "http://localhost/wp-admin/admin.php?page=Profile&action=view&id=" + response.EMP_Id + "&tab=" + tabkey);
                     }
                 });
 

@@ -3,7 +3,6 @@ global $wpdb;
 $compid = $_SESSION['compid'];
 $empcount = count($wpdb->get_results("SELECT * FROM employees WHERE EMP_Status=1 AND COM_Id='$compid'"));
 $finance = count($wpdb->get_results("SELECT * FROM employees WHERE EMP_AccountsApprover=1 AND EMP_Access=1 AND EMP_Status=1 AND COM_Id='$compid'"));
-
 $accgadmins = count($wpdb->get_results("SELECT * FROM travel_desk WHERE TD_Status=1 AND COM_Id='$compid'"));
 
 $count_total = count($wpdb->get_results("SELECT REQ_Id FROM  requests WHERE COM_Id='$compid' AND REQ_Active != 9"));
@@ -42,7 +41,11 @@ $count_rejected = count($wpdb->get_results("SELECT REQ_Id FROM  requests WHERE C
             </div><!-- .badge-wrap -->
             <div class="badge-wrap badge-aqua">
                 <div class="badge-inner">
+<<<<<<< HEAD
+                    <h3><?php echo $accgadmins ?></h3>
+=======
                     <h3><?php echo $accgadmins  ?></h3>
+>>>>>>> 44b983a4747d6b0919636ffaec26c30b5bb3fe78
                     <p>TOTAL <b>TRAVEL DESK USERS</b></p>
                 </div>
                 <div class="badge-footer wp-ui-highlight">

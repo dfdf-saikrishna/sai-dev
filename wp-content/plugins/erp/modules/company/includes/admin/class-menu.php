@@ -35,20 +35,21 @@ class Admin_Menu {
             add_menu_page('Employeemanagement', 'Employee management', 'companyadmin', 'menu', array($this, 'employee_list'), 'dashicons-admin-users');
 
             $overview = add_submenu_page('menu', 'Overview', 'Overview', 'companyadmin', 'menu', array($this, 'employee_list'));
-                add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array($this, 'upload_employees'));
-                add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array($this, 'export_employees'));
-                add_submenu_page('', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
-                //add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeview_page'));
-                add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array($this, 'employeelogs_list'));
-                add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array($this, 'Grades'));
-                add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', array($this, 'Designations'));
-                add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', array($this, 'Departments'));
-                add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation', array($this, 'empdelegates_list'));
+            add_submenu_page('menu', 'Upload', 'Upload Employees', 'companyadmin', 'Upload-Employees', array($this, 'upload_employees'));
+            add_submenu_page('', 'Upload', 'Upload Employees', 'companyadmin', 'Export-Employees', array($this, 'export_employees'));
+            add_submenu_page('', 'Upload', 'Display Employees', 'companyadmin', 'Employeesdisplay', array($this, 'EmployeeDisplay'));
+            add_submenu_page('menu', 'Profile', 'View Employee Profile', 'companyadmin', 'Profile', array($this, 'employeeprofile'));
+            add_submenu_page('menu', 'Logs', 'View  Employees Logs', 'companyadmin', 'Logs', array($this, 'employeelogs_list'));
+            add_submenu_page('menu', 'Grades', ' Employees Grades', 'companyadmin', 'Grades', array($this, 'Grades'));
+            add_submenu_page('menu', 'Des', 'Employees Designation', 'companyadmin', 'Des', array($this, 'Designations'));
+            add_submenu_page('menu', 'dep', 'Employees Departments', 'companyadmin', 'Dep', array($this, 'Departments'));
+            add_submenu_page('', 'dep', 'Employees Departments Manager List', 'companyadmin', 'Department', array($this, 'DepartmentsList'));
+            add_submenu_page('menu', 'Delegation', 'View Delegation', 'companyadmin', 'delegation', array($this, 'empdelegates_list'));
 
             add_menu_page('Finance Approvers', 'Finance Approvers', 'companyadmin', 'finance', array($this, 'finance_approvers'), 'dashicons-money');
-                add_submenu_page('finance', 'action', 'Overview', 'companyadmin', 'finance', array($this, 'finance_approvers'));
-                //add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
-                add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
+            add_submenu_page('finance', 'action', 'Overview', 'companyadmin', 'finance', array($this, 'finance_approvers'));
+            //add_submenu_page('finance', 'action', 'View/Edit/Delete employee', 'companyadmin', 'finaceEmp', 'finance');
+            add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
             add_menu_page(__('ExpenseManagment', 'companyadmin'), __('Expense Managment', 'companyadmin'), 'companyadmin', 'expensemenu', array($this, 'ExpenseManagment'));
             //add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
@@ -62,24 +63,23 @@ class Admin_Menu {
             add_menu_page('View/Edit/Delete Travel Desk', 'Travel Desk', 'companyadmin', 'Travel', array($this, 'TravelDesk'), 'dashicons-location');
             //add_submenu_page('Travel', 'Action', 'View/Edit/Delete Travel Desk', 'companyadmin', 'Action', 'TravelDesk');
             add_submenu_page('', 'Claims', 'Travel Desk Claims', 'companyadmin', 'Claims', array($this, 'TdInvoiceDisplay'));
-                add_submenu_page('Travel', 'Invoice', 'Travel Desk Invoices', 'companyadmin', 'Invoice', array($this, 'TravelDesk_Invoice'));
-                add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', array($this, 'TravelDesk_Logs'));
-                add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', array($this, 'TravelDesk_Tolerance'));
+            add_submenu_page('Travel', 'Invoice', 'Travel Desk Invoices', 'companyadmin', 'Invoice', array($this, 'TravelDesk_Invoice'));
+            add_submenu_page('Travel', 'DeskLogs', 'Travel Desk Logs', 'companyadmin', 'DeskLogs', array($this, 'TravelDesk_Logs'));
+            add_submenu_page('Travel', 'ToleranceLimits', 'Tolerance Limits', 'companyadmin', 'Tolerance', array($this, 'TravelDesk_Tolerance'));
 
             add_menu_page('Requests', 'Expense Requests', 'companyadmin', 'Expense-Requests', array($this, 'expense_requests'), 'dashicons-money');
-                add_submenu_page('', 'Pre Travel', 'View Pre Travel Requests', 'companyadmin', 'pretravel', array($this, 'PreDisplay'));
-                add_submenu_page('', 'Post Travel', 'View Post Travel Requests', 'companyadmin', 'posttravel', array($this, 'PostDisplay'));
-                add_submenu_page('', 'Mileage Travel', 'View Mileage Travel Requests', 'companyadmin', 'mileage', array($this, 'MileageDisplay'));
-                add_submenu_page('', 'Other Travel', 'View Other Travel Requests', 'companyadmin', 'Other', array($this, 'OtherDisplay'));      
-                add_submenu_page('', 'Utility Travel', 'View Utility Travel Requests', 'companyadmin', 'utility', array($this, 'utilityDisplay'));
+            add_submenu_page('', 'Pre Travel', 'View Pre Travel Requests', 'companyadmin', 'pretravel', array($this, 'PreDisplay'));
+            add_submenu_page('', 'Post Travel', 'View Post Travel Requests', 'companyadmin', 'posttravel', array($this, 'PostDisplay'));
+            add_submenu_page('', 'Mileage Travel', 'View Mileage Travel Requests', 'companyadmin', 'mileage', array($this, 'MileageDisplay'));
+            add_submenu_page('', 'Other Travel', 'View Other Travel Requests', 'companyadmin', 'Other', array($this, 'OtherDisplay'));
+            add_submenu_page('', 'Utility Travel', 'View Utility Travel Requests', 'companyadmin', 'utility', array($this, 'utilityDisplay'));
             add_menu_page('BudgetController', 'Budget Control', 'companyadmin', 'Budget', array($this, 'ProjectCode'), 'dashicons-portfolio');
-                //add_submenu_page('Budget', 'Project', 'Project Code', 'companyadmin', 'Project', 'BudgetController');
-                add_submenu_page('Budget', 'Center', 'Cost Center', 'companyadmin', 'Center', array($this, 'CostCenter'));
+            //add_submenu_page('Budget', 'Project', 'Project Code', 'companyadmin', 'Project', 'BudgetController');
+            add_submenu_page('Budget', 'Center', 'Cost Center', 'companyadmin', 'Center', array($this, 'CostCenter'));
 
             add_menu_page('ReportsGraphs', 'ReportsGraphs', 'companyadmin', 'Graphs', array($this, 'ReportsGraphs'), 'dashicons-chart-bar');
-                add_submenu_page('Graphs', 'EmployeeWise', 'Employee Wise', 'companyadmin', 'Employeewise', array($this, 'EmployeeGraphs'), 'ReportsGraphs');
-                add_submenu_page('Graphs', 'Tracker', 'Travel Spend Tracker related to Air / Car / Hotels / Bus', 'companyadmin', 'Tracker', array($this, 'TravelGraphs'));
-
+            add_submenu_page('Graphs', 'EmployeeWise', 'Employee Wise', 'companyadmin', 'Employeewise', array($this, 'EmployeeGraphs'), 'ReportsGraphs');
+            add_submenu_page('Graphs', 'Tracker', 'Travel Spend Tracker related to Air / Car / Hotels / Bus', 'companyadmin', 'Tracker', array($this, 'TravelGraphs'));
         }
     }
 
@@ -105,6 +105,12 @@ class Admin_Menu {
 
     public function Designations() {
         include WPERP_COMPANY_VIEWS . '/company/Designations.php';
+    }
+
+
+
+    public function DepartmentsList() {
+        include WPERP_COMPANY_VIEWS . '/company/admindepartmentmanagerlisting.php';
     }
 
     public function Departments() {
@@ -170,28 +176,38 @@ class Admin_Menu {
     public function company_dashboard() {
         include WPERP_COMPANY_VIEWS . '/company/dashboard.php';
     }
+     public function employeeprofile() {
+        include WPERP_COMPANY_VIEWS . '/company/employeeprofile.php';
+    }
 
     public function PreDisplay() {
         include WPERP_COMPANY_VIEWS . '/pre-travel-display.php';
-    }   
+    }
+
     public function PostDisplay() {
         include WPERP_COMPANY_VIEWS . '/post-travel-display.php';
     }
+
     public function UtilityDisplay() {
         include WPERP_COMPANY_VIEWS . '/utilirty-expense-details.php';
     }
-     public function OtherDisplay() {
+
+    public function OtherDisplay() {
         include WPERP_COMPANY_VIEWS . '/other-expense-display.php';
     }
-     public function MileageDisplay() {
+
+    public function MileageDisplay() {
         include WPERP_COMPANY_VIEWS . '/mileage-display.php';
-    } 
+    }
+
     public function TdInvoiceDisplay() {
         include WPERP_COMPANY_VIEWS . '/travel-desk-claims.php';
-    } 
+    }
+
     public function EmployeeDisplay() {
         include WPERP_COMPANY_VIEWS . '/employee-display.php';
-    } 
+    }
+
     /**
      * Handles company admin page
      *
@@ -394,7 +410,6 @@ class Admin_Menu {
         }
     }
 
-   
     /**
      * Handles the Employe list Page
      *

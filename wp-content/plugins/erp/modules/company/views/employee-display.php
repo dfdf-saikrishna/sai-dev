@@ -2,16 +2,17 @@
 global $wpdb;
 $empid = $_GET['empid'];
 $compid = $_SESSION['compid'];
+$rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.EMP_Id='$empid' AND emp.ADM_Id=adm.ADM_Id AND emp.EG_Id=eg.EG_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id")
 
-$rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.EMP_Id='$empid' AND emp.ADM_Id=adm.ADM_Id AND emp.EG_Id=eg.EG_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id");
 ?>
+
 <div class="postbox">
     <div class="inside">
         <h2><?php _e('Employees Profile Display', 'employee'); ?></h2>
         <code>VIEW EMPLOYEE DETAILS </code>
         <div class="wrap pre-travel-request" id="wp-erp">
             <div style="margin-top:30px;">
-
+               
                 <div class="inside" style="margin:0 0 0 80%;">
                     <span class="field">
                         Added by: <?php echo $rowcomp[0]->ADM_Name; ?>
@@ -138,3 +139,5 @@ $rowcomp = $wpdb->get_results("SELECT * FROM employees emp, admin adm, departmen
 
     <!-- //content-->
     </div>
+    <?Php }?>
+

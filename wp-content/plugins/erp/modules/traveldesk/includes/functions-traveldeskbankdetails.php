@@ -72,4 +72,6 @@ function traveldeskbankdetails_create( $args = array() ) {
     $wpdb->insert( $tablename, $traveldeskbankdetails);
     return $TDBA_Id;
     }
-}				
+}
+
+				

@@ -23,13 +23,17 @@
     </div>
     <div class="wrap erp-company-traveldesklimits" id="wp-erp">
         <div class="col-sm-3">
-            <div class="form-group" style="margin:-31px 22px 0px 430px">
+            <div class="form-group" style="margin:1px 22px 0px 430px">
                
                 <input type="hidden" id="tlId" >
                 <div>
                    <?php if($row){ ?>
                     <input type="text" name="txtLimitPercentage" id="txtLimitPercentage" value="<?php echo $row[0]->TL_Percentage ? $row[0]->TL_Percentage : NULL; ?>" parsley-type="digits" parsley-required="true" placeholder="digits only" />
-                    <button type="submit" class="button button-primary" id="submitToleranceLimits" ><?php echo $row[0]->TL_Id ? 'Update' : 'Submit'; ?></button>
+                    <button type="submit" class="button button-primary" id="submitToleranceLimits" ><?php echo $row[0]->TL_Id ? 'Update' : ''; ?></button>
+                  <?php } 
+                    else { ?>
+                    <input type="text" name="txtLimitPercentage" id="txtLimitPercentage" type="numbers" parsley-required="true" placeholder="digits only" />
+                    <button type="submit" class="button button-primary" id="submitToleranceLimits" >Submit</button>
                   <?php } ?>
                 </div>
             </div>

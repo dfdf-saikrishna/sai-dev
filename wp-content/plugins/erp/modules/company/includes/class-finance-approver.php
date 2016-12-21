@@ -1,5 +1,7 @@
 <?php
+
 namespace WeDevs\ERP\Company;
+
 /**
  * PART 2. Defining Custom Table List
  * ============================================================================
@@ -10,22 +12,20 @@ namespace WeDevs\ERP\Company;
  * http://codex.wordpress.org/Class_Reference/WP_List_Table
  * http://wordpress.org/extend/plugins/custom-list-table-example/
  */
-
 //if (!class_exists('WP_List_Table')) {
-    //require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+//require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 //}
 
 /**
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Finance_Approvers_List extends \WP_List_Table
-{
+class Finance_Approvers_List extends \WP_List_Table {
+
     /**
      * [REQUIRED] You must declare constructor and give some basic params
      */
-    function __construct()
-    {
+    function __construct() {
         global $compid;
         global $status, $page;
 
@@ -34,17 +34,18 @@ class Finance_Approvers_List extends \WP_List_Table
             'plural' => 'admins',
         ));
     }
-    
-    function extra_tablenav( $which ) {
-        if ( $which != 'top' ) {
+
+    function extra_tablenav($which) {
+        if ($which != 'top') {
             return;
-        }?>
+        }
+        ?>
         <div class="alignleft">
-        <a href="#" id="remove_finance" class="button button-primary">Remove as Finance Approver</a> 
+            <a href="#" id="remove_finance" class="button button-primary">Remove as Finance Approver</a> 
         </div>
         <?php
     }
-    
+
     /**
      * [REQUIRED] this is a default column renderer
      *
@@ -52,8 +53,7 @@ class Finance_Approvers_List extends \WP_List_Table
      * @param $column_name - string (key)
      * @return HTML
      */
-    function column_default($item, $column_name)
-    {
+    function column_default($item, $column_name) {
 //        switch ( $column_name ) {
 //        case 'Contact':
 //            return $item['COM_Spcontactno'];
@@ -73,42 +73,41 @@ class Finance_Approvers_List extends \WP_List_Table
 //        }
         //return $item['COM_Name'];
     }
-    
-    /*function column_your_image_column_name($item)
-    {
-        return sprintf(
-            '<img src="%s" />',
-            $item['your_image_column_name']
-        );
-    }*/
 
+    /* function column_your_image_column_name($item)
+      {
+      return sprintf(
+      '<img src="%s" />',
+      $item['your_image_column_name']
+      );
+      } */
 
-    function column_Username($item){
-        $username =  $item['ADM_Username']; 
+    function column_Username($item) {
+        $username = $item['ADM_Username'];
         return $username;
     }
-    
-    function column_Email($item){
-        $email =  $item['ADM_Email']; 
+
+    function column_Email($item) {
+        $email = $item['ADM_Email'];
         return $email;
     }
-    
-    function column_Contact($item){
-        $contact =  $item['ADM_Cont']; 
+
+    function column_Contact($item) {
+        $contact = $item['ADM_Cont'];
         return $contact;
     }
-    
-    function column_Created_Date($item){
+
+    function column_Created_Date($item) {
 
         return date('d/M/Y', strtotime($item['ADM_Regdate'])) . date('h:i a', strtotime($item['ADM_Regdate']));
     }
-    
+
     // function column_Tot_Requests($item){
-        // global $wpdb;
-        // $table_name = "requests";
-        // $comId = $item['COM_Id'];
-        // $req_count = $wpdb->get_var("SELECT COUNT(REQ_Id) FROM $table_name WHERE COM_Id=$comId");
-        // return $req_count;
+    // global $wpdb;
+    // $table_name = "requests";
+    // $comId = $item['COM_Id'];
+    // $req_count = $wpdb->get_var("SELECT COUNT(REQ_Id) FROM $table_name WHERE COM_Id=$comId");
+    // return $req_count;
     // }
 
     /**
@@ -118,13 +117,12 @@ class Finance_Approvers_List extends \WP_List_Table
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_empname_empcode($item)
-    {
-        ($item['EMP_Access']==1) ? $active='<img src='.WPERP_COMPANY_ASSETS.'/img/on.png title="active" alt="active" width=10 height=10/>' : $active='<img src='.WPERP_COMPANY_ASSETS.'/img/off.png title="blocked" alt="blocked" width=10 height=10 />';
-						
-        if($item['EMP_AccountsApprover']==1)
-        $acc='<img src='.WPERP_COMPANY_ASSETS.'/img/acc-apprv-icon.png title="finance approver" alt="finance approver" width=10 height=10 />';
-  
+    function column_empname_empcode($item) {
+        ($item['EMP_Access'] == 1) ? $active = '<img src=' . WPERP_COMPANY_ASSETS . '/img/on.png title="active" alt="active" width=10 height=10/>' : $active = '<img src=' . WPERP_COMPANY_ASSETS . '/img/off.png title="blocked" alt="blocked" width=10 height=10 />';
+
+        if ($item['EMP_AccountsApprover'] == 1)
+            $acc = '<img src=' . WPERP_COMPANY_ASSETS . '/img/acc-apprv-icon.png title="finance approver" alt="finance approver" width=10 height=10 />';
+
         // links going to /admin.php?page=[your_plugin_page][&other_params]
         // notice how we used $_REQUEST['page'], so action will be done on curren page
         // also notice how we use $this->_args['singular'] so in this example it will
@@ -133,92 +131,88 @@ class Finance_Approvers_List extends \WP_List_Table
             'edit' => sprintf('<a href="?page=finance" data-id=%s>%s</a>', $item['EMP_Id'], __('Edit', 'companiesadmin_table_list')),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['EMP_Id'], __('Delete', 'companiesadmin_table_list')),
         );
-       
+
         return sprintf('%s %s',
-           // $image,
-
-            $active.$acc."<a href='admin.php?page=Employeesdisplay&empid=$item[EMP_Id]'>".$item['EMP_Name']."</a></br>".$item['EMP_Code'],
-
-            $this->row_actions($actions)
+                // $image,
+                $active . $acc . "<a href='admin.php?page=Employeesdisplay&empid=$item[EMP_Id]'>" . $item['EMP_Name'] . "</a></br>" . $item['EMP_Code'], $this->row_actions($actions)
         );
     }
-    
-    function column_grade($item){
+
+    function column_grade($item) {
         return $item['EG_Name'];
     }
-    
-    function column_email_contact($item){
-        return $item['EMP_Email']."., </br>".$item['EMP_Phonenumber'];
+
+    function column_email_contact($item) {
+        return $item['EMP_Email'] . "., </br>" . $item['EMP_Phonenumber'];
     }
-    
-    function column_rep_manager($item){
+
+    function column_rep_manager($item) {
         $compid = $_SESSION['compid'];
         global $wpdb;
         $found = 0;
-        if($selrepmng=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Code='$item[EMP_Reprtnmngrcode]' AND COM_Id='$compid'"))
-        {
-            $repMngid		=	$selrepmng->EMP_Id;
-            $repMngName		=	$selrepmng->EMP_Name;
-            $repMngCode		=	$selrepmng->EMP_Code;
+        if ($selrepmng = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Code='$item[EMP_Reprtnmngrcode]' AND COM_Id='$compid'")) {
+            $repMngid = $selrepmng->EMP_Id;
+            $repMngName = $selrepmng->EMP_Name;
+            $repMngCode = $selrepmng->EMP_Code;
 
-            $found=1;
+            $found = 1;
         }
-        if($found) 
-            return "<a href='admin-employees-display.php?empid=$repMngid'>$repMngName</a><br>".$repMngCode;
+        if ($found)
+            return "<a href='admin-employees-display.php?empid=$repMngid'>$repMngName</a><br>" . $repMngCode;
         else
             return "--";
     }
-    
-    function column_dep_des($item){
-        return $item['DEP_Name']."., </br>".$item['DES_Name'];
+
+    function column_dep_des($item) {
+        return $item['DEP_Name'] . "., </br>" . $item['DES_Name'];
     }
-        
-    function column_func_rep_manager($item){
+
+    function column_func_rep_manager($item) {
         $compid = $_SESSION['compid'];
         global $wpdb;
-        if($selrepmng=$wpdb->get_row("SELECT * FROM employees WHERE EMP_Code='$item[EMP_Funcrepmngrcode]' AND COM_Id='$compid'"))
-        {
-            $repMngid		=	$selrepmng->EMP_Id;
-            $repMngName		=	$selrepmng->EMP_Name;
-            $repMngCode		=	$selrepmng->EMP_Code;
+        if ($selrepmng = $wpdb->get_row("SELECT * FROM employees WHERE EMP_Code='$item[EMP_Funcrepmngrcode]' AND COM_Id='$compid'")) {
+            $repMngid = $selrepmng->EMP_Id;
+            $repMngName = $selrepmng->EMP_Name;
+            $repMngCode = $selrepmng->EMP_Code;
 
-            $found=1;
-        }else
-            $found=0;
+            $found = 1;
+        } else
+            $found = 0;
 
-        if($found) 
-            return "<a href='admin-employees-display.php?empid=$repMngid'>$repMngName</a><br>".$repMngCode;
+        if ($found)
+            return "<a href='admin-employees-display.php?empid=$repMngid'>$repMngName</a><br>" . $repMngCode;
         else
             return "--";
     }
-    
-    function column_requests($item){
+
+    function column_requests($item) {
         $compid = $_SESSION['compid'];
         global $wpdb;
-        $count_total=0; $count_approved=0; $count_pending=0; $count_rejected=0;
-	
-        $count_total=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND COM_Id='$compid' AND REQ_Active != 9 AND RE_Status=1"));
-        $count_approved=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=2 AND REQ_Active != 9 AND RE_Status=1"));
-        $count_pending=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1"));
-        $count_rejected=count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1"));
-        
-        return "<a href='#'>".$count_total."</a>" . "/" . "<a href='#'>".$count_approved."</a>" . "/" . "<a href='#'>".$count_pending."</a>" . "/" . "<a href='#'>".$count_rejected."</a>";
+        $count_total = 0;
+        $count_approved = 0;
+        $count_pending = 0;
+        $count_rejected = 0;
+
+        $count_total = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND COM_Id='$compid' AND REQ_Active != 9 AND RE_Status=1"));
+        $count_approved = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=2 AND REQ_Active != 9 AND RE_Status=1"));
+        $count_pending = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=1 AND REQ_Active != 9 AND RE_Status=1"));
+        $count_rejected = count($wpdb->get_results("SELECT DISTINCT (req.REQ_Id) FROM requests req, request_employee re WHERE req.REQ_Id=re.REQ_Id AND re.EMP_Id=$item[EMP_Id] AND req.REQ_Id=re.REQ_Id AND COM_Id='$compid' AND REQ_Status=3 AND REQ_Active != 9 AND RE_Status=1"));
+
+        return "<a href='#'>" . $count_total . "</a>" . "/" . "<a href='#'>" . $count_approved . "</a>" . "/" . "<a href='#'>" . $count_pending . "</a>" . "/" . "<a href='#'>" . $count_rejected . "</a>";
     }
-        
+
     /**
      * [REQUIRED] this is how checkbox column renders
      *
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_cb($item)
-    {
+    function column_cb($item) {
         return sprintf(
-            '<input type="checkbox" id="checkbox" name="id[]" value="%s" />',
-            $item['EMP_Id']
+                '<input type="checkbox" id="checkbox" name="id[]" value="%s" />', $item['EMP_Id']
         );
     }
-        
+
     /**
      * [REQUIRED] This method return columns to display in table
      * you can skip columns that you do not want to show
@@ -226,8 +220,7 @@ class Finance_Approvers_List extends \WP_List_Table
      *
      * @return array
      */
-    function get_columns()
-    {
+    function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'empname_empcode' => __('Employee Name</br>Employee code', 'expense_table_list'),
@@ -236,7 +229,7 @@ class Finance_Approvers_List extends \WP_List_Table
             'rep_manager' => __('Reporting Manager', 'expense_table_list'),
             'dep_des' => __('Department</br>Designation', 'expense_table_list'),
             'func_rep_manager' => __('Func. Rep.</br>Manager', 'expense_table_list'),
-            'requests' => __('Requests', 'expense_table_list'), 
+            'requests' => __('Requests', 'expense_table_list'),
         );
         return $columns;
     }
@@ -248,8 +241,7 @@ class Finance_Approvers_List extends \WP_List_Table
      *
      * @return array
      */
-    function get_sortable_columns()
-    {
+    function get_sortable_columns() {
         $sortable_columns = array(
             'empname_empcode' => array('Employee Name</br>Employee code', true),
             'grade' => array('Grade', true),
@@ -257,7 +249,7 @@ class Finance_Approvers_List extends \WP_List_Table
             'rep_manager' => array('Reporting Manager', true),
             'dep_des' => array('Department</br>Designation', true),
             'func_rep_manager' => array('Func. Rep.</br>Manager', true),
-            'requests' => array('Requests', true)      
+            'requests' => array('Requests', true)
         );
         return $sortable_columns;
     }
@@ -267,8 +259,7 @@ class Finance_Approvers_List extends \WP_List_Table
      *
      * @return array
      */
-    function get_bulk_actions()
-    {
+    function get_bulk_actions() {
         $actions = array(
             'delete' => 'Delete'
         );
@@ -282,17 +273,20 @@ class Finance_Approvers_List extends \WP_List_Table
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
      */
-    function process_bulk_action()
-    {
+    function process_bulk_action() {
         $compid = $_SESSION['compid'];
         $adminid = $_SESSION['adminid'];
         global $wpdb;
         global $blocked;
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+
+
         $table_name = "employees";
+
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
+            if (is_array($ids))
+                $ids = implode(',', $ids);
 
             if (!empty($ids)) {
                 $wpdb->query("DELETE FROM $table_name WHERE EMP_Id IN($ids)");
@@ -305,13 +299,11 @@ class Finance_Approvers_List extends \WP_List_Table
      *
      * It will get rows from database and prepare them to be showed in table
      */
-    function prepare_items()
-    {
+    function prepare_items() {
         $compid = $_SESSION['compid'];
         global $wpdb;
         global $query;
-        $table_name = 'requests'; // do not forget about tables prefix
-
+   
         $per_page = 5; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
@@ -323,7 +315,7 @@ class Finance_Approvers_List extends \WP_List_Table
 
         // [OPTIONAL] process bulk action if any
         $this->process_bulk_action();
-     
+
         // will be used in pagination settings
         $total_items = count($wpdb->get_results("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1"));
 
@@ -356,6 +348,7 @@ class Finance_Approvers_List extends \WP_List_Table
 		else{
 			$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM company cmp, employees emp, department dep, designation des, employee_grades eg WHERE emp.COM_Id='$compid' AND emp.COM_Id=cmp.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id AND emp.EMP_Status=1 AND emp.EMP_Access=1 AND emp.EMP_AccountsApprover=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);  
 		}
+
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above
@@ -363,6 +356,7 @@ class Finance_Approvers_List extends \WP_List_Table
             'total_pages' => ceil($total_items / $per_page) // calculate pages count
         ));
     }
+
 }
 
 /**
@@ -372,18 +366,21 @@ class Finance_Approvers_List extends \WP_List_Table
  * @param $item
  * @return bool|string
  */
-function custom_table_example_validate_person($item)
-{
+function custom_table_example_validate_person($item) {
     $messages = array();
 
-    if (empty($item['name'])) $messages[] = __('Name is required', 'custom_table_example');
-    if (!empty($item['email']) && !is_email($item['email'])) $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
-    if (!ctype_digit($item['age'])) $messages[] = __('Age in wrong format', 'custom_table_example');
+    if (empty($item['name']))
+        $messages[] = __('Name is required', 'custom_table_example');
+    if (!empty($item['email']) && !is_email($item['email']))
+        $messages[] = __('E-Mail is in wrong format', 'custom_table_example');
+    if (!ctype_digit($item['age']))
+        $messages[] = __('Age in wrong format', 'custom_table_example');
     //if(!empty($item['age']) && !absint(intval($item['age'])))  $messages[] = __('Age can not be less than zero');
     //if(!empty($item['age']) && !preg_match('/[0-9]+/', $item['age'])) $messages[] = __('Age must be number');
     //...
 
-    if (empty($messages)) return true;
+    if (empty($messages))
+        return true;
     return implode('<br />', $messages);
 }
 
@@ -401,8 +398,7 @@ function custom_table_example_validate_person($item)
  * http://codex.wordpress.org/Writing_a_Plugin#Internationalizing_Your_Plugin
  * http://codex.wordpress.org/I18n_for_WordPress_Developers
  */
-function custom_table_example_languages()
-{
+function custom_table_example_languages() {
     load_plugin_textdomain('custom_table_example', false, dirname(plugin_basename(__FILE__)));
 }
 

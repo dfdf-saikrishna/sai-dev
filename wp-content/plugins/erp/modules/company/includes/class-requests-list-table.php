@@ -2,24 +2,6 @@
 
 namespace WeDevs\ERP\Company;
 
-/**
- * PART 2. Defining Custom Table List
- * ============================================================================
- *
- * In this part you are going to define custom table list class,
- * that will display your database records in nice looking table
- *
- * http://codex.wordpress.org/Class_Reference/WP_List_Table
- * http://wordpress.org/extend/plugins/custom-list-table-example/
- */
-//if (!class_exists('WP_List_Table')) {
-//require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-//}
-
-/**
- * Custom_Table_Example_List_Table class that will display our custom table
- * records in nice table
- */
 class Requests_List extends \WP_List_Table {
 
     /**
@@ -35,16 +17,6 @@ class Requests_List extends \WP_List_Table {
         ));
     }
 
-    /**
-     * Render extra filtering option in
-     * top of the table
-     *
-     * @since 0.1
-     *
-     * @param  string $which
-     *
-     * @return void
-     */
     function extra_tablenav($which) {
         $compid = $_SESSION['compid'];
         global $wpdb;
@@ -487,7 +459,8 @@ class Requests_List extends \WP_List_Table {
                     }
                     $i++;
                 }
-                               $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re" . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY req.REQ_Id"));
+
+                $total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re" . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY req.REQ_Id"));
 
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM $table_name req, request_employee re" . $query . "AND req.COM_Id='$compid' AND req.REQ_Id=re.REQ_Id AND req.REQ_Active !=9 AND RE_Status=1 ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
             } else {

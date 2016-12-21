@@ -440,6 +440,7 @@ return array(
     'WeDevs\\ERP\\Company\\Designation_List_Table' => $baseDir . '/modules/company/includes/class-designation-table-list.php',
     'WeDevs\\ERP\\Company\\Designation' => $baseDir . '/modules/company/includes/class-designation.php',
     'WeDevs\\ERP\\Company\\Departments_List_Table' => $baseDir . '/modules/company/includes/class-deaprtment-table-list.php',
+    'WeDevs\\ERP\\Company\\Manager_Department_List_Table' => $baseDir . '/modules/company/includes/class-manager-list-table.php',
     'WeDevs\\ERP\\Company\\Departments' => $baseDir . '/modules/company/includes/class-departments.php',
     'WeDevs\\ERP\\Company\\CostCenter_List_Table' => $baseDir . '/modules/company/includes/class-cost-center-table-list.php',
     'WeDevs\\ERP\\Company\\CostCenter' => $baseDir . '/modules/company/includes/class-costcenter.php',
@@ -545,6 +546,8 @@ return array(
 	'WeDevs\\ERP\\Traveldesk\\Traveldeskdashboard_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-dashboard.php',
     'WeDevs\\ERP\\Traveldesk\\TravelDesk_Bankdetails_List_Table' => $baseDir . '/modules/traveldesk/includes/class-traveldesk-bankdetails-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
+    'WeDevs\\ERP\\Traveldesk\\TDRiseinvoiceview' => $baseDir . '/modules/traveldesk/includes/class-tdriseinvoiceview.php',
+   'WeDevs\\ERP\\Traveldesk\\Claimsview' => $baseDir . '/modules/traveldesk/includes/class-claimsview.php',
     
     /*****************************/
     /** Travel Agent Module classes **/

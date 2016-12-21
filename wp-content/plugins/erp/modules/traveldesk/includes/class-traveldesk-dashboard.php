@@ -34,6 +34,26 @@ parent::__construct(array(
 'plural' => 'companyinvoicecreates',
 ));
 }
+/**
+* Render extra filtering option in
+* top of the table
+*
+* @since 0.1
+*
+* @param  string $which
+*
+* @return void
+*/
+function extra_tablenav($which) {
+	global $wpdb;
+	if ($which != 'top') {
+	return;
+	}?>
+	<div class="alignleft actions">
+        <a href="#" id="traveldeskrise_invoice" class="button button-primary">Rise Invoice</a> 
+        </div>
+		<?php
+}
 
 /**
 * [REQUIRED] this is how checkbox column renders
@@ -92,8 +112,6 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 					}
 					
 					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
-					
-				
 				} 
 				
 
@@ -124,14 +142,13 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 							$type='<span style="font-size:10px;">[G]</span>';
 							$title="Group Request Without Approval";
 							break;
-							
-							
-						
 						}
 	}
-						//$check =  'if($void) echo $void; if($onclick) echo $onclick';
-						$check='';
-return '<input type="checkbox" name="reqid[]" value="'. $item['REQ_Id'] .'" '. $check .'/>';                        
+	//$check = if($void) echo $void; else echo "";  
+	/* $check = if($onclick){ 
+		echo $onclick;
+	} */
+return '<input type="checkbox" name="reqid[]" value="'. $item['REQ_Id'] .'" />';                        
 }
 
 function column_Request_Code($item) {
@@ -523,7 +540,8 @@ $Loc = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table w
 else
 $Loc ='';					
 			
-return count($getvals).$Loc;
+//return count($getvals).$Loc;
+return  '<span class="status-2" style="padding:5px 8px !important;border-radius: 15px;line-height:1">'. count($getvals) .'</span>'.$Loc; 
 }
 
 function column_Quote_Amount($item) {
