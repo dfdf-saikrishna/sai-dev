@@ -70,12 +70,13 @@ function traveldeskclaims_create( $args = array() ) {
 	}
 	if($photoAllowed)
 	{
-		echo "msg=1&reqids=$reqids";
-		exit;
+		$response = array('status'=>'failure','message'=>"Wrong file type uploaded.");
+        exit;
+		
 	}
 	if($reqids=="" || $totalAmount==""){
-		echo "msg=2&reqids=$reqids";
-		exit;
+		$response = array('status'=>'failure','message'=>"OOPs !! Some fields went missing. Please try again.");
+        exit;
 	} else {	
 		$imdir		=	"../company/upload/$compid/bills_tickets/";		
 		$ext 		= 	substr(strrchr($imagename, "."), 1);
@@ -156,11 +157,11 @@ function traveldeskclaims_create( $args = array() ) {
 			);
          $wpdb->insert("travel_desk_claim_requests",$travel_desk_claim_requests_data);	
 			}	
-			echo "travel-desk-claims.php?msg=1";
+			$response = array('status'=>'failure','message'=>"Wrong file type uploaded.");
 			exit;
 		} else {
-			echo "msg=3&reqids=$reqids";
-			exit;
+			$response = array('status'=>'failure','message'=>"Error !! Please try again or contact your administrator.");
+        exit;
 		}
 	}
 }
