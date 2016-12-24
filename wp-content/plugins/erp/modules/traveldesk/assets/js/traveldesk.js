@@ -28,7 +28,9 @@
             $('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
             $('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
             $('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
+			$('body').on('submit', '#buttoneditclaim', this.traveldeskClaimsUpdate.buttoneditclaim);
             $('body').on('click', '.group_emp', this.travelDesk.groupEmps);
+            //$('body').on('click', '#claimedit', this.traveldeskclaimedit.claimedit);
             
             this.initTipTip();
 		
@@ -57,8 +59,7 @@
                 $('.select2').select2();
             } );
         },
-      
-		
+ 
 			traveldeskBankdetails: {
                 
 			 /**
@@ -511,10 +512,43 @@
                             }
                         });
                    
-            },	 
+            },
+			 
 		},
 		
-		
+	traveldeskClaimsUpdate:{
+		/* Reload the department area
+             *
+             * @return {void}
+             */
+            reload: function() {
+                $( '.erp-traveldeskclaims-wrap' ).load( window.location.href + ' .erp-traveldeskclaims-wrap-inner' );
+            }, 
+			
+		buttoneditclaim: function(e) {
+					 e.preventDefault();
+					/**
+                     * Handle the onsubmit function
+                     *
+                     * @param  {modal}
+                     */
+                        wp.ajax.send( 'traveldeskclaims_update', {
+                            data: $(this).serialize(),
+                            success: function(response) {
+						
+                                console.log(response);
+                              //  WeDevs_ERP_TRAVELDESK.traveldeskClaims.reload();
+							   //window.location.replace("/wp-admin/admin.php?page=claims");
+               
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                   
+            },
+			
+	},	
   
     };
     $(function() {

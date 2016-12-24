@@ -31,12 +31,20 @@ class Ajax_Handler {
 		$this->action( 'wp_ajax_traveldeskbankdetails_create', 'traveldeskbankdetails_create' );
         $this->action( 'wp_ajax_traveldeskbankdetails_get', 'traveldeskbankdetails_get' );
 		$this->action( 'wp_ajax_traveldeskclaims_create', 'traveldeskclaims_create' );
+		$this->action( 'wp_ajax_traveldeskclaims_update', 'traveldeskclaims_update' );
     }
 	
 	public function traveldeskclaims_create() {
 		
         $posted               = array_map( 'strip_tags_deep', $_POST );
         $traveldeskclaims_id  = traveldeskclaims_create( $posted );
+        $data = $posted;
+        $this->send_success( $data );
+    }
+	
+	public function traveldeskclaims_update() {
+        $posted               = array_map( 'strip_tags_deep', $_POST );
+        $traveldeskclaimsupdate_id  = traveldeskclaims_update( $posted );
         $data = $posted;
         $this->send_success( $data );
     }

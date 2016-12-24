@@ -198,14 +198,11 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 					
 				
 				} 
-				
-
-                         
-						 
 						switch ($item['REQ_Type']){
 						
 							case 1:
-							$href='travel-desk-booking-details.php';
+							//$href='/wp-admin/admin.php?page=view-booking-req&reqid='.$item['REQ_Id'];
+							$href='#';
 							$type='<span style="font-size:10px;">[E]</span>';
 							$title="Employee Request";
 							break;
@@ -223,7 +220,7 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 							break;
 						
 							case 4:
-							$href='travel-desk-group-request-details.php';
+							$href='/wp-admin/admin.php?page=View-Appr-Request&reqid='.$item['REQ_Id'];
 							$type='<span style="font-size:10px;">[G]</span>';
 							$title="Group Request Without Approval";
 							break;
@@ -446,7 +443,7 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 							$title="Group Request Without Approval";
 							break;
 						}
-						$j=1;
+						$j = $item['REQ_Id'];
 						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='". $item['REQ_Id'] ."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
 						$rdids = "";
 						if(!empty($rddetails)){
@@ -566,9 +563,6 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 									} else {
 										$cancellationstatus = bookingStatus(NULL);
 									}
-                                                                   
-                                  $j++;
-						
 						}
 						}else{
 						$cancellationstatus = "";
@@ -772,12 +766,10 @@ $cancellationstatus="";
 							break;
 						}
 						
+						$j = $item['REQ_Id'];
 			$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='". $item['REQ_Id'] ."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
 
 						$rdids = "";
-
-$j = 1;
-						
 						foreach ($rddetails as $rowsql) {			
 			$selrdbs = $wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='". $rowsql->RD_Id ."' AND BS_Status=1 AND BS_Active=1");
 			if ($selrdbs->RD_Id) {
@@ -896,7 +888,6 @@ $j = 1;
 
 									$bookingStatus .= bookingStatus(NULL);
 								}
-								 $j++; 
 						}
                                                                   
 							

@@ -84,7 +84,7 @@ function picval(flname) {
 
 function submitBookingForm(iteration) {
 	
-	
+	alert("sfsdfsdf");
 	var bookingActionval	=	$('#selBookingActions'+iteration).val();		
 	var txtAmnt             =	$('#txtAmount'+iteration).val();
 		
