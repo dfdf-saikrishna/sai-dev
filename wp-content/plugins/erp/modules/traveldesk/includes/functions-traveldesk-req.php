@@ -187,6 +187,6 @@ function indianRupeeFormat(x){
 	
 	return res;
 
-}    
+}
 </script>
 

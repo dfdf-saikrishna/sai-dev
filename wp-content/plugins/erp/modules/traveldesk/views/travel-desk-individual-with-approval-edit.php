@@ -128,16 +128,14 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                       </tbody>
                     </table>
                     <span id="totaltable"> </span>
-                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="edit-traveldesk-requestappr" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
-                    <span id="totaltable"> 
-<!--                    <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
+                    <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
                         <tr>
                           <td align="right" width="85%">Total Cost</td>
                           <td align="center" width="5%">:</td>
                           <td align="right" width="10%"><?php echo IND_money_format($totalcost).".00"; ?></td>
                         </tr>
-                    </table>-->
-                    </span>
+                    </table>
+                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="edit-traveldesk-requestappr" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                 </div>
                 <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
