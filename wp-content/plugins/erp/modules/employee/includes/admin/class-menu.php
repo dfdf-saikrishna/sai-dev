@@ -47,6 +47,7 @@ class Admin_Menu {
         add_submenu_page('', 'Upload', 'View Post Request', 'employee', 'View-Post-Request', array( $this, 'view_post_request'));
         add_submenu_page('', 'Upload', 'View Emp Requests', 'employee', 'View-Emp-Requests', array( $this, 'view_emp_request'));
         add_submenu_page('', 'Upload', 'View My Requests', 'employee', 'View-My-Requests', array( $this, 'view_my_request'));
+        
         if(current_user_can( 'finance' )){
              
         add_menu_page(__( 'Finance Dashboard', 'finance' ), __( 'Finance Dashboard', 'finance' ), 'finance', 'financemenu', array($this,'account_Dashboard'),'dashicons-admin-users');
@@ -70,48 +71,15 @@ class Admin_Menu {
         }
         //add_menu_page('Employee Profile', 'Employee Profile', 'employee', 'employee-profile', 'employement_details','dashicons-admin-users');
 
-//        add_submenu_page('employee-profile', ' Employement Details', ' Employement Details', 'employee',' Employement Details'.'/ Employement Details', 'employement_details');
-//        add_submenu_page('employee-profile', 'View / Edit emp Profile', ' View / Edit Profile', 'employee','View / Edit Profile'.'/ View / Edit Profile', 'employement_details');
-//        add_submenu_page('employee-profile', 'Personal Details', ' Personal Details', 'employee',' Personal Details'.'/ Personal Details', 'employement_details');
-//        add_submenu_page('employee-profile', 'View / Edit personalProfile', 'View / Edit personalProfile', 'employee',' View / Edit personalProfile'.'/ View / Edit personalProfile', 'employement_details');
-//        add_submenu_page('employee-profile', 'Medical Information ', ' Medical Information ', 'employee',' Medical Information '.'/  Medical Information ', 'employement_details');
-//
-//        add_submenu_page('employee-profile', ' Add / View / Edit Family Members ', ' Add / View / Edit Family Members ', 'employee','  Add / View / Edit Family Members '.'/  Add / View / Edit Family Members ', 'employement_details');
-//
-//        add_submenu_page('employee-profile', ' Bank Details ', 'Bank Details', 
-//        'employee',' Bank Details'.'/  Bank Details ', 'employement_details','dashicons-groups');
-//
-//        add_submenu_page('employee-profile', ' Bank Account Details ', ' Bank Account Details ', 
-//        'employee',' Bank Account Details '.'/  Bank Account Details  ', 'employement_details','dashicons-groups');
-//
-//        add_submenu_page('employee-profile', 'Travel Documents', ' Travel Documents ', 
-//        'employee',' Travel Documents'.'/ Travel Documents', 'employement_details','dashicons-analytics');
-//
-//        add_submenu_page('employee-profile', ' Passport Details ', ' Passport Details ', 
-//        'employee',' Passport Details '.'/ Passport Details ', 'employement_details','dashicons-id-alt');
-//
-//        add_submenu_page('employee-profile', ' Visa Details ', ' Visa Details ', 
-//        'employee',' Visa Details  '.'/  Visa Details  ', 'employement_details','dashicons-id');
-//
-//        add_submenu_page('employee-profile', '  Frequent Flyers  ', ' Frequent Flyers ', 
-//        'employee',' Frequent Flyers  '.'/  Frequent Flyers  ', 'employement_details');
-//
-//        add_submenu_page('employee-profile', '  Driving License  ', '  Driving License ', 
-//        'employee','  Driving License  '.'/   Driving License   ', 'employement_details');
-
         add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'TravelExpense', array($this, 'requests_overview'),'dashicons-tickets');
         $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', array($this, 'requests_overview'));
         
             add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
             add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
             add_submenu_page('', 'Expense Request', ' Post Travel Edit', 'employee','Post-travel-edit', array($this, 'post_travel_request_edit'));
-//            add_submenu_page('TravelExpense', 'Create Request', 'Create Request', 'employee','Create Request'.'/Create Request', 'travel_expense');
-//            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
             add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post-travel', array($this, 'post_travel_request'));
-//            add_submenu_page('TravelExpense', 'Create Request PostTravel', 'Create Request', 'employee','Create Request'.'/Create Request', 'clivern_render_about_page');
-//            add_submenu_page('TravelExpense', 'View / Edit / Delete Requests PostTravel', 'View / Edit / Delete Requests', 'employee','View / Edit / Delete Requests'.'/View / Edit / Delete Requests', 'travel_expense');
 
-        add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'general_expense'),'dashicons-migrate');
+            add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'general_expense'),'dashicons-migrate');
             $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'general_expense'));
             add_submenu_page('GeneralExpense', ' Mileage ', 'Mileage Request', 'employee','Mileage', array($this,'Mileage_Request'));
             add_submenu_page('GeneralExpense', 'Utilities', 'Utility Request', 'employee','Utilities',array($this,'Utility_Request'));
@@ -125,23 +93,23 @@ class Admin_Menu {
             add_submenu_page('', 'others', 'Others Request', 'employee','edit-mileage', array($this,'edit_mileage_Request'));
             add_submenu_page('', 'others', 'Others Request', 'employee','edit-utility', array($this,'edit_utility_Request'));
             add_submenu_page('', 'others', 'Others Request', 'employee','edit-others', array($this,'edit_others_Request'));
-            
-
-        //add_menu_page(' Reports', ' Reports', 'employee', ' Reports', 'reports','dashicons-media-spreadsheet');
-
-//        add_menu_page('My Team', 'My Team', 'employee', 'My Team', 'myteam','dashicons-groups');
-//            add_submenu_page('My Team', 'Approved Requests', 'Approved Requests', 'employee','Approved Requests'.'/Approved Requests', 'myteam');
-//            add_submenu_page('My Team', 'Pending Requests', 'Pending Requests', 'employee','Pending Requests'.'/Pending Requests', 'myteam');
-//            add_submenu_page('My Team', 'Rejected Requests', 'Rejected Requests', 'employee','Rejected Requests'.'/Rejected Requests', 'myteam');
-//            add_submenu_page('My Team', 'View My Team', 'View My Team', 'employee','View My Team'.'/View My Team', 'myteam');
-
-        //add_menu_page('Delegate', 'Delegate', 'employee', 'Delegate', 'delegate','dashicons-image-filter');
-            //add_submenu_page('Delegate', 'Set Delegate', 'Set Delegate', 'employee','Set Delegate'.'/Set Delegate', 'delegate');
-            //add_submenu_page('Delegate', 'View / Edit / Remove Delegate', 'View / Edit / Remove Delegate', 'employee','View / Edit / Remove Delegate'.'/View / Edit / Remove Delegate', 'delegate');
-        //add_menu_page('Download Company Expense Policy', 'Download Company Expense Policy', 'employee', 'Download Company Expense Policy', 'setting','dashicons-arrow-down-alt');
-       //}
+            if(!current_user_can( 'finance' )){
+            add_menu_page( __( 'Delegate', 'employee' ), __( 'Delegeate', 'employee' ), 'employee', 'delegate', array($this,'delegates_view'),'dashicons-star-filled');
+            $overview = add_submenu_page( 'delegate', 'Overview', 'Overview', 'employee', 'delegate', array($this, 'delegates_view'));
+            add_submenu_page('delegate', 'Create Delegate', 'Create Delegate', 'employee','create-delegate', array($this,'create_delegate'));
+            add_submenu_page('', 'Edit Delegate', 'Edit Delegate', 'employee','edit-delegate', array($this,'edit_delegate'));
+            }
     }
         
+    }
+    function create_delegate(){
+        include WPERP_EMPLOYEE_VIEWS . '/create_delegate.php';
+    }
+    function edit_delegate(){
+        include WPERP_EMPLOYEE_VIEWS . '/edit_delegate.php';
+    }
+    function delegates_view(){
+        include WPERP_EMPLOYEE_VIEWS . '/delegates_view.php';
     }
     function edit_mileage_Request(){
         include WPERP_EMPLOYEE_VIEWS . '/edit_mileage_Request.php';

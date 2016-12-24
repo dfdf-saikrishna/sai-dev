@@ -1,4 +1,5 @@
 <?php
+global $showProCode;
 global $etEdit;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
@@ -33,56 +34,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
-            <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins">
-              <tr>
-                <td width="20%">Employee Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                <td width="20%">Company Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                <td width="20%">Reporting Manager Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-              </tr>
-              <tr>
-                <td>Employee Designation </td>
-                <td>:</td>
-                <td><?php echo $empdetails->DES_Name; ?></td>
-                <td>Reporting Manager Name</td>
-                <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Department</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-
-              </tr>
-            </table>
-            </div>
-            <!-- Messages -->
-            <div style="display:none" id="failure" class="notice notice-error is-dismissible">
-            <p id="p-failure"></p>
-            </div>
-
-            <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
-                <p id="p-notice"></p>
-            </div>
-
-            <div style="display:none" id="success" class="notice notice-success is-dismissible">
-                <p id="p-success"></p>
-            </div>
-
-            <div style="display:none" id="info" class="notice notice-info is-dismissible">
-                <p id="p-info"></p>
-            </div>
+            <?php
+                $row=0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+            ?>
             <div style="margin-top:60px;">
             <form id="request_form" name="input" action="#" method="post">
             <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
@@ -145,8 +100,8 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     ?>
                   </tbody>
                 </table>
+                <span id="totaltable"></span>
                 <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
-                <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>

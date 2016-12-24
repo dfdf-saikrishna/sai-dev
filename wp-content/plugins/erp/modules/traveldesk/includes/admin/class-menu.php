@@ -34,7 +34,7 @@ class Admin_Menu {
 		//add_submenu_page('RiseInv', 'RiseInv', 'RiseInvoice', 'traveldesk', 'RiseInvoiceTd', array( $this,'tdriseinvoiceview_page'),'dashicons-admin-users');
         add_submenu_page('', 'RiseInv', 'RiseInvoice', 'traveldesk', 'RiseInvoice',  array( $this, 'tdriseinvoiceview_page' ));
        
-        add_menu_page('View-Edit-Request', 'Request Without Approval', 'traveldesk','View-Edit-Request', array( $this, 'view_req_withoutappr'),'dashicons-admin-users');
+        //add_menu_page('View-Edit-Request', 'Request Without Approval', 'traveldesk','View-Edit-Request', array( $this, 'view_req_withoutappr'),'dashicons-admin-users');
         
         $overview = add_submenu_page('View-Edit-Request', 'Overview', 'Overview', 'traveldesk', 'View-Edit-Request', array( $this,'view_req_withoutappr'));
 
@@ -99,9 +99,10 @@ class Admin_Menu {
 //        add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'Settings','dashicons-menu');
 //        add_submenu_page('Settings', 'Always', 'Always Left menu', 'traveldesk', 'Always', 'Settings');
 //        add_submenu_page('Settings', 'Show', 'Show & Hide Left menu', 'traveldesk', 'Show', 'Settings');
-add_menu_page   ('Group Request', 'Group Request', 'traveldesk', 'Group-Request', array( $this, 'group_request'),'dashicons-migrate');
-add_submenu_page('Group Request', 'Create Request', 'Create Request', 'traveldesk','Create Request'.'/ Create Request', 'Create Request');
-add_submenu_page('Group Request', 'View / Edit Request', 'View / Edit Request', 'traveldesk','View / Edit Request'.'/ View / Edit Request', 'View / Edit Request');
+add_menu_page   ('Group Request', 'Group Request', 'traveldesk', 'Group-Request', array( $this, 'group_requests'),'dashicons-groups');
+$overview = add_submenu_page('Group-Request', 'Overview', 'Overview', 'traveldesk', 'Group-Request', array( $this,'group_requests'));
+add_submenu_page('Group-Request', 'Create Request', 'Create Request', 'traveldesk','Create-Request', array( $this,'group_request_create'));
+//add_submenu_page('Group Request', 'View / Edit Request', 'View / Edit Request', 'traveldesk','View / Edit Request'.'/ View / Edit Request', 'View / Edit Request');
 
 add_menu_page('claims', 'claims', 'traveldesk', 'claims', array( $this, 'traveldeskClaims'),'dashicons-media-spreadsheet');
 $overview = add_submenu_page('claims', 'Overview', 'Overview', 'traveldesk', 'claims', array( $this,'traveldeskClaims'));
@@ -301,8 +302,11 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     public function traveldeskBankDetails() {
         include WPERP_TRAVELDESK_VIEWS . '/traveldesk_bank_details.php';
     }
-    public function group_request(){
+    public function group_request_create(){
         include WPERP_TRAVELDESK_VIEWS . '/create_group_requests.php';
+    }
+    public function group_requests(){
+        include WPERP_TRAVELDESK_VIEWS . '/group_requests_view.php';
     }
     
     /**

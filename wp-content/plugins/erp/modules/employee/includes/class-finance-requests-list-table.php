@@ -258,7 +258,7 @@ class Finance_Requests_List extends \WP_List_Table {
                 }
 
             }
-            return $approvalss;
+            return $approvals;
         }
 
         function column_finance_approval($item) {

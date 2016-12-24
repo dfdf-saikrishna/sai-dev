@@ -81,6 +81,9 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp-hr-emp-activate', 'employee_termination_reactive' );
         $this->action( 'wp_ajax_erp-hr-convert-wp-to-employee', 'employee_create_from_wp_user' );
         $this->action( 'wp_ajax_erp_hr_check_user_exist', 'check_user' );
+        $this->action( 'wp_ajax_erp-hr-add-deligate', 'add_deligate' );
+        $this->action( 'wp_ajax_create-delegate', 'create_delegate' );
+        $this->action( 'wp_ajax_edit-delegate', 'edit_delegate' );
 
         // Dashaboard
         $this->action ( 'wp_ajax_erp_hr_announcement_mark_read', 'mark_read_announcement' );
@@ -107,7 +110,6 @@ class Ajax_Handler {
         // leave policy
         $this->action( 'wp_ajax_erp-hr-leave-policy-create', 'leave_policy_create' );
         $this->action( 'wp_ajax_erp-hr-leave-policy-delete', 'leave_policy_delete' );
-        $this->action( 'wp_ajax_erp-hr-leave-request-req-date', 'leave_request_dates' );
         $this->action( 'wp_ajax_erp-hr-leave-employee-assign-policies', 'leave_assign_employee_policy' );
         $this->action( 'wp_ajax_erp-hr-leave-policies-availablity', 'leave_available_days' );
         $this->action( 'wp_ajax_erp-hr-leave-req-new', 'leave_request' );
@@ -127,6 +129,124 @@ class Ajax_Handler {
         $this->action( 'wp_ajax_erp_hr_script_reload', 'employee_template_refresh' );
         $this->action( 'wp_ajax_erp_hr_new_dept_tmp_reload', 'new_dept_tmp_reload' );
         $this->action( 'wp_ajax_erp-hr-holiday-delete', 'holiday_remove' );
+    }
+    
+    function create_delegate(){
+        global $wpdb;
+        $empuserid = $_SESSION['empuserid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        
+        $selRepmanagers		=	$posted['selRepmanagers'];
+	
+	$txtDelegatedatefrom	=	trim($posted['txtDelegatedatefrom']);
+	
+	//11/22/2014 - 11/22/2014
+	
+	$txtDelegatedateto	=	trim($posted['txtDelegatedateto']);
+	
+	$fromdate			=	date("Y-m-d", strtotime($txtDelegatedatefrom));
+	
+	$todate				=	date("Y-m-d", strtotime($txtDelegatedateto));
+	
+	$txtaDelcomments	=	trim(addslashes($posted['txtaDelcomments']));
+	
+	$curdate	= date('Y-m-d');
+	
+	$fromd	=	strtotime($fromdate);
+	
+	$curd	=	strtotime($curdate);
+	
+	//echo $fromd.'--'.$curd;exit;
+	
+	if($fromd < $curd)
+	{
+		//header("location:$filename?msg=5");exit;
+                $response = array('status'=>'notice','message'=>"Please choose a day greater than today.");
+                $this->send_success($response);
+	}
+		
+	
+	if($selRepmanagers=="" && $fromdate=="" && $todate=="" && $txtaDelcomments=="")
+	{
+		//header("location:$filename?msg=1");exit;
+                $response = array('status'=>'failure','message'=>"<strong>OOps!</strong> Some fields went missing. Please enable javascript in your browser and try again");
+                $this->send_success($response);
+	}
+	else
+	{	
+		if($seldupval=$wpdb->get_row("SELECT * FROM delegate WHERE DLG_FromEmpid='$empuserid' AND DLG_Status=1 AND DLG_Active=1"))
+		{
+			//header("location:$filename?msg=2");exit;
+                        $response = array('status'=>'info','message'=>"You have already delegated.");
+                        $this->send_success($response);
+		}
+		else
+		{
+			$wpdb->insert( 'delegate', array( 'COM_Id' => $compid, 'DLG_FromEmpid' => $empuserid, 'DLG_ToEmpid' => $selRepmanagers, 'DLG_Comments' => $txtaDelcomments, 'DLG_FromDate' => $fromdate, 'DLG_ToDate' => $todate ));
+			
+			//header("location:$filename?msg=3");exit;
+                        $response = array('status'=>'success','message'=>"Delegate successfull.");
+                        $this->send_success($response);
+	
+		}
+	}
+    }
+    
+    function edit_delegate(){
+        global $wpdb;
+        $empuserid = $_SESSION['empuserid'];
+        $compid = $_SESSION['compid'];
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        
+        $dlgid	=	$posted['dlgid'];
+        
+        $selRepmanagers		=	$posted['selRepmanagers'];
+	
+	$txtDelegatedatefrom	=	trim($posted['txtDelegatedatefrom']);
+	
+	//11/22/2014 - 11/22/2014
+	
+	$txtDelegatedateto	=	trim($posted['txtDelegatedateto']);
+	
+	$fromdate			=	date("Y-m-d", strtotime($txtDelegatedatefrom));
+	
+	$todate				=	date("Y-m-d", strtotime($txtDelegatedateto));
+	
+	$txtaDelcomments	=	trim(addslashes($posted['txtaDelcomments']));
+	
+	$curdate	= date('Y-m-d');
+	
+	$fromd	=	strtotime($fromdate);
+	
+	$curd	=	strtotime($curdate);
+	
+	//echo $fromd.'--'.$curd;exit;
+	
+	if($fromd < $curd)
+	{
+		//header("location:$filename?msg=5");exit;
+                $response = array('status'=>'notice','message'=>"Please choose a day greater than today.");
+                $this->send_success($response);
+	}
+		
+	
+	if($selRepmanagers=="" && $fromdate=="" && $todate=="" && $txtaDelcomments=="")
+	{
+		//header("location:$filename?msg=1");exit;
+                $response = array('status'=>'failure','message'=>"<strong>OOps!</strong> Some fields went missing. Please enable javascript in your browser and try again");
+                $this->send_success($response);
+	}
+	else
+	{	
+		$wpdb->update( 'delegate', array( 'DLG_Active' => 2), array( 'DLG_Id' => $dlgid ));
+
+                $lastid = $wpdb->insert( 'delegate', array( 'COM_Id' => $compid, 'DLG_FromEmpid' => $empuserid, 'DLG_ToEmpid' => $selRepmanagers, 'DLG_Comments' => $txtaDelcomments, 'DLG_FromDate' => $fromdate, 'DLG_ToDate' => $todate ));
+
+                //header("location:$filename?msg=3");exit;
+                $response = array('status'=>'success','message'=>"Delegation updated successfully");
+                $this->send_success($response);	
+	}
     }
     
     function delete_files(){
@@ -2948,7 +3068,7 @@ class Ajax_Handler {
      *
      * @return void
      */
-    public function leave_request_dates() {
+    public function add_deligate() {
 
         $this->verify_nonce( 'wp-erp-hr-nonce' );
 
@@ -2957,55 +3077,9 @@ class Ajax_Handler {
         if ( ! $id ) {
            $this->send_error( __( 'Please select an employee', 'erp' ) );
         }
-
-        $policy_id = isset( $_POST['type'] ) && $_POST['type'] ? $_POST['type'] : false;
-
-        if ( ! $policy_id ) {
-            $this->send_error( __( 'Please select a policy', 'erp' ) );
+        else{
+            $this->send_success();
         }
-
-        $start_date           = isset( $_POST['from'] ) ? sanitize_text_field( $_POST['from'] ) : date_i18n( 'Y-m-d' );
-        $end_date             = isset( $_POST['to'] ) ? sanitize_text_field( $_POST['to'] ) : date_i18n( 'Y-m-d' );
-        $valid_date_range     = erp_hrm_is_valid_leave_date_range_within_financial_date_range( $start_date, $end_date );
-        $financial_start_date = date( 'Y-m-d', strtotime( erp_financial_start_date() ) );
-        $financial_end_date   = date( 'Y-m-d', strtotime( erp_financial_end_date() ) );
-
-        if ( $start_date >  $end_date ) {
-            $this->send_error( __( 'Invalid date range', 'erp' ) );
-        }
-
-        if ( ! $valid_date_range ) {
-            $this->send_error( sprintf( __( 'Date range must be within %s to %s', 'erp' ), erp_format_date( $financial_start_date ), erp_format_date( $financial_end_date ) ) );
-        }
-
-        $leave_record_exisst = erp_hrm_is_leave_recored_exist_between_date( $start_date, $end_date, $id );
-
-        if ( $leave_record_exisst ) {
-            $this->send_error( __( 'Existing Leave Record found within selected range!', 'erp' ) );
-        }
-
-        $is_policy_valid = erp_hrm_is_valid_leave_duration( $start_date, $end_date, $policy_id, $id );
-
-        if ( ! $is_policy_valid ) {
-            $this->send_error( __( 'Sorry! You do not have any leave left under this leave policy', 'erp' ) );
-        }
-
-        $days = erp_hr_get_work_days_between_dates( $start_date, $end_date );
-
-        if ( is_wp_error( $days ) ) {
-            $this->send_error( $days->get_error_message() );
-        }
-
-        // just a bit more readable date format
-        foreach ( $days['days'] as &$date ) {
-
-            $date['date'] = erp_format_date( $date['date'], 'D, M d' );
-        }
-
-        $leave_count = $days['total'];
-        $days['total'] = sprintf( '%d %s', $days['total'], _n( 'day', 'days', $days['total'], 'erp' ) );
-
-        $this->send_success( array( 'print' => $days, 'leave_count' => $leave_count ) );
     }
 
     /**

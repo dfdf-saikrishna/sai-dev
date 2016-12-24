@@ -1,11 +1,10 @@
 <?php
+global $showProCode;
 global $etEdit;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
-$empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
-$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
 $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
 ?>
@@ -33,40 +32,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
-            <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins">
-              <tr>
-                <td width="20%">Employee Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                <td width="20%">Company Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                <td width="20%">Reporting Manager Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-              </tr>
-              <tr>
-                <td>Employee Designation </td>
-                <td>:</td>
-                <td><?php echo $empdetails->DES_Name; ?></td>
-                <td>Reporting Manager Name</td>
-                <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Department</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-
-              </tr>
-            </table>
-            </div>
+            <?php
+                $row=0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+            ?>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -115,7 +84,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     <tr>
                       <input type="hidden" value="5" name="ectype"/>
                       <input type="hidden" value="0" name="expenseLimit">
-                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" class="posttraveldate" placeholder="dd-mm-yyyy" autocomplete="off"/><input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
+                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate1" style="width:101px;" class="posttraveldate" placeholder="dd-mm-yyyy" autocomplete="off"/><input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                         <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="display:none;" value="n/a"/></td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea>
@@ -145,14 +114,14 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </select>
                       </td>
                       <td data-title="City/Location"><span id="city1container">
-                        <input  name="from[]" id="from1" type="text" placeholder="From" class=""  autocomplete="off">
-                        <input  name="to[]" id="to1" type="text" placeholder="To" class=""  autocomplete="off">
+                        <input  name="from[]" id="from1" type="text" placeholder="From" class=""  autocomplete="off" style="width:130px;">
+                        <input  name="to[]" id="to1" type="text" placeholder="To" class=""  autocomplete="off" style="width:130px;">
                         </span><select name="selStayDur[]" class="" style="display:none;">
                           <option value="n/a">Select</option>
                         </select></td>
-                      <td data-title="Distance (in km)"><input type="text" class="" name="txtdist[]"  id="txtdist1" onkeyup="return mileageAmount(this.value, 1);" autocomplete="off"/></td>
-                      <td data-title="Total Cost"> <input type="text" class="" name="txtCost[]" id="txtCost1" readonly="readonly"  autocomplete="off"/></td>
-                      <td data-title="Upload bills / tickets"><input type='file' name='file1[]' id="file1[]" multiple="true" onchange="Validate(this.id);"></td>
+                      <td data-title="Distance (in km)"><input type="text" class="" style="width:110px;" name="txtdist[]"  id="txtdist1" onkeyup="return mileageAmount(this.value, 1);" autocomplete="off"/></td>
+                      <td data-title="Total Cost"> <input type="text" class="" style="width:110px;" name="txtCost[]" id="txtCost1" readonly="readonly"  autocomplete="off"/></td>
+                      <td data-title="Upload bills / tickets"><input type='file' name='file1[]' style="width:150px;" id="file1[]" multiple="true" onchange="Validate(this.id);"></td>
                     </tr>
                   </tbody>
                 </table>
