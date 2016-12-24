@@ -53,11 +53,6 @@
         <div class="list-table-wrap erp-hr-employees-wrap">
         <div class="list-table-inner erp-hr-employees-wrap-inner">
             <?php //$table->views(); ?>
-<<<<<<< HEAD
-			
-=======
-						
->>>>>>> 44b983a4747d6b0919636ffaec26c30b5bb3fe78
             <form method="GET">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                 <?php $table->display() ?>

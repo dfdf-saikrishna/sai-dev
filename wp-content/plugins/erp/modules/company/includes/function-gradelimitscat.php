@@ -1,6 +1,6 @@
 <?php
 
-function gradelimits_create($posted) {
+function gradelimitscat_create($posted) {
     global $wpdb;
     $compid = $_SESSION['compid'];
     $adminid = $_SESSION['adminid'];

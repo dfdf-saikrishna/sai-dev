@@ -341,11 +341,12 @@
                 var allcat = $('#allcat').val();
                 alert(allcat);
                 var grades = $('#grades').val();
-                alert(grades);
-                if (grades != "" || allcat != "") {
-                      //alert(grades);
-                    window.location.replace("/wp-admin/admin.php?page=gradelimitcat=view&allcat=" + allcat + "&grades=" + grades);
+                if (val == 0) {
+                    $('#allcat').val();
+                } else {
+                    window.location.replace("/wp-admin/admin.php?page=Request-Without-Approval&selEmployees=" + val);
                 }
+
             },
         },
         traveldesklimits: {

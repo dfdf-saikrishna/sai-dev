@@ -116,6 +116,6 @@ $compid = $_SESSION['compid'];?>
         </div>
     </fieldset>
 <?php //wp_nonce_field( 'wp-erp-hr-employee-nonce' );  ?>
-       <input type="hidden" name="action" id="erp-gradelimits-action" value="gradelimits_get">
+       <input type="text" name="action" id="erp-gradelimit-action" value="gradelimits_get">
     <!--<input type="hidden" name="action" id="erp_company_mileage_create" value="erp_company_mileage_create">-->
 </div>

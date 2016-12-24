@@ -67,7 +67,8 @@ if ($selpol = $wpdb->get_results("SELECT * FROM travel_expense_policy_doc WHERE 
                                     <div class="form-group">
                                         <?php erp_html_form_label(__('Download Company Expense Policy Document', 'erp'), 'expense-title', true); ?>
                                         <!--<label class="control-label"</label>-->
-                                        <div> <a href="#?file=upload/<?php echo $compid . "/" . $selpol[0]->TEPD_Filename; ?>" >download file</a> </div>
+                                        <?php $imdir = COMPANY_UPLOADS . '/'.$compid ; ?>
+                                        <div> <a href="<?php $imdir . $selpol[0]->TEPD_Filename; ?>" download="file-name" >download file</a> </div>
                                     </div>
                                 <?php } ?>
                         </td>

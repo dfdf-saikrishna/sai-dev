@@ -79,6 +79,7 @@ class Company {
         require_once WPERP_COMPANY_PATH . '/includes/function-costcenter.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-gradelimits.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-reportsgraphs.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-gradelimitscat.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-leave.php';
@@ -268,14 +269,12 @@ class Company {
             $costcenter = new CostCenter();
             $localize_script['costcenter_empty'] = $costcenter->costcenter_array();
         }
-        if ('expense-managment_page_gradeslimits' == $hook) {
-            //var_dump('inside');
-            wp_enqueue_script('post');
-            $gradelimits = new GradeLimits();
-            $localize_script['gradelimits_empty'] = $gradelimits->gradelimits_array();
-        }
-
-
+//        if ('managment_page_gradeslimits' == $hook) {
+//            var_dump('inside');
+//            wp_enqueue_script('post');
+//            $gradelimits = new GradeLimits();
+//            $localize_script['gradelimits_empty'] = $gradelimits->gradelimits_array();
+//        }
         // if its an employee page
         if ('toplevel_page_menu' == $hook) {
             wp_enqueue_script('post');
@@ -309,7 +308,7 @@ class Company {
     public function admin_js_templates() {
         global $current_screen;
 
-        //var_dump($current_screen->base);
+        var_dump($current_screen->base);
         switch ($current_screen->base) {
             case 'expense-managment_page_Mileage':
                 //var_dump('inside');
@@ -330,9 +329,19 @@ class Company {
             case 'toplevel_page_Budget':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/project-create.php', 'project-create');
 
-            case 'expense-managment_page_gradeslimits':
-                //var_dump('inside');
-                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-limits.php', 'grade-limits');
+            case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
+                case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/accomdation-grade-limits.php', 'accomdation-grade-limits');
+                    case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
+                case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/General-cat-limits.php', 'General-cat-limits');
+                    case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
+                case 'expense-managment_page_gradelimitcat':
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/other-catl-imits.php', 'other-catl-imits');
+
             case 'budget-control_page_Center':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/costcenter-create.php', 'costcenter-create');
