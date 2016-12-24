@@ -30,8 +30,8 @@ global $supid;
 global $status, $page;
 
 parent::__construct(array(
-'singular' => 'companyinvoicecreate',
-'plural' => 'companyinvoicecreates',
+'singular' => 'tdinvoicecreate',
+'plural' => 'tdinvoicecreates',
 ));
 }
 /**
@@ -65,28 +65,24 @@ function column_cb($item)
 {
 	global $wpdb;
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
 				$void=0; $icon=0; $onclick=NULL;
 
-				foreach ($getvals as $values) {		
-				if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-				$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
@@ -97,8 +93,8 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
 				
 				} else {
-				$compid = $_SESSION['compid'];
-					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id=$item[REQ_Id]");
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
 		
 					//echo 'count='.count($selclmreqid)."<br>";
 					
@@ -106,12 +102,14 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
 						$icon=1;
 					}
-					if(!empty($selclmreqid)){		
-					if($selclmreqid[0]->TDC_Status==2)
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
 					$icon=2;
 					}
 					
 					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
+					
+				
 				} 
 				
 
@@ -143,39 +141,35 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 							$title="Group Request Without Approval";
 							break;
 						}
-	}
-	//$check = if($void) echo $void; else echo "";  
+						
+	//$check = if($void) echo $void; if($onclick) echo $onclick; 
 	/* $check = if($onclick){ 
 		echo $onclick;
 	} */
-return '<input type="checkbox" name="reqid[]" value="'. $item['REQ_Id'] .'" />';                        
+return '<input type="checkbox" name="reqid[]" value="'. $item['REQ_Id'] .'"/>';                        
 }
 
 function column_Request_Code($item) {
 global $wpdb;
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
 				$void=0; $icon=0; $onclick=NULL;
 
-				foreach ($getvals as $values) {		
-				if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
@@ -186,8 +180,8 @@ $rdids="";
 					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
 				
 				} else {
-				$compid = $_SESSION['compid'];
-					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id=$item[REQ_Id]");
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
 		
 					//echo 'count='.count($selclmreqid)."<br>";
 					
@@ -195,11 +189,11 @@ $rdids="";
 						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
 						$icon=1;
 					}
-					if(!empty($selclmreqid)){		
-					if($selclmreqid[0]->TDC_Status==2)
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
 					$icon=2;
-					
 					}
+					
 					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
 					
 				
@@ -217,13 +211,13 @@ $rdids="";
 							break;
 							
 							case 2:
-							$href='travel-desk-individual-without-approval-details.php';
+							$href='/wp-admin/admin.php?page=View-Request&reqid='.$item['REQ_Id'];
 							$type='<span style="font-size:10px;">[W/A]</span>';
 							$title="Without Approval";
 							break;
 							
 							case 3:
-							$href='travel-desk-individual-with-approval-details.php';
+							$href='/wp-admin/admin.php?page=View-Appr-Request&reqid='.$item['REQ_Id'];
 							$type='<span style="font-size:10px;">[AR]</span>';
 							$title="Approval Required";
 							break;
@@ -234,7 +228,8 @@ $rdids="";
 							$title="Group Request Without Approval";
 							break;
 						}
-			$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+	
+			$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
 						$rdids = "";
 						if(!empty($rddetails)){
 						foreach ($rddetails as $rowsql) {	
@@ -245,7 +240,6 @@ $rdids="";
 							$date = "";
 							$RD_Description="";
 						}						
-	}
 	 if($icon==1){
 		 $title = 'sent for claims'; 
 		 $icon = '<i class="fa fa-thumbs-o-up"></i>';
@@ -260,36 +254,32 @@ if(!empty($date))
 $reqdate = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"  style="font-size:11px;"><th style="width:160px!important">Date & Expense Desc</th><tr><td>'. $date .'</td></tr></table>';
 else
 $reqdate ='';
-return '<span  width="15%" title="'. $title .'">'. $item['REQ_Code'] . $icon .'</span>'.$reqdate;
-
+return '<span  width="15%" title="'. $title .'"><a href="'. $href .'">'. $item['REQ_Code'] . $icon .'</span></a>'.$reqdate;
+  
 // return $reqcode . $type ;
 }
 
 function column_Request_Type($item) {
 global $wpdb;
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
 				$void=0; $icon=0; $onclick=NULL;
 
-				foreach ($getvals as $values) {		
-				if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
@@ -300,8 +290,8 @@ $rdids="";
 					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
 				
 				} else {
-				$compid = $_SESSION['compid'];
-					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id=$item[REQ_Id]");
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
 		
 					//echo 'count='.count($selclmreqid)."<br>";
 					
@@ -309,11 +299,11 @@ $rdids="";
 						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
 						$icon=1;
 					}
-					if(!empty($selclmreqid)){		
-					if($selclmreqid[0]->TDC_Status==2)
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
 					$icon=2;
-					
 					}
+					
 					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
 					
 				
@@ -347,23 +337,19 @@ $rdids="";
 							$type='<span style="font-size:10px;">[G]</span>';
 							$title="Group Request Without Approval";
 							break;
-							
-							
-						
 						}
-						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
 						$rdids = "";
 						if(!empty($rddetails)){
 						foreach ($rddetails as $rowsql) {	
-						$EC_Name  = $rowsql['EC_Name']; 
-                        $MOD_Name =   $rowsql['MOD_Name'];
+						$EC_Name  = $rowsql->EC_Name; 
+                        $MOD_Name =   $rowsql->MOD_Name;
 						}
 						}else{
 						$EC_Name ="";
 						$MOD_Name ="";
 						}
 							
-	}
 	 if($icon==1){
 		 $title = 'sent for claims'; 
 		 $icon = '<i class="fa fa-thumbs-o-up"></i>';
@@ -376,7 +362,7 @@ $rdids="";
 	 } 
 if(!empty($EC_Name) || !empty($MOD_Name))
 $EC_Name = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"  style="font-size:11px;"><th style="width:160px!important">Expense 
-Category</th><tr><td>'. $EC_Name . $MOD_Name .'</td></tr></table>';
+Category</th><tr><td>'. $EC_Name .'&nbsp;&nbsp;' . $MOD_Name .'</td></tr></table>';
 else
 $EC_Name ='';
 	 
@@ -388,28 +374,24 @@ return  $type . $EC_Name;
 function column_nbsp($item) {
 global $wpdb;
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
 				$void=0; $icon=0; $onclick=NULL;
 
-				foreach ($getvals as $values) {		
-				if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-				$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
@@ -420,8 +402,8 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
 				
 				} else {
-				$compid = $_SESSION['compid'];
-					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id=$item[REQ_Id]");
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
 		
 					//echo 'count='.count($selclmreqid)."<br>";
 					
@@ -429,8 +411,220 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
 						$icon=1;
 					}
-					if(!empty($selclmreqid)){		
-					if($selclmreqid[0]->TDC_Status==2)
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
+					$icon=2;
+					}
+					
+					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
+					
+				
+				}  
+						switch ($item['REQ_Type']){
+						
+							case 1:
+							$href='travel-desk-booking-details.php';
+							$type='<span style="font-size:10px;">[E]</span>';
+							$title="Employee Request";
+							break;
+							
+							case 2:
+							$href='travel-desk-individual-without-approval-details.php';
+							$type='<span style="font-size:10px;">[W/A]</span>';
+							$title="Without Approval";
+							break;
+							
+							case 3:
+							$href='travel-desk-individual-with-approval-details.php';
+							$type='<span style="font-size:10px;">[AR]</span>';
+							$title="Approval Required";
+							break;
+						
+							case 4:
+							$href='travel-desk-group-request-details.php';
+							$type='<span style="font-size:10px;">[G]</span>';
+							$title="Group Request Without Approval";
+							break;
+						}
+						$j=1;
+						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='". $item['REQ_Id'] ."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+						$rdids = "";
+						if(!empty($rddetails)){
+						foreach ($rddetails as $rowsql) {
+				if ($selrdcs = $wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='". $rowsql->RD_Id ."' AND BS_Status=3 AND BS_Active=1")) {
+										?>
+                            <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);">
+                              <input type="hidden" name="rdid1<?php echo $j; ?>" id="rdid1<?php echo $j; ?>" value="<?php echo $rowsql['RD_Id'] ?>" />
+                              <input type="hidden" name="type1<?php echo $j; ?>" id="type1" value="2" />
+                              <div id="cancelStatusContainer<?php echo $j; ?>">
+                                <?php
+						if ($selrdcs->RD_Id) {
+
+							$cancellationstatus.= ($selrdcs->BA_Id == 1) ? bookingStatus($selrdcs->BA_Id) . "<br>" : '';
+
+							$cancellationstatus.= '<b title="cancellation request date">Request Date: </b>' . date('d-M-y (h:i a)', strtotime($selrdcs['BS_Date'])) . "<br>";
+
+							$cancellationstatus.= '----------------------------------<br>';
+
+							$query = "BA_Id IN (4,5,6,7)";
+						}
+						
+						//echo 'Baid='.$selrdcs['BA_Id']; 			
+
+
+						if ($selrdcs->BA_Id == 4 || $selrdcs->BA_Id == 5 || $selrdcs->BA_Id == 6 || $selrdcs->BA_Id == 7) {
+
+							$cancellationstatus.= bookingStatus($selrdcs->BA_Id);
+
+							$doc = NULL;
+
+							if ($selrdcs->BA_Id == 4 || $selrdcs->BA_Id == 6) {
+
+								$seldocs = $wpdb->get_results("Select * FROM booking_documents WHERE BS_Id='$selrdcs[BS_Id]'", $filename, 0);
+
+								$f = 1;
+
+								foreach ($seldocs as $docs) {
+
+									$doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="download-file.php?file=' . $imdir . $docs->BD_Filename . '" class="btn btn-link">download</a><br>';
+
+									$f++;
+								}
+							}
+
+
+							switch ($selrdcs->BA_Id) {
+
+								case 4: case 6:
+									$cancellationstatus.='<br><b>Cancellation Amnt</b>: ' . IND_money_format($selrdcs->BS_CancellationAmnt) . '.00<br>';
+									$cancellationstatus.= $doc;
+									$cancellationstatus.= '<b>Cancellation Date</b>: ' . date('d-M-y (h:i a)', strtotime($selrdcs->BA_ActionDate));
+									break;
+
+								case 5: case 7:
+									$cancellationstatus.= '<br><b>Cancellation Date</b>: ' . date('d-M-y (h:i a)', strtotime($selrdcs->BA_ActionDate));
+									break;
+							}
+																					
+																					
+																					
+                      } else if ($selrdcs->BA_Id == 1) {
+                                                                                    ?>
+                                <div class="col-sm-12" id="imgareaid2<?php echo $j; ?>"></div>
+                                <div class="col-sm-8">
+                                  <div class="form-group">
+                                    <div>
+                                      <select name="selCancActions<?php echo $j; ?>" id="selCancActions<?php echo $j; ?>" class="form-control" onChange="showHideCanc(<?php echo $j; ?>, this.value)">
+                                        <option value="">Select</option>
+                                        <?php
+                                                                                                    $ba = select_all("booking_actions", "*", "$query", $filename, 0);
+
+                                                                                                    foreach ($ba as $barows) {
+                                                                                                        ?>
+                                        <option value="<?php echo $barows->BA_Id; ?>"><?php echo $barows->BA_Name; ?></option>
+                                        <?php } ?>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-8" id="cancAmntDiv<?php echo $j; ?>" style="display:none;">
+                                  <div class="form-group">
+                                    <div>
+                                      <input type="text" class="form-control"  name="txtCanAmount<?php echo $j; ?>" onKeyUp="return checkCost(this.id)"  id="txtCanAmount<?php echo $j; ?>" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-8" id="ticketCancDiv<?php echo $j; ?>" style="display:none;">
+                                  <div class="form-group">
+                                    <div>
+                                      <input type="file" name="fileCanAttach<?php echo $j; ?>[]" id="fileCanAttach<?php echo $j; ?>[]" multiple="true" onchange="return Validate(this.id);">
+                                      <!-- //fileinput-->
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <div>
+                                      <button name="buttonUpdateStatusCanc" id="buttonUpdateStatusCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" type="submit" class="btn btn-link">Update</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <div>
+                                      <button name="buttonCancelCanc" id="buttonCancelCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" onClick="cancelCancstat(<?php echo $j; ?>)" type="button" class="btn btn-link">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <?Php } ?>
+                              </div>
+                            </form>
+                            <?php
+									} else {
+										$cancellationstatus = bookingStatus(NULL);
+									}
+                                                                   
+                                  $j++;
+						
+						}
+						}else{
+						$cancellationstatus = "";
+						}
+							
+	
+
+$cancelstatus = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"><tr><th>Cancel Status</th><td>' . $cancellationstatus .'</td></tr></table>';
+
+	 
+	
+return '<a data-id="'.$item['REQ_Id'].'" class="traveldeskrequestarrow" data-toggle="collapse" href="#collapse"><i class="collapse-caret fa fa-angle-down"></i> </a>'. $cancelstatus; 
+}
+
+function column_Quantity($item) {
+global $wpdb;
+	$compid = $_SESSION['compid'];
+$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+				
+				$void=0; $icon=0; $onclick=NULL;
+
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
+					$rdids.=$values->RD_Id . ",";
+														
+					if($values->BA_Id == 1)
+					$void += 1;
+					
+				}
+				
+				//echo 'totalcost='.$totalcosts."<br>";
+
+				$rdids = rtrim($rdids, ",");
+
+				if (!$rdids)
+				$rdids = "'" . "'";
+				
+				if($void){
+				
+					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
+				
+				} else {
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
+		
+					//echo 'count='.count($selclmreqid)."<br>";
+					
+					if(count($selclmreqid) != "0"){
+						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
+						$icon=1;
+					}
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
 					$icon=2;
 					}
 					
@@ -468,67 +662,19 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 							$title="Group Request Without Approval";
 							break;
 						}
-						
-						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
-						$rdids = "";
-						if(!empty($rddetails)){
-						foreach ($rddetails as $rowsql) {
-
-						$cancellationstatus = "";
-						}
-						}else{
-						$cancellationstatus = "";
-						}
-							
-	}
-
-if(!empty($cancellationstatus))
-$cancellationstatus = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"><tr><th>Cancel Status</th><td>' . $cancellationstatus .'</td></tr></table>';
-else
-$cancellationstatus ='';
-	 
-	
-return '<a data-id="'.$item['REQ_Id'].'" class="traveldeskrequestarrow" data-toggle="collapse" href="#collapse"><i class="collapse-caret fa fa-angle-down"></i> </a>'. $cancellationstatus; 
-}
-
-function column_Quantity($item) {
-global $wpdb;
-	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
-	if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
-					$rdids.=$values->RD_Id . ",";
-														
-					if($values->BA_Id==1)
-					$void += 1;
-					
-				}
-				}
-				//echo 'totalcost='.$totalcosts."<br>";
-				$rdids="";
-				$rdids = rtrim($rdids, ",");
-
-				if (!$rdids)
-				$rdids = "'" . "'";
-				 
-	
 	$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+					$rdids = "";	
 						if(!empty($rddetails)){
 						foreach ($rddetails as $rowsql) {	
 						 if ($rowsql->EC_Id == 1) {
 							 $From = $rowsql->RD_Cityfrom;
 							 $To= $rowsql->RD_Cityto;
-							 $Loc = $From . $To;
+							 $Loc = 'FROM:'. $From . '</br>To:' . $To;
                             } else { 
                             $Loc = $rowsql->RD_Cityfrom;
-					if ($rowsd = $wpdb->get_results("SELECT SD_Name FROM stay_duration WHERE SD_Id='$rowsql[SD_Id]'")) {
-                             $Loc = '<br>Stay :' . $rowsd->SD_Name;
+					if ($rowsd = $wpdb->get_results("SELECT SD_Name FROM stay_duration WHERE SD_Id='".$rowsql->SD_Id ."'")) {
+                             
+							 $Loc = '<br>Stay :' . $rowsd[0]->SD_Name;
 					}
 						}
 						}
@@ -546,31 +692,27 @@ return  '<span class="status-2" style="padding:5px 8px !important;border-radius:
 
 function column_Quote_Amount($item) {
 global $wpdb;
+$bookingStatus="";
+$cancellationstatus="";
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
-
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+	$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
 				$void=0; $icon=0; $onclick=NULL;
 
-				foreach ($getvals as $values) {		
-				if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
-				}else{
-					$totalcosts ="";
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-				$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
@@ -581,19 +723,20 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
 				
 				} else {
-				$compid = $_SESSION['compid'];
-					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id=$item[REQ_Id]");
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
+		
 					//echo 'count='.count($selclmreqid)."<br>";
 					
 					if(count($selclmreqid) != "0"){
 						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
 						$icon=1;
 					}
-					if(!empty($selclmreqid)){		
-					if($selclmreqid[0]->TDC_Status==2)
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
 					$icon=2;
-					
 					}
+					
 					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
 					
 				
@@ -627,23 +770,136 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 							$type='<span style="font-size:10px;">[G]</span>';
 							$title="Group Request Without Approval";
 							break;
-							
-							
-						
 						}
 						
-						$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
-						$rdids = "";
-						if(!empty($rddetails)){
-						foreach ($rddetails as $rowsql) {
+			$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='". $item['REQ_Id'] ."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
 
-						$bookingstatus = "";
+						$rdids = "";
+
+$j = 1;
+						
+						foreach ($rddetails as $rowsql) {			
+			$selrdbs = $wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='". $rowsql->RD_Id ."' AND BS_Status=1 AND BS_Active=1");
+			if ($selrdbs->RD_Id) {
+                                                                        ?>
+                            <form method="post" id="bookingForm<?php echo $j; ?>" name="bookingForm<?php echo $j; ?>" onsubmit="return submitBookingForm(<?php echo $j; ?>);">
+                              <input type="hidden" name="rdid<?php echo $j; ?>" id="rdid<?php echo $j; ?>" value="<?php echo $item['RD_Id'] ?>" />
+                              <input type="hidden" name="type<?php echo $j; ?>" id="type" value="1" />
+                              <div id="bookingStatusContainer<?php echo $j; ?>">
+                                <?php
+				if ($selrdbs->RD_Id) {
+
+					$bookingStatus .= ($selrdbs->BA_Id == 1) ? bookingStatus($selrdbs->BA_Id) . "<br>" : '';
+
+					$bookingStatus .= '<b>Request date: </b>' . date('d-M-y (h:i a)', strtotime($selrdbs->BS_Date)) . "<br>";
+
+					$bookingStatus .= '----------------------------------<br>';
+
+					$query = "BA_Id IN (2,3)";
+				}
+
+				if ($selrdbs->BA_Id == 2 || $selrdbs->BA_Id == 3) {
+					$bookingStatus .= bookingStatus($selrdbs->BA_Id);
+
+					//echo 'baid='.$selrdbs['BA_Id'];
+
+					$imdir = "../company/upload/$compid/bills_tickets/";
+
+
+					$doc = NULL;
+
+					if ($selrdbs->BA_Id == 2) {
+
+						$seldocs = $wpdb->get_results("Select * FROM booking_documents WHERE BS_Id='". $selrdbs->BS_Id ."'");
+
+						$f = 1;
+
+						foreach ($seldocs as $docs) {
+
+							$doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="download-file.php?file=' . $imdir . $docs->BD_Filename . '" class="btn btn-link">download</a><br>';
+
+							$f++;
 						}
-						}else{
-						$bookingstatus = "";
+					}
+
+
+
+					switch ($selrdbs->BA_Id) {
+
+						case 2:
+							$bookingStatus .= '<br>';
+							 $bookingStatus .= '<b>Booked Amnt:</b> ' . IND_money_format($selrdbs->BS_TicketAmnt) . '.00</span><br>';
+							$bookingStatus .= $doc;
+							$bookingStatus .= '<b>Booked Date</b>: ' . date('d-M-y (h:i a)', strtotime($selrdbs->BA_ActionDate));
+							break;
+
+						case 3:
+							$bookingStatus .= '<br>';
+							$bookingStatus .= '<strong>Failed Date</strong>: ' . date('d-M-y (h:i a)', strtotime($selrdbs->BA_ActionDate));
+							break;
+					}
+				} else if ($selrdbs->BA_Id == 1) {
+                                                                                    ?>
+                                <div class="col-sm-8" id="imgareaid<?php echo $j; ?>"></div>
+                                <div class="col-sm-8" >
+                                  <div class="form-group">
+                                    <div>
+                                    <?php $bookingStatus .=  '<select name="selBookingActions'.$j.'" id="selBookingActions'.$j.'" class="form-control" onchange="showHideBooking('.$j.', this.value)" >
+                                        <option value="">Select</option>'; ?>
+                                        <?php
+											$ba = $wpdb->get_results("Select * FROM booking_actions WHERE $query");
+
+											foreach ($ba as $barows) { ?>
+                                      <?php $bookingStatus .=  '<option value="'. $barows->BA_Id .'">'. $barows->BA_Name .'</option>'; ?>
+                                        <?php } ?>
+                                      <?php $bookingStatus .=  '</select>'; ?>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-8" style="display:none;" id="amntDiv<?php echo $j; ?>">
+                                  <div class="form-group">
+                                    <div>
+                                      <input type="text" class="form-control"  name="txtAmount<?php echo $j; ?>" onkeyup="return checkCost(this.id)"  id="txtAmount<?php echo $j; ?>" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-8" id="ticketUploaddiv<?php echo $j; ?>" style="display:none;">
+                                  <div class="form-group">
+                                    <div>
+                                      <input type="file" multiple="true" name="fileattach<?php echo $j; ?>[]" id="fileattach<?php echo $j; ?>[]" onchange="return Validate(this.id);">
+                                      <!-- //fileinput-->
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <div>
+                                      <button name="buttonUpdateStatus" id="buttonUpdateStatus<?php echo $j; ?>" value="<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" type="submit" class="btn btn-link">Update</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <div>
+                                      <button name="buttonCancel" id="buttonCancel<?php echo $j; ?>" value="<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" onclick="cancelBookingstat(this.value)" type="button" class="btn btn-link">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php  } ?>
+                              </div>
+                            </form>
+                            <?php
+								} else {
+
+									$bookingStatus .= bookingStatus(NULL);
+								}
+								 $j++; 
 						}
+                                                                  
 							
-	}
 	 if($icon==1){
 		 $title = 'sent for claims'; 
 		 $icon = '<i class="fa fa-thumbs-o-up"></i>';
@@ -654,42 +910,95 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_deta
 		$title = ''; 
 		 $icon =''; 
 	 }
-if(!empty($bookingstatus))
-$bookingstatus = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"><th>Booking Status</th><tr><td>'. $bookingstatus .'</td></tr></table>';
-else
-$bookingstatus ='';					
+//if(!empty($bookingstatus))
+$bookingstatuss = '<table class="hide-table'.$item['REQ_Id'].' init-invoice wp-list-table widefat fixed striped collapse"><th>Booking Status</th><tr><td>'. $bookingStatus .'</td></tr></table>';
+//else
+//$bookingstatuss ='';					
 								
-return $totalcosts . $bookingstatus;
+return $totalcosts . $bookingstatuss;
 }
 
 function column_Date($item) {
 	global $wpdb;
 	$compid = $_SESSION['compid'];
-	$selsql = $wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
-        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC LIMIT 0, 10");
+	$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
+				
+				$void=0; $icon=0; $onclick=NULL;
 
-	foreach ($selsql as $rowsql) {
-$getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id=$item[REQ_Id] AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
-	if(isset($values->BS_Status)){
-				if($values->BS_Status != 3)
-					$totalcosts+=$values->RD_Cost;									
-
+				foreach ($getvals as $values) {
+					if($values->BS_Status != 3)
+					$totalcosts ="";	
+					$totalcosts+= $values->RD_Cost;									
+					$rdids = "";	
 					$rdids.=$values->RD_Id . ",";
 														
-					if($values->BA_Id==1)
+					if($values->BA_Id == 1)
 					$void += 1;
 					
 				}
-				}
+				
 				//echo 'totalcost='.$totalcosts."<br>";
-				$rdids="";
+
 				$rdids = rtrim($rdids, ",");
 
 				if (!$rdids)
 				$rdids = "'" . "'";
-				 
-	
-	$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='$item[REQ_Id]' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+				
+				if($void){
+				
+					$void='onclick="alert(\'Selected request is not closed. Please close it and then select for claim.\'); return false;"';
+				
+				} else {
+				
+					$selclmreqid=$wpdb->get_results("SELECT REQ_Id, TDC_Status FROM travel_desk_claims tdc, travel_desk_claim_requests tdcr WHERE  tdc.COM_Id='$compid' and tdc.TDC_Id=tdcr.TDC_Id AND tdcr.REQ_Id='".$item['REQ_Id']."'");
+		
+					//echo 'count='.count($selclmreqid)."<br>";
+					
+					if(count($selclmreqid) != "0"){
+						$onclick='onclick="alert(\'Selected request is already sent for claims. Please select another request.\'); return false;"';
+						$icon=1;
+					}
+					foreach($selclmreqid as $selclmreqid){				
+					if($selclmreqid->TDC_Status==2)
+					$icon=2;
+					}
+					
+					//echo 'tdc status='.$selclmreqid[TDC_Status]."<br>";
+					
+				
+				} 
+				
+
+                         
+						 
+						switch ($item['REQ_Type']){
+						
+							case 1:
+							$href='travel-desk-booking-details.php';
+							$type='<span style="font-size:10px;">[E]</span>';
+							$title="Employee Request";
+							break;
+							
+							case 2:
+							$href='travel-desk-individual-without-approval-details.php';
+							$type='<span style="font-size:10px;">[W/A]</span>';
+							$title="Without Approval";
+							break;
+							
+							case 3:
+							$href='travel-desk-individual-with-approval-details.php';
+							$type='<span style="font-size:10px;">[AR]</span>';
+							$title="Approval Required";
+							break;
+						
+							case 4:
+							$href='travel-desk-group-request-details.php';
+							$type='<span style="font-size:10px;">[G]</span>';
+							$title="Group Request Without Approval";
+							break;
+						}
+	$rddetails = $wpdb->get_results("SELECT * FROM request_details rd, expense_category ec, mode mo WHERE REQ_Id='". $item['REQ_Id'] ."' AND rd.RD_Id IN ($rdids) AND rd.EC_Id=ec.EC_Id AND rd.MOD_Id=mo.MOD_Id AND RD_Status=1 ORDER BY RD_Id ASC");
+						$rdids = "";
 						if(!empty($rddetails)){
 						foreach ($rddetails as $rowsql) {	
 						$RD_Cost = IND_money_format($rowsql->RD_Cost) . ".00";
@@ -791,7 +1100,7 @@ $this->process_bulk_action();
 //$total_items = $wpdb->get_var("SELECT COUNT(COM_Id) FROM $table_name");
 // prepare query params, as usual current page, order by and order direction
 $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-$orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'req.REQ_Id';
+$orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'bs.BS_Id';
 $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
 
 // [REQUIRED] define $items array
@@ -816,13 +1125,17 @@ foreach ($searchcol as $col) {
 	$i++;
 }
 $compid = $_SESSION['compid'];
-$total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query));
-$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query . "ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+$total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
+        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query));
+$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
+        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query . "ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 } else {
 	$compid = $_SESSION['compid'];
-$total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query));
+$total_items = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
+        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query));
 	
-$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query . "ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+$this->items = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND req.REQ_Id=rd.REQ_Id"
+        . " AND bs.BS_Status IN (1,3) AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 " . $query . "ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 
 }
 // [REQUIRED] configure pagination
