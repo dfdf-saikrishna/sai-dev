@@ -52,9 +52,10 @@ class Admin_Menu {
             add_submenu_page('finance', 'Limits', 'Define Approval Limits(set/Edit Limits)', 'companyadmin', 'Limits', array($this, 'approver_limits'));
 
             add_menu_page(__('ExpenseManagment', 'companyadmin'), __('Expense Managment', 'companyadmin'), 'companyadmin', 'expensemenu', array($this, 'ExpenseManagment'));
-            //add_submenu_page('Expense', 'action', 'Expense Policy', 'companyadmin', 'ExpenseP', 'Expense');
-            //add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'companyadmin', 'Policy', 'Expense');
-            add_submenu_page('expensemenu', __('Expense', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradeslimits', array($this, 'ExpenseGrades'));
+            add_submenu_page('expensemenu', __('gradelimitcat', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradelimitcat', array($this, 'gradelimitcat'));
+
+            //add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'companyadmin', 'Policy', 'Expense');Grades-Limits-Cat
+           //add_submenu_page('expensemenu', __('Expense', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradeslimits', array($this, 'ExpenseGrades'));
             add_submenu_page('expensemenu', __('default', 'companyadmin'), __('Expense Category', 'companyadmin'), 'companyadmin', 'categeory', array($this, 'DefaultCategory'));
             add_submenu_page('expensemenu', __('Mileage', 'companyadmin'), __('Mileage', 'companyadmin'), 'companyadmin', 'Mileage', array($this, 'Mileage'));
 
@@ -106,8 +107,6 @@ class Admin_Menu {
     public function Designations() {
         include WPERP_COMPANY_VIEWS . '/company/Designations.php';
     }
-
-
 
     public function DepartmentsList() {
         include WPERP_COMPANY_VIEWS . '/company/admindepartmentmanagerlisting.php';
@@ -176,12 +175,16 @@ class Admin_Menu {
     public function company_dashboard() {
         include WPERP_COMPANY_VIEWS . '/company/dashboard.php';
     }
-     public function employeeprofile() {
+
+    public function employeeprofile() {
         include WPERP_COMPANY_VIEWS . '/company/employeeprofile.php';
     }
 
     public function PreDisplay() {
         include WPERP_COMPANY_VIEWS . '/pre-travel-display.php';
+    }
+     public function gradelimitcat() {
+        include WPERP_COMPANY_VIEWS . '/Grades-Limits-Cat.php';
     }
 
     public function PostDisplay() {

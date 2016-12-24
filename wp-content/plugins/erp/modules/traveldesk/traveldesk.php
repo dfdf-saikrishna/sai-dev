@@ -65,6 +65,7 @@ class Traveldesk {
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-requests.php';
 	   require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldeskbankdetails.php';
        require_once WPERP_TRAVELDESK_PATH . '/includes/functions-tdinvoice.php';
+	   require_once WPERP_TRAVELDESK_PATH . '/includes/functions-tdinvoiceupdate.php';
 
     }
 

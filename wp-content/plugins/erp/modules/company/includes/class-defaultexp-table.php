@@ -34,50 +34,8 @@ class Default_expense extends \WP_List_Table {
         ));
     }
 
-    /**
-     * [OPTIONAL] this is example, how to render specific column
-     *
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     * @return HTML
-     */
-//    function column_Slno($item)
-//    {
-//        return '<em>' . $item['COM_Id'] . '</em>';
-//    }
-//
-//    function column_company($item) {
-//
-//        return sprintf('%4$s <a href="%3$s"><strong>%1$s</strong></a> %2$s', $item['COM_Name'], '', erp_company_url_single_companyview($item['COM_Id']), '');
-//    }
-
     function column_expense($item) {
-        
         return $item['EC_Name'];
-        //$table_name = '';
-//        global $wpdb;
-//        $ecId = $item['EC_Id'];
-//         $compid = $item['COM_Id'];
-//        $expense = $wpdb->get_results("SELECT * FROM expense_category WHERE 1 ORDER BY EC_Id ASC");
-//         print_r($expense);
-//        foreach ($expense as $rowcom) {
-//            
-//            $mode = $wpdb->get_results("SELECT * FROM mode WHERE EC_Id=$ecId AND COM_Id IN (0, '$compid') AND MOD_Status=1");
-//            $modes = array();
-//            foreach ($mode as $expense)
-//            //print_r($expense);die;
-//                array_push($modes, $expense->MOD_Name);
-//            $ol = "<ol>";
-//            $k = 1;
-//            foreach ($modes as $mo) {
-//                $ol.='<li type="none">' . $k . ". " . $mo . '';
-//                $k++;
-//            }
-//
-//            $modes = $ol . "</ol>";
-//            print_r( $rowcom->EC_Name);
-//        }
     }
 
     function column_mode($item) {
@@ -154,13 +112,6 @@ class Default_expense extends \WP_List_Table {
         
     }
 
-    /**
-     * [OPTIONAL] This method processes bulk actions
-     * it can be outside of class
-     * it can not use wp_redirect coz there is output already
-     * in this example we are processing delete action
-     * message about successful deletion will be shown on page in next part
-     */
     function process_bulk_action() {
         global $wpdb;
         //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
@@ -205,7 +156,7 @@ class Default_expense extends \WP_List_Table {
         $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'EC_Id';
         $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
 
-        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name  ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM expense_category  ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
         // [REQUIRED] configure pagination
         $this->set_pagination_args(array(
             'total_items' => $total_items, // total items defined above

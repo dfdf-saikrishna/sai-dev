@@ -179,8 +179,4 @@ function erp_travel_desk_claim_details_view($tdcid,$cmpid) {
 
     return apply_filters( 'erp_invoicedetails_url_single_view', $url, $tdcid,$cmpid);
 }
-
-
-
-
 ?>

@@ -493,7 +493,7 @@ $compid=$_GET['cmpid'];
 				
               </div>
               <div class="clearfix"></div>
-			  <form class="form-horizontal" method="post" id="form2" name="form2" action="action.php" data-collabel="3" data-alignlabel="left" parsley-validate enctype="multipart/form-data">
+			  <form class="form-horizontal" method="post" id="claimedit" name="claimedit" action="#" data-collabel="3" data-alignlabel="left" parsley-validate enctype="multipart/form-data">
                 <input type="hidden" value="<?php echo basename($_SERVER['PHP_SELF']); ?>" name="filename" id="filename" >
                 <input type="hidden" value="<?php echo $tdcid; ?>" name="tdcid" id="tdcid" />
                 <div class="row">
@@ -508,14 +508,14 @@ $compid=$_GET['cmpid'];
 				  if(count($selq)>0){
 				  print_r($selq);
 					foreach ($selq as $results):
-						switch ($results['TDCN_Type']):
+						switch ($results->TDCN_Type):
 							
 							case 1:
-							echo '<dl><b>Finance: </b>'.stripslashes($results['TDCN_Text']).'<br><span style="font-size:9px;">'.date('d/m/y h:i a', strtotime($results[TDCN_Date])).'</span></dl>'; 
+							echo '<dl><b>Finance: </b>'.stripslashes($results->TDCN_Text).'<br><span style="font-size:9px;">'.date('d/m/y h:i a', strtotime($results->TDCN_Date)).'</span></dl>'; 
 							break;
 							
 							case 2:
-							echo '<dl><b>Travel Desk: </b>'.stripslashes($results['TDCN_Text']).'<br><span style="font-size:9px;">'.date('d/m/y h:i a', strtotime($results[TDCN_Date])).'</span></dl>'; 
+							echo '<dl><b>Travel Desk: </b>'.stripslashes($results->TDCN_Text).'<br><span style="font-size:9px;">'.date('d/m/y h:i a', strtotime($results->TDCN_Date)).'</span></dl>'; 
 							break;
 						
 						endswitch;
@@ -583,7 +583,8 @@ $compid=$_GET['cmpid'];
 				?>
               <div class="col-sm-12 text-right">
                 <div class="form-group">
-                  <div> <a  class="btn btn-primary" href="travel-desk-claim-edit.php?tdcid=<?php echo $tdcid; ?>">&nbsp;&nbsp;&nbsp;&nbsp; Edit / Update Claim &nbsp;&nbsp;&nbsp;&nbsp;</a> </div>
+				<?php $compid = $_SESSION['compid']; ?>
+                  <div> <a  class="button button-primary" href="/wp-admin/admin.php?page=ClaimEdit&action=view&tdcid=<?php echo $tdcid; ?>&cmpid=<?php echo $compid; ?>">&nbsp;&nbsp;&nbsp;&nbsp; Edit / Update Claim &nbsp;&nbsp;&nbsp;&nbsp;</a> </div>
                 </div>
               </div>
               <?PHp

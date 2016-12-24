@@ -56,7 +56,7 @@ use Hooker;
         $this->action('wp_ajax_set-limit-amount', 'set_limit_amount');
         $this->action('wp_ajax_remove-finance-approver', 'remove_finance_approver');
         $this->action('wp_ajax_set-finance-approver', 'set_finance_approver');
-       
+
 
         // Employee
         $this->action('wp_ajax_erp-hr-employee-new', 'employee_create');
@@ -105,6 +105,7 @@ use Hooker;
         //grade limits
         //$this->action('wp_ajax_gradelimits-create', 'gradelimits_create');
         $this->action('wp_ajax_gradelimits_get', 'gradelimits_get');
+         $this->action('wp_ajax_gradelimitscat-get', 'gradelimitscat_get');
     }
 
     //costcenter
@@ -248,7 +249,7 @@ use Hooker;
     }
 
     public function tolerance_limit_amount() {
-         //$this->send_success('testing');
+        //$this->send_success('testing');
         global $wpdb;
         $compid = $_SESSION['compid'];
         $posted = array_map('strip_tags_deep', $_POST);
@@ -256,14 +257,14 @@ use Hooker;
 
         $txtLimitPercentage = trim($data['txtLimitPercentage']);
         $tlId = $data['tlId'];
-        
+
         //$txtLimitPercentage ? $txtLimitPercentage = "'" . $txtLimitPercentage . "'" : $txtLimitPercentage = "0";
 
         $row = $wpdb->get_results("SELECT * FROM  tolerance_limits WHERE COM_Id='$compid' AND TL_Status=1 AND TL_Active=1");
 //print_r($row[0]->TL_Id);die;
         //foreach ($row as $rowtlid){
 //        if (!empty($rowtlid !=->TL_Id)) {
-            if ($row[0]->TL_Id != "") {
+        if ($row[0]->TL_Id != "") {
             if ($txtLimitPercentage == $row[0]->TL_Percentage) {
 
                 $response = array('status' => 'info', 'message' => "Please choose a different percentage to update the tolerance limits");
@@ -271,8 +272,8 @@ use Hooker;
                 exit;
             } else {
                 date_default_timezone_set('Asia/Kolkata');
-                $date=date('y-m-d  h:i:s');
-                
+                $date = date('y-m-d  h:i:s');
+
                 if ($wpdb->update('tolerance_limits', array('TL_Status' => '2', 'TL_ClosedDate' => $date), array('COM_Id' => $compid))) {
 
                     if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
@@ -292,7 +293,7 @@ use Hooker;
                     exit;
                 }
             }
-        }  else {
+        } else {
             if ($wpdb->insert('tolerance_limits', array('COM_Id' => $compid, 'TL_Percentage' => $txtLimitPercentage,))) {
                 $response = array('status' => 'success', 'message' => "Tolerance limit added successfully");
                 $this->send_success($response);
@@ -307,10 +308,25 @@ use Hooker;
         //}
     }
 
+      public function gradelimitscat_get() {
+        global $wpdb;
+        $posted = array_map('strip_tags_deep', $_POST);
+        $data = $posted;
+        if (isset($_POST['id'])) {
+            $id = $data['id'];
+            $compid = $_SESSION['compid'];
+            //$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+            $response = $wpdb->get_row("SELECT * FROM employee_grades eg, grade_limits gl WHERE eg.COM_Id='$compid' AND eg.EG_Id='$id' AND eg.EG_Id=gl.EG_Id AND eg.EG_Status=1 AND gl.GL_Status=1 ORDER BY eg.EG_Id ASC ");
+            $this->send_success($response);
+        } else {
+            $gradelimits = gradelimitscat_create($posted);
+            $this->send_success($gradelimits);
+        }
+    }
     //gradelimits functions
     public function gradelimits_create() {
 
-        $this->send_success("test123");
+        // $this->send_success("test123");
         $posted = array_map('strip_tags_deep', $_POST);
         $gradelimits = gradelimits_create($posted);
         $gradelimitsdata = $posted;
@@ -323,8 +339,10 @@ use Hooker;
         $data = $posted;
         if (isset($_POST['id'])) {
             $id = $data['id'];
+            $compid = $_SESSION['compid'];
             //$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-            $response = $wpdb->get_row("SELECT * FROM grade_limits WHERE GL_Id = '$id' ");
+            $response = $wpdb->get_row("SELECT * FROM employee_grades eg, grade_limits gl WHERE eg.COM_Id='$compid' AND eg.EG_Id='$id' AND eg.EG_Id=gl.EG_Id AND eg.EG_Status=1 AND gl.GL_Status=1 ORDER BY eg.EG_Id ASC ");
+            //echo $response;die;
             $this->send_success($response);
         } else {
             $gradelimits = gradelimits_create($posted);
@@ -456,38 +474,38 @@ use Hooker;
             }
         }
     }
-    
-    public function set_finance_approver(){
+
+    public function set_finance_approver() {
         global $wpdb;
         global $blocked;
         $adminid = $_SESSION['adminid'];
         $compid = $_SESSION['compid'];
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
-        $array = $data['select'];        
+        $array = $data['select'];
         foreach ($array as $value) {
-          
-            $selemp=$wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
-            if ($selemp->EMP_Access==1) {
-                
-                if(!$sel=$wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")){
-                
-                $wpdb->insert('accounts_set_approver', array('EMP_Id' => $value, 'COM_Id' => $compid, 'ASA_SetBy' => $adminid));
-                $wpdb->update('employees', array('EMP_AccountsApprover' => 1), array('EMP_Id' => $value));
-                
-                $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
-                $user = get_user_by( 'id', intval( $user_id->user_id ) );
-                $user->add_role('finance');   
+
+            $selemp = $wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
+            if ($selemp->EMP_Access == 1) {
+
+                if (!$sel = $wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")) {
+
+                    $wpdb->insert('accounts_set_approver', array('EMP_Id' => $value, 'COM_Id' => $compid, 'ASA_SetBy' => $adminid));
+                    $wpdb->update('employees', array('EMP_AccountsApprover' => 1), array('EMP_Id' => $value));
+
+                    $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
+                    $user = get_user_by('id', intval($user_id->user_id));
+                    $user->add_role('finance');
                 }
             } else {
-                $blocked.=$selemp->EMP_Code.", ";
+                $blocked.=$selemp->EMP_Code . ", ";
             }
         }
-        $blocked=rtrim($blocked,", ");
-        if($blocked)
-        $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
+        $blocked = rtrim($blocked, ", ");
+        if ($blocked)
+            $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
         else
-        $response = array('status' => 'success', 'message' => "Employee set as finance approver successfully");
+            $response = array('status' => 'success', 'message' => "Employee set as finance approver successfully");
         $this->send_success($response);
         exit;
     }
@@ -500,29 +518,27 @@ use Hooker;
         $data = $posted;
         $array = $data['select'];
         foreach ($array as $value) {
-            $selemp=$wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
+            $selemp = $wpdb->get_row("SELECT EMP_Code, EMP_Access FROM employees WHERE EMP_Id='$value'");
             if ($wpdb->get_row("SELECT * FROM accounts_set_approver WHERE EMP_Id='$value' AND ASA_Set=1")) {
                 $wpdb->update('accounts_set_approver', array('ASA_Set' => 2, 'ASA_ResetDate' => 'NOW()', 'ASA_ResetBy' => $adminid), array('EMP_Id' => $value, 'ASA_Set' => 1));
                 $wpdb->update('employees', array('EMP_AccountsApprover' => 0), array('EMP_Id' => $value));
                 $user_id = $wpdb->get_row("SELECT user_id FROM employees WHERE EMP_Id='$value'");
-                $user = get_user_by( 'id', intval( $user_id->user_id ) );
-                $user->remove_role('finance');   
+                $user = get_user_by('id', intval($user_id->user_id));
+                $user->remove_role('finance');
             } else {
-                $blocked.=$selemp->EMP_Code.", ";
+                $blocked.=$selemp->EMP_Code . ", ";
             }
-            
         }
-        if($blocked){
-        $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
-        $this->send_success($response);
-        }
-        else{
-        $response = array('status' => 'success', 'message' => "Employee removed as finance approver successfully");
-        $this->send_success($response);
+        if ($blocked) {
+            $response = array('status' => 'failure', 'message' => "Employee Not Active.$blocked");
+            $this->send_success($response);
+        } else {
+            $response = array('status' => 'success', 'message' => "Employee removed as finance approver successfully");
+            $this->send_success($response);
         }
     }
-    
-    public function allow_access(){
+
+    public function allow_access() {
         global $wpdb;
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
@@ -534,8 +550,8 @@ use Hooker;
         $this->send_success($response);
         exit;
     }
-    
-    public function block_access(){
+
+    public function block_access() {
         global $wpdb;
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;

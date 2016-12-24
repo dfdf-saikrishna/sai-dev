@@ -58,7 +58,10 @@ class Admin_Menu {
         add_submenu_page('', 'View Appr Request', 'View Appr Request', 'traveldesk', 'View-Appr-Request', array( $this,'traveldeskrequest_withapp_view'),'dashicons-admin-users');
         
         add_submenu_page('', 'Download File', 'Download File', 'traveldesk', 'Download-File', array( $this,'download_file'),'dashicons-admin-users');
-
+		add_submenu_page('', 'View Booking Request', 'View Booking Request', 'traveldesk', 'view-booking-req', array( $this,'traveldeskrequest_bookingemp_view'),'dashicons-admin-users');
+       
+		
+		
 //        add_menu_page('ExpenseManagment', 'Expense Managment', 'traveldesk', 'Expense', 'expense','dashicons-money');
 //        add_submenu_page('Expense', 'action', 'Expense Policy', 'traveldesk', 'ExpenseP', 'Expense');
 //        add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'traveldesk', 'Policy', 'Expense');
@@ -109,6 +112,8 @@ $overview = add_submenu_page('claims', 'Overview', 'Overview', 'traveldesk', 'cl
  add_submenu_page('', 'ViewClaims', 'View Claims ', 'traveldesk', 'ViewClaims', array( $this,'traveldesk_claim_details'));
 //add_submenu_page('claims', 'View Invoices', 'View Invoices', 'traveldesk','View Invoices'.'/ View Invoices',array( $this, 'traveldeskClaims'));
 add_submenu_page('claims', 'Bank Details', 'Bank Details', 'traveldesk','Bankdetails', array( $this, 'traveldeskBankDetails'));
+
+add_submenu_page('', 'ClaimEdit', 'Claim Edit', 'traveldesk','ClaimEdit', array( $this, 'traveldesk_claim_edit'));
 
 add_menu_page('Settings', 'Settings', 'traveldesk', 'Settings', 'setting','dashicons-admin-generic');
 add_submenu_page('Settings', 'Change Password', 'Change Password', 'traveldesk','Change Password'.'/Change Password', 'setting');
@@ -290,7 +295,12 @@ add_menu_page('Download Company Expense Policy', 'Download Company Expense Polic
     public function traveldeskrequestedit() {
         include WPERP_TRAVELDESK_VIEWS . '/traveldeskview.php';
     }
-	
+	public function traveldeskrequest_bookingemp_view() {
+        include WPERP_TRAVELDESK_VIEWS . '/travel-desk-booking-details.php';
+    }
+	public function traveldesk_claim_edit() {
+        include WPERP_TRAVELDESK_VIEWS . '/travel-desk-claim-edit.php';
+    }
 	public function tvClaims() {
         include WPERP_TRAVELDESK_VIEWS . '/traveldesk_claims.php';
     }

@@ -10,7 +10,7 @@ $profilemanage = ( isset($_REQUEST['profilemanage']) ) ? $_REQUEST['profilemanag
 //echo $selEmployee;
 //$profilemanage = $_REQUEST['profilemanage'];
 
-$imdir = 'upload/' . $compid . '/photographs/';
+$imdir = COMPANY_UPLOADS . '/'.$compid . '/photographs/';
 $allemps = $wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees Where COM_Id='$compid' AND EMP_Status=1");
 ?>
 
@@ -55,7 +55,7 @@ $allemps = $wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees 
             //print_r($resultd_details);die;
             ?>
 
-    <h4 style="text-align:center;"><strong>PERSONAL INFORMATION</strong></h4>
+            <h4 style="text-align:center;"><strong>PERSONAL INFORMATION</strong></h4>
             <br/>
             <div id="viewDetails">
                 <div class="" style="text-align:center"> Gender : <?php echo $resultd_details[0]->PI_Gender ?></div>
@@ -231,19 +231,19 @@ $allemps = $wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees 
                                     echo $i;
                                     $i++;
                                     ?></td>
-                                <td>File <span class="tooltip-area"><a href="#?file=<?php echo $imdir . $value->BAD_ImageFrontView; ?>" title="download"><i class="fa fa-download" ></i></a></span></td>
-                                <td><?php echo $value->BAD_AccountNumber; ?></td>
-                                <td><?php echo $value->BAD_BankName; ?><br />
-                                    <?php echo $value->BAD_BranchName; ?></td>
-                                <td><?php echo $value->BAD_BankIfscCode; ?></td>
-                                <td><?php echo $value->BAD_IssuedAt . ", " . $value->BAD_State . ",<br> " . $value->BAD_Country; ?></td>
-                                <td><?php echo $value->BAD_AccountType; ?></td>
-                                <td><?php echo $value->BAD_DateofIssue; ?></td>
-                                <td><?php echo $value->BAD_NomineeName; ?></td>
-                                <td><?php echo $value->BAD_NomineeRelation; ?></td>
-                                <td><?php echo date('d-M, Y', strtotime($value->BAD_Date)) ?></td>
-                            </tr>
-                        <?php } ?>
+                        <td>File <span class="tooltip-area"><a href="<?php echo $imdir . $value->BAD_ImageFrontView; ?>" download="file-name" title="download"><i class="fa fa-download" ></i></a></span></td>
+                        <td><?php echo $value->BAD_AccountNumber; ?></td>
+                        <td><?php echo $value->BAD_BankName; ?><br />
+                            <?php echo $value->BAD_BranchName; ?></td>
+                        <td><?php echo $value->BAD_BankIfscCode; ?></td>
+                        <td><?php echo $value->BAD_IssuedAt . ", " . $value->BAD_State . ",<br> " . $value->BAD_Country; ?></td>
+                        <td><?php echo $value->BAD_AccountType; ?></td>
+                        <td><?php echo $value->BAD_DateofIssue; ?></td>
+                        <td><?php echo $value->BAD_NomineeName; ?></td>
+                        <td><?php echo $value->BAD_NomineeRelation; ?></td>
+                        <td><?php echo date('d-M, Y', strtotime($value->BAD_Date)) ?></td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -348,7 +348,7 @@ $allemps = $wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees 
                                     echo $i;
                                     $i++;
                                     ?></td>
-                                <td>File <span class="tooltip-area"><a href="#?file=<?php echo $imdir . $value->VD_Document; ?>" title="download"><i class="fa fa-download" ></i></a></span></td>
+                                <td>File <span class="tooltip-area"><a href="<?php echo $imdir . $value->VD_Document; ?>" download="file-name" title="download"><i class="fa fa-download" ></i></a></span></td>
                                 <td><?php echo $value->VD_VisaNumber; ?></td>
                                 <td><?php echo $value->VD_Country; ?></td>
                                 <td><?php echo $value->VD_IssueAt; ?></td>
@@ -439,8 +439,8 @@ $allemps = $wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees 
 
             <div id="viewDetails" style="text-align:center">
                 <?php if ($med_info[0]->MI_Document) { ?>
-                    <div class="col-sm-4 h4"> Download Medical Document :</div>
-                    <div class="col-sm-5 h4"><span class="tooltip-area"> <a href="#?file=<?php echo $imdir . $med_info[0]->MI_Document; ?>" class="btn btn-default btn-sm" title="download file"> <i class="glyphicon glyphicon-download-alt"></i> </a> </span> </div>
+                    <div class="col-sm-4 h4"> Download Medical Document :
+                    <span class="tooltip-area"> <a href="<?php echo $imdir . $med_info[0]->MI_Document; ?>" download="file-name"  title="download file"><i class="fa fa-download" ></i> </a> </span> </div>
                     <br />
                 <?php } ?>
                 <br />
