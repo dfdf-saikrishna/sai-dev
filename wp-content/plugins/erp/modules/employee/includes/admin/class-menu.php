@@ -74,31 +74,31 @@ class Admin_Menu {
         add_menu_page('  Travel Expense ', '  Travel Expense ', 'employee', 'TravelExpense', array($this, 'requests_overview'),'dashicons-tickets');
         $overview = add_submenu_page( 'TravelExpense', 'Overview', 'Overview', 'employee', 'TravelExpense', array($this, 'requests_overview'));
         
-            add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
-            add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
-            add_submenu_page('', 'Expense Request', ' Post Travel Edit', 'employee','Post-travel-edit', array($this, 'post_travel_request_edit'));
-            add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post-travel', array($this, 'post_travel_request'));
+        add_submenu_page('TravelExpense', 'Expense Request', ' Pre Travel', 'employee','Pre-travel', array($this, 'pre_travel_request'));
+        add_submenu_page('', 'Expense Request', ' Pre Travel Edit', 'employee','Pre-travel-edit', array($this, 'pre_travel_request_edit'));
+        add_submenu_page('', 'Expense Request', ' Post Travel Edit', 'employee','Post-travel-edit', array($this, 'post_travel_request_edit'));
+        add_submenu_page('TravelExpense', 'Post Travel', 'Post Travel', 'employee','Post-travel', array($this, 'post_travel_request'));
 
-            add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'general_expense'),'dashicons-migrate');
-            $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'general_expense'));
-            add_submenu_page('GeneralExpense', ' Mileage ', 'Mileage Request', 'employee','Mileage', array($this,'Mileage_Request'));
-            add_submenu_page('GeneralExpense', 'Utilities', 'Utility Request', 'employee','Utilities',array($this,'Utility_Request'));
-            add_submenu_page('GeneralExpense', 'others', 'Others Request', 'employee','others', array($this,'Others_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','create-mileage', array($this,'create_mileage_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','create-utility', array($this,'create_utility_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','create-others', array($this,'create_others_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','view-mileage', array($this,'view_mileage_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','view-utility', array($this,'view_utility_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','view-others', array($this,'view_others_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','edit-mileage', array($this,'edit_mileage_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','edit-utility', array($this,'edit_utility_Request'));
-            add_submenu_page('', 'others', 'Others Request', 'employee','edit-others', array($this,'edit_others_Request'));
-            if(!current_user_can( 'finance' )){
-            add_menu_page( __( 'Delegate', 'employee' ), __( 'Delegeate', 'employee' ), 'employee', 'delegate', array($this,'delegates_view'),'dashicons-star-filled');
-            $overview = add_submenu_page( 'delegate', 'Overview', 'Overview', 'employee', 'delegate', array($this, 'delegates_view'));
-            add_submenu_page('delegate', 'Create Delegate', 'Create Delegate', 'employee','create-delegate', array($this,'create_delegate'));
-            add_submenu_page('', 'Edit Delegate', 'Edit Delegate', 'employee','edit-delegate', array($this,'edit_delegate'));
-            }
+        add_menu_page('General Expense', 'General Expense', 'employee', 'GeneralExpense', array($this,'general_expense'),'dashicons-migrate');
+        $overview = add_submenu_page( 'GeneralExpense', 'Overview', 'Overview', 'employee', 'GeneralExpense', array($this,'general_expense'));
+        add_submenu_page('GeneralExpense', ' Mileage ', 'Mileage Request', 'employee','Mileage', array($this,'Mileage_Request'));
+        add_submenu_page('GeneralExpense', 'Utilities', 'Utility Request', 'employee','Utilities',array($this,'Utility_Request'));
+        add_submenu_page('GeneralExpense', 'others', 'Others Request', 'employee','others', array($this,'Others_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','create-mileage', array($this,'create_mileage_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','create-utility', array($this,'create_utility_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','create-others', array($this,'create_others_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','view-mileage', array($this,'view_mileage_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','view-utility', array($this,'view_utility_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','view-others', array($this,'view_others_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','edit-mileage', array($this,'edit_mileage_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','edit-utility', array($this,'edit_utility_Request'));
+        add_submenu_page('', 'others', 'Others Request', 'employee','edit-others', array($this,'edit_others_Request'));
+        if(!current_user_can( 'finance' )){
+        add_menu_page( __( 'Delegate', 'employee' ), __( 'Delegeate', 'employee' ), 'employee', 'delegate', array($this,'delegates_view'),'dashicons-star-filled');
+        $overview = add_submenu_page( 'delegate', 'Overview', 'Overview', 'employee', 'delegate', array($this, 'delegates_view'));
+        add_submenu_page('delegate', 'Create Delegate', 'Create Delegate', 'employee','create-delegate', array($this,'create_delegate'));
+        add_submenu_page('', 'Edit Delegate', 'Edit Delegate', 'employee','edit-delegate', array($this,'edit_delegate'));
+        }
     }
         
     }

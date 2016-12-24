@@ -103,8 +103,8 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     </tr>
                   </tbody>
                 </table>
+                <span id="totaltable"></span>
                 <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-others" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
-                <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">
             <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
