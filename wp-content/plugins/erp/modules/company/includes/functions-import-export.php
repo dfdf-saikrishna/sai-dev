@@ -47,10 +47,10 @@ function crp_process_import_export() {
                 $rowData[0] = array_combine($headings[0], $rowData[0]);
                 //print_r($rowData[0]);
                 //echo $rowData[0]['Employee Code'];
-                $selEmpcode = $wpdb->get_row("SELECT * FROM company WHERE COM_Id='$compid'");
+                $selEmpcode = $wpdb->get_row("SELECT * FROM COMPANY WHERE COM_Id='$compid'");
                 $empcode=$rowData[0]['Employee Code'];
                 $prefix = $username = NULL;
-                $getPrefix=$wpdb->get_row("SELECT COM_Prefix FROM company WHERE COM_Id='$compid'");
+                $getPrefix=$wpdb->get_row("SELECT COM_Prefix FROM COMPANY WHERE COM_Id='$compid'");
                 $prefix=$getPrefix->COM_Prefix;
                 $username=$prefix."-".$empcode;
                 
@@ -166,15 +166,15 @@ function crp_process_import_export() {
 //
 //                        }
                         else {
-                            
+                               
                                 $userdata = array(
-                                    'user_login'   => $username,
+                                    'user_login'   => $email,
                                     'user_email'   => $email,
                                     'first_name'   => $username,
                                     'display_name' => $username,     
                                 );
                                 $userdata['user_pass'] = $password;
-                                $userdata['role'] = 'employee';
+                                $userdata['role'] = 'employee';   
                                 if($user_id  = wp_insert_user( $userdata )){
                                 
                                     if($ins=$wpdb->insert('employees', array('ADM_Id' => $adminid,'COM_Id' => $compid,'DEP_Id' => $dep,'DES_Id' => $des,
@@ -183,7 +183,13 @@ function crp_process_import_export() {
                                         ,'EMP_Funcrepmngrcode' => $RFMC,'EG_Id' => $grd,'Added_Mode' => "1")))
                                     {
 
-                                            //send login details to the user
+                                            // user notification email
+                                            $emailer = wperp()->emailer->get_email('New_Employee_Welcome');
+                                            $send_login = isset($posted['login_info']) ? true : false;
+
+                                            if (is_a($emailer, '\WeDevs\ERP\Email')) {
+                                                $emailer->trigger($user_id, $send_login);
+                                            }
 
                                             //sendRegMail($email, $name, $username, $pwd);
 
@@ -196,13 +202,12 @@ function crp_process_import_export() {
                     $wpdb->update( 'file_upload', array( 'FU_Status' => 2 ),array( 'FU_Id' => $fuid, 'FU_Status' => 1 ));
                     else
                     $wpdb->update( 'file_upload', array( 'FU_Active' => 9 ),array( 'FU_Id' => $fuid, 'FU_Status' => 1 ));
-
                 }
                 else
                 {
                       $empError.=$empcode.", ";
                       $count++;
-
+                      
                 }
             }
         }

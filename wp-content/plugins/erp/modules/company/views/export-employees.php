@@ -176,4 +176,3 @@ $objPHPExcelRead = PHPExcel_IOFactory::load($fileDirectory);
               <a href="/wp-admin/admin.php?page=Upload-Employees">>>Back to Upload<<</a> 
     </div><!-- .inside -->
 </div><!-- .postbox -->
-

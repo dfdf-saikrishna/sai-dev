@@ -1,7 +1,7 @@
 <?php
+ require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req-dropdown.php';
 global $wpdb;
     $compid = $_SESSION['compid'];
-        
         $emp_total = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND bs.BS_Status=1 AND bs.BA_Id=1 AND req.REQ_Id=rd.REQ_Id AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC"));
         $emp_approved = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND bs.BS_Status=3 AND bs.BA_Id=1 AND req.REQ_Id=rd.REQ_Id AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC"));
         $emp_pending = count($wpdb->get_results("SELECT DISTINCT(req.REQ_Id), req.* FROM requests req, request_details rd, booking_status bs WHERE req.COM_Id='$compid' AND bs.BS_Status=1 AND req.REQ_Id=rd.REQ_Id AND rd.RD_Id=bs.RD_Id AND REQ_Active !=9 AND RD_Status=1 AND BS_Active=1 ORDER BY bs.BS_Id DESC"));
@@ -28,19 +28,21 @@ global $wpdb;
                                 </tr>
                                 <tr>
                                 <td width="90%">Pending Requests</td>
-                                <td width="10%"><span class="oval-1"><?php echo $emp_total;?></span></td>
+                                <td width="10%">
+								<a href="admin.php?page=requestview&selFilter=1"><span class="oval-1"> <?php echo $emp_total ?>
+								</span></a></td>
                                 </tr>
                                 <tr>
-                                <td width="90%">Approved Requests</td>
-                                <td width="20%"><span class="oval-3"><?php echo $emp_approved;?></span></td>
+                                <td width="90%">Pending Cancellation Requests</td>
+                                <td width="20%"><a href="admin.php?page=requestview&selFilter=2"><span class="oval-3"><?php echo $emp_approved;?></span></a></td>
                                 </tr>
                                 <tr>
-                                <td width="90%">Rejected Requests</td>
-                                <td width="10%"><span class="oval-4"><?php echo $emp_pending; ?></span></td>
+                                <td width="90%">All Booking Requests</td>
+                                <td width="10%"><a href="admin.php?page=requestview&selFilter=3"><span class="oval-4"><?php echo $emp_pending; ?></span></a></td>
                                 </tr>
                                 <tr>
-                                <td width="90%">Total Requests</td>
-                                <td width="10%"><span class="oval-2"><?php echo $emp_rejected; ?></span></td>
+                                <td width="90%">All Cancellation Requests</td>
+                                <td width="10%"><a href="admin.php?page=requestview&selFilter=4"><span class="oval-2"><?php echo $emp_rejected; ?></span></a></td>
                                 </tr>
                             </table>
 <!--                               <label class="progress-bar"><?php echo $appRate; ?>% approval rate</label>-->
@@ -53,19 +55,19 @@ global $wpdb;
                                     </tr>
                                     <tr>
                                     <td width="90%">Pending Requests</td>
-                                    <td width="10%"><a href="/wp-admin/admin.php?page=View-Emp-Requests&selReqstatus=1"><span class="oval-1"><?php echo $count_pending?></span></a></td>
+                                    <td width="10%"><a href="admin.php?page=tdeskrequestview&selReqstatus=1"><span class="oval-1"><?php echo $count_pending?></span></a></td>
                                     </tr>
                                     <tr>
-                                    <td width="90%">Approved Requests</td>
-                                    <td width="10%"><span class="oval-3"><?php echo $count_approved ?></span></td>
+                                    <td width="90%">Approved</td>
+                                    <td width="10%"><a href="admin.php?page=tdeskrequestview&selReqstatus=2"><span class="oval-3"><?php echo $count_approved ?></span></a></td>
                                     </tr>
                                     <tr>
-                                    <td width="90%">Rejected Requests</td>
-                                    <td width="10%"><span class="oval-4"><?php echo $count_rejected?></span></td>
+                                    <td width="90%">Rejected</td>
+                                    <td width="10%"><a href="admin.php?page=tdeskrequestview&selReqstatus=3"><span class="oval-4"><?php echo $count_rejected?></span></a></td>
                                     </tr>
                                     <tr>
                                     <td width="90%">Total Requests</td>
-                                    <td width="10%"><span class="oval-2"><?php echo $count_total ?></span></td>
+                                    <td width="10%"><a href="admin.php?page=tdeskrequestview"><span class="oval-2"><?php echo $count_total ?></span></a></td>
                                     </tr>
                                 </table>
                             </div><!-- .badge-wrap -->

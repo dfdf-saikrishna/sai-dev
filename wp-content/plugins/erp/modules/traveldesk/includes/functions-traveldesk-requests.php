@@ -16,7 +16,7 @@ function traveldesk_request_without_appr() {
         if(isset($_POST['hiddenEmp']))
         $empuserid = $_POST['hiddenEmp'];
         $posted = array_map( 'strip_tags_deep', $_POST );
-        
+        //print_r($posted);die;
         $expenseLimit                           = 	$posted['expenseLimit'];
         if(isset($_POST['hiddenEmp']))
         $selEmployees                           =	$_POST['hiddenEmp'];
@@ -46,7 +46,7 @@ function traveldesk_request_without_appr() {
 	$to					=	$posted['to'];
 	
 	//$selStayDur				=	$posted['selStayDur'];
-	$txtdist				=	$posted['txtdist'];
+	//$txtdist				=	$posted['txtdist'];
 	
 	$txtCost				=	$posted['txtCost'];
 	
@@ -59,10 +59,10 @@ function traveldesk_request_without_appr() {
 	
 	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
 	
-	//$selProjectCode			=	$posted['selProjectCode'];
-        $selProjectCode                         =	"0";
-	$selCostCenter                          =	"0";
-	//$selCostCenter			=	$posted['selCostCenter'];
+	$selProjectCode                         =	$posted['selProjectCode'];
+        //$selProjectCode                         =	"0";
+	//$selCostCenter                          =	"0";
+	$selCostCenter                          =	$posted['selCostCenter'];
 	if(isset($_POST['textBillNo']))
 	$textBillNo				=	$posted['textBillNo'];
 	//$expenseLimit                           =       "0";
@@ -120,17 +120,16 @@ function traveldesk_request_without_appr() {
         }
         
         $polid=$comp->COM_Pretrv_POL_Id;
-        
+       
         if($addnewRequest==2){
 				
         // Retrieving employee details
         $mydetails=myDetails($selEmployees);
 
         $type=0;
-
+        
         switch ($polid)
         {
-            
                 //-------- employee -->  rep mngr  -->  finance
                 case 1:
                    

@@ -1,34 +1,12 @@
 <?php
+global $showProCode;
 global $etEdit;
+global $totalcost;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
-$reqid = $_GET['reqid'];
-            
-//if(!$row=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE RT_Id=1 AND req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id='$empuserid' AND REQ_Active=1 AND re.RE_Status=1"))
-//{
-//	header("location:employee-dashboard.php?msg=1"); exit;
-//}
-
-//$claim=0;
-//
-// if($row->REQ_Claim){
-// 	
-//	$claim=1;
-//	
-//	header("location:employee-dashboard.php?msg=1"); exit;
-//	
-//	
-// } else {
-//	 
-//	 $claim=0;
-//	 
-//	 $url='action.php?reqid='.$reqid;
-//	 
-// }
-$empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
-$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
+$reqid = $_GET['reqid'];	
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
 $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
 ?>
@@ -56,40 +34,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
-            <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins">
-              <tr>
-                <td width="20%">Employee Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                <td width="20%">Company Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                <td width="20%">Reporting Manager Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-              </tr>
-              <tr>
-                <td>Employee Designation </td>
-                <td>:</td>
-                <td><?php echo $empdetails->DES_Name; ?></td>
-                <td>Reporting Manager Name</td>
-                <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Department</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-
-              </tr>
-            </table>
-            </div>
+            <?php
+                $row = 0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+            ?>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -132,11 +80,11 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 				{
 				?>
                     <tr>
-                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" class="posttraveldate" placeholder="dd-mm-yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00 00:00:00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"  /><input name="txtStartDate[]" id="txtStartDate1" class="form-control" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="form-control" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
+                      <td data-title="Date" class="scrollmsg"><input name="txtDate[]" style="width:110px;" id="txtDate<?php echo $rows; ?>" class="posttraveldate" placeholder="dd-mm-yyyy" autocomplete="off" value="<?php if($rowrequest->RD_Dateoftravel=="0000-00-00 00:00:00") echo ""; else echo date('d-m-Y',strtotime($rowrequest->RD_Dateoftravel)); ?>"  /><input name="txtStartDate[]" id="txtStartDate1" class="form-control" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="form-control" placeholder="dd/mm/yyyy" autocomplete="off" style="display:none;" value="n/a" />
                       <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="form-control" style="display:none;" value="n/a"/>
                       </td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="form-control" autocomplete="off"><?php echo stripslashes($rowrequest->RD_Description) ?></textarea><input type="text" class="form-control" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" class="form-control" onchange="javascript:getMotPosttravel(this.value,<?php echo $rows; ?>)">
+                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" style="width:130px;" class="form-control" onchange="javascript:getMotPosttravel(this.value,<?php echo $rows; ?>)">
                           <option value="">Select</option>
                           <?php 
 				  
@@ -188,7 +136,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </select>
                         <?php } ?>
                         </span><input type="text" class="form-control" name="txtdist[]" id="txtdist<?php echo $rows;?>" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Total Cost"><input type="text" class="form-control" name="txtCost[]" id="txtCost<?php echo $rows; ?>" onkeyup="valCost(this.value);" autocomplete="off" value="<?php echo $rowrequest->RD_Cost;?>"/></td>
+                      <td data-title="Total Cost"><input type="text" class="form-control" name="txtCost[]" style="width:110px;" id="txtCost<?php echo $rows; ?>" onkeyup="valCost(this.value);" autocomplete="off" value="<?php echo $rowrequest->RD_Cost;?>"/></td>
                       <td align="left" data-title="Upload bills"><?php 
                                                     
 					$seluplfiles=$wpdb->get_results("SELECT * FROM requests_files WHERE RD_Id='$rowrequest->RD_Id' AND RF_Status=1");
@@ -199,12 +147,12 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
 						$temp=explode(".",$rowuplfiles->RF_Name);
 						$ext=end($temp);
 						
-						$fileurl="/erp/modules/company/upload/".$compid."/bills_tickets/".$rowfiles->RF_Name;
+						$fileurl="/erp/modules/company/upload/".$compid."/bills_tickets/".$rowuplfiles->RF_Name;
 						
 					?>
                         <span id="reqfilesid<?php echo $j.$rows; ?>"><?php echo $j.") "; ?> <a href="download-file.php?file=<?php echo $fileurl; ?>"><?php echo 'file'.$j.".".$ext;  ?></a> &nbsp; <a onclick="return delFile(<?php echo $rowuplfiles->RF_Id; ?>,'reqfilesid<?php echo $j.$rows; ?>')" onmouseover="this.style.cursor='pointer'"><i class="fa fa-times" title="delete"></i></a></span><br />
                         <?php $j++; } ?>
-                        <input type='file' name='file<?php echo $rows; ?>[]' id="file<?php echo $rows; ?>[]" multiple="true" onchange="Validate(this.id);"></td>
+                        <input type='file' name='file<?php echo $rows; ?>[]' id="file<?php echo $rows; ?>[]" style="width:150px;" multiple="true" onchange="Validate(this.id);"></td>
                         <td><span class="tooltip-area">
                        
                         <button type="submit" value="<?php echo $rowrequest->RD_Id; ?>" <?php if($cnt==1) echo 'disabled="disabled"'; ?>  class="button button-default" name="deleteRowbutton" onclick="return checkDeletRow();" ><i class="fa fa-trash-o"></i></button>
@@ -214,23 +162,23 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
                         <input type="hidden" value="<?php echo $reqid; ?>" name="reqid" id="reqid" />
                     </tr>
-                    <?php                 
-					  //$totCost+=$rowrequest->RD_Cost;
-					  ?>
+                    <?php
+                    $totalcost+=$rowrequest->RD_Cost;
+                    ?>
                     <?php $rows++; } ?>
                   </tbody>
-                      
-                      
-                      
-                      
-                      
-                  </tbody>
                 </table>
-                <input type="hidden" id="hidrowno" name="hidrowno" value="<?php echo $rows-1; ?>" />
-                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-posttravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
-                <span id="totaltable"> </span>
-                
+                <input type="hidden" id="hidrowno" name="hidrowno" value="<?php echo $rows-1; ?>" />                                    
             </div>
+            <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
+                <tr>
+                  <td align="right" width="85%">Claim Amount</td>
+                  <td align="center" width="5%">:</td>
+                  <td align="right"><?php echo IND_money_format($totalcost).".00"; ?></td>
+                </tr>
+            </table>
+            <span id="totaltable"> </span>
+            <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-posttravel-edit" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
             <div id="my_centered_buttons">
             <input type="submit" value="Update" name="update-pre-travel-request" id="update-pre-travel-request" class="button button-primary">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

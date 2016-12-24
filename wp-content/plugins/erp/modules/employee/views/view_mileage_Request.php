@@ -1,5 +1,6 @@
 <?php
 global $etEdit;
+$showProCode = 1;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
 global $totalcost;
@@ -8,8 +9,6 @@ $reqid = $_GET['reqid'];
 $row=$wpdb->get_row("SELECT * FROM requests req, request_employee re, employees emp WHERE req.REQ_Id='$reqid' AND RT_Id=5 AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND REQ_Active=1 AND re.RE_Status=1");
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
-$empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
-$repmngname = $wpdb->get_row("SELECT EMP_Name FROM employees WHERE EMP_Code='$empdetails->EMP_Reprtnmngrcode' AND COM_Id='$compid'");	
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
 $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
 ?>
@@ -37,40 +36,13 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
+            <?php
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+            ?>
             <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins">
-              <tr>
-                <td width="20%">Employee Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                <td width="20%">Company Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                <td width="20%">Reporting Manager Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-              </tr>
-              <tr>
-                <td>Employee Designation </td>
-                <td>:</td>
-                <td><?php echo $empdetails->DES_Name; ?></td>
-                <td>Reporting Manager Name</td>
-                <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Department</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-
-              </tr>
-            </table>
-            </div>
+            <!-- Request Details -->
+            <?php _e(requestDetails(5));?>
+            </div>      
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -124,6 +96,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         foreach($selsql as $rowsql){
                         ?>
                     <tr>
+                      <input type="hidden" id="et" value="5">
+                      <input type="hidden" value="<?php echo $reqid; ?>" name="req_id" id="req_id"/>
+                      <input type="hidden" name="reqcode" id="reqcode" value="<?php echo $row->REQ_Code?>" />
                       <td align="center" data-title="Date"><?php echo date('d/M/Y',strtotime($rowsql->RD_Dateoftravel));?></td>
                       <td data-title="Description"><div style="height:40px; overflow:auto;"><?php echo stripslashes($rowsql->RD_Description); ?></div></td>
                       <td data-title="Category"><?php echo $rowsql->EC_Name; ?></td>
@@ -180,7 +155,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                   <tr>
                     <td align="right" width="85%">Claim Amount</td>
                     <td align="center" width="5%">:</td>
-                    <td align="right" ><?php echo IND_money_format($totalcost-$paytotd).".00"; ?></td>
+                    <td align="right"><?php echo IND_money_format($totalcost-$paytotd).".00"; ?></td>
                   </tr>
                 </table>
             </div>
