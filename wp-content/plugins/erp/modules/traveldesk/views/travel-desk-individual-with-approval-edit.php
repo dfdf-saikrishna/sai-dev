@@ -2,6 +2,7 @@
 require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req.php';
 global $wpdb;
 global $empuserid;
+global $showProCode;
 global $totalcost;
 $compid = $_SESSION['compid'];
 $reqid	=$_GET['reqid'];
@@ -24,44 +25,11 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
           <div class="postbox" id="emp_details">
                 
               <div class="inside">
-                      <h2><?php _e( 'Individual Employee Request [ with approval ] Edit', 'traveldesk' ); ?></h2>
-                      <table class="wp-list-table widefat striped admins">
-                        <tr>
-                          <td width="20%">Employee Code</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                          <td width="20%">Company Name</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-                        </tr>
-                        <tr>
-                          <td width="20%">Employee Name</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                          <?php if($repmngname){?>
-                          <td width="20%">Reporting Manager Code</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-                          <?php } ?>
-                        </tr>
-                        <tr>
-                          <td>Employee Designation </td>
-                          <td>:</td>
-                          <td><?php echo $empdetails->DES_Name; ?></td>
-
-                          <?php if($repmngname){?>
-                          <td>Reporting Manager Name</td>
-                          <td>:</td>
-                          <td><?php echo $repmngname->EMP_Name;?></td>
-                          <?php } ?>
-
-                        </tr>
-                        <tr>
-                          <td width="20%">Employee Department</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-                        </tr>
-                      </table>
+                <h2><?php _e( 'Individual Employee Request [ with approval ] Edit', 'traveldesk' ); ?></h2>
+                <?php
+                $row=0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+                ?>
        
               <!-- Messages -->
               <div style="display:none" id="failure" class="notice notice-error is-dismissible">
@@ -149,7 +117,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                             <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
                             </span></td>
                             <td data-title="Get Quote"><button type="button" name="getQuote" <?php echo ($disabled) ? 'disabled="disabled"' : '';?> id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
-                            <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" <?php echo ($disabled) ? 'disabled="disabled"' : '';?> class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-times"></i></button></td>
+                            <td><button type="button" value="<?php echo $rowrequest->RD_Id; ?>" <?php echo ($disabled) ? 'disabled="disabled"' : '';?> class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-trash-o"></i></button></td>
                         </tr>
                         <?php 					
                         $totalcost+=$rowrequest->RD_Cost;
@@ -160,7 +128,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                       </tbody>
                     </table>
                     <span id="totaltable"> </span>
-                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-traveldesk-requestappr" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
+                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="edit-traveldesk-requestappr" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
                     <span id="totaltable"> 
 <!--                    <table class="wp-list-table widefat striped admins" style="font-weight:bold;">
                         <tr>

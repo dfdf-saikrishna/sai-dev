@@ -1030,23 +1030,31 @@ function Actions($et){
 
             if($edit)
             {
-                    if($et==3)
-                    $editActbuttonsothers;
-                    if($et==6)
-                    $editActbuttonsutility;
-                    if($et==5)
-                    $editActbuttonsmileage;
-                    if($et==2)
-                    echo $editActbuttonspost;
-                    else{
-                    echo $editActbuttons;
-                    }
+                switch($et){
+                    
+                    case 1:
+                        echo $editActbuttons;;
+                        break;
+                    case 2:
+                        echo $editActbuttonspost;;
+                        break;
+                    case 3:
+                        echo $editActbuttonsothers;;
+                        break;
+                    case 5:
+                        echo $editActbuttonsmileage;;
+                        break;
+                    case 6:
+                        echo $editActbuttonsutility;;
+                        break;
+                }
+                    
             }
 
         }
 }
     
-function FinanceActions($et){
+function FinanceActions($et,$totalcost){
     global $wpdb;
     $reqid  =   $_GET['reqid'];
     $empuserid = $_SESSION['empuserid'];
@@ -1098,7 +1106,7 @@ function FinanceActions($et){
                                 
 	if($selfinlimit	=	$wpdb->get_row("SELECT APL_LimitAmount FROM approval_limit WHERE EMP_Id=$empuserid AND APL_Status=1 AND APL_Status IS NOT NULL AND APL_Active=1")){
 	
-		$limit_amnt	=	$selfinlimit['APL_LimitAmount'];
+		$limit_amnt	=	$selfinlimit->APL_LimitAmount;
 		
 		if($limit_amnt <= $totalcost)
 		$limit=1;

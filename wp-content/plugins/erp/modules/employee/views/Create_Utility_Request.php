@@ -1,4 +1,5 @@
 <?php
+global $showProCode;
 global $etEdit;
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
@@ -33,40 +34,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
-            <div style="margin-top:60px;">
-            <table class="wp-list-table widefat striped admins">
-              <tr>
-                <td width="20%">Employee Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                <td width="20%">Company Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Name</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                <td width="20%">Reporting Manager Code</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-              </tr>
-              <tr>
-                <td>Employee Designation </td>
-                <td>:</td>
-                <td><?php echo $empdetails->DES_Name; ?></td>
-                <td>Reporting Manager Name</td>
-                <td>:</td>
-                <td><?php if($repmngname)echo $repmngname->EMP_Name;?></td>
-              </tr>
-              <tr>
-                <td width="20%">Employee Department</td>
-                <td width="5%">:</td>
-                <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-
-              </tr>
-            </table>
-            </div>
+            <?php
+                $row=0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+            ?>
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -101,9 +72,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                     <tr>
                       <input type="hidden" value="6" name="ectype"/>
                       <input type="hidden" value="0" name="expenseLimit">
-                      <td style="text-align:center;" data-title="Start Date" class="scrollmsg"><input name="txtStartDate[]" id="txtStartDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
+                      <td style="text-align:center;" data-title="Start Date" class="scrollmsg"><input style="width:101px;" name="txtStartDate[]" id="txtStartDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/>
                         <input name="txtDate[]" id="txtDate1" class="" placeholder="dd/mm/yyyy" style="display:none;" value="n/a"/></td>
-                      <td style="text-align:center;" data-title="End Date" class="scrollmsg"><input name="txtEndDate[]" id="txtEndDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/></td>
+                      <td style="text-align:center;" data-title="End Date" class="scrollmsg"><input style="width:101px;" name="txtEndDate[]" id="txtEndDate1" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"/></td>
                       <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea>
                         <select name="selExpcat[]" id="selExpcat1" class="" style="display:none;">
                           <option value="6">select</option>
@@ -122,9 +93,9 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                           <?php } ?>
                         </select>
                         </span></td>
-                      <td data-title="Bill Number"><input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class=""/></td>
+                      <td data-title="Bill Number"><input type="text" name="textBillNo[]" style="width:110px;" id="textBillNo1" autocomplete="off"  class=""/></td>
                       <td data-title="Bill Amount (Rs)"><span id="city1container">
-                        <input type="text" class="" name="txtCost[]" id="txtCost1" onkeyup="valCost(this.value);" autocomplete="off"/>
+                        <input type="text" class="" name="txtCost[]" id="txtCost1" style="width:110px;" onkeyup="valCost(this.value);" autocomplete="off"/>
                         <input  name="from[]" id="from1" type="text" style="display:none;" value="n/a" placeholder="From" class=""  autocomplete="off">
                         <input  name="to[]" id="to1" type="text" placeholder="To" class="" value="n/a" style="display:none;"  autocomplete="off">
                         <select name="selStayDur[]" class="" style="display:none;">
@@ -132,12 +103,12 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                         </select>
                         <input type="text" class="" name="txtdist[]"  id="txtdist1" style="display:none;width:110px;" value="n/a" autocomplete="off" />
                         </span> </td>
-                      <td data-title="Upload bills"><input type='file' name='file1[]' id="file1[]" multiple="true" onchange="Validate(this.id);"></td>
+                      <td data-title="Upload bills"><input type='file' name='file1[]' id="file1[]" multiple="true" style="width:150px;" onchange="Validate(this.id);"></td>
                     </tr>
                   </tbody>
                 </table>
+                <span id="totaltable"></span>
                 <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-utility" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
-                <span id="totaltable"> </span>
             </div>
             <div id="my_centered_buttons">
                 <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>

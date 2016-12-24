@@ -12,7 +12,7 @@ function post_travel_request(){
         $compid = $_SESSION['compid'];
         $empuserid = $_SESSION['empuserid'];
         $posted = array_map( 'strip_tags_deep', $_POST );
-        
+
         $expenseLimit                           = 	$posted['expenseLimit'];
 
 	$etype					=	$posted['ectype'];
@@ -358,7 +358,7 @@ function post_travel_request(){
                         
                         //$selStayDur[$i]="NULL";
 
-                        $txtdist[$i] ? $txtdist[$i]="'".$txtdist[$i]."'" : $txtdist[$i]="NULL";
+                        $txtdist[$i] ? $txtdist[$i]="".$txtdist[$i]."" : $txtdist[$i]="NULL";
 
                         $textBillNo[$i] ? $textBillNo[$i]="".$textBillNo[$i]."" : $textBillNo[$i]="NULL";
 
@@ -755,7 +755,7 @@ function post_travel_request(){
                     } else {
 
                             $startdate=$txtStartDate[$i];
-                            $startdate=explode("/",$startdate);
+                            $startdate=explode("-",$startdate);
                             $startdate=$startdate[2]."-".$startdate[1]."-".$startdate[0];				
 
                     }
@@ -768,7 +768,7 @@ function post_travel_request(){
                     } else {
 
                             $enddate=$txtEndDate[$i];
-                            $enddate=explode("/",$enddate);
+                            $enddate=explode("-",$enddate);
                             $enddate=$enddate[2]."-".$enddate[1]."-".$enddate[0];				
 
                     }
@@ -779,7 +779,8 @@ function post_travel_request(){
 
                             if($selStayDur[$i]=="n/a")	$selStayDur[$i]=NULL;
 
-                            if($txtdist[$i]=="n/a")	$txtdist[$i]=NULL;
+                            if($txtdist[$i]=="n/a")	
+                            $txtdist[$i]=NULL;
 
 
                             $to[$i] ? $to[$i]="".$to[$i]."" : $to[$i]="NULL";
@@ -809,9 +810,10 @@ function post_travel_request(){
 
 
                     }
+                    $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
+                    $rdid=$wpdb->insert_id;
                     
                     if($etype != 1){
-				
 
                     //file upload 
                     $j=$i+1;	
@@ -850,20 +852,11 @@ function post_travel_request(){
 
                             //Upload the file into the temp dir
                             if($result) {
-
                               $lastinsertid=$wpdb->insert( 'requests_files', array( 'RD_Id' => $rdid, 'RF_Name' => $filePath ));
-
                             }
                       }
                     }				
                     }
-
-                    //echo $rate; exit;
-
-                    //$rate ? $rate="'".$rate."'" : $rate="NULL";	
-
-                    $wpdb->insert('request_details', array('REQ_Id' => $reqid,'RD_Dateoftravel' => $dateformat,'RD_StartDate' => $startdate,'RD_EndDate' => $enddate,'RD_Description' => $desc,'EC_Id' => $selExpcat[$i],'MOD_Id' => $selModeofTransp[$i],'RD_Cityfrom' => $from[$i],'RD_Cityto' => $to[$i],'SD_Id' => $selStayDur[$i],'RD_Distance' => $txtdist[$i],'RD_Rate' => $rate,'RD_BillNumber' => $textBillNo[$i],'RD_Cost' => $txtCost[$i]));
-                    $rdid=$wpdb->insert_id;
 
             } // end of for loop
 		

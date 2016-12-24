@@ -280,7 +280,7 @@ class Employee_List_Table extends \WP_List_Table {
          */
         function process_bulk_action() {
             global $wpdb;
-            //$table_name = $wpdb->prefix . 'user'; // do not forget about tables prefix
+            $table_name_user = $wpdb->prefix . 'users'; // do not forget about tables prefix
             $table_name = "employees";
             if ('delete' === $this->current_action()) {
                 $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
@@ -288,6 +288,8 @@ class Employee_List_Table extends \WP_List_Table {
                     $ids = implode(',', $ids);
 
                 if (!empty($ids)) {
+                    $selemp = $wpdb->get_row("SELECT user_id FROM $table_name WHERE EMP_Id=$ids");
+                    $wpdb->query("DELETE FROM $table_name_user WHERE ID IN($selemp->user_id)");
                     $wpdb->query("DELETE FROM $table_name WHERE EMP_Id IN($ids)");
                 }
             }

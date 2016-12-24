@@ -19,14 +19,17 @@
             $( 'body' ).on( 'change', '#select_emp_withappr', this.travelDesk.withApprView );
             $( '.travel-desk-request').on( 'submit', '#traveldesk_request', this.travelDesk.createRequest );
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-requestappr', this.travelDesk.addRowappr );
+            $( '.travel-desk-request').on( 'click', '#edit-traveldesk-requestappr', this.travelDesk.editRowappr );
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-request', this.travelDesk.addRow );
             $( 'body').on( 'click', 'span#remove-traveldesk-request', this.travelDesk.removeRow );
             $( '.traveldeskrequestarrow' ).on( 'click', '', this.traveldeskrequestarrow.view);
             $( '.erp-traveldeskbankdetails' ).on( 'click', 'a#erp-traveldeskbankdetails-new', this.traveldeskBankdetails.create );
-			$( '.erp-traveldeskbankdetails' ).on( 'click', 'span.edit a', this.traveldeskBankdetails.edit );
-			$('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
-			$('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
-			$('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
+            $( '.erp-traveldeskbankdetails' ).on( 'click', 'span.edit a', this.traveldeskBankdetails.edit );
+            $('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
+            $('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
+            $('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
+            $('body').on('click', '.group_emp', this.travelDesk.groupEmps);
+            
             this.initTipTip();
 		
             // this.employee.addWorkExperience();
@@ -157,6 +160,55 @@
         },
 	
         travelDesk : {
+            groupEmps: function(e){
+                e.preventDefault();
+                $('.show_group_emps').slideUp('slow');
+                $(this).closest("tr").find('.show_group_emps').slideDown('slow');
+            },
+            editRowappr: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#traveldesk_request tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-traveldesk-request" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#traveldesk_request tr').last().after('<tr>\n\
+                                <td data-title="Date"><input name="txtDate[]" id="txtDate'+rowCount+'" class="erp-leave-date-field" placeholder="dd/mm/yyyy" autocomplete="off"></td>\n\
+                                <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\
+                                <td><button type="button" value="" class="button button-default" name="deleteRowbutton" id="deleteRowbutton" title="delete row"><i class="fa fa-trash-o"></i></button></td></tr>');
+                                $( '.erp-leave-date-field' ).datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 }); 
+            },
             addRowappr: function(){
                 var optionsCat;
                 var optionsMode;
@@ -183,7 +235,7 @@
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
                                 <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
                                 <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
-                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td></tr>');
+                                <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\</tr>');
                                 $( '.erp-leave-date-field' ).datepicker({
                                     dateFormat: 'dd-mm-yy',
                                     changeMonth: true,
@@ -198,9 +250,7 @@
                     error: function(error) {
                         console.log( error );
                     }
-                 });
-                 
-                 
+                 }); 
             },
             addRow: function(){
                 var optionsCat;

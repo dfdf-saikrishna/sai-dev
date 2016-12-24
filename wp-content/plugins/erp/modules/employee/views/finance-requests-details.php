@@ -1,6 +1,7 @@
 <?php
 require_once WPERP_EMPLOYEE_PATH . '/includes/functions-pre-travel-req.php';
 global $wpdb;
+global $totalcost;
 $compid = $_SESSION['compid'];
 $empuserid = $_SESSION['empuserid'];
 $empdetails=$wpdb->get_row("SELECT * FROM employees emp, company com, department dep, designation des, employee_grades eg WHERE emp.EMP_Id='$empuserid' AND emp.COM_Id=com.COM_Id AND emp.DEP_Id=dep.DEP_Id AND emp.DES_Id=des.DES_Id AND emp.EG_Id=eg.EG_Id");
@@ -367,7 +368,6 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
                         ?></td>
                       </tr>
                     <?php
-                    $totalcost = "";
                     if(!$rowsql->RD_Duplicate)
                     $totalcost+=$rowsql->RD_Cost;
 
@@ -430,7 +430,7 @@ $row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee
     <button type="button" name="reset" id="reset" class="button">Reset</button>
     </div>-->
     <!-- Edit Buttons -->
-    <?php _e(FinanceActions(1));?>
+    <?php _e(FinanceActions(1,$totalcost));?>
     
 </div>
 </div>

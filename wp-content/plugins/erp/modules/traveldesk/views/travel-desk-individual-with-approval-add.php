@@ -1,6 +1,7 @@
 <?php
 require_once WPERP_TRAVELDESK_PATH . '/includes/functions-traveldesk-req.php';
 global $wpdb;
+global $showProCode;
 global $empuserid;
 $compid = $_SESSION['compid'];
 $allemps=$wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees WHERE COM_Id='$compid' AND EMP_Status=1 ORDER BY EMP_Name ASC");
@@ -39,43 +40,10 @@ if(isset($_REQUEST['selEmployees'])){
           <div class="postbox" id="emp_details">
                 
               <div class="inside">
-                      <table class="wp-list-table widefat striped admins">
-                        <tr>
-                          <td width="20%">Employee Code</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Code?> (<?php echo $empdetails->EG_Name?>)</td>
-                          <td width="20%">Company Name</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo stripslashes($empdetails->COM_Name); ?></td>
-                        </tr>
-                        <tr>
-                          <td width="20%">Employee Name</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Name; ?></td>
-                          <?php if($repmngname){?>
-                          <td width="20%">Reporting Manager Code</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->EMP_Reprtnmngrcode; ?></td>
-                          <?php } ?>
-                        </tr>
-                        <tr>
-                          <td>Employee Designation </td>
-                          <td>:</td>
-                          <td><?php echo $empdetails->DES_Name; ?></td>
-
-                          <?php if($repmngname){?>
-                          <td>Reporting Manager Name</td>
-                          <td>:</td>
-                          <td><?php echo $repmngname->EMP_Name;?></td>
-                          <?php } ?>
-
-                        </tr>
-                        <tr>
-                          <td width="20%">Employee Department</td>
-                          <td width="5%">:</td>
-                          <td width="25%"><?php echo $empdetails->DEP_Name; ?></td>
-                        </tr>
-                      </table>
+                <?php
+                $row=0;
+                require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
+                ?>
        
               <!-- Messages -->
               <div style="display:none" id="failure" class="notice notice-error is-dismissible">

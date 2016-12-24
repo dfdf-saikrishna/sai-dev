@@ -153,7 +153,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 </table>
             </div>
             <!-- Edit Buttons -->
-            <?php _e(FinanceActions(3));?>
+            <?php _e(FinanceActions(3,$totalcost));?>
             </form>
         </div>
     </div>

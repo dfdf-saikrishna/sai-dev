@@ -25,6 +25,8 @@
             $( '.erp-hr-holiday-wrap' ).on( 'click', '.erp-hr-holiday-edit', self, this.holiday.edit );
             $( '.erp-hr-holiday-wrap' ).on( 'click', '.erp-hr-holiday-delete', self, this.holiday.remove );
             $( 'body' ).on( 'change', '.erp-hr-holiday-date-range', self, this.holiday.checkRange );
+            $( 'body' ).on( 'change', 'date-picker-deligate-from',this.deligate.dateFrom);
+            $( 'body' ).on( 'change', 'date-picker-deligate-to',this.deligate.dateTo);
 
             // ICal calendar import
             $( '.erp-hr-holiday-wrap' ).on( 'click', '#erp-hr-import-ical', self, this.importICalInit );
@@ -71,8 +73,30 @@
                     $( ".erp-leave-date-picker-from" ).datepicker( "option", "maxDate", selectedDate );
                 }
             });
+            
+            $( "#from" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 2
+            });
+            
+            $( "#to" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 2
+            });
         },
-
+        
+        deligate: {
+            dateFrom: function() {
+                to.datepicker( "option", "minDate", getDate( this ) );
+            },
+            dateTo: function() {
+                from.datepicker( "option", "maxDate", getDate( this ) );
+            }
+        },
         holiday: {
             checkRange: function() {
                 var self = $('input[name="range"]');
