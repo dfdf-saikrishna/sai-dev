@@ -50,10 +50,10 @@ function post_travel_request(){
 	
 	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
 	
-	//$selProjectCode			=	$posted['selProjectCode'];
-        $selProjectCode                         =	"0";
-	$selCostCenter                          =	"0";
-	//$selCostCenter			=	$posted['selCostCenter'];
+	$selProjectCode                         =	$posted['selProjectCode'];
+        //$selProjectCode                         =	"0";
+	//$selCostCenter                          =	"0";
+	$selCostCenter                          =	$posted['selCostCenter'];
 	
 	$textBillNo				=	$posted['textBillNo'];
 	
@@ -468,17 +468,19 @@ function post_travel_request(){
                      //$this->send_success($response);
 		
 		}
-		
-                    if($etype==5){
-                        header('Location: /wp-admin/admin.php?page=Mileage');
+                    if($etype==2){
+                        header("location:/wp-admin/admin.php?page=Post-travel&status=success&msg=You have successfully added a Post Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..");exit;
+                    }
+                    else if($etype==5){
+                        header("Location: /wp-admin/admin.php?page=create-mileage&status=success&msg=You have successfully added a Mileage Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..");exit;
                     }
                     else if($etype==6){
-                        header('Location: /wp-admin/admin.php?page=Utilities');
+                        header("Location: /wp-admin/admin.php?page=create-others&status=success&msg=You have successfully added a Utility Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..");exit;
                     }
                     else if($etype==3){
-                        header('Location: /wp-admin/admin.php?page=others');
+                        header("Location: /wp-admin/admin.php?page=create-others&status=success&msg=You have successfully added a General Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..");exit;
                     }
-                    $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
+                    //$response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
                     //$this->send_success($response);
     }
      if ( isset( $_POST['update-pre-travel-request'] ) ) {
@@ -978,7 +980,18 @@ function post_travel_request(){
 		
 		/*}*/
 		
-		
+		if($etype==2){
+                    header("location:/wp-admin/admin.php?page=Post-travel-edit&reqid=$reqid&status=success&msg=You have successfully Updated Post Travel Request");exit;
+                }
+                else if($etype==5){
+                    header("location:/wp-admin/admin.php?page=edit-mileage&reqid=$reqid&status=success&msg=You have successfully Mileage Request");exit;
+                }
+                else if($etype==6){
+                    header("location:/wp-admin/admin.php?page=edit-utility&reqid=$reqid&status=success&msg=You have successfully Utility Request");exit;
+                }
+                else if($etype==3){
+                    header("location:/wp-admin/admin.php?page=edit-others&reqid=$reqid&status=success&msg=You have successfully Updated Other Expenses Request");exit;
+                }
 		$response = array('status'=>'success','message'=>"You have successfully update this Request");
                 //$this->send_success($response);
      }

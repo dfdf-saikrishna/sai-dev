@@ -44,7 +44,7 @@ class Group_Requests_List extends \WP_List_Table
      */
     function column_Request_Code($item)
     {
-        return "<a href='/wp-admin/admin.php?page=View-Appr-Request&reqid=$item[REQ_Id]'>".$item['REQ_Code']."</a>";
+        return "<a href='/wp-admin/admin.php?page=Group-Request-Details&reqid=$item[REQ_Id]'>".$item['REQ_Code']."</a>";
     }
     
     function column_Actions($item){

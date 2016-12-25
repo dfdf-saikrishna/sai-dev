@@ -31,8 +31,9 @@
             $('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
             $('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
             $('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
-			$('body').on('submit', '#buttoneditclaim', this.traveldeskClaimsUpdate.buttoneditclaim);
+            $('body').on('submit', '#buttoneditclaim', this.traveldeskClaimsUpdate.buttoneditclaim);
             $('body').on('click', '.group_emp', this.travelDesk.groupEmps);
+            $('body').on('click', '#groupReqClaimButton', this.travelDesk.groupReqCliam);
             //$('body').on('click', '#claimedit', this.traveldeskclaimedit.claimedit);
             
             this.initTipTip();
@@ -168,6 +169,38 @@
                 e.preventDefault();
                 $('.show_group_emps').slideUp('slow');
                 $(this).closest("tr").find('.show_group_emps').slideDown('slow');
+            },
+            groupReqCliam: function(e){
+                e.preventDefault();
+                wp.ajax.send( 'group-req-claim', {
+                      data: {
+                      id : $(this).val(), 
+                      },
+                    success: function(resp) {
+                        console.log("success");
+                        console.log(resp);
+                        $('.erp-loader').hide();
+                        $('#submit-pre-travel-request_edit').removeClass('disabled');
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                //$( 'body' ).load( window.location.href + '.pre-travel-request' );
+                                location.reload()
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log("failure");
+                        console.log( error );
+                    }
+                });
             },
             editRowappr: function(){
                 var optionsCat;

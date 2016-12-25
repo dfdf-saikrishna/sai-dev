@@ -41,7 +41,7 @@ class Upload_List_Table extends \WP_List_Table {
         if ($item['FU_Status'] == 1)
             echo '<span class="status-1">Pending</span>';
         else if ($item['FU_Status'] == 2)
-            echo '<span class="status-1">Uploaded</span>';
+            echo '<span class="status-2">Uploaded</span>';
     }
 
     function column_total($item) {
@@ -63,9 +63,11 @@ class Upload_List_Table extends \WP_List_Table {
     function column_file($item) {
         return "<a href= 'admin.php?page=Claims&fuid=$item[FU_Id]'>File</a>";
     }
-     function column_download($item) {
-        return "<a href= 'admin.php?page=Claims&funame=$item[FU_Filename]'>Download</a>";
-    }
+    function column_download($item) {
+        $compid = $_SESSION['compid'];
+        $fileurl="/erp/modules/company/upload/".$compid."/".$item['FU_Filename'];
+        return "<a href='".WPERP_COMPANY_DOWNLOADS.$fileurl."' download='import_file'>Download</a>";
+    }   
     function column_cb($item) {
         return sprintf(
                 '<input type="checkbox" name="id[]" value="%s" />', $item['FU_Id']

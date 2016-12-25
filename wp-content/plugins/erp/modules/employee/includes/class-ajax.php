@@ -677,10 +677,10 @@ class Ajax_Handler {
 	
 	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
 	
-	//$selProjectCode			=	$posted['selProjectCode'];
-        $selProjectCode                         =	"0";
-	$selCostCenter                          =	"0";
-	//$selCostCenter			=	$posted['selCostCenter'];
+	$selProjectCode			=	$posted['selProjectCode'];
+//        $selProjectCode                         =	"0";
+//	$selCostCenter                          =	"0";
+	$selCostCenter			=	$posted['selCostCenter'];
 	
 	$textBillNo				=	$posted['textBillNo'];
 	
@@ -1149,10 +1149,9 @@ class Ajax_Handler {
 	
 	//$hiddenAllPrefered                    =	$posted['hiddenAllPrefered'];
 	
-	//$selProjectCode			=	$posted['selProjectCode'];
-        $selProjectCode                         =	"0";
-	$selCostCenter                          =	"0";
-	//$selCostCenter			=	$posted['selCostCenter'];
+	$selProjectCode                         =	$posted['selProjectCode'];
+        
+	$selCostCenter                          =	$posted['selCostCenter'];
 	
 	$textBillNo				=	$posted['textBillNo'];
 	
@@ -1199,19 +1198,16 @@ class Ajax_Handler {
         
         // updating project code if set 
 		
-//        $selprocod=$wpdb->get_row("SELECT * FROM PC_Id, CC_Id WHERE REQ_Id='$reqid'");
-//
-//        if($selprocod->PC_Id != $selProjectCode){
-//
-//                update_query("requests", "PC_Id='$selProjectCode'", "REQ_Id='$reqid'", $filename, 0);
-//
-//        }
-//
-//        if($selprocod->CC_Id != $selCostCenter){
-//
-//                update_query("requests", "CC_Id='$selCostCenter'", "REQ_Id='$reqid'", $filename, 0);
-//
-//        }
+        $selprocod=$wpdb->get_row("SELECT PC_Id, CC_Id FROM requests WHERE REQ_Id='$reqid'");
+        
+        if($selprocod->PC_Id != $selProjectCode){
+                $wpdb->update( 'requests', array( 'PC_Id' => $selProjectCode), array( 'REQ_Id' => $reqid ));
+        }
+
+        if($selprocod->CC_Id != $selCostCenter){
+                $wpdb->update( 'requests', array( 'CC_Id' => $selCostCenter), array( 'REQ_Id' => $reqid ));
+
+        }
         
         for($i=0;$i<$cnt;$i++)
         {

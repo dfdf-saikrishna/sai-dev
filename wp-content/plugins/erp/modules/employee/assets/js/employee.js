@@ -849,7 +849,7 @@
                                 $('#success').show();
                                 $("#success").delay(5000).slideUp(200);
                                 //$( 'body' ).load( window.location.href + '.pre-travel-request' );
-                                location.reload()
+                                //location.reload()
                                 break;
                             case 'failure':
                                 $('#p-failure').html(resp.message);

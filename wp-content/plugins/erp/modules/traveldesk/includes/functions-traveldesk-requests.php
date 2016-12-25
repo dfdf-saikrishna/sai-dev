@@ -504,7 +504,7 @@ function traveldesk_request_without_appr() {
         }
 
 
-        header("location:/wp-admin/admin.php?page=View-Edit-Request");exit;    
+        header("location:/wp-admin/admin.php?page=Group-Request&reqid=$reqid&status=success");exit;    
 	//$this->send_success("1");	
 			
         $response = array('status'=>'success','message'=>"You have successfully added a Pre Travel Expense Request  <br> Your Request Code: $expreqcode <br> Please wait for approval..  ");
@@ -835,7 +835,7 @@ function traveldesk_request_without_appr() {
 		}
 			
 		$response = array('status'=>'success','message'=>"You have successfully update this Request");
-                //$this->send_success($response);	
+                header("location:/wp-admin/admin.php?page=Edit-Group-Request&reqid=$reqid&status=success");exit;	
     }
     
     

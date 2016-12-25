@@ -4,9 +4,11 @@
     <div style="display:none" id="failure" class="notice notice-error is-dismissible">
         <p id="p-failure"></p>
     </div>
-    <div style="display:none" id="success" class="notice notice-success is-dismissible">
-        <p id="p-success"></p>
+    <?php if(isset($_GET['status'])){?>
+    <div style="display:block" id="success" class="notice notice-success is-dismissible">
+    <p id="p-success">Group Request Created Successfully</p>
     </div>
+    <?php } ?>
         <?php
         //require '/../includes/class_table_view.php';
 

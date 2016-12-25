@@ -9,6 +9,7 @@ $empuserid = $_SESSION['empuserid'];
 $reqid = $_GET['reqid'];	
 $selexpcat=$wpdb->get_results("SELECT * FROM expense_category WHERE EC_Id IN (1,2,4)");
 $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_Id IN (0, '$compid') AND MOD_Status=1");
+$row=$wpdb->get_row("SELECT * FROM requests req, employees emp, request_employee re WHERE req.REQ_Id='$reqid' AND req.REQ_Id=re.REQ_Id AND re.EMP_Id=emp.EMP_Id AND emp.COM_Id='$compid' AND req.REQ_Active IN (1,2) AND RE_Status=1");
 ?>
 <style type="text/css">
 #my_centered_buttons { text-align: center; width:100%; margin-top:60px; }
@@ -18,6 +19,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
         <div class="wrap pre-travel-request erp" id="wp-erp">
             <h2><?php _e( 'Pre Travel Expense Request', 'employee' ); ?></h2>
             <code class="description">ADD Request</code>
+            <form id="request_edit_form" name="input" action="#" method="post">
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -35,7 +37,6 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <p id="p-info"></p>
             </div>
             <?php
-                $row = 0;
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
             ?>
             <!-- Messages -->
@@ -55,7 +56,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <p id="p-info"></p>
             </div>
             <div style="margin-top:60px;">
-            <form id="request_edit_form" name="input" action="#" method="post">
+            
             <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
                   <thead class="cf">
                     <tr>

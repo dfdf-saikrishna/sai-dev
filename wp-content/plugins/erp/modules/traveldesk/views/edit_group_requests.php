@@ -13,6 +13,11 @@ $allemps=$wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees WH
 <form name="post-travel-req-form" action="#" method="post" enctype="multipart/form-data">
 <div class="postbox">
     <div class="inside">
+        <?php if(isset($_GET['status'])){?>
+        <div style="display:block" id="success" class="notice notice-success is-dismissible">
+        <p id="p-success">Group Request Updated Successfully</p>
+        </div>
+        <?php } ?>
         <h2>Group Request</h2>
         <code>Edit Group Booking Request</code>
         <div style="text-align: center;">

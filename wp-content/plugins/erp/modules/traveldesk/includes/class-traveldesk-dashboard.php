@@ -146,7 +146,12 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 	/* $check = if($onclick){ 
 		echo $onclick;
 	} */
-return '<input type="checkbox" name="reqid[]" value="'. $item['REQ_Id'] .'"/>';                        
+        global $attr;
+        if($void)
+        $attr = $void;
+        else if($onclick)
+        $attr = $onclick;
+return '<input type="checkbox" '.$attr.' name="reqid[]" value="'. $item['REQ_Id'] .'"/>';                        
 }
 
 function column_Request_Code($item) {
@@ -684,7 +689,7 @@ $Loc ='';
 return  '<span class="status-2" style="padding:5px 8px !important;border-radius: 15px;line-height:1">'. count($getvals) .'</span>'.$Loc; 
 }
 
-function column_Quote_Amount($item) {
+function column_Quote_Amount($item) { 
 global $wpdb;
 $bookingStatus="";
 $cancellationstatus="";
@@ -775,7 +780,7 @@ $cancellationstatus="";
 			if ($selrdbs->RD_Id) {
                                                                         ?>
                             <form method="post" id="bookingForm<?php echo $j; ?>" name="bookingForm<?php echo $j; ?>" onsubmit="return submitBookingForm(<?php echo $j; ?>);">
-                              <input type="hidden" name="rdid<?php echo $j; ?>" id="rdid<?php echo $j; ?>" value="<?php echo $item['RD_Id'] ?>" />
+                              <input type="hidden" name="rdid<?php echo $j; ?>" id="rdid<?php echo $j; ?>" value="<?php echo $item['RT_Id'] ?>" />
                               <input type="hidden" name="type<?php echo $j; ?>" id="type" value="1" />
                               <div id="bookingStatusContainer<?php echo $j; ?>">
                                 <?php

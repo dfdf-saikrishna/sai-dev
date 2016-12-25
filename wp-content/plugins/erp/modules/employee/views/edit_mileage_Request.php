@@ -20,6 +20,11 @@ $row=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.R
             <h2><?php _e( 'Mileage Expense Request', 'employee' ); ?></h2>
             <code class="description">EDIT Request</code>
             <!-- Messages -->
+            <?php if(isset($_GET['status'])){?>
+            <div style="display:block" id="success" class="notice notice-success is-dismissible">
+            <p id="p-success"><?php echo $_GET['msg'] ;?></p>
+            </div>
+            <?php } ?>
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
             </div>
@@ -35,28 +40,13 @@ $row=$wpdb->get_row("SELECT * FROM requests req, request_employee re WHERE req.R
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
+            <form name="post-travel-req-form" action="#" method="post" enctype="multipart/form-data">
             <?php
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
             ?>
              <div style="margin-top:60px;">
             <!-- Request Details -->
             <?php _e(requestDetails(1));?>
-            </div>
-            <!-- Messages -->
-            <div style="display:none" id="failure" class="notice notice-error is-dismissible">
-            <p id="p-failure"></p>
-            </div>
-
-            <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
-                <p id="p-notice"></p>
-            </div>
-
-            <div style="display:none" id="success" class="notice notice-success is-dismissible">
-                <p id="p-success"></p>
-            </div>
-
-            <div style="display:none" id="info" class="notice notice-info is-dismissible">
-                <p id="p-info"></p>
             </div>
             <div style="margin-top:60px;">
                 <h4 >/ Mileage Rates /</h4>
