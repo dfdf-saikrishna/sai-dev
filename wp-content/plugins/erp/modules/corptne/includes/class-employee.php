@@ -294,13 +294,15 @@ class Employee {
      * @return string
      */
     public function get_status() {
-        if ( $this->status ) {
-            //$statuses = erp_hr_get_employee_statuses();
-
-            if ( array_key_exists( $this->status, $statuses ) ) {
-                return $statuses[ $this->status ];
-            }
-        }
+        
+//        global $statuses;
+//        if ( $this->status ) {
+//            $statuses = erp_hr_get_employee_statuses();
+//
+//            if ( array_key_exists( $this->status, $statuses ) ) {
+//                return $statuses[ $this->status ];
+//            }
+//        }
     }
 
     /**

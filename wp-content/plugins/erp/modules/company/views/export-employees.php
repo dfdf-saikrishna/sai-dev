@@ -68,6 +68,9 @@ $objPHPExcelRead = PHPExcel_IOFactory::load($fileDirectory);
                         $objPHPExcel->getActiveSheet()->fromArray($testArray, NULL, 'A1');
                         $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
                         }
+                        foreach(range('A','K') as $columnID) {
+                            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+                        }
                         ?>
               <div class="table-responsive">
                 <table cellpadding="2" cellspacing="2" border="1" class="wp-list-table widefat">
