@@ -225,7 +225,7 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 							break;
 						
 							case 4:
-							$href='/wp-admin/admin.php?page=View-Appr-Request&reqid='.$item['REQ_Id'];
+							$href='/wp-admin/admin.php?page=Group-Request-Details&reqid='.$item['REQ_Id'];
 							$type='<span style="font-size:10px;">[G]</span>';
 							$title="Group Request Without Approval";
 							break;
