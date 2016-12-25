@@ -19,6 +19,11 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <h2><?php _e( 'Post Travel Expense Request', 'employee' ); ?></h2>
             <code class="description">Edit Request</code>
             <!-- Messages -->
+            <?php if(isset($_GET['status'])){?>
+            <div style="display:block" id="success" class="notice notice-success is-dismissible">
+            <p id="p-success"><?php echo $_GET['msg'] ;?></p>
+            </div>
+            <?php } ?>
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
             </div>
@@ -35,25 +40,10 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 <p id="p-info"></p>
             </div>
             <?php
-                $row = 0;
+                $row = $wpdb->get_row("SELECT * FROM requests WHERE REQ_Id='$reqid' AND COM_Id='$compid'");
+                //$row = 0;
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
             ?>
-            <!-- Messages -->
-            <div style="display:none" id="failure" class="notice notice-error is-dismissible">
-            <p id="p-failure"></p>
-            </div>
-
-            <div style="display:none" id="notice" class="notice notice-warning is-dismissible">
-                <p id="p-notice"></p>
-            </div>
-
-            <div style="display:none" id="success" class="notice notice-success is-dismissible">
-                <p id="p-success"></p>
-            </div>
-
-            <div style="display:none" id="info" class="notice notice-info is-dismissible">
-                <p id="p-info"></p>
-            </div>
             <div style="margin-top:60px;">
                 <form id="post_request_edit_form" name="input" action="#" method="post" enctype="multipart/form-data">
             <table class="wp-list-table widefat striped admins" border="0" id="table-post-travel">

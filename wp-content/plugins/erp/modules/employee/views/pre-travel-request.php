@@ -18,6 +18,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
         <div class="wrap pre-travel-request erp" id="wp-erp">
             <h2><?php _e( 'Pre Travel Expense Request', 'employee' ); ?></h2>
             <code class="description">ADD Request</code>
+            <form id="request_form" name="input" action="#" method="post">
             <!-- Messages -->
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
@@ -39,7 +40,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
             ?>
             <div style="margin-top:60px;">
-            <form id="request_form" name="input" action="#" method="post">
+            
             <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
                   <thead class="cf">
                     <tr>

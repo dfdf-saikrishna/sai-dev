@@ -288,8 +288,10 @@ class Employee_List_Table extends \WP_List_Table {
                     $ids = implode(',', $ids);
 
                 if (!empty($ids)) {
-                    $selemp = $wpdb->get_row("SELECT user_id FROM $table_name WHERE EMP_Id=$ids");
-                    $wpdb->query("DELETE FROM $table_name_user WHERE ID IN($selemp->user_id)");
+                    $selemp = $wpdb->get_results("SELECT user_id FROM $table_name WHERE EMP_Id IN($ids)");
+                    foreach ($selemp as $reqemp){
+                    $wpdb->query("DELETE FROM $table_name_user WHERE ID IN($reqemp->user_id)");
+                    }
                     $wpdb->query("DELETE FROM $table_name WHERE EMP_Id IN($ids)");
                 }
             }

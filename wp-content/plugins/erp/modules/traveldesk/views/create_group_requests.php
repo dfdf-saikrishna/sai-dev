@@ -1,6 +1,7 @@
 <?php
 global $wpdb;
 global $showProCode;
+require_once WPERP_TRAVELDESK_PATH . '/includes/functions-group-requests.php';
 $compid = $_SESSION['compid'];
 $allemps=$wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees WHERE COM_Id='$compid' AND EMP_Status=1 ORDER BY EMP_Name ASC");
 ?>
@@ -77,12 +78,14 @@ $allemps=$wpdb->get_results("SELECT EMP_Id, EMP_Code, EMP_Name FROM employees WH
               <input  name="from[]" id="from1" type="text" style="width:130px;" placeholder="From" class="" autocomplete="off">
               <input  name="to[]" id="to1" type="text" style="width:130px;" placeholder="To" class="" autocomplete="off" >
               </span></td>
-            <td><input type="text" class="" name="txtTotalCost[]" id="txtTotalCost1" style="width:110px;" onkeyup="valGroupRequestCost(this.value);"  autocomplete="off"/>
+            <td><input type="text" class="" name="txtCost[]" id="txtCost1" style="width:110px;" onkeyup="valGroupRequestCost(this.value);"  autocomplete="off"/>
             </td>
-            <td><input type="text" class="" name="txtCost[]" id="txtCost1" style="width:110px;" autocomplete="off"/></td>
+            <td><input type="text" class="" name="txtTotalCost[]" onkeypress="return false;" id="txtTotalCost1" onkeyup="valPreCost(this.value);" style="width:110px;" autocomplete="off"/></td>
             <td><input type='file' name='file1[]' id="file1[]" multiple="true" style="width:150px;" onchange="Validate(this.id);"></td>
           </tr>
       </table>
+      <span id="totaltable"> </span>
+      <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-traveldesk-groupreq" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
       <div id="my_centered_buttons">
         <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
         <input type="submit" name="submit-traveldesk-request_withoutappr" id="submit-traveldesk-request_withoutappr" class="button button-primary">

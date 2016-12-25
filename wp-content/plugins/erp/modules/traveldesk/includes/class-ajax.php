@@ -28,13 +28,34 @@ class Ajax_Handler {
         
         //Travel Desk
         $this->action( 'wp_ajax_traveldesk_request_create', 'traveldesk_request_create' );
-		$this->action( 'wp_ajax_traveldeskbankdetails_create', 'traveldeskbankdetails_create' );
+	$this->action( 'wp_ajax_traveldeskbankdetails_create', 'traveldeskbankdetails_create' );
         $this->action( 'wp_ajax_traveldeskbankdetails_get', 'traveldeskbankdetails_get' );
-		$this->action( 'wp_ajax_traveldeskclaims_create', 'traveldeskclaims_create' );
-		$this->action( 'wp_ajax_traveldeskclaims_update', 'traveldeskclaims_update' );
+	$this->action( 'wp_ajax_traveldeskclaims_create', 'traveldeskclaims_create' );
+	$this->action( 'wp_ajax_traveldeskclaims_update', 'traveldeskclaims_update' );
+        $this->action( 'wp_ajax_group-req-claim', 'group_req_claim' );
+    }
+    
+    public function group_req_claim(){
+        global $wpdb;
+        $posted = array_map( 'strip_tags_deep', $_POST );
+        $reqid = $posted['id'];
+        if($reqid){
+                
+		$wpdb->update( 'requests', array( 'RT_Id' => 2, 'REQ_Active' => 1, 'REQ_DraftUpdatedDate' => 'NOW()', 'REQ_PreToPostStatus' => 1, 'REQ_PreToPostDate' => 'NOW()' ), array( 'REQ_Id' => $reqid ));
+		
+		$response = array('status'=>'success','message'=>"You have successfully updated this request for submit claims");
+                $this->send_success($response);
+	
+	} else {
+	
+		$response = array('status'=>'failure','message'=>"<b>OOps!</b> Error !! Please try again. ");
+                $this->send_success($response);
+	
+	}
+        
     }
 	
-	public function traveldeskclaims_create() {
+    public function traveldeskclaims_create() {
 		
         $posted               = array_map( 'strip_tags_deep', $_POST );
         $traveldeskclaims_id  = traveldeskclaims_create( $posted );
@@ -42,7 +63,7 @@ class Ajax_Handler {
         $this->send_success( $data );
     }
 	
-	public function traveldeskclaims_update() {
+    public function traveldeskclaims_update() {
         $posted               = array_map( 'strip_tags_deep', $_POST );
         $traveldeskclaimsupdate_id  = traveldeskclaims_update( $posted );
         $data = $posted;

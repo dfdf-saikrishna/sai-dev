@@ -20,16 +20,20 @@
             $( '.travel-desk-request').on( 'submit', '#traveldesk_request', this.travelDesk.createRequest );
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-requestappr', this.travelDesk.addRowappr );
             $( '.travel-desk-request').on( 'click', '#edit-traveldesk-requestappr', this.travelDesk.editRowappr );
+            $( 'body').on( 'click', '#add-traveldesk-groupreq', this.travelDesk.addRowGroup );
+            $( 'body').on( 'click', '#add-traveldesk-groupreq-edit', this.travelDesk.addRowGroupEdit );
             $( '.travel-desk-request').on( 'click', '#add-traveldesk-request', this.travelDesk.addRow );
             $( 'body').on( 'click', 'span#remove-traveldesk-request', this.travelDesk.removeRow );
+            $( 'body').on( 'click', 'span#remove-group-request', this.travelDesk.removeGroupRow );
             $( '.traveldeskrequestarrow' ).on( 'click', '', this.traveldeskrequestarrow.view);
             $( '.erp-traveldeskbankdetails' ).on( 'click', 'a#erp-traveldeskbankdetails-new', this.traveldeskBankdetails.create );
             $( '.erp-traveldeskbankdetails' ).on( 'click', 'span.edit a', this.traveldeskBankdetails.edit );
             $('body').on('click', '#traveldeskrise_invoice', this.traveldeskRiseinvoice.traveldeskInvoice);
             $('body').on('click', '#buttonCalculate', this.traveldeskRiseinvoice.buttonCalculate);
             $('body').on('submit', '#tdinvoiceForm', this.traveldeskClaims.sendclaims);
-			$('body').on('submit', '#buttoneditclaim', this.traveldeskClaimsUpdate.buttoneditclaim);
+            $('body').on('submit', '#buttoneditclaim', this.traveldeskClaimsUpdate.buttoneditclaim);
             $('body').on('click', '.group_emp', this.travelDesk.groupEmps);
+            $('body').on('click', '#groupReqClaimButton', this.travelDesk.groupReqCliam);
             //$('body').on('click', '#claimedit', this.traveldeskclaimedit.claimedit);
             
             this.initTipTip();
@@ -166,6 +170,38 @@
                 $('.show_group_emps').slideUp('slow');
                 $(this).closest("tr").find('.show_group_emps').slideDown('slow');
             },
+            groupReqCliam: function(e){
+                e.preventDefault();
+                wp.ajax.send( 'group-req-claim', {
+                      data: {
+                      id : $(this).val(), 
+                      },
+                    success: function(resp) {
+                        console.log("success");
+                        console.log(resp);
+                        $('.erp-loader').hide();
+                        $('#submit-pre-travel-request_edit').removeClass('disabled');
+                        switch(resp.status){
+                            case 'success':
+                                $('#p-success').html(resp.message);
+                                $('#success').show();
+                                $("#success").delay(5000).slideUp(200);
+                                //$( 'body' ).load( window.location.href + '.pre-travel-request' );
+                                location.reload()
+                                break;
+                            case 'failure':
+                                $('#p-failure').html(resp.message);
+                                $('#failure').show();
+                                $("#failure").delay(5000).slideUp(200);
+                                break;
+                        }
+                    },
+                    error: function(error) {
+                        console.log("failure");
+                        console.log( error );
+                    }
+                });
+            },
             editRowappr: function(){
                 var optionsCat;
                 var optionsMode;
@@ -234,9 +270,98 @@
                                 <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc'+rowCount+'" class="" autocomplete="off"></textarea></td>\n\
                                 <td data-title="Category"><select name="selExpcat[]"  id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
                                 <td data-title="Category"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
-                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to1" type="text" placeholder="To" class=""></td>\n\
+                                <td data-title="Place"><input  name="from[]" id="from'+rowCount+'" type="text" placeholder="From" class=""><input  name="to[]" id="to'+rowCount+'" type="text" placeholder="To" class=""></td>\n\
                                 <td data-title="Estimated Cost"><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/></br><span class="red" id="show-exceed"></span></td>\n\
                                 <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1'+rowCount+'" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>\n\</tr>');
+                                $( '.erp-leave-date-field' ).datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 }); 
+            },
+            addRowGroup: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#group_request tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-group-request" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#group_request tr').last().after('<tr>\n\
+                                <td><input name="txtDate[]"  id="txtDate'+rowCount+'" style="width:101px;" class="erp-leave-date-field"placeholder="dd/mm/yyyy" autocomplete="off"/></td>\n\
+                                <td><textarea name="txtaExpdesc[]" rows="2" cols="12" id="txtaExpdesc'+rowCount+'" data-height="auto" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]" onchange="javascript:getMotPreTravel(this.value,'+rowCount+')" style="width:110px;" id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Categorysss"><span id="modeoftr'+rowCount+'acontent"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td><span id="city'+rowCount+'container"><input  name="from[]" id="from'+rowCount+'" type="text" style="width:130px;" placeholder="From" class="" autocomplete="off"><input  name="to[]" id="to'+rowCount+'" type="text" style="width:130px;" placeholder="To" class="" autocomplete="off" ></span></td>\n\
+                                <td><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" style="width:110px;" onkeyup="valGroupRequestCost(this.value);"  autocomplete="off"/></td>\n\
+                                <td><input type="text" class="" name="txtTotalCost[]" id="txtTotalCost'+rowCount+'" style="width:110px;" autocomplete="off"/></td>\n\
+                                <td><input type="file" name="file'+rowCount+'[]" id="file'+rowCount+'[]" multiple="true" style="width:150px;" onchange="Validate(this.id);"></td>\n\</tr>');
+                                $( '.erp-leave-date-field' ).datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true
+                                });
+                            },
+                            error: function(error) {
+                                console.log( error );
+                            }
+                         });
+                    },
+                    error: function(error) {
+                        console.log( error );
+                    }
+                 }); 
+            },
+            addRowGroupEdit: function(){
+                var optionsCat;
+                var optionsMode;
+                 wp.ajax.send( 'get-exp-cat', {
+                    success: function(category) {
+                        wp.ajax.send( 'get-mode', {
+                            success: function(mode) {
+                            
+                                $.each( category, function( index, value ){
+                                    //console.log(value);
+                                    optionsCat += '<option value="'+value.EC_Id+'">'+value.EC_Name+'</option>';
+                                });
+                                $.each( mode, function( index, value ){
+                                    //console.log(value);
+                                    optionsMode += '<option value="'+value.MOD_Id+'">'+value.MOD_Name+'</option>';
+                                });
+                                var rowCount = $('#group_request tr').length;
+                                $('#hidrowno').val(rowCount);
+                                $('#removebuttoncontainer').html('<a title="Delete Rows" class="btn btn-default"><span id="remove-group-request" class="dashicons dashicons-dismiss red"></span></a>');
+                                $('#group_request tr').last().after('<tr>\n\
+                                <td><input name="txtDate[]"  id="txtDate'+rowCount+'" style="width:101px;" class="erp-leave-date-field"placeholder="dd/mm/yyyy" autocomplete="off"/></td>\n\
+                                <td><textarea name="txtaExpdesc[]" rows="2" cols="12" id="txtaExpdesc'+rowCount+'" data-height="auto" class="" autocomplete="off"></textarea></td>\n\
+                                <td data-title="Category"><select name="selExpcat[]" onchange="javascript:getMotPreTravel(this.value,'+rowCount+')" style="width:110px;" id="selExpcat'+rowCount+'" class=""><option value="">Select</option>'+optionsCat+'\n\
+                                <td data-title="Categorysss"><span id="modeoftr'+rowCount+'acontent"><select name="selModeofTransp[]"  id="selModeofTransp'+rowCount+'" class=""><option value="">Select</option>'+optionsMode+'\n\
+                                <td><span id="city'+rowCount+'container"><input  name="from[]" id="from'+rowCount+'" type="text" style="width:130px;" placeholder="From" class="" autocomplete="off"><input  name="to[]" id="to'+rowCount+'" type="text" style="width:130px;" placeholder="To" class="" autocomplete="off" ></span></td>\n\
+                                <td><input type="text" class="" name="txtCost[]" id="txtCost'+rowCount+'" style="width:110px;" onkeyup="valGroupRequestCost(this.value);"  autocomplete="off"/></td>\n\
+                                <td><input type="text" class="" name="txtTotalCost[]" id="txtTotalCost'+rowCount+'" style="width:110px;" autocomplete="off"/></td>\n\
+                                <td><input type="file" name="file'+rowCount+'[]" id="file'+rowCount+'[]" multiple="true" style="width:150px;" onchange="Validate(this.id);"></td>\n\
+                                <td><button type="button" class="button button-default" name="deleteRowbutton" onclick="return checkDeletRow();" id="deleteRowbutton" title="delete row" disabled><i class="fa fa-trash-o"></i></button></td>\n\</tr>');
                                 $( '.erp-leave-date-field' ).datepicker({
                                     dateFormat: 'dd-mm-yy',
                                     changeMonth: true,
@@ -306,9 +431,18 @@
                 }
                 else if(rowCount>2){
                 $('#traveldesk_request tr:last').remove();
-                }
-                
+                }    
             },
+            removeGroupRow: function(){
+                var rowCount = $('#group_request tr').length;
+                if(rowCount==3){
+                    $('#group_request tr:last').remove();
+                    $('#removebuttoncontainer').html('');
+                }
+                else if(rowCount>2){
+                $('#group_request tr:last').remove();
+                }
+            },    
             view: function() {
                 var val = $(this).val();
                 if(val == 0){

@@ -19,6 +19,11 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <h2><?php _e( 'Utility Expense Request', 'employee' ); ?></h2>
             <code class="description">ADD Request</code>
             <!-- Messages -->
+            <?php if(isset($_GET['status'])){?>
+            <div style="display:block" id="success" class="notice notice-success is-dismissible">
+            <p id="p-success"><?php echo $_GET['msg'] ;?></p>
+            </div>
+            <?php } ?>
             <div style="display:none" id="failure" class="notice notice-error is-dismissible">
             <p id="p-failure"></p>
             </div>
@@ -34,6 +39,7 @@ $selmode=$wpdb->get_results("SELECT * FROM mode WHERE EC_Id IN (1,2,4) AND COM_I
             <div style="display:none" id="info" class="notice notice-info is-dismissible">
                 <p id="p-info"></p>
             </div>
+            <form name="post-travel-req-form" action="#" method="post" enctype="multipart/form-data">
             <?php
                 $row=0;
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
