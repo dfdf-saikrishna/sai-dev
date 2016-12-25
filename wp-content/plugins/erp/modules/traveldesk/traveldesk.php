@@ -20,7 +20,7 @@ class Traveldesk {
      * @param \WeDevs_ERP $plugin
      */
     public function __construct( \WeDevs_ERP $plugin ) {
-      //  var_dump("sbdgfnhhnfhngnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+      
         $this->plugin = $plugin;
 
         // Define constants

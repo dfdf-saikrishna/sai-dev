@@ -163,73 +163,84 @@ $row = $wpdb->get_row("SELECT * FROM requests WHERE REQ_Id='$reqid' AND COM_Id='
 					  ?>
                     </td>
                     <!----- CANCELLATION STATUS ------>
-                    <td><?php 
+                    <!----- CANCELLATION STATUS ------>
+                                <td><?php 
+					
+					$enableCanc=0;
+					
+					if($row->REQ_Status==2 &&  ($selrdbs->BA_Id==2)){	
+
+						if($selptc=$wpdb->get_row("SELECT PTC_Id, PTC_Status FROM pre_travel_claim WHERE REQ_Id='$row->REQ_Id'")){
+							
+							$enableCanc=1;
+							
+						}
 										
-					if($selrdbs->RD_Id){
-					?>
-                      <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);">
+						if($selrdbs->RD_Id && !$enableCanc){
+						?>
+                      <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);" enctype="multipart/form-data">
                         <input type="hidden" name="rdid1<?php echo $j; ?>" id="rdid1<?php echo $j; ?>" value="<?php echo $rowsql->RD_Id ?>" />
                         <input type="hidden" name="type1<?php echo $j; ?>" id="type1" value="2" />
                         <div id="cancelStatusContainer<?php echo $j; ?>">
                           <?php 						
+											
+							if($selrdcs=$wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=3 AND BS_Active=1")){
+							
+								echo bookingStatus($selrdcs->BA_Id);
+								
+								
+								$doc=NULL;
+				
+								if($selrdcs->BA_Id==6){                                                                    
+									$seldocs=$wpdb->get_results("SELECT * FROM booking_documents WHERE BS_Id='$selrdcs->BS_Id'");
+																		
+									$f=1;
 										
-						if($selrdcs=$wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='$rowsql->RD_Id' AND BS_Status=3 AND BS_Active=1")){
-						
-							echo bookingStatus($selrdcs->BA_Id);
-							
-							
-							$doc=NULL;
-			
-							if($selrdcs->BA_Id==6){
-                                                                
-								$seldocs=$wpdb->get_results("SELECT * FROM booking_documents WHERE BS_Id='$selrdcs->BS_Id'");
-																	
-								$f=1;
+									foreach($seldocs as $docs){
 									
-								foreach($seldocs as $docs){
+										$doc.='<b>Uploaded File no. '.$f.': </b> <a href="'.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
+										
+										$f++;
+									}
 								
-									$doc.='<b>Uploaded File no. '.$f.': </b> <a href="download-file.php?file='.$imdir.$docs->BD_Filename.'" class="btn btn-link">download</a><br>';
-									
-									$f++;
 								}
-							
-							}
-							
-							
-							switch ($selrdcs->BA_Id){
-							
-								case 6:
-								echo '<br><b>Cancellation Amnt</b>: '.IND_money_format($selrdcs->BS_CancellationAmnt).'.00<br>';
-								echo $doc;
-								echo '<b>Cancellation Date</b>: '.date('d-M-y (h:i a)',strtotime($selrdcs->BA_ActionDate));
-								break;
 								
-								case 7:
-								echo '<br><b>Cancellation Date</b>: '.date('d-M-y (h:i a)',strtotime($selrdcs->BA_ActionDate));
-								break;
-
-							}
+								
+								switch ($selrdcs->BA_Id){
+								
+									case 6:
+									echo '<br><b>Cancellation Amnt</b>: '.IND_money_format($selrdcs->BS_CancellationAmnt).'.00<br>';
+									echo $doc;
+									echo '<b>Cancellation Date</b>: '.date('d-M-y (h:i a)',strtotime($selrdcs->BA_ActionDate));
+									break;
+									
+									case 7:
+									echo '<br><b>Cancellation Date</b>: '.date('d-M-y (h:i a)',strtotime($selrdcs->BA_ActionDate));
+									break;
+	
+								}
+								
+								
 							
+							} else {
 							
-						
-						} else {
-						
-						
-						
-							if(!$row->REQ_Claim && !$row->REQ_PreToPostStatus) {		  
-					  	
-					  ?>
+								
+								 
+							
+								if(!$row->REQ_Claim) {	   
+							
+						  ?>
                           <div class="col-sm-12" id="imgareaid2<?php echo $j; ?>"></div>
                           <div class="col-sm-8">
                             <div class="form-group">
                               <div>
                                 <select name="selCancActions<?php echo $j; ?>" id="selCancActions<?php echo $j; ?>" class="form-control" onChange="showHideCanc(<?php echo $j; ?>,this.value)">
-                                  <option value="">Select</option>
-                                  <?php                     
-							  $ba=$wpdb->get_results("SELECT * FROM booking_actions WHERE BA_Id IN (6,7)");
-							  
-							  foreach($ba as $barows){
-							  ?>
+                                  <option value="-1">Select</option>
+                                  <?php                             
+								  $ba=$wpdb->get_results("SELECT * FROM booking_actions WHERE BA_Id IN (6,7)");
+								  
+								  foreach($ba as $barows){
+								  ?>
                                   <option value="<?php echo $barows->BA_Id; ?>"><?php echo $barows->BA_Name; ?></option>
                                   <?php } ?>
                                 </select>
@@ -253,44 +264,36 @@ $row = $wpdb->get_row("SELECT * FROM requests WHERE REQ_Id='$reqid' AND COM_Id='
                               </div>
                             </div>
                           </div>
-                          <div class="clearfix"></div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div>
-                                <button name="buttonUpdateStatusCanc" id="buttonUpdateStatusCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" type="submit" class="btn btn-link">Update</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div>
-                                <button name="buttonCancelCanc" id="buttonCancelCanc<?php echo $j; ?>" style="display:none; width:75px; height:20px; padding-bottom:20px;" onClick="cancelCancstat(<?php echo $j; ?>)" type="button" class="btn btn-link">Cancel</button>
-                              </div>
-                            </div>
-                          </div>
-                          <?Php	
-						
-						} else {
-					  	
-						echo bookingStatus(NULL);		  
-						
-					  }
-						
-					
-					} 
-		   	
-			
-			?>
-                        </div>
+                          <input type="hidden" value="<?php echo $j; ?>" name="iteration">
+                                <button name="buttonUpdateStatusCanc" id="buttonUpdateStatusCanc<?php echo $j; ?>" style="display:none;" type="submit" value="<?php echo $j; ?>" class="button-primary">Update</button>
+                                
+                                <button name="buttonCancelCanc" id="buttonCancelCanc<?php echo $j; ?>" style="display:none;" onClick="cancelCancstat(<?php echo $j; ?>)" type="button" class="button erp-button-danger">Cancel</button>
+                              
+                          <?Php		
+						  
+						  } else {
+						  
+						  	echo bookingStatus(NULL);		
+						  
+						  }	
+						  
+						  		  
+					  } 
+					   ?>
+                        
                       </form>
                       <?php 
+						  } else {
+						  	
+							echo bookingStatus(NULL);
+									  
+						  }
 					  
 					  } else {
-					  	
-						echo bookingStatus(NULL);		  
+					  
+					  	echo approvals(5);
 						
 					  }
-					  
 					  ?>
                     </td>
                   </tr>
@@ -343,4 +346,79 @@ $row = $wpdb->get_row("SELECT * FROM requests WHERE REQ_Id='$reqid' AND COM_Id='
             <?php } ?>
     </div>
 </div>
+<script>
+    function showHideCanc(flid, bookingActionval)
+    {
+	var cancAmntDiv		=	'cancAmntDiv'+flid;	
+	var txtCancAmnt		=	'txtCanAmount'+flid;
+	var ticketCancDiv	=	'ticketCancDiv'+flid;
+	var fileCanAttach	=	'fileCanAttach'+flid+'[]';
+	var bookingbutton	=	'buttonUpdateStatusCanc'+flid;
+	var cancelButton	=	'buttonCancelCanc'+flid;	
+	
+	//alert(bookingActionval);
+	
+	switch(bookingActionval){
+		
+		case '4': case '6':
+		document.getElementById(cancAmntDiv).style.display='inline';
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(txtCancAmnt).placeholder="Cancellation Amount";
+		document.getElementById(ticketCancDiv).style.display='inline';
+		document.getElementById(fileCanAttach).value=null;
+		break;
+				
+		case '5': case '7':
+		document.getElementById(txtCancAmnt).placeholder ="";
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(cancAmntDiv).style.display='none';
+		document.getElementById(fileCanAttach).value=null;		
+		document.getElementById(ticketCancDiv).style.display='none';
+		break;
+		
+		
+		default:
+		document.getElementById(cancAmntDiv).style.display='none';
+		document.getElementById(txtCancAmnt).value=null;
+		document.getElementById(ticketCancDiv).style.display='none';
+		document.getElementById(fileCanAttach).value=null;
+		document.getElementById(bookingbutton).style.display='none';
+		document.getElementById(cancelButton).style.display='none';
+		
+		
+	}
+	
+	if(bookingActionval){
+	
+		document.getElementById(bookingbutton).style.display='inline';
+		document.getElementById(cancelButton).style.display='inline';
+	
+	}
+    }
+    /*
+	
+    ---------- CANCELLATION REQUEST ---------------
 
+    */
+	
+	
+function cancelCancstat(buttonId)
+{	
+	var selCancActions	=	'selCancActions'+buttonId;
+	var cancAmntDiv		=	'cancAmntDiv'+buttonId;
+	var canAmnt			=	'txtCanAmount'+buttonId;
+	var bookingbutton	=	'buttonUpdateStatusCanc'+buttonId;
+	var cancelButton	=	'buttonCancelCanc'+buttonId;
+	var ticketcandiv	=	'ticketCancDiv'+buttonId;
+	var fileCanAttach	=	'fileCanAttach'+buttonId+'[]'
+	
+	//document.getElementById(selCancActions).value=null;
+	document.getElementById(cancAmntDiv).style.display='none';
+	document.getElementById(canAmnt).value=null;
+	document.getElementById(fileCanAttach).value=null;
+	document.getElementById(ticketcandiv).style.display='none';
+	document.getElementById(bookingbutton).style.display='none';
+	document.getElementById(cancelButton).style.display='none';
+	
+}
+</script>

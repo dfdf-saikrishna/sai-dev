@@ -375,6 +375,7 @@ return  $type . $EC_Name;
 
 function column_nbsp($item) {
 global $wpdb;
+global $cancellationstatus;
 	$compid = $_SESSION['compid'];
 $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request_details rd,booking_status bs WHERE rd.REQ_Id='".$item['REQ_Id']."' AND rd.RD_Id=bs.RD_Id AND bs.BS_Status IN (1,3) AND BS_Active=1 AND RD_Status=1");
 				
@@ -456,7 +457,7 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 				if ($selrdcs = $wpdb->get_row("SELECT * FROM booking_status WHERE RD_Id='". $rowsql->RD_Id ."' AND BS_Status=3 AND BS_Active=1")) {
 										?>
                             <form method="post" id="cancellationForm<?php echo $j; ?>" name="cancellationForm<?php echo $j; ?>" onsubmit="return submitCancellationForm(<?php echo $j; ?>);">
-                              <input type="hidden" name="rdid1<?php echo $j; ?>" id="rdid1<?php echo $j; ?>" value="<?php echo $rowsql['RD_Id'] ?>" />
+                              <input type="hidden" name="rdid1<?php echo $j; ?>" id="rdid1<?php echo $j; ?>" value="<?php echo $rowsql->RD_Id ?>" />
                               <input type="hidden" name="type1<?php echo $j; ?>" id="type1" value="2" />
                               <div id="cancelStatusContainer<?php echo $j; ?>">
                                 <?php
@@ -464,7 +465,7 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 
 							$cancellationstatus.= ($selrdcs->BA_Id == 1) ? bookingStatus($selrdcs->BA_Id) . "<br>" : '';
 
-							$cancellationstatus.= '<b title="cancellation request date">Request Date: </b>' . date('d-M-y (h:i a)', strtotime($selrdcs['BS_Date'])) . "<br>";
+							$cancellationstatus.= '<b title="cancellation request date">Request Date: </b>' . date('d-M-y (h:i a)', strtotime($selrdcs->BS_Date)) . "<br>";
 
 							$cancellationstatus.= '----------------------------------<br>';
 
@@ -482,13 +483,13 @@ $getvals = $wpdb->get_results("SELECT DISTINCT (rd.RD_Id),rd.*,bs.* FROM request
 
 							if ($selrdcs->BA_Id == 4 || $selrdcs->BA_Id == 6) {
 
-								$seldocs = $wpdb->get_results("Select * FROM booking_documents WHERE BS_Id='$selrdcs[BS_Id]'", $filename, 0);
+								$seldocs = $wpdb->get_results("Select * FROM booking_documents WHERE BS_Id='$selrdcs->BS_Id'");
 
 								$f = 1;
 
 								foreach ($seldocs as $docs) {
-
-									$doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="download-file.php?file=' . $imdir . $docs->BD_Filename . '" class="btn btn-link">download</a><br>';
+                                                                        $imdir = "";
+									$doc.='<b>Uploaded File no. ' . $f . ': </b> <a href="file=' . $imdir . $docs->BD_Filename . '" download="file_name" class="btn btn-link">download</a><br>';
 
 									$f++;
 								}
