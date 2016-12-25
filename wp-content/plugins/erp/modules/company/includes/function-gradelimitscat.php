@@ -27,6 +27,8 @@ function gradelimitscat_create($posted) {
         'GL_Twowheeler' => $posted['company']['txtTwo'],
         'GL_Fourwheeler' => $posted['company']['txtFour'],
         'GL_Internet' => $posted['company']['txtInternet'],
+        'GL_UpdatedBy'=>$adminid,
+        'GL_UpdatedDate'=>'Now()',
     );
         $tablename = "grade_limits";
       

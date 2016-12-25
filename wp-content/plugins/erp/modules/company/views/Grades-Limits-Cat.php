@@ -13,7 +13,7 @@ $grades = ( isset($_GET['grades']) ) ? $_GET['grades'] : '';
     if ($selcom) {
         ?>
         <div class="inside" >
-            <form method="post" action ="#" name="formlimits" id="formlimits">
+            <form method="post" name="formlimits" id="formlimits">
             <div style="text-align:center">
                 <select  class="" data-size="5" data-live-search="true" name="grades" id="grades">
                     <option value=""> Grades </option>

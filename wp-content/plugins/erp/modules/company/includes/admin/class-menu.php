@@ -55,7 +55,7 @@ class Admin_Menu {
             add_submenu_page('expensemenu', __('gradelimitcat', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradelimitcat', array($this, 'gradelimitcat'));
 
             //add_submenu_page('Expense', 'Policy', 'Upload/View Policy', 'companyadmin', 'Policy', 'Expense');Grades-Limits-Cat
-           //add_submenu_page('expensemenu', __('Expense', 'companyadmin'), __('Define Grade Limits', 'companyadmin'), 'companyadmin', 'gradeslimits', array($this, 'ExpenseGrades'));
+            add_submenu_page('expensemenu', __('Expense Category', 'companyadmin'), __('Add Custom Expense Category', 'companyadmin'), 'companyadmin', 'addcat', array($this, 'SubCatModes'));
             add_submenu_page('expensemenu', __('default', 'companyadmin'), __('Expense Category', 'companyadmin'), 'companyadmin', 'categeory', array($this, 'DefaultCategory'));
             add_submenu_page('expensemenu', __('Mileage', 'companyadmin'), __('Mileage', 'companyadmin'), 'companyadmin', 'Mileage', array($this, 'Mileage'));
 
@@ -119,7 +119,9 @@ class Admin_Menu {
     public function Grades() {
         include WPERP_COMPANY_VIEWS . '/company/Grades.php';
     }
-
+     public function SubCatModes() {
+        include WPERP_COMPANY_VIEWS . '/company/Sub-Cat-Modes.php';
+    }
     public function ExpenseGrades() {
         include WPERP_COMPANY_VIEWS . '/company/ExpenseGrades.php';
     }
@@ -183,7 +185,8 @@ class Admin_Menu {
     public function PreDisplay() {
         include WPERP_COMPANY_VIEWS . '/pre-travel-display.php';
     }
-     public function gradelimitcat() {
+
+    public function gradelimitcat() {
         include WPERP_COMPANY_VIEWS . '/Grades-Limits-Cat.php';
     }
 

@@ -434,8 +434,10 @@ return array(
     /*     * ************************* */
 
     //'WeDevs\\ERP\\Company\\PHPExcel' => $baseDir . '/modules/company/includes/class-PHPExcel.php',
+    'WeDevs\\ERP\\Company\\AddCategory_List_Table' => $baseDir . '/modules/company/includes/class-customized-cat-table.php',
     'WeDevs\\ERP\\Company\\Upload_List_Table' => $baseDir . '/modules/company/includes/class-employees-excel-list-table.php',
     'WeDevs\\ERP\\Company\\GradeLimits' => $baseDir . '/modules/company/includes/class-gradelimits.php',
+    'WeDevs\\ERP\\Company\\SubCategory' => $baseDir . '/modules/company/includes/class-subcategoryadd.php',
     'WeDevs\\ERP\\Company\\Grades_List_Table' => $baseDir . '/modules/company/includes/class-gradestable-list.php',
     'WeDevs\\ERP\\Company\\Grades' => $baseDir . '/modules/company/includes/class-grades.php',
     'WeDevs\\ERP\\Company\\Designation_List_Table' => $baseDir . '/modules/company/includes/class-designation-table-list.php',
@@ -513,11 +515,9 @@ return array(
     'WeDevs\\ERP\\Employee\\My_Requests_List' => $baseDir . '/modules/employee/includes/class-my-requests-list-table.php',
     'WeDevs\\ERP\\Employee\\Finance_Requests_List' => $baseDir . '/modules/employee/includes/class-finance-requests-list-table.php',
     'WeDevs\\ERP\\Employee\\Delegate_List' => $baseDir . '/modules/employee/includes/class-delegates-list-table.php',
-
-    /*****************************/
-    /** Traveldesk Module classes **/
-    /****************************/
-
+    /*     * ************************** */
+    /** Traveldesk Module classes * */
+    /*     * ************************* */
     'WeDevs\\ERP\\Traveldesk\\Request_Travel_Expenses' => $baseDir . '/modules/traveldesk/includes/class-request-for-my-approval.php',
     'WeDevs\\ERP\\Traveldesk\\My_Pre_Travel_Expenses' => $baseDir . '/modules/traveldesk/includes/class-pre-travel-expenses.php',
     'WeDevs\\ERP\\Traveldesk\\Travel_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-travel-expense-request-table.php',
@@ -547,11 +547,10 @@ return array(
     'WeDevs\\ERP\\Traveldesk\\Traveldeskbankdetails' => $baseDir . '/modules/traveldesk/includes/class-traveldeskbankdetails.php',
     'WeDevs\\ERP\\Traveldesk\\TDRiseinvoiceview' => $baseDir . '/modules/traveldesk/includes/class-tdriseinvoiceview.php',
     'WeDevs\\ERP\\Traveldesk\\Claimsview' => $baseDir . '/modules/traveldesk/includes/class-claimsview.php',
-    'WeDevs\\ERP\\Traveldesk\\Claimsview' => $baseDir . '/modules/traveldesk/includes/class-claimsview.php',
     'WeDevs\\ERP\\Traveldesk\\Travel_Desk_Cancellation_Request_List_Table' => $baseDir . '/modules/traveldesk/includes/class-travel-desk-cancellation-request-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Travel_Desk_Request_List_Table' => $baseDir . '/modules/traveldesk/includes/class-travel-desk-request-list-table.php',
     'WeDevs\\ERP\\Traveldesk\\Group_Requests_List' => $baseDir . '/modules/traveldesk/includes/class-group-requests-list-table.php',
-    
+
     /*****************************/
     /** Travel Agent Module classes **/
     /****************************/

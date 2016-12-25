@@ -105,9 +105,35 @@ use Hooker;
         //grade limits
         //$this->action('wp_ajax_gradelimits-create', 'gradelimits_create');
         $this->action('wp_ajax_gradelimits_get', 'gradelimits_get');
-         $this->action('wp_ajax_gradelimitscat-get', 'gradelimitscat_get');
+        $this->action('wp_ajax_gradelimitscat-get', 'gradelimitscat_get');
+        //Mielage
+        $this->action('wp_ajax_subcategory_create', 'subcategory_create');
+        $this->action('wp_ajax_subcategory_get', 'subcategory_get');
+    }
+        //Sub category functions
+    public function subcategory_create() {
+       // $compid = $_SESSION['compid'];
+        //echo $compid;die;
+        //$this->send_success("fjjkdfj");
+        unset($_POST['_wp_http_referer']);
+        unset($_POST['_wpnonce']);
+        unset($_POST['action']);
+
+        $posted = array_map('strip_tags_deep', $_POST);
+        $subcategory = subcategory_create($posted);
+        $subcategorydata = $posted;
+        $this->send_success($subcategorydata);
     }
 
+    public function subcategory_get() {
+        global $wpdb;
+
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
+        $response = $wpdb->get_row("SELECT * FROM mode WHERE MOD_Id = $id");
+
+        $this->send_success($response);
+    }
     //costcenter
     public function costcenter_create() {
         //$this->send_success('lakshmi');
@@ -308,7 +334,7 @@ use Hooker;
         //}
     }
 
-      public function gradelimitscat_get() {
+    public function gradelimitscat_get() {
         global $wpdb;
         $posted = array_map('strip_tags_deep', $_POST);
         $data = $posted;
@@ -323,6 +349,7 @@ use Hooker;
             $this->send_success($gradelimits);
         }
     }
+
     //gradelimits functions
     public function gradelimits_create() {
 
