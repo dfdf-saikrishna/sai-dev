@@ -623,22 +623,10 @@
                      */
                         wp.ajax.send( 'traveldeskclaims_create', {
                             data: $(this).serialize(),
-                            success: function(response) {
-						switch(resp.status){
-                            case 'success':
-                                $('#p-success').html(resp.message);
-                                $('#success').show();
-                                $("#success").delay(5000).slideUp(200);
-                                break;
-                            case 'failure':
-                                $('#p-failure').html(resp.message);
-                                $('#failure').show();
-                                $("#failure").delay(5000).slideUp(200);
-                                break;
-                        }
+                            success: function(response) {		
                                // console.log(response);
                               //  WeDevs_ERP_TRAVELDESK.traveldeskClaims.reload();
-							   window.location.replace("/wp-admin/admin.php?page=claims");
+                            window.location.replace("/wp-admin/admin.php?page=claims");
                
                             },
                             error: function(error) {

@@ -40,7 +40,6 @@ if(isset($_REQUEST['selEmployees'])){
           <div class="postbox" id="emp_details">
                 
               <div class="inside">
-              <form id="traveldesk_request" name="traveldesk_request" action="#" method="post" enctype="multipart/form-data">
                 <?php
                 $row=0;
                 require WPERP_EMPLOYEE_VIEWS."/employee-details.php";
@@ -63,73 +62,71 @@ if(isset($_REQUEST['selEmployees'])){
                   <p id="p-info"></p>
               </div>
               <div style="margin-top:60px;">
-                
-                <table class="wp-list-table widefat striped admins" border="0" id="table-pre-travel">
-                  <thead class="cf">
-                    <tr>
-                      <th class="column-primary">Date</th>
-                      <th class="column-primary">Expense Description</th>
-                      <th class="column-primary" colspan="2">Expense Category</th>
-                      <th class="column-primary" >Place</th>
-                      <th class="column-primary">Estimated Cost</th>
-                      <th class="column-primary">Get Quote</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      <?php 
-                        $rows=1;
-                        ?>
-                    <tr>
-                      <td data-title="Date" class=""><input name="txtDate[]" id="txtDate<?php echo $rows; ?>" class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off"/>
-                      <input name="txtStartDate[]" id="txtStartDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate<?php echo $rows; ?>" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
-                      <input type="text" name="textBillNo[]" id="textBillNo<?php echo $rows; ?>" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
-                      </td>
-                      <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc<?php echo $rows; ?>" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
-                      <td data-title="Category"><select name="selExpcat[]" id="selExpcat<?php echo $rows; ?>" onchange="javascript:getMotPreTravel(this.value,1)" class="">
-                          <option value="">Select</option>
-                          <?php
-                          foreach($selexpcat as $rowexpcat)
-				  {
-				  ?>
-                          <option value="<?php echo $rowexpcat->EC_Id?>" ><?php echo $rowexpcat->EC_Name; ?></option>
-                          <?php } ?>
-                         
-                        </select></td>
-                      <td data-title="Category"><span id="modeoftr<?php echo $rows; ?>acontent">
-                        <select name="selModeofTransp[]"  id="selModeofTransp<?php echo $rows; ?>" class="">
-                          <option value="">Select</option>
-                          <?php
-                          foreach($selmode as $rowsql)
-					  {
-					  ?>
-                          <option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option>
-                          <?php } ?>
-                        </select>
-                        </span></td>
-                        <td data-title="Place"><span id="city<?php echo $rows; ?>container">
-                        <input  name="from[]" id="from<?php echo $rows; ?>" type="text" placeholder="From" class="">
-                        <input  name="to[]" id="to<?php echo $rows; ?>" type="text" placeholder="To" class="">
-                        </span></td>
-                        <td data-title="Estimated Cost"><span id="cost<?php echo $rows; ?>container">
-                        <input type="text" class="" name="txtCost[]" id="txtCost<?php echo $rows; ?>" onkeyup="valPreCost(this.value);" onchange="valPreCost(this.value);" autocomplete="off"/>
-                        </br><span class="red" id="show-exceed"></span>
-                        <input type="hidden" value="1" name="ectype" id="ectype"/>
-                        <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
-                        <input type="hidden" name="action" id="send_pre_travel_request" value="send_pre_travel_request">
-                        </span></td>
-                      <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
-                    </tr>
-                    <?php 
-                    $rows++;
-                    ?>
-                  </tbody>
-                </table>
-                <span id="totaltable"></span>
-                <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-row-pretravel" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
+                <form id="traveldesk_request" name="traveldesk_request" action="#" method="post" enctype="multipart/form-data">
+                <table class="wp-list-table widefat striped admins" border="0" id="traveldesk_request">
+                      <thead class="cf">
+                        <tr>
+                          <th class="column-primary">Date</th>
+                          <th class="column-primary">Expense Description</th>
+                          <th class="column-primary" colspan="2">Expense Category</th>
+                          <th class="column-primary" >Place</th>
+                          <th class="column-primary">Total Cost</th>
+                          <th class="column-primary">Get Quote</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-title="Date" class=""><input name="txtDate[]" id="txtDate1" class="pretraveldate" placeholder="dd/mm/yyyy" autocomplete="off"/>
+                          <input name="txtStartDate[]" id="txtStartDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" /><input name="txtEndDate[]" id="txtEndDate1" class="" placeholder="dd/mm/yyyy" autocomplete="off" style="width:105px; display:none;" value="n/a" />
+                          <input type="text" name="textBillNo[]" id="textBillNo1" autocomplete="off"  class="" style="width:105px; display:none;" value="n/a"/>
+                          </td>
+                          <td data-title="Description"><textarea name="txtaExpdesc[]" id="txtaExpdesc1" class="" autocomplete="off"></textarea><input type="text" class="" name="txtdist[]" id="txtdist1" autocomplete="off" style="display:none;" value="n/a"/></td>
+                          <td data-title="Category"><select name="selExpcat[]" id="selExpcat1" class="">
+                              <option value="">Select</option>
+                              <?php
+                              foreach($selexpcat as $rowexpcat)
+                                      {
+                                      ?>
+                              <option value="<?php echo $rowexpcat->EC_Id?>" ><?php echo $rowexpcat->EC_Name; ?></option>
+                              <?php } ?>
+
+                            </select></td>
+                          <td data-title="Category"><span id="modeoftr1acontent">
+                            <select name="selModeofTransp[]"  id="selModeofTransp1" class="">
+                              <option value="">Select</option>
+                              <?php
+                              foreach($selmode as $rowsql)
+                                              {
+                                              ?>
+                              <option value="<?php echo $rowsql->MOD_Id; ?>"><?php echo $rowsql->MOD_Name; ?></option>
+                              <?php } ?>
+                            </select>
+                            </span></td>
+                            <td data-title="Place"><span id="city1container">
+                            <input  name="from[]" id="from1" type="text" placeholder="From" class="">
+                            <input  name="to[]" id="to1" type="text" placeholder="To" class="">
+                            </span></td>
+                            <td data-title="Estimated Cost"><span id="cost1container">
+                            <input type="text" class="" name="txtCost[]" id="txtCost" autocomplete="off" onkeyup="valPreCost(this.value,<?php echo $empuserid;?>);" onchange="valPreCost(this.value,<?php echo $empuserid;?>);"/>
+                            </br><span class="red" id="show-exceed"></span>
+                            <input type="hidden" value="1" name="ectype" id="ectype"/>
+                            <input type="hidden" value="0" name="expenseLimit" id="expenseLimit"/>
+                            <input type="hidden" value="1" name="hiddenDraft" id="hiddenDraft"  />
+                            <input type="hidden" value="<?php echo $empuserid; ?>" name="hiddenEmp" id="hiddenEmp" />
+                            <input type="hidden" value="2" name="addnewrequest" id="addnewrequest" />
+                            <input type="hidden" name="action" id="traveldesk_request_create" value="traveldesk_request_create">
+                            </span></td>
+                            <td data-title="Get Quote"><button type="button" name="getQuote" id="getQuote1" class="button button-primary" onclick="getQuotefunc(1)">Get Quote</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <span id="totaltable"> </span>
+                    <div style="float:right;"><a title="Add Rows" class="btn btn-default"><span id="add-traveldesk-requestappr" class="dashicons dashicons-plus-alt"></span></a><span id="removebuttoncontainer"></span></div>
+                    <span id="totaltable"> </span>
                 </div>
                 <div id="my_centered_buttons">
-                    <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
-                <input type="submit" name="submit" id="submit-pre-travel-request" class="button button-primary">
+                <span class="erp-loader" style="margin-left:67px;margin-top: 4px;display:none"></span>
+                <input type="submit" name="submit" id="submit-traveldesk-request" class="button button-primary">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" name="reset" id="reset" class="button">Reset</button>

@@ -446,7 +446,7 @@ $comrow	=	companyDetails('COM_LOGO, COM_Name', $cmpid);
                       <label class="control-label">Invoice Doc.</label>
                       <div>
                         <div class="fileinput fileinput-new" data-provides="fileinput"> <span class="btn btn-default btn-file"> <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
-                          <input type="file" name="fileattach" id="fileattach" onchange="picval(this.id)">
+                          <input type="file" name="fileattach" id="fileattach"> <!--onchange="picval(this.id)-->
                           </span> <span class="fileinput-filename"></span> <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a> </div>
                         <span class="help-block"><a>doc, docx, pdf only</a></span>
                         <!-- //fileinput-->

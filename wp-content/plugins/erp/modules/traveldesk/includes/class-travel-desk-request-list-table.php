@@ -201,15 +201,15 @@ function column_Request_Code($item) {
 						break;
 						
 						case 3:
-						$href="travel-desk-individual-with-approval-details.php";
-						$edithref="travel-desk-individual-with-approval-edit.php";
+						$href='/wp-admin/admin.php?page=View-Appr-Request&reqid='.$item['REQ_Id'];
+						$edithref="/wp-admin/admin.php?page=Edit-Appr-Request";
 						$type='<span style="font-size:10px;">[AR]</span>';
 						$title="Approval Required";
 						break;
 						
 						case 4:
-						$href="travel-desk-group-request-details.php";
-						$edithref="travel-desk-group-request-edit.php";
+						$href='/wp-admin/admin.php?page=Group-Request-Details&reqid='.$item['REQ_Id'];
+						$edithref='/wp-admin/admin.php?page=Edit-Group-Request';
 						$type='<span style="font-size:10px;">[G]</span>';
 						$title="Group Request Without Approval";
 						break;

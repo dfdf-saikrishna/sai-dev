@@ -2,7 +2,7 @@
 	<h2>
         <?php
         _e( 'All Requests', 'erp' );
-		echo $compid = $_SESSION['compid'];
+		//$compid = $_SESSION['compid'];
         ?>
     </h2>
 		<?php
