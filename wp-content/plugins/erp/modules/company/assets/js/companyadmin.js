@@ -83,6 +83,9 @@
             $('body').on('click', '#gradelimitgeneral', this.catgrade.savegeneral);
             $('body').on('click', '#gradelimitother', this.catgrade.saveother);
             $('body').on('submit', '#formlimits', this.catgrade.values);
+
+            $('.erp-company-subcategory').on('click', 'a#erp-new-subcategory', this.subcategory.create);
+            $('.erp-company-subcategory').on('click', 'span.edit a', this.subcategory.edit);
             //$('body').on('click', '#formlimits', this.catgrade.values);
             this.initTipTip();
             // this.employee.addWorkExperience();
@@ -118,6 +121,111 @@
                 $('.erp-loader').show();
                 $('#crp_import_pdf').addClass('disabled');
             }
+        },
+            //  *****************************
+        //         subcategory add
+        //   *****************************
+        subcategory: {
+            reload: function () {
+                $('.erp-company-subcategory-wrap').load(window.location.href + ' .erp-company-subcategory-wrap-inner');
+            },
+            /**
+             mileage limits   modal
+             */
+            create: function (e) {
+                //alert('test');
+                if (typeof e !== 'undefined') {
+                    //e.preventDefault();
+                }
+                if (typeof wpErpCompany.subcategory_empty === 'undefined') {
+                    //return;
+                }
+                $.erpPopup({
+                    title: wpErpCompany.popup.mileage_title,
+                    button: wpErpCompany.popup.mileage_submit,
+                    id: "erp-new-subcategory-popup",
+                    extraClass: 'smaller',
+                    content: wperp.template('add-sub-category')(wpErpCompany.subcategory_empty).trim(),
+                    //content: '<h1>Test</h1>',
+                    onReady: function () {
+                       // WeDevs_ERP_COMPANY.initDateField();
+                    },
+                    /**
+                     * Handle the onsubmit function
+                     */
+                    onSubmit: function (modal) {
+                        $('button[type=submit]', '.erp-modal').attr('disabled', 'disabled');
+                        wp.ajax.send('subcategory_create', {
+                            data: this.serialize(),
+                            success: function (response) {
+                                alert('testing');
+                                console.log(response);
+                                WeDevs_ERP_COMPANY.subcategory.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                $('.erp-modal-backdrop, .erp-modal').find('.erp-loader').addClass('erp-hide');
+                                modal.showError(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+            edit: function (e) {
+                e.preventDefault();
+                var self = $(this);
+                //alert("edit");
+                $.erpPopup({
+                    title: wpErpCompany.popup.mileage_edit,
+                    button: wpErpCompany.popup.mileage_update,
+                    id: 'erp-subcategory-edit',
+                    extraClass: 'smaller',
+                    //content: wperp.template('subcategory-create')().trim(),
+                    onReady: function () {
+                        //alert('dfhdvj');
+                        var modal = this;
+                        $('header', modal).after($('<div class="loader"></div>').show());
+                        wp.ajax.send('subcategory_get', {
+                            data: {
+                                id: self.data('id'),
+                                _wpnonce: wpErpCompany.nonce
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                var html = wp.template('add-sub-category')(response);
+                                $('.content', modal).html(html);
+                                $('.loader', modal).remove();
+                                WeDevs_ERP_COMPANY.initDateField();
+                                $('li[data-selected]', modal).each(function () {
+                                    var self = $(this),
+                                            selected = self.data('selected');
+                                    if (selected !== '') {
+                                        self.find('select').val(selected).trigger('change');
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    onSubmit: function (modal) {
+                        modal.disableButton();
+                        wp.ajax.send({
+                            data: this.serialize(),
+                            success: function (response) {
+                                WeDevs_ERP_COMPANY.subcategory.reload();
+                                modal.enableButton();
+                                modal.closeModal();
+                            },
+                            error: function (error) {
+                                modal.enableButton();
+                                modal.showError(error);
+                            }
+                        });
+                    }
+                });
+            },
         },
         catgrade: {
             reload: function () {
@@ -337,14 +445,15 @@
                     }
                 });
             },
-            values: function () {
+            values: function (e) {
+                e.preventDefault();
                 var allcat = $('#allcat').val();
                 alert(allcat);
                 var grades = $('#grades').val();
                 alert(grades);
                 if (grades != "" || allcat != "") {
-                      //alert(grades);
-                    window.location.replace("/wp-admin/admin.php?page=gradelimitcat=view&allcat=" + allcat + "&grades=" + grades);
+                    //alert(grades);
+                    window.location.replace("/wp-admin/admin.php?page=gradelimitcat&allcat=" + allcat + "&grades=" + grades);
                 }
             },
         },

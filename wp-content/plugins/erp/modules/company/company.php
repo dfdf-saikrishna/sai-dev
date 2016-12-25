@@ -53,7 +53,7 @@ class Company {
         define('WPERP_COMPANY_VIEWS', dirname(__FILE__) . '/views');
         define('WPERP_COMPANY_JS_TMPL', WPERP_COMPANY_VIEWS . '/js-templates');
         define('WPERP_COMPANY_ASSETS', plugins_url('/assets', __FILE__));
-		define('WPERP_COMPANY_DOWNLOADS', plugins_url());
+        define('WPERP_COMPANY_DOWNLOADS', plugins_url());
         define('COMPANY_UPLOADS', WPERP_COMPANY_PATH . '\upload');
     }
 
@@ -80,6 +80,8 @@ class Company {
         require_once WPERP_COMPANY_PATH . '/includes/function-gradelimits.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-reportsgraphs.php';
         require_once WPERP_COMPANY_PATH . '/includes/function-gradelimitscat.php';
+        require_once WPERP_COMPANY_PATH . '/includes/function-subcategory.php';
+        
 //        require_once WPERP_COMPANY_PATH . '/includes/layout-functions.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-employee.php';
 //        require_once WPERP_COMPANY_PATH . '/includes/functions-leave.php';
@@ -236,6 +238,11 @@ class Company {
             $mileage = new Mileage();
             $localize_script['mileage_empty'] = $mileage->mileage_array();
         }
+        if ('expense-managment_page_addcat' == $hook) {
+            wp_enqueue_script('post');
+            $subcategory = new SubCategory();
+            $localize_script['subcategory_empty'] = $subcategory->subcategory_array();
+        }
         if ('employee-management_page_Grades' == $hook) {
             wp_enqueue_script('post');
             $grades = new Grades();
@@ -310,6 +317,10 @@ class Company {
 
         var_dump($current_screen->base);
         switch ($current_screen->base) {
+            case 'expense-managment_page_addcat':
+                //var_dump('inside');
+                erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/add-sub-category.php', 'add-sub-category');
+                
             case 'expense-managment_page_Mileage':
                 //var_dump('inside');
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/mileage-create.php', 'mileage-create');
@@ -331,15 +342,15 @@ class Company {
 
             case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
-                case 'expense-managment_page_gradelimitcat':
+            case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/accomdation-grade-limits.php', 'accomdation-grade-limits');
-                    case 'expense-managment_page_gradelimitcat':
+            case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
-                case 'expense-managment_page_gradelimitcat':
+            case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/General-cat-limits.php', 'General-cat-limits');
-                    case 'expense-managment_page_gradelimitcat':
+            case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/grade-cat-limits.php', 'grade-cat-limits');
-                case 'expense-managment_page_gradelimitcat':
+            case 'expense-managment_page_gradelimitcat':
                 erp_get_js_template(WPERP_COMPANY_JS_TMPL . '/other-catl-imits.php', 'other-catl-imits');
 
             case 'budget-control_page_Center':
